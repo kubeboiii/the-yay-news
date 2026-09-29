@@ -347,7 +347,7 @@
 
 /* ---------- Pastel colourways (see ../colours/pastels.ts) ---------- */
 
-html[data-pastel] .m5 {
+[data-pastel] .m5 {
   --ink: var(--pz-ink);
   --apricot: var(--pz-peach);
   --apricot-deep: var(--pz-peach-deep);

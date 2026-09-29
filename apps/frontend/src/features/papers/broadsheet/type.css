@@ -1,0 +1,623 @@
+/*
+ * The type system, set last so it governs every page. Three families and one hierarchy:
+ * a condensed gothic for heads and numerals, an old-style serif for everything read, and a small
+ * sans for the furniture. Headlines are sentence case at natural tracking; the only capitals are
+ * the ones a broadsheet has always set in caps (masthead, section flags, stickers, stamps). Labels
+ * are small caps rather than tracked capitals, and body text is justified and indented like a
+ * column of news.
+ */
+
+.yn-table {
+  --font-chunk: var(--font-head);
+  --font-fat: var(--font-head);
+  --font-body: var(--font-text);
+  --font-hand: var(--font-text);
+  font-family: var(--font-text), Georgia, serif;
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* ——— The three voices ——— */
+
+.yn-chunk {
+  font-family: var(--font-head), "Arial Narrow", sans-serif;
+  font-weight: 400;
+  text-transform: none;
+  line-height: 0.92;
+  letter-spacing: 0;
+  font-variant-numeric: lining-nums;
+}
+
+.yn-caps {
+  text-transform: uppercase;
+}
+
+.yn-fat {
+  font-family: var(--font-head), "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.82;
+  font-variant-numeric: lining-nums;
+}
+
+/* What used to be lettering is now the short italic line a paper uses for kickers and asides. */
+.yn-hand {
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.1;
+  word-spacing: normal;
+}
+
+.yn-sans,
+.yn-byline,
+.yn-dateline,
+.yn-folio,
+.yn-spec,
+.yn-credit,
+.yn-photo-tag,
+.yn-zigzag span,
+.yn-ad-label,
+.yn-jump {
+  font-family: var(--font-sans), "Helvetica Neue", sans-serif;
+  font-style: normal;
+}
+
+/* ——— Body copy, set like a newspaper column ——— */
+
+.yn-body {
+  font-family: var(--font-text), Georgia, serif;
+  font-variation-settings: normal;
+  font-size: calc(var(--u) * 3.05);
+  line-height: 1.38;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  font-variant-numeric: oldstyle-nums;
+}
+
+.yn-body p + p {
+  margin-top: 0;
+  text-indent: 1em;
+}
+
+/* One drop cap per page, on the lead story only. */
+.yn-dropcap > p:first-child::first-letter {
+  float: left;
+  font-family: var(--font-head), sans-serif;
+  font-size: 3.9em;
+  line-height: 0.8;
+  padding: 0.06em 0.08em 0 0;
+  color: var(--ink);
+}
+
+.yn-dek {
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.22;
+}
+
+.yn-kicker {
+  display: block;
+  background: none;
+  color: var(--ink);
+  padding: 0;
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 3.6);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* On a pink or orange ground a kicker takes the ground's type colour, which is paper-white in the
+   colourways that print those inks as a deep violet or blue. */
+.yn-hero-card .yn-kicker,
+.fr-riddle .yn-kicker,
+.bk-side .yn-kicker {
+  color: inherit;
+}
+
+.yn-byline {
+  font-size: calc(var(--u) * 2.9);
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+  text-transform: none;
+}
+
+.yn-runin,
+.yn-dateline {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 1.08em;
+}
+
+.yn-jump {
+  display: block;
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 2.5);
+  font-weight: 600;
+  font-style: normal;
+}
+
+.yn-credit,
+.yn-photo-tag {
+  font-size: calc(var(--u) * 2.3);
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.02em;
+}
+
+.yn-caption {
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1.3;
+}
+
+.yn-caption .yn-credit {
+  font-style: normal;
+  margin-left: 0.3em;
+}
+
+/* The small word in the middle of a zigzag rule, as the Newspaper Club sheet sets it. */
+.yn-zigzag span {
+  font-size: calc(var(--u) * 3.1);
+  font-weight: 800;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.yn-folio {
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+  font-size: calc(var(--u) * 2.9);
+}
+
+.yn-folio .yn-hand {
+  font-size: calc(var(--u) * 3.6);
+  font-variant-caps: normal;
+  letter-spacing: 0;
+}
+
+.yn-ad-label {
+  font-size: calc(var(--u) * 2.4);
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+.yn-burst-text {
+  font-family: var(--font-head), sans-serif;
+  text-transform: uppercase;
+  line-height: 0.9;
+  font-variant-numeric: lining-nums;
+}
+
+.yn-stamp .yn-chunk {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.yn-note {
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  word-spacing: normal;
+  line-height: 1.05;
+}
+
+/* ——— Front page ——— */
+
+.yn-wordmark h1 {
+  font-size: calc(var(--u) * 38);
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: 0.005em;
+  /* The masthead's one indulgence: a fluoro plate printed a hair off register. */
+  text-shadow: calc(var(--u) * 0.9) calc(var(--u) * 0.7) 0 var(--neon-pink);
+}
+
+.yn-wordmark p {
+  font-size: calc(var(--u) * 4.4);
+}
+
+.yn-spec h2 {
+  font-size: calc(var(--u) * 11);
+  text-transform: uppercase;
+}
+
+.yn-spec dl {
+  font-family: var(--font-sans), sans-serif;
+  font-size: calc(var(--u) * 2.9);
+}
+
+.yn-banner-stack .yn-hand {
+  font-size: calc(var(--u) * 6.4);
+}
+
+.yn-banner-stack .yn-chunk {
+  font-size: calc(var(--u) * 19);
+  text-transform: uppercase;
+}
+
+.yn-banner-number .yn-fat {
+  font-size: calc(var(--u) * 33);
+}
+
+.yn-banner-number .yn-hand {
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.1;
+}
+
+.yn-readtime .yn-fat {
+  font-size: calc(var(--u) * 24);
+}
+
+.yn-readtime .yn-hand {
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.1;
+}
+
+.yn-hero-card .yn-kicker {
+  font-size: calc(var(--u) * 4.6);
+}
+
+.yn-hero-card h2 {
+  font-size: calc(var(--u) * 21);
+  line-height: 0.9;
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.fr-note {
+  font-size: calc(var(--u) * 6.6);
+}
+
+.fr-picnic figcaption {
+  font-family: var(--font-text), serif;
+  font-style: italic;
+  font-size: calc(var(--u) * 2.9);
+}
+
+.fr-lead h2 {
+  margin-top: calc(var(--u) * 1.2);
+  font-size: calc(var(--u) * 11.5);
+}
+
+.fr-cat h2,
+.fr-inside h2.yn-chunk,
+.fr-riddle-q {
+  font-size: calc(var(--u) * 8.6);
+  line-height: 0.94;
+}
+
+.fr-inside-head {
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+  font-size: calc(var(--u) * 3.6);
+  margin-top: calc(var(--u) * 5);
+}
+
+.yn-index {
+  font-family: var(--font-text), serif;
+  text-align: left;
+  hyphens: none;
+}
+
+.fr-pricebox .yn-chunk {
+  font-size: calc(var(--u) * 13);
+  text-transform: uppercase;
+}
+
+.fr-pricebox .yn-hand {
+  font-size: calc(var(--u) * 3.2);
+}
+
+.fr-issn {
+  font-family: var(--font-sans), sans-serif;
+  font-variant-numeric: lining-nums;
+}
+
+.fr-ad .yn-chunk {
+  font-size: calc(var(--u) * 6.6);
+}
+
+.fr-ad .yn-body {
+  text-align: center;
+  hyphens: none;
+}
+
+/* ——— Inside pages ——— */
+
+.yn-run-mark {
+  font-size: calc(var(--u) * 7.4);
+  text-transform: uppercase;
+}
+
+.yn-run-title h1 {
+  font-size: calc(var(--u) * 27);
+  text-transform: uppercase;
+  line-height: 0.86;
+}
+
+.yn-run-tag {
+  font-size: calc(var(--u) * 4);
+}
+
+.yn-run-page .yn-hand {
+  font-size: calc(var(--u) * 5);
+}
+
+.yn-run-page .yn-fat {
+  font-size: calc(var(--u) * 26);
+}
+
+.yn-run-date {
+  font-family: var(--font-sans), sans-serif;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.45;
+  text-align: right;
+  font-variant-numeric: lining-nums;
+}
+
+.yn-run-date .yn-chunk {
+  font-size: calc(var(--u) * 9);
+  line-height: 1;
+}
+
+.yn-hed {
+  font-size: calc(var(--u) * 15);
+  line-height: 0.92;
+}
+
+.yn-hed-sm {
+  font-size: calc(var(--u) * 10);
+  line-height: 0.94;
+}
+
+.yn-label {
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+  font-size: calc(var(--u) * 3.8);
+  line-height: 1.1;
+}
+
+.yn-pullquote {
+  font-family: var(--font-text), serif;
+  font-style: italic;
+  text-transform: none;
+  font-weight: 400;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1.15;
+}
+
+.yn-pullquote-by {
+  font-family: var(--font-sans), sans-serif;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+}
+
+@container (max-width: 760px) {
+  .yn-body {
+    font-size: 15px;
+  }
+
+  .yn-byline,
+  .yn-credit,
+  .yn-photo-tag,
+  .yn-folio,
+  .yn-jump,
+  .yn-ad-label {
+    font-size: 13px;
+  }
+
+  .yn-caption,
+  .yn-kicker {
+    font-size: 15px;
+  }
+
+  .yn-zigzag span {
+    font-size: 12px;
+  }
+
+  .yn-wordmark h1 {
+    font-size: calc(var(--u) * 30);
+  }
+
+  .yn-run-title h1 {
+    font-size: calc(var(--u) * 22);
+  }
+
+  .yn-hero-card h2 {
+    font-size: calc(var(--u) * 17);
+  }
+
+  .yn-run-date {
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .fr-note {
+    font-size: 18px;
+  }
+
+  .yn-readtime .yn-hand {
+    font-size: 15px;
+  }
+
+  .fr-cat h2,
+  .fr-inside h2.yn-chunk,
+  .fr-riddle-q,
+  .yn-hed-sm {
+    font-size: 30px;
+  }
+
+  .fr-lead h2,
+  .yn-hed {
+    font-size: 36px;
+  }
+
+  .fr-inside-head,
+  .yn-label {
+    font-size: 14px;
+  }
+
+  .yn-readtime {
+    justify-content: flex-start;
+    gap: 14px;
+  }
+}
+
+/* ——— Furniture that used to be tracked capitals, re-set as small caps ——— */
+
+.yn-ticket .admit,
+.yn-ticket .seat,
+.yn-cart-title .meta,
+.yn-cart-foot,
+.gm-hud-mid,
+.yn-film-edge,
+.yn-balloon .who,
+.bk-clues h3,
+.bk-riddle summary,
+.yn-ticket-stub small {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-variant-caps: all-small-caps;
+  font-weight: 700;
+}
+
+.yn-film-edge {
+  font-variant-caps: normal;
+  letter-spacing: 0.2em;
+}
+
+.gm-hud-mid {
+  font-size: calc(var(--u) * 3.4);
+}
+
+.yn-ticket .admit,
+.yn-ticket .seat {
+  font-size: calc(var(--u) * 3);
+}
+
+.yn-ticket-stub p {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: calc(var(--u) * 7);
+}
+
+.yn-balloon .who {
+  font-size: calc(var(--u) * 2.8);
+}
+
+.yn-balloon .said {
+  font-family: var(--font-text), serif;
+  font-style: italic;
+  font-size: calc(var(--u) * 4.8);
+  line-height: 1.12;
+}
+
+.bk-clues h3 {
+  font-size: calc(var(--u) * 3.8);
+}
+
+.bk-clues li {
+  font-family: var(--font-text), serif;
+}
+
+.bk-classifieds li h3 {
+  font-size: calc(var(--u) * 6.4);
+  font-weight: 400;
+}
+
+.bk-classifieds li {
+  font-family: var(--font-text), serif;
+}
+
+.bk-riddle .yn-chunk {
+  font-size: calc(var(--u) * 9.6);
+}
+
+.bk-riddle .answer {
+  font-family: var(--font-text), serif;
+  font-style: italic;
+}
+
+.bk-ladder li span {
+  font-family: var(--font-head), sans-serif;
+  font-weight: 400;
+}
+
+.yn-letterboard p {
+  font-family: var(--font-head), sans-serif;
+  letter-spacing: 0.12em;
+}
+
+.yn-letterboard .small {
+  font-family: var(--font-sans), sans-serif;
+  font-variant-caps: all-small-caps;
+  text-transform: none;
+}
+
+.ss-list,
+.yn-numbered p {
+  font-family: var(--font-text), serif;
+}
+
+.ss-list b {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  font-weight: 700;
+}
+
+.yn-numbered .n .yn-chunk {
+  font-size: calc(var(--u) * 10);
+}
+
+.yn-numbered .n span:last-child {
+  font-family: var(--font-sans), sans-serif;
+  text-transform: none;
+  font-weight: 700;
+}
+
+.ss-tracks ol {
+  font-family: var(--font-text), serif;
+}
+
+.yn-cart-title p.yn-chunk {
+  font-size: calc(var(--u) * 17);
+}
+
+.gm-hiscore .yn-body {
+  color: var(--paper);
+}
+
+@container (max-width: 760px) {
+  .yn-ticket .admit,
+  .yn-ticket .seat,
+  .yn-cart-title .meta,
+  .yn-cart-foot,
+  .gm-hud-mid,
+  .yn-balloon .who,
+  .bk-clues h3,
+  .bk-riddle summary {
+    font-size: 13px;
+  }
+
+  .yn-balloon .said {
+    font-size: 16px;
+  }
+}

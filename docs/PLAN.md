@@ -33,27 +33,28 @@ These settle arguments later. When a feature conflicts with one, the principle w
 
 ## 3. Decisions made
 
-| Topic              | Decision                                                                        |
-| ------------------ | ------------------------------------------------------------------------------- |
-| Name               | **The Yay News**                                                                |
-| Audience           | Global, English                                                                 |
-| Content production | **Fully automated** pipeline, with an emergency pull/replace control            |
-| AI provider        | Decide later — behind one provider-neutral interface                            |
-| Reading format     | Newspaper pages: front page → inside pages → back page, stacked on mobile       |
-| Release time       | 07:00 in each reader's local timezone; same edition for everyone                |
-| Edition size       | Compact: ~15 items, ~10 minutes                                                 |
-| Voice              | Mix, varying by section (see §5)                                                |
-| Content edges      | None allowed: no serious topics at all, including "constructive" ones           |
-| Images             | Openly licensed photos first, generated illustrations as fallback               |
-| Visual direction   | **Loud poster zine** (Newspaper Club-led), with readable body text              |
-| Goal               | Grow an audience                                                                |
-| Features           | Puzzles, newsletter, shareable clippings + PDF, native share flows              |
-| Accounts           | None at launch; Google sign-in later, merging on-device history                 |
-| Mobile app         | **Web only**                                                                    |
-| Extra sections     | A rotating guest section every other day                                        |
-| Hosting            | Vercel (frontend) + small container host (backend, pipeline) + managed Postgres |
-| Budget             | **Under $25/month** at launch                                                   |
-| First milestone    | **Reader first**, on hand-made sample editions                                  |
+| Topic              | Decision                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| Name               | **The Yay News**                                                                   |
+| Audience           | Global, English                                                                    |
+| Content production | **Fully automated** pipeline, with an emergency pull/replace control               |
+| AI provider        | Decide later — behind one provider-neutral interface                               |
+| Reading format     | Newspaper pages: front page → inside pages → back page, stacked on mobile          |
+| Release time       | 07:00 in each reader's local timezone; same edition for everyone                   |
+| Edition size       | Compact: ~15 items, ~10 minutes                                                    |
+| Voice              | Mix, varying by section (see §5)                                                   |
+| Content edges      | None allowed: no serious topics at all, including "constructive" ones              |
+| Images             | Openly licensed photos first, generated illustrations as fallback                  |
+| Visual direction   | **Loud poster zine** (Newspaper Club-led), with readable body text                 |
+| Designs            | **Broadsheet on weekdays**; at weekends one of Tabloid, Mini Zine or Midi Magazine |
+| Goal               | Grow an audience                                                                   |
+| Features           | Puzzles, newsletter, shareable clippings + PDF, native share flows                 |
+| Accounts           | None at launch; Google sign-in later, merging on-device history                    |
+| Mobile app         | **Web only**                                                                       |
+| Extra sections     | A rotating guest section every other day                                           |
+| Hosting            | Vercel (frontend) + small container host (backend, pipeline) + managed Postgres    |
+| Budget             | **Under $25/month** at launch                                                      |
+| First milestone    | **Reader first**, on hand-made sample editions                                     |
 
 ## 4. Sections
 
@@ -323,8 +324,9 @@ contrast, and a clipping renders for a sample story.
 - Clippings render at `/clip/{story|post|link}?story=…&look=v1|v3|v4|v5` in all three formats and
   every colourway (preview at `/mockups/clippings`). Fonts are fetched from Google Fonts at render
   time, so the renderer needs network access.
-- Moved to Phase 2: page components in `packages/ui`. They should be built once it is decided
-  whether readers get one design, a choice of design, or a rotation.
+- Moved to Phase 2: page components in `packages/ui`, one set per design, now that the design
+  depends on the day (decided 2026-09-29): weekday editions print in the Broadsheet, weekend editions
+  in the Tabloid, Mini Zine or Midi Magazine. Each edition carries its `design` and `colourway`.
 
 ### Phase 2 — Reader MVP
 
@@ -339,6 +341,20 @@ contrast, and a clipping renders for a sample story.
 
 **Done when:** a reader in any timezone gets the right edition at 07:00, can read it to the back page,
 browse back issues, and share any story to each platform's composer.
+
+**Status (2026-09-30): built on sample editions.**
+
+- Data model, seed (issues 38–45, including scheduled editions) and API, with the 07:00 local release;
+  a scheduled edition releases itself, drafts and pulled editions are never served.
+- Reader routes: today at `/`, `/issue/N`, `/issue/N/<section>`, `/issue/N/back`,
+  `/issue/N/story/<slug>`, `/archive`, `/issue/N/print`. Every edition prints in its own design and
+  colourway (Broadsheet on weekdays; Tabloid, Mini Zine or Midi Magazine at weekends), from templates
+  in `apps/frontend/src/features/papers/`.
+- Share bar with every composer in §7, Instagram through the share sheet (download and QR on
+  desktop), link previews from the 1200×630 clipping, and a printable edition saved as PDF from the
+  browser (server-rendered PDF is not built).
+- Still to do: try the Instagram share sheet on real iOS and Android phones; move the shared print
+  components into `packages/ui` once the mockups are retired.
 
 ### Phase 3 — Puzzles and habits
 

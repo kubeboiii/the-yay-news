@@ -8,28 +8,204 @@ datasource db {
   provider = "postgresql"
 }
 
-model Category {
-  id        String    @id @default(cuid())
-  slug      String    @unique
-  name      String
-  articles  Article[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+// ——— Enums ———
+
+enum EditionStatus {
+  draft
+  scheduled
+  published
+  pulled
 }
 
-model Article {
-  id          String    @id @default(cuid())
-  slug        String    @unique
-  title       String
-  summary     String
-  body        String
-  imageUrl    String?
-  publishedAt DateTime  @default(now())
-  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  categoryId  String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+enum EditionKind {
+  regular
+  slow_news_day
+}
 
-  @@index([publishedAt])
-  @@index([categoryId])
+/// Which of the four printed designs an edition uses (mockups v1, v3, v4, v5).
+/// Weekdays always print as a broadsheet; weekends rotate between the other three.
+enum EditionDesign {
+  broadsheet
+  tabloid
+  zine
+  midi
+}
+
+enum SectionKind {
+  core
+  guest
+}
+
+/// The section's tone (PLAN §5).
+enum SectionVoice {
+  witty
+  quirky
+  warm
+}
+
+enum StorySlot {
+  lead
+  feature
+  brief
+}
+
+enum ImageKind {
+  photo
+  illustration
+}
+
+enum FeatureType {
+  number_of_day
+  weather
+  quote
+  correction
+  classified
+  letter
+  word_of_the_day
+  comic
+  sign_off
+}
+
+enum PuzzleType {
+  crossword
+  word_ladder
+  riddle
+}
+
+// ——— Models ———
+
+model Section {
+  id       String       @id @default(cuid())
+  slug     String       @unique
+  name     String
+  tagline  String
+  kind     SectionKind
+  /// Default ink for the section, as a hex colour; a design's colourway may override it.
+  colour   String
+  voice    SectionVoice
+  pages    Page[]
+  stories  Story[]
+  /// Editions in which this is the rotating guest section.
+  editions Edition[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// One edition per calendar date. Released to a reader at 07:00 on `date` in their timezone.
+model Edition {
+  id             String        @id @default(cuid())
+  date           DateTime      @unique @db.Date
+  issueNumber    Int           @unique
+  volume         Int           @default(1)
+  status         EditionStatus @default(draft)
+  kind           EditionKind   @default(regular)
+  design         EditionDesign
+  /// A colourway slug valid for `design` (see @repo/shared's colourway lists).
+  colourway      String
+  guestSection   Section?      @relation(fields: [guestSectionId], references: [id], onDelete: SetNull)
+  guestSectionId String?
+  pages          Page[]
+  stories        Story[]
+  features       Feature[]
+  puzzles        Puzzle[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, date])
+  @@index([guestSectionId])
+}
+
+model Page {
+  id        String   @id @default(cuid())
+  edition   Edition  @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  editionId String
+  order     Int
+  /// Null for the front and back pages.
+  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  sectionId String?
+  /// Layout name the reader renders the page with: "front", "section", "guest" or "back".
+  layout    String
+  stories   Story[]
+
+  @@unique([editionId, order])
+  @@index([sectionId])
+}
+
+model Story {
+  id          String    @id @default(cuid())
+  /// Denormalised from the page so slugs can be unique within an edition.
+  edition     Edition   @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  editionId   String
+  page        Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId      String
+  order       Int
+  slot        StorySlot
+  slug        String
+  section     Section   @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  sectionId   String
+  kicker      String
+  headline    String
+  /// Standfirst.
+  dek         String
+  /// Body text, one entry per paragraph.
+  body        String[]
+  readMinutes Int
+  sticker     String?
+  sourceUrl   String
+  sourceName  String
+  embedUrl    String?
+  /// Reserves stand by to replace a pulled story and are never served.
+  isReserve   Boolean   @default(false)
+  images      Image[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([editionId, slug])
+  @@unique([pageId, order])
+  @@index([sectionId])
+}
+
+model Image {
+  id         String    @id @default(cuid())
+  story      Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId    String
+  order      Int       @default(0)
+  url        String
+  alt        String
+  credit     String
+  licence    String
+  licenceUrl String
+  kind       ImageKind
+
+  @@index([storyId])
+}
+
+model Feature {
+  id        String      @id @default(cuid())
+  edition   Edition     @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  editionId String
+  type      FeatureType
+  /// Order among the edition's features of the same type.
+  order     Int         @default(0)
+  /// Shape depends on `type`; validated by @repo/shared's feature schema.
+  content   Json
+
+  @@unique([editionId, type, order])
+}
+
+model Puzzle {
+  id        String     @id @default(cuid())
+  edition   Edition    @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  editionId String
+  type      PuzzleType
+  order     Int        @default(0)
+  /// What the reader sees; shape depends on `type`.
+  data      Json
+  /// Revealed in the next edition.
+  solution  Json
+
+  @@unique([editionId, order])
 }

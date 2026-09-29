@@ -2726,7 +2726,7 @@
 
 /* ---------- Pastel colourways (see ../colours/pastels.ts) ---------- */
 
-html[data-pastel] .print-sheet.tb-sheet {
+[data-pastel] .print-sheet.tb-sheet {
   --ink: var(--pz-ink);
   --orange: var(--pz-a);
   --blue: var(--pz-b);

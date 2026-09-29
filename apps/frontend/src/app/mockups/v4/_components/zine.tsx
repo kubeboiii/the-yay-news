@@ -2,9 +2,9 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import type { Photo as PhotoData } from "@/app/mockups/_data/photos";
 import { unsplash } from "@/app/mockups/_data/photos";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Mark } from "@/features/print/mark";
 
-export const FOLIO_DATE = "Tue 30 Sep 2026";
+export const FOLIO_DATE = "Wed 30 Sep 2026";
 
 /** A spread of two mini pages, 170 × 250 mm each. */
 export function Spread({ children, label }: { children: ReactNode; label: string }) {

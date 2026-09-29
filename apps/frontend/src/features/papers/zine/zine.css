@@ -1,0 +1,2775 @@
+/*
+ * Copied from the approved mockup (src/app/mockups/v4/zine.css) so the look carries over; the
+ * edition templates' own rules are in edition.css.
+ *
+ * Mini Zine: a 170 × 250 mm mini newspaper shown as two-page spreads. Pastel grounds only; the
+ * deeper pastel tones are for the cover-letter extrusions and the odd point of emphasis. Every
+ * measurement inside a page is in millimetres of the sheet (--u), so the spread scales as one
+ * printed object.
+ */
+
+.z-desk {
+  --ink: #141414;
+  /* Grounds are mixed a step lighter than the swatch: newsprint multiplies under them and pulls
+     every pastel towards grey, so what prints is the swatch rather than a muddied version of it. */
+  --mint: #b2f7cf;
+  --pink: #ffd3e3;
+  --lilac: #d9ccff;
+  --blue: #bdeafc;
+  --butter: #fff3a0;
+  --peach: #ffdcc2;
+  --rose: #f19bbd;
+  --peri: #9d8ef0;
+  --apricot: #f5ad7e;
+  --deepmint: #62cf95;
+  --deepblue: #72bfe0;
+  --deepbutter: #f7d348;
+  --paper: #fbf7ee;
+  --rosetype: #d9577f;
+  color: var(--ink);
+}
+
+.z-wrap {
+  --sheet-max: 1300px;
+}
+
+/* ---------- The page ---------- */
+
+.print-sheet.z-page {
+  --sheet-w: 170;
+  --sheet-h: 250;
+  /* The container is the whole spread, so a millimetre is 1/340 of it. */
+  --u: calc(100cqw / 340);
+  --text: calc(var(--u) * 3.3);
+  --small: max(calc(var(--u) * 2.4), 10.5px);
+  --paper-strength: 0.9;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u) * 8) calc(var(--u) * 12) calc(var(--u) * 7);
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--z-serif), Georgia, serif;
+  font-size: var(--text);
+  line-height: 1.4;
+}
+
+.z-mint {
+  --ground: var(--mint);
+}
+.z-pink {
+  --ground: var(--pink);
+}
+.z-lilac {
+  --ground: var(--lilac);
+}
+.z-blue {
+  --ground: var(--blue);
+}
+.z-butter {
+  --ground: var(--butter);
+}
+.z-peach {
+  --ground: var(--peach);
+}
+
+/* Nothing on a page may be squeezed to make room: if it does not fit, that is a layout problem. */
+.z-page > * {
+  flex-shrink: 0;
+}
+
+/* The fold between two pages: a hairline, not a shadow. */
+.z-right {
+  box-shadow:
+    inset calc(var(--u) * 0.3) 0 0 rgb(20 20 20 / 0.08),
+    0 10px 30px -10px rgb(0 0 0 / 0.3);
+}
+
+.z-page p,
+.z-page h1,
+.z-page h2,
+.z-page h3,
+.z-page ul,
+.z-page ol,
+.z-page dl,
+.z-page dd {
+  margin: 0;
+}
+
+.z-page ul,
+.z-page ol {
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Running head and folio ---------- */
+
+.z-run {
+  font-weight: 700;
+  font-size: var(--small);
+  text-align: center;
+  margin-bottom: calc(var(--u) * 4) !important;
+}
+
+.z-folio {
+  margin-top: auto !important;
+  padding-top: calc(var(--u) * 3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 0.6);
+  font-size: var(--small);
+  line-height: 1.2;
+}
+
+.z-folio b {
+  font-weight: 700;
+  font-size: calc(var(--u) * 3);
+}
+
+/* ---------- Rules: zigzag and halftone dots, drawn as masks so they take currentColor ---------- */
+
+.z-zig {
+  height: calc(var(--u) * 2);
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 4'%3E%3Cpath d='M0 3.4L2 .6L4 3.4L6 .6L8 3.4' fill='none' stroke='%23000' stroke-width='.7'/%3E%3C/svg%3E")
+    repeat-x left center / calc(var(--u) * 4) calc(var(--u) * 2);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 4'%3E%3Cpath d='M0 3.4L2 .6L4 3.4L6 .6L8 3.4' fill='none' stroke='%23000' stroke-width='.7'/%3E%3C/svg%3E")
+    repeat-x left center / calc(var(--u) * 4) calc(var(--u) * 2);
+}
+
+.z-zig--short {
+  width: calc(var(--u) * 28);
+  margin-inline: auto;
+}
+
+.z-dots {
+  display: block;
+  flex: 1;
+  align-self: stretch;
+  min-width: calc(var(--u) * 6);
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Ccircle cx='1' cy='1' r='.5'/%3E%3C/svg%3E")
+    repeat left top / calc(var(--u) * 0.9) calc(var(--u) * 0.9);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Ccircle cx='1' cy='1' r='.5'/%3E%3C/svg%3E")
+    repeat left top / calc(var(--u) * 0.9) calc(var(--u) * 0.9);
+  margin-block: calc(var(--u) * 1.2);
+}
+
+/* ---------- Type ---------- */
+
+.z-cond {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  line-height: 0.9;
+}
+
+.z-head {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  text-align: center;
+}
+
+.z-head__top {
+  display: flex;
+  align-items: stretch;
+  gap: calc(var(--u) * 3);
+}
+
+.z-head__cond {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 12);
+  line-height: 0.86;
+  white-space: nowrap;
+  padding-top: calc(var(--u) * 0.6);
+}
+
+.z-head__heavy {
+  --hb: 13;
+  display: block;
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * var(--hb));
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.z-kicker {
+  font-weight: 700;
+  font-size: var(--small);
+}
+
+.z-h2 {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 8);
+  line-height: 0.92;
+}
+
+.z-h3 {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 0.95;
+}
+
+.z-label {
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1;
+}
+
+.z-dek {
+  font-size: calc(var(--u) * 4.2);
+  line-height: 1.28;
+  font-weight: 500;
+}
+
+.z-body p + p {
+  margin-top: 0.6em;
+}
+
+.z-cols-2 {
+  columns: 2;
+  column-gap: calc(var(--u) * 5);
+}
+
+.z-cols-3 {
+  columns: 3;
+  column-gap: calc(var(--u) * 4.5);
+}
+
+.z-cap {
+  font-size: var(--small);
+  line-height: 1.3;
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-cap__credit {
+  font-weight: 700;
+}
+
+.z-hand {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 600;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1.2;
+}
+
+.z-pull {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2.5);
+  text-align: center;
+}
+
+.z-pull blockquote {
+  margin: 0;
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 0.95;
+}
+
+.z-pull cite {
+  display: block;
+  margin-top: calc(var(--u) * 1.5);
+  font-style: normal;
+  font-size: var(--small);
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.z-mark {
+  background: var(--mark, var(--butter));
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ---------- Photos ---------- */
+
+.z-photo {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: rgb(20 20 20 / 0.1);
+}
+
+.z-photo img {
+  object-fit: cover;
+}
+
+/* A flat block of a deeper pastel that a photo sits on, the way the mini lays pictures onto colour. */
+.z-block {
+  background: var(--block);
+  padding: calc(var(--u) * 4);
+}
+
+.z-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ===================================================================================== */
+/* Front: cover (mint) */
+/* ===================================================================================== */
+
+.z-cover {
+  padding-top: calc(var(--u) * 9);
+}
+
+.z-cover__top {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 84);
+  gap: calc(var(--u) * 4);
+  align-items: start;
+}
+
+.z-cover__stamp {
+  justify-self: start;
+  margin-top: calc(var(--u) * 6) !important;
+  rotate: -9deg;
+  color: var(--ink);
+  font-size: calc(var(--u) * 6.4);
+}
+
+.z-fold-sticker {
+  width: calc(var(--u) * 34);
+}
+
+.z-fold-sticker p,
+.z-cover__sticker p {
+  font-weight: 700;
+  text-align: center;
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1;
+}
+
+.z-fold-sticker p span,
+.z-cover__sticker p span {
+  display: block;
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5.6);
+}
+
+/* The spec table, after the mini's own cover: small facts in rules, one big number boxed. */
+.z-spec {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 36);
+  gap: calc(var(--u) * 2.5);
+  font-size: calc(var(--u) * 2.2);
+  line-height: 1.15;
+}
+
+.z-spec__name {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1.5);
+  border-bottom: calc(var(--u) * 0.5) solid var(--ink);
+  padding-bottom: calc(var(--u) * 0.8);
+  margin-bottom: calc(var(--u) * 0.6);
+}
+
+.z-spec__name b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 0.9;
+}
+
+.z-spec__name span {
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.3);
+  line-height: 1;
+}
+
+.z-spec dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: calc(var(--u) * 2);
+}
+
+.z-spec dt,
+.z-spec dd {
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+  padding-block: calc(var(--u) * 0.7);
+}
+
+.z-spec dd {
+  text-align: right;
+  font-weight: 700;
+}
+
+.z-spec__num {
+  background: var(--blue);
+  padding: calc(var(--u) * 2);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1);
+  border-bottom: calc(var(--u) * 0.5) solid var(--ink);
+}
+
+.z-spec__num b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 7.6);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.z-spec__num span {
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.1);
+  line-height: 1.1;
+}
+
+.z-sample {
+  margin-top: calc(var(--u) * 2) !important;
+  background: var(--ink);
+  color: var(--mint);
+  font-weight: 700;
+  text-align: center;
+  font-size: calc(var(--u) * 2.4);
+  padding: calc(var(--u) * 1.2);
+}
+
+/* Giant stacked letters with a hard two-tone extrusion, the way the mini's cover prints them. */
+.z-cover__stack {
+  position: relative;
+  margin-top: calc(var(--u) * 7);
+}
+
+.z-cover__title--shade {
+  position: absolute !important;
+  inset: 0;
+  color: var(--butter) !important;
+  translate: calc(var(--u) * -1.8) calc(var(--u) * 1.8);
+  --wear-size: 70%;
+}
+
+.z-cover__title--ink {
+  text-shadow: none !important;
+  position: relative;
+}
+
+.z-cover__print {
+  position: absolute !important;
+  width: calc(var(--u) * 40);
+  right: calc(var(--u) * -3);
+  top: calc(100% + var(--u) * 6);
+  z-index: 4;
+}
+
+.z-cover__title {
+  margin: 0;
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--ink);
+}
+
+.z-cover__the {
+  font-size: calc(var(--u) * 20);
+  line-height: 0.95;
+}
+
+.z-cover__yay,
+.z-cover__news {
+  display: block;
+  transform: scaleY(var(--sy));
+  transform-origin: top center;
+  /* A transform does not take up room, so the stretched height is added back as margin. */
+  margin-bottom: calc(var(--fs) * var(--lh) * (var(--sy) - 1));
+  font-size: var(--fs);
+  line-height: var(--lh);
+}
+
+.z-cover__yay {
+  --fs: calc(var(--u) * 66);
+  --lh: 0.86;
+  --sy: 1;
+}
+
+.z-cover__news {
+  --fs: calc(var(--u) * 42);
+  --lh: 0.9;
+  --sy: 1;
+}
+
+.z-cover__foot {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: calc(var(--u) * 4);
+  align-items: end;
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 2.5);
+}
+
+.z-cover__tag {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 600;
+  font-size: calc(var(--u) * 5);
+  line-height: 1.1;
+}
+
+.z-cover__also {
+  text-align: right;
+  font-size: var(--small);
+  line-height: 1.3;
+  max-width: calc(var(--u) * 52);
+}
+
+.z-cover__also b {
+  display: block;
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 4.6);
+  line-height: 0.95;
+}
+
+/* ===================================================================================== */
+/* Front: lead + contents (pink) */
+/* ===================================================================================== */
+
+.z-lead__photo {
+  --block: var(--rose);
+  --ob-inset: calc(var(--u) * 4) calc(var(--u) * -3) calc(var(--u) * -3) calc(var(--u) * 14);
+  --ob-r: 1.2deg;
+  position: relative;
+  margin-top: calc(var(--u) * 4);
+  margin-inline: calc(var(--u) * 2) calc(var(--u) * 1);
+}
+
+.z-lead__burst {
+  position: absolute;
+  width: calc(var(--u) * 24);
+  right: calc(var(--u) * -7);
+  bottom: calc(var(--u) * -4);
+  transform: rotate(10deg);
+  z-index: 2;
+}
+
+.z-lead__burst p {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1;
+}
+
+.z-lead__text {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 44) 1fr;
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+}
+
+.z-lead__text .z-h2 {
+  font-size: calc(var(--u) * 7.6);
+}
+
+.z-lead__text .z-dek {
+  margin-top: calc(var(--u) * 2.5);
+  font-size: calc(var(--u) * 3.6);
+}
+
+.z-lead__body {
+  font-size: calc(var(--u) * 3.05);
+}
+
+.z-contents {
+  margin-top: calc(var(--u) * 5);
+}
+
+.z-contents__title {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+  margin-bottom: calc(var(--u) * 3) !important;
+}
+
+.z-contents__title .z-zig {
+  flex: 1;
+}
+
+.z-contents ol {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 4);
+}
+
+.z-contents li {
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 2);
+}
+
+/* Stepped down like a staircase rather than three equal cards in a row. */
+.z-contents li:nth-child(2) {
+  margin-top: calc(var(--u) * 3);
+}
+
+.z-contents li:nth-child(3) {
+  margin-top: calc(var(--u) * 6);
+}
+
+.z-contents__n {
+  display: block;
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 12);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.z-contents__sec {
+  display: block;
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.z-contents__tease {
+  display: block;
+  margin-top: calc(var(--u) * 1);
+  font-size: var(--small);
+  line-height: 1.3;
+}
+
+/* ===================================================================================== */
+/* Screen & Sound (pink + lilac) */
+/* ===================================================================================== */
+
+/* A strip of film: black stock with sprocket holes punched along both edges. */
+.z-film {
+  background: var(--ink);
+  padding: calc(var(--u) * 5) calc(var(--u) * 3);
+  position: relative;
+}
+
+.z-film::before,
+.z-film::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--u) * 2);
+  right: calc(var(--u) * 2);
+  height: calc(var(--u) * 2);
+  background: var(--ground);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 2'%3E%3Crect x='1' y='0' width='3' height='2' rx='.4'/%3E%3C/svg%3E")
+    repeat-x left center / calc(var(--u) * 5) 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 2'%3E%3Crect x='1' y='0' width='3' height='2' rx='.4'/%3E%3C/svg%3E")
+    repeat-x left center / calc(var(--u) * 5) 100%;
+}
+
+.z-film::before {
+  top: calc(var(--u) * 1.5);
+}
+
+.z-film::after {
+  bottom: calc(var(--u) * 1.5);
+}
+
+.z-film .z-photo,
+.z-comic .z-photo {
+  /* Keep the multiply blend against paper, not against the black film stock. */
+  isolation: isolate;
+  background: var(--paper);
+}
+
+.z-film__frames {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: calc(var(--u) * 2);
+}
+
+.z-film__edge {
+  display: flex;
+  justify-content: space-between;
+  color: var(--butter);
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.8);
+  position: absolute;
+  left: calc(var(--u) * 4);
+  right: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 3.3);
+  line-height: 1;
+}
+
+.z-ss__story {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 56);
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+}
+
+.z-ss__story .z-h2 {
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.z-ss__story .z-dek {
+  margin-top: calc(var(--u) * 2.5);
+  font-size: calc(var(--u) * 3.6);
+}
+
+/* An admission ticket: a torn-off stub on a perforated line. */
+.z-ticket {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 9);
+  background: var(--butter);
+  border: calc(var(--u) * 0.35) solid var(--ink);
+  font-size: calc(var(--u) * 2.4);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.z-ticket__main {
+  padding: calc(var(--u) * 2.5);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.2);
+}
+
+.z-ticket__main b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+.z-ticket__stub {
+  border-left: calc(var(--u) * 0.5) dotted var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.3);
+}
+
+.z-ss__pull {
+  margin-top: calc(var(--u) * 3);
+}
+
+.z-ss__story .z-h2 {
+  font-size: calc(var(--u) * 5.8);
+}
+
+.z-ss__pull blockquote {
+  font-size: calc(var(--u) * 5.6);
+}
+
+/* Right page */
+
+.z-choir__photo {
+  --block: var(--peri);
+}
+
+.z-choir__text {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 58) 1fr;
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+}
+
+.z-choir__text .z-dek {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 3.5);
+}
+
+.z-ss__lower {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 60);
+  gap: calc(var(--u) * 6);
+  margin-top: calc(var(--u) * 5);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+/* A record label, typeset: centre hole, side and speed. */
+.z-vinyl {
+  display: flex;
+  gap: calc(var(--u) * 4);
+  align-items: center;
+  margin-block: calc(var(--u) * 2.5) calc(var(--u) * 3);
+}
+
+.z-vinyl__disc {
+  flex: none;
+  width: calc(var(--u) * 30);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink);
+  display: grid;
+  place-items: center;
+}
+
+.z-vinyl__label {
+  width: 54%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--butter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  font-size: calc(var(--u) * 1.6);
+  line-height: 1.05;
+  gap: calc(var(--u) * 0.6);
+  position: relative;
+}
+
+.z-vinyl__label i {
+  display: block;
+  width: calc(var(--u) * 1.6);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.z-tracks {
+  counter-reset: t;
+  font-size: calc(var(--u) * 2.9);
+}
+
+.z-tracks li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 6) 1fr auto;
+  gap: calc(var(--u) * 1);
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+  padding-block: calc(var(--u) * 0.9);
+}
+
+.z-tracks li span:first-child,
+.z-tracks li span:last-child {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: 0.9em;
+}
+
+.z-tracks li b {
+  font-weight: 700;
+}
+
+.z-listings li {
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+  padding-block: calc(var(--u) * 1.5);
+}
+
+.z-listings li:first-child {
+  padding-top: 0;
+}
+
+.z-listings__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(var(--u) * 2);
+}
+
+.z-stars {
+  font-size: calc(var(--u) * 3.2);
+  white-space: nowrap;
+}
+
+.z-listings p {
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.3;
+  margin-top: calc(var(--u) * 0.8) !important;
+}
+
+.z-note {
+  margin-top: calc(var(--u) * 3) !important;
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+
+/* ===================================================================================== */
+/* Gaming (powder blue + butter) */
+/* ===================================================================================== */
+
+.z-player {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.6);
+  border-block: calc(var(--u) * 0.5) solid var(--ink);
+  padding-block: calc(var(--u) * 1.2);
+}
+
+/* The headline set as a mosaic of square cells, lit and unlit, like a low-resolution screen. */
+.z-mosaic {
+  margin-block: calc(var(--u) * 4) calc(var(--u) * 2);
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2.4);
+}
+
+.z-mosaic__letter {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: calc(var(--u) * 0.4);
+}
+
+.z-mosaic__letter span {
+  aspect-ratio: 1;
+  background: rgb(20 20 20 / 0.07);
+}
+
+.z-mosaic__letter span.on {
+  background: var(--ink);
+  box-shadow: calc(var(--u) * 0.6) calc(var(--u) * 0.6) 0 var(--peri);
+  position: relative;
+  z-index: 1;
+}
+
+.z-game__tag {
+  text-align: center;
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1;
+  margin-block: calc(var(--u) * 2) calc(var(--u) * 5) !important;
+}
+
+/* A game cartridge: clipped top corners, a grip of ridges, and a printed label. */
+.z-cart {
+  background: #c7c4bd;
+  padding: calc(var(--u) * 7) calc(var(--u) * 5) calc(var(--u) * 5);
+  clip-path: polygon(0 0, calc(100% - var(--u) * 8) 0, 100% calc(var(--u) * 8), 100% 100%, 0 100%);
+  position: relative;
+}
+
+.z-cart__ridges {
+  position: absolute;
+  top: calc(var(--u) * 1.8);
+  left: calc(var(--u) * 5);
+  width: calc(var(--u) * 40);
+  height: calc(var(--u) * 3);
+  border-block: calc(var(--u) * 0.4) solid rgb(20 20 20 / 0.35);
+}
+
+.z-cart__ridges::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  border-top: calc(var(--u) * 0.4) solid rgb(20 20 20 / 0.35);
+}
+
+.z-cart__label {
+  background: var(--paper);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  display: grid;
+  grid-template-columns: calc(var(--u) * 56) 1fr;
+  min-height: calc(var(--u) * 62);
+}
+
+.z-cart__art {
+  border-right: calc(var(--u) * 0.4) solid var(--ink);
+  position: relative;
+}
+
+.z-cart__art .z-photo {
+  height: 100%;
+}
+
+.z-cart__info {
+  padding: calc(var(--u) * 3);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.5);
+}
+
+.z-cart__band {
+  background: var(--ink);
+  color: var(--butter);
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.2);
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 1.5);
+  align-self: flex-start;
+}
+
+.z-cart__title {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 7.2);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+.z-scores {
+  font-size: calc(var(--u) * 3);
+}
+
+.z-scores div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+  padding-block: calc(var(--u) * 0.7);
+}
+
+.z-scores dd {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 700;
+}
+
+.z-bigscore {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1.5);
+  margin-top: auto;
+}
+
+.z-bigscore b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 13);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  background: var(--butter);
+  padding: 0 calc(var(--u) * 1.2);
+}
+
+.z-bigscore span {
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.3);
+  line-height: 1.1;
+}
+
+.z-game__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 5);
+}
+
+.z-game__body .z-dek {
+  font-size: calc(var(--u) * 3.6);
+  margin-top: calc(var(--u) * 2);
+}
+
+/* Right page */
+
+.z-fish__photo {
+  --block: var(--deepblue);
+}
+
+.z-fish__text {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 58);
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+}
+
+.z-patch {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.55);
+  line-height: 1.45;
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  background: var(--paper);
+  padding: calc(var(--u) * 3);
+}
+
+.z-patch h3 {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.7);
+  font-weight: 700;
+  border-bottom: calc(var(--u) * 0.3) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1.2);
+  margin-bottom: calc(var(--u) * 1.5) !important;
+}
+
+.z-patch li {
+  padding-left: 2ch;
+  text-indent: -2ch;
+}
+
+.z-game__lower {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 6);
+  margin-top: calc(var(--u) * 5);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+.z-hiscore {
+  background: var(--ink);
+  color: var(--butter);
+  padding: calc(var(--u) * 3.5);
+  font-family: var(--z-type), "Courier New", monospace;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+}
+
+.z-hiscore .z-hiscore__top {
+  color: var(--butter);
+  font-family: var(--z-type), "Courier New", monospace;
+  display: flex;
+  justify-content: space-between;
+  font-size: calc(var(--u) * 2.4);
+}
+
+.z-hiscore b {
+  font-size: calc(var(--u) * 10.5);
+  line-height: 0.9;
+  color: var(--blue);
+}
+
+.z-hiscore p {
+  font-family: var(--z-serif), Georgia, serif;
+  text-transform: none;
+  color: var(--paper);
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.35;
+}
+
+.z-top5 li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 8) 1fr;
+  align-items: baseline;
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+  padding-block: calc(var(--u) * 1.1);
+  font-size: calc(var(--u) * 3);
+  line-height: 1.25;
+}
+
+.z-top5 li > b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 5);
+  line-height: 0.9;
+}
+
+/* ===================================================================================== */
+/* Back page (butter + peach) */
+/* ===================================================================================== */
+
+.z-xw {
+  --block: var(--rose);
+  background: var(--block);
+  padding: calc(var(--u) * 5);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: calc(var(--u) * 5);
+  align-items: center;
+  margin-top: calc(var(--u) * 4);
+}
+
+/* The title runs up the side of the block, set sideways in stacked weights. */
+.z-xw__side {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  gap: calc(var(--u) * 1);
+  align-items: center;
+}
+
+.z-xw__side span:nth-child(1) {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 7);
+  line-height: 0.9;
+}
+
+.z-xw__side span:nth-child(2) {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 16);
+  line-height: 0.82;
+}
+
+.z-xw__side span:nth-child(3) {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5.6);
+  line-height: 0.9;
+}
+
+.z-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: calc(var(--u) * 0.7) solid var(--ink);
+  background: var(--ink);
+  gap: calc(var(--u) * 0.35);
+  aspect-ratio: 1;
+  width: calc(var(--u) * 84);
+  justify-self: center;
+}
+
+.z-grid__cell {
+  background: var(--paper);
+  position: relative;
+}
+
+.z-grid__cell--black {
+  background: var(--ink);
+}
+
+.z-grid__cell sup {
+  position: absolute;
+  top: calc(var(--u) * 0.8);
+  left: calc(var(--u) * 1);
+  font-size: calc(var(--u) * 2.6);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.z-clues {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+  font-size: calc(var(--u) * 3);
+}
+
+.z-clues li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 4.5) 1fr;
+  padding-block: calc(var(--u) * 0.7);
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+}
+
+.z-clues li b {
+  font-weight: 700;
+}
+
+.z-clues .z-label {
+  margin-bottom: calc(var(--u) * 1) !important;
+}
+
+.z-puzz {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 6);
+  margin-top: calc(var(--u) * 5);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+.z-ladder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--u) * 1);
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.z-ladder__row {
+  display: flex;
+  gap: calc(var(--u) * 0.8);
+}
+
+.z-ladder__row span {
+  width: calc(var(--u) * 7);
+  height: calc(var(--u) * 7);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 4);
+  line-height: 1;
+}
+
+.z-ladder__row--given span {
+  background: var(--rose);
+}
+
+.z-riddle__q {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 6);
+  line-height: 0.95;
+  margin-top: calc(var(--u) * 2) !important;
+}
+
+.z-riddle details {
+  margin-top: calc(var(--u) * 3);
+}
+
+.z-riddle summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  font-size: var(--small);
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-underline-offset: 0.3em;
+}
+
+.z-riddle summary::-webkit-details-marker {
+  display: none;
+}
+
+.z-riddle__a {
+  display: inline-block;
+  margin-top: calc(var(--u) * 2) !important;
+  transform: rotate(180deg);
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 5);
+}
+
+.z-yday {
+  margin-top: calc(var(--u) * 3) !important;
+  font-size: var(--small);
+  font-style: italic;
+}
+
+/* Photo comic */
+
+.z-comic__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: calc(var(--u) * 0.5) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1.5);
+}
+
+.z-comic__head h2 {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 8);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.z-comic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 2);
+  margin-top: calc(var(--u) * 3);
+  background: var(--ink);
+  padding: calc(var(--u) * 2);
+}
+
+.z-panel {
+  position: relative;
+  margin: 0;
+}
+
+.z-bubble {
+  position: absolute;
+  left: calc(var(--u) * 2.5);
+  top: calc(var(--u) * 2.5);
+  max-width: 78%;
+  background: var(--paper);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  padding: calc(var(--u) * 1.3) calc(var(--u) * 2);
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.1;
+  z-index: 2;
+}
+
+.z-bubble b {
+  display: block;
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 1.9);
+  margin-bottom: calc(var(--u) * 0.4);
+}
+
+/* The tail: a small square turned on its corner, tucked under the box. */
+.z-bubble::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--u) * 4);
+  bottom: calc(var(--u) * -1.6);
+  width: calc(var(--u) * 2.6);
+  height: calc(var(--u) * 2.6);
+  background: var(--paper);
+  border-right: calc(var(--u) * 0.4) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.4) solid var(--ink);
+  transform: rotate(45deg);
+}
+
+.z-panel__n {
+  position: absolute;
+  right: calc(var(--u) * 1.5);
+  bottom: calc(var(--u) * 1.5);
+  background: var(--butter);
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.2);
+  padding: calc(var(--u) * 0.4) calc(var(--u) * 1);
+  z-index: 2;
+}
+
+.z-back__lower {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+}
+
+.z-corr p {
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1.35;
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-class {
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.z-class div {
+  padding: calc(var(--u) * 1.8);
+  font-size: calc(var(--u) * 2.5);
+  line-height: 1.3;
+  border-bottom: calc(var(--u) * 0.15) solid var(--ink);
+}
+
+.z-class div:nth-child(odd) {
+  border-right: calc(var(--u) * 0.15) solid var(--ink);
+}
+
+.z-class div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.z-class h3 {
+  margin: 0 0 calc(var(--u) * 0.6);
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 4.2);
+  line-height: 1;
+}
+
+.z-signoff {
+  margin-top: calc(var(--u) * 5);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: calc(var(--u) * 4);
+  align-items: center;
+}
+
+.z-signoff .z-roundel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.z-signoff p:first-child {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 10.5);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  --e: calc(var(--u) * 0.4);
+  text-shadow:
+    calc(var(--e) * -1) var(--e) 0 var(--butter),
+    calc(var(--e) * -2) calc(var(--e) * 2) 0 var(--butter),
+    calc(var(--e) * -3) calc(var(--e) * 3) 0 var(--apricot),
+    calc(var(--e) * -3) calc(var(--e) * 4) 0 var(--apricot);
+}
+
+.z-signoff p:nth-child(2) {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 600;
+  font-size: calc(var(--u) * 5.2);
+  margin-top: calc(var(--u) * 2.5) !important;
+}
+
+/* A round sticker, the way the mini closes its welcome page. */
+.z-roundel {
+  width: calc(var(--u) * 24);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--peri);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.3);
+  line-height: 1;
+}
+
+.z-roundel span {
+  display: block;
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 0.9;
+}
+
+/* ===================================================================================== */
+/* Paste-up: the hand-assembled layer — prints, tape, stickers across the fold, notes */
+/* ===================================================================================== */
+
+.z-spread {
+  position: relative;
+}
+
+/* Something stuck on after printing, sitting across the fold of the spread. It is its own piece of
+   paper, so it takes no newsprint from either page. `--gx`/`--gy` place it in millimetres of the
+   spread measured from the fold and from the top edge. */
+.z-onfold {
+  --u: calc(100cqw / 340);
+  position: absolute;
+  left: calc(50% + var(--u) * var(--gx, 0));
+  top: calc(var(--u) * var(--gy, 0));
+  translate: -50% 0;
+  rotate: var(--r, 0deg);
+  z-index: 60;
+}
+
+/* A headline printed across both pages: each page carries the whole line and crops it at its own
+   edge, so the two halves meet at the fold the way a real spread's type does. */
+.z-across {
+  position: relative;
+  height: calc(var(--u) * var(--ah, 24));
+}
+
+.z-across__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--u) * 316);
+  text-align: center;
+}
+
+.z-right .z-across__line {
+  left: calc(var(--u) * -170);
+}
+
+.z-print {
+  position: relative;
+  rotate: var(--r, -2deg);
+}
+
+.z-print .print-tape {
+  width: calc(var(--u) * 20);
+  height: calc(var(--u) * 5.5);
+}
+
+.z-tape-tl {
+  top: calc(var(--u) * -2.6);
+  left: calc(var(--u) * -5);
+  rotate: -32deg;
+}
+
+.z-tape-tr {
+  top: calc(var(--u) * -2.4);
+  right: calc(var(--u) * -5);
+  rotate: 28deg;
+}
+
+.z-tape-br {
+  bottom: calc(var(--u) * -1.8);
+  right: calc(var(--u) * -6);
+  rotate: -24deg;
+}
+
+.z-tape-t {
+  top: calc(var(--u) * -3);
+  left: 50%;
+  translate: -50% 0;
+  rotate: 3deg;
+}
+
+.z-print__cap {
+  position: absolute;
+  left: calc(var(--u) * 2);
+  right: calc(var(--u) * 2);
+  bottom: calc(var(--u) * 0.8);
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 600;
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1;
+}
+
+.z-sold {
+  position: absolute;
+  z-index: 3;
+  right: calc(var(--u) * 6);
+  bottom: calc(var(--u) * -3);
+  rotate: 11deg;
+  color: var(--rosetype);
+  font-size: calc(var(--u) * 5.4);
+}
+
+.z-choir__head {
+  font-size: calc(var(--u) * 8.4);
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-choir__grid {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 70) 1fr;
+  gap: calc(var(--u) * 6);
+  margin-top: calc(var(--u) * 5);
+  align-items: start;
+}
+
+.z-choir__grid .z-dek {
+  font-size: calc(var(--u) * 3.5);
+}
+
+/* A handwritten note with a marker arrow, placed by eye rather than on the grid. */
+.z-anno {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--u) * 1);
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 600;
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.1;
+  rotate: var(--r, -4deg);
+}
+
+.z-ring {
+  position: relative;
+  display: inline-block;
+}
+
+.z-ring > .z-ring__mark {
+  position: absolute;
+  inset: -24% -10% -22% -10%;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+}
+
+.z-stamp {
+  display: inline-block;
+  border: calc(var(--u) * 0.7) solid currentColor;
+  padding: calc(var(--u) * 1) calc(var(--u) * 2.2);
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 5);
+  line-height: 0.9;
+  text-align: center;
+  --wear-size: 140%;
+}
+
+.z-stamp small {
+  display: block;
+  font-family: var(--z-serif), Georgia, serif;
+  font-size: 0.42em;
+  font-weight: 700;
+  margin-top: 0.25em;
+}
+
+.z-offset-block {
+  position: relative;
+}
+
+/* The colour a print is pasted onto, knocked off-square so the print and block disagree. */
+.z-offset-block::before {
+  content: "";
+  position: absolute;
+  inset: var(
+    --ob-inset,
+    calc(var(--u) * 5) calc(var(--u) * -4) calc(var(--u) * -4) calc(var(--u) * 8)
+  );
+  background: var(--block);
+  rotate: var(--ob-r, 1.5deg);
+  z-index: -1;
+}
+
+.z-offset-block {
+  isolation: isolate;
+}
+
+/* ===================================================================================== */
+/* Type: one slab, one text face, one typewriter — and a small set of devices used the same way */
+/* ===================================================================================== */
+
+.print-sheet.z-page {
+  font-synthesis: none;
+  font-variant-numeric: oldstyle-nums;
+  line-height: 1.36;
+}
+
+/* Running heads are small caps, not tracked capitals. */
+.z-run {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 400;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.04em;
+  font-size: calc(var(--u) * 3);
+}
+
+.z-folio {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+}
+
+.z-folio b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-style: normal;
+  font-variant-numeric: lining-nums;
+}
+
+/* The one kicker on a page: a short typed line. */
+.z-kicker {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 400;
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.z-h2 {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.005em;
+  font-size: calc(var(--u) * 6.6);
+  text-wrap: balance;
+}
+
+.z-h3 {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.1;
+}
+
+/* Section labels are bold small caps with a rule, the same everywhere. */
+.z-label {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 4);
+  letter-spacing: 0.02em;
+}
+
+.z-dek {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.28;
+}
+
+.z-byline {
+  margin-top: calc(var(--u) * 2) !important;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.3);
+  letter-spacing: 0.03em;
+}
+
+.z-byline i {
+  font-variant-caps: normal;
+  font-style: italic;
+}
+
+/* Body text set like a newspaper: justified and hyphenated, indented paragraphs, no gaps. */
+.z-body {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  line-height: 1.34;
+}
+
+.z-body p + p {
+  margin-top: 0 !important;
+  text-indent: 1em;
+}
+
+.z-drop::first-letter {
+  float: left;
+  font-family: var(--z-slab), serif;
+  font-size: 3.35em;
+  line-height: 0.8;
+  padding: 0.06em 0.08em 0 0;
+  font-variant-numeric: lining-nums;
+}
+
+.z-cap {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-size: calc(var(--u) * 2.7);
+}
+
+.z-cap__credit {
+  font-style: normal;
+  font-weight: 400;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+}
+
+.z-jump {
+  margin-top: 0.4em !important;
+  text-indent: 0 !important;
+  text-align: right;
+  font-style: italic;
+  font-size: 0.92em;
+}
+
+.z-cover__tag {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.15;
+}
+
+/* Typed notes, pasted beside a print. */
+.z-hand,
+.z-anno {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 400;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.2;
+}
+
+.z-print__cap {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 400;
+  font-size: calc(var(--u) * 2.6);
+}
+
+.z-pull blockquote {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 6.2);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.z-pull cite {
+  font-style: normal;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.1);
+  letter-spacing: 0.03em;
+}
+
+/* The two-line section head: an italic line between halftone bars, then the slab. */
+.z-head__cond {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 5.4);
+  line-height: 1.1;
+  padding-top: 0;
+}
+
+.z-head__top .z-dots {
+  margin-block: calc(var(--u) * 1.6);
+}
+
+.z-head__heavy {
+  font-family: var(--z-slab), serif;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin-top: calc(var(--u) * 1);
+}
+
+.z-stamp {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.z-stamp small {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ---------- Gaming, pasted up ---------- */
+
+.z-player {
+  letter-spacing: 0;
+  font-size: calc(var(--u) * 2.8);
+}
+
+.z-game__tag {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 4.4);
+  margin-block: calc(var(--u) * 1) calc(var(--u) * 6) !important;
+}
+
+.z-gotw {
+  position: relative;
+}
+
+/* The cat's photo is a print taped over the cartridge's edge, not a slot inside it. */
+.z-gotw__print {
+  position: absolute !important;
+  left: calc(var(--u) * -3);
+  top: calc(var(--u) * -3);
+  width: calc(var(--u) * 50);
+  z-index: 4;
+}
+
+.z-gotw .z-cart {
+  margin-left: calc(var(--u) * 30);
+  padding: calc(var(--u) * 7) calc(var(--u) * 4) calc(var(--u) * 4);
+}
+
+.z-gotw .z-cart__label {
+  display: block;
+  min-height: 0;
+  padding: calc(var(--u) * 3) calc(var(--u) * 4) calc(var(--u) * 3.5) calc(var(--u) * 22);
+  border-width: calc(var(--u) * 0.3);
+}
+
+.z-cart__title {
+  font-family: var(--z-slab), serif;
+  text-transform: none;
+  font-size: calc(var(--u) * 7.4);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+.z-cart__verdict {
+  font-style: italic;
+  margin-top: calc(var(--u) * 2) !important;
+  line-height: 1.3;
+}
+
+.z-cart__scores {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.7);
+  margin-top: calc(var(--u) * 2) !important;
+  line-height: 1.35;
+}
+
+.z-gotw .z-bigscore {
+  margin-top: calc(var(--u) * 2.5) !important;
+  align-items: center;
+}
+
+.z-gotw .z-bigscore b {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 12);
+  font-variant-numeric: lining-nums;
+}
+
+.z-gotw .z-bigscore span {
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.25;
+}
+
+.z-game__body {
+  grid-template-columns: 1fr calc(var(--u) * 78);
+  margin-top: calc(var(--u) * 7);
+}
+
+.z-game__body .z-h2 {
+  font-size: calc(var(--u) * 6.4);
+}
+
+.z-game__pull {
+  margin-top: calc(var(--u) * 5);
+}
+
+.z-fish__head {
+  font-size: calc(var(--u) * 7.4);
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+/* The lake runs off the outside edge of the page. */
+.z-fish__photo {
+  margin-top: calc(var(--u) * 4);
+  margin-right: calc(var(--u) * -12);
+}
+
+.z-fish__text {
+  grid-template-columns: 1fr calc(var(--u) * 60);
+  gap: calc(var(--u) * 6);
+}
+
+.z-patch {
+  position: relative;
+  border: 0;
+  background: var(--paper);
+  rotate: 1.8deg;
+  padding: calc(var(--u) * 6) calc(var(--u) * 4) calc(var(--u) * 6);
+  margin-top: calc(var(--u) * -8);
+  font-size: calc(var(--u) * 2.6);
+}
+
+.z-patch h3 {
+  font-family: var(--z-type), "Courier New", monospace;
+  text-transform: none;
+  letter-spacing: 0;
+  border-bottom: 0;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.z-game__lower {
+  grid-template-columns: calc(var(--u) * 70) 1fr;
+  border-top: 0;
+  margin-top: calc(var(--u) * 6);
+  padding-top: 0;
+}
+
+.z-hiscore {
+  position: relative;
+  background: none;
+  color: var(--ink);
+  padding: 0;
+  display: block;
+}
+
+.z-hiscore .z-hiscore__num {
+  --misreg: var(--deepblue);
+  color: var(--ink);
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 11);
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+.z-hiscore .z-anno {
+  color: var(--ink);
+  font-family: var(--z-type), "Courier New", monospace;
+  text-transform: none;
+  font-size: calc(var(--u) * 3);
+}
+
+.z-hiscore .z-hiscore__text {
+  font-family: var(--z-serif), Georgia, serif;
+  color: var(--ink);
+  font-style: italic;
+  font-size: calc(var(--u) * 3.2);
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-top5 {
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-top5 li {
+  border-bottom: 0;
+  padding-block: calc(var(--u) * 0.9);
+}
+
+.z-top5 li > b {
+  font-family: var(--z-slab), serif;
+  font-variant-numeric: lining-nums;
+}
+
+.z-fold-sticker--sm {
+  width: calc(var(--u) * 28);
+}
+
+.z-fold-sticker p,
+.z-fold-sticker p span {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+}
+
+.z-fold-sticker p {
+  font-size: calc(var(--u) * 3.2);
+  font-style: italic;
+}
+
+.z-fold-sticker p span {
+  display: block;
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: calc(var(--u) * 5);
+  margin-top: 0.1em;
+}
+
+/* ---------- Back page, pasted up ---------- */
+
+.z-xw.z-offset-block {
+  background: none;
+  --ob-inset: calc(var(--u) * -1) calc(var(--u) * 2) calc(var(--u) * 2) calc(var(--u) * -2);
+  --ob-r: -1.6deg;
+}
+
+.z-xw__side span:nth-child(1),
+.z-xw__side span:nth-child(3) {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-size: calc(var(--u) * 5.6);
+}
+
+.z-xw__side span:nth-child(2) {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 13);
+  line-height: 0.9;
+}
+
+.z-clues li b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-variant-numeric: lining-nums;
+}
+
+.z-grid__cell sup {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-variant-numeric: lining-nums;
+}
+
+.z-puzz {
+  border-top: 0;
+  padding-top: 0;
+  grid-template-columns: calc(var(--u) * 56) 1fr;
+}
+
+.z-ladder__row span {
+  font-variant-numeric: lining-nums;
+}
+
+.z-riddle {
+  position: relative;
+}
+
+.z-riddle__q {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5.4);
+  line-height: 1.05;
+}
+
+.z-riddle summary {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.1);
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.2em;
+  letter-spacing: 0;
+}
+
+.z-riddle__a {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5);
+}
+
+.z-answers {
+  position: absolute;
+  right: calc(var(--u) * -2);
+  top: calc(var(--u) * -3);
+  rotate: 8deg;
+  color: var(--rosetype);
+  font-size: calc(var(--u) * 4.4);
+}
+
+.z-yday {
+  font-size: calc(var(--u) * 2.9);
+}
+
+.z-comic__head {
+  display: block;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.z-comic__head h2 {
+  font-family: var(--z-slab), serif;
+  text-transform: none;
+  font-size: calc(var(--u) * 9);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.z-comic__byline {
+  font-style: italic;
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+section:has(> .z-comic) {
+  position: relative;
+}
+
+.z-comic {
+  background: none;
+  padding: calc(var(--u) * 2) calc(var(--u) * 1) 0;
+  gap: calc(var(--u) * 4) calc(var(--u) * 3);
+}
+
+.z-panel.print-print {
+  rotate: var(--r, 0deg);
+  padding: calc(var(--u) * 1.6);
+}
+
+.z-bubble {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.3);
+  left: calc(var(--u) * 3.5);
+  top: calc(var(--u) * 3.5);
+}
+
+.z-bubble b {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 400;
+  font-size: calc(var(--u) * 2.4);
+  letter-spacing: 0;
+}
+
+.z-panel__n {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 700;
+  right: calc(var(--u) * 3);
+  bottom: calc(var(--u) * 3);
+}
+
+.z-back__lower {
+  grid-template-columns: calc(var(--u) * 56) 1fr;
+  gap: calc(var(--u) * 6);
+}
+
+/* Classifieds run on, the heading set into the first words, in two ruled columns. */
+.z-class {
+  display: block;
+  border: 0;
+  columns: 2;
+  column-gap: calc(var(--u) * 4);
+  column-rule: calc(var(--u) * 0.15) solid var(--ink);
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1.3;
+}
+
+.z-class p {
+  break-inside: avoid;
+  margin-bottom: calc(var(--u) * 1.4) !important;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.z-class p b {
+  font-variant-caps: all-small-caps;
+  font-size: 1.1em;
+}
+
+.z-class__rate {
+  font-style: italic;
+}
+
+.z-signoff {
+  display: block;
+  text-align: left;
+}
+
+.z-signoff p:first-child {
+  font-family: var(--z-slab), serif;
+  text-transform: none;
+  text-shadow: none;
+  font-size: calc(var(--u) * 11);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+.z-signoff p:nth-child(2) {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 5.6);
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-roundel {
+  font-family: var(--z-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3);
+  width: calc(var(--u) * 26);
+}
+
+.z-roundel span {
+  font-family: var(--z-slab), serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: calc(var(--u) * 6);
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  margin-bottom: 0.15em;
+}
+
+.z-roundel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===================================================================================== */
+/* Narrow screens: the spread splits into single pages, then pages reflow for phones */
+/* ===================================================================================== */
+
+@container (max-width: 900px) {
+  .z-spread.print-spread {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .print-sheet.z-page {
+    --u: calc(100cqw / 170);
+  }
+
+  .z-onfold {
+    display: none;
+  }
+}
+
+@container (max-width: 760px) {
+  .print-sheet.z-page {
+    --u: calc(100cqw / 160);
+    --text: 15px;
+    --small: 12.5px;
+    aspect-ratio: auto;
+    padding: 28px 18px 24px;
+    line-height: 1.5;
+  }
+
+  .z-page .z-cols-2,
+  .z-page .z-cols-3 {
+    columns: 1;
+  }
+
+  .z-lead__body,
+  .z-tracks,
+  .z-listings p,
+  .z-scores,
+  .z-patch,
+  .z-top5 li,
+  .z-hiscore p,
+  .z-clues,
+  .z-corr p,
+  .z-class div {
+    font-size: 15px;
+  }
+
+  .z-dek,
+  .z-lead__text .z-dek,
+  .z-ss__story .z-dek,
+  .z-choir__text .z-dek,
+  .z-game__body .z-dek {
+    font-size: 17px;
+  }
+
+  .z-lead__text,
+  .z-choir__grid,
+  .z-ss__story,
+  .z-choir__text,
+  .z-ss__lower,
+  .z-game__body,
+  .z-fish__text,
+  .z-game__lower,
+  .z-puzz,
+  .z-back__lower,
+  .z-clues {
+    grid-template-columns: 1fr;
+  }
+
+  .z-cover__top {
+    grid-template-columns: 1fr;
+  }
+
+  .z-cover__sticker {
+    margin-inline: auto;
+  }
+
+  .z-cover__foot {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+
+  .z-cover__also {
+    text-align: left;
+  }
+
+  .z-contents ol {
+    grid-template-columns: 1fr;
+  }
+
+  .z-head__cond {
+    white-space: normal;
+  }
+
+  .z-head__heavy {
+    white-space: normal;
+  }
+
+  .z-cart__label {
+    grid-template-columns: 1fr;
+  }
+
+  .z-gotw__print {
+    position: relative !important;
+    left: auto;
+    top: auto;
+    width: 70%;
+    margin: 0 auto 16px;
+  }
+
+  .z-gotw .z-cart {
+    margin-left: 0;
+  }
+
+  .z-gotw .z-cart__label {
+    padding: 16px;
+  }
+
+  .z-gotw .z-bigscore b {
+    font-size: 48px;
+  }
+
+  .z-cart__title {
+    font-size: 34px;
+  }
+
+  .z-cart__scores,
+  .z-gotw .z-bigscore span,
+  .z-hiscore .z-hiscore__text {
+    font-size: 15px;
+  }
+
+  .z-hiscore .z-hiscore__num {
+    font-size: 54px;
+  }
+
+  .z-fish__photo {
+    margin-right: -18px;
+  }
+
+  .z-patch {
+    margin-top: 12px;
+    padding: 40px 16px 36px;
+    font-size: 15px;
+  }
+
+  .z-cart__art {
+    border-right: 0;
+    border-bottom: calc(var(--u) * 0.4) solid var(--ink);
+    aspect-ratio: 4 / 3;
+  }
+
+  .z-comic {
+    grid-template-columns: 1fr;
+  }
+
+  .z-bubble {
+    font-size: 17px;
+  }
+
+  .z-class {
+    columns: 1;
+    font-size: 15px;
+  }
+
+  .z-signoff {
+    grid-template-columns: 1fr;
+  }
+
+  .z-signoff .z-roundel {
+    grid-column: 1;
+    grid-row: auto;
+    margin: 20px auto 0;
+  }
+
+  .z-grid {
+    width: 100%;
+  }
+
+  .z-folio {
+    padding-top: 24px;
+  }
+
+  /* Millimetre-sized small print would drop below reading size on a phone, so it gets a floor. */
+  .z-spec,
+  .z-spec__name span,
+  .z-spec__num span,
+  .z-sample,
+  .z-ticket,
+  .z-ticket__stub,
+  .z-player,
+  .z-cart__band,
+  .z-bigscore span,
+  .z-patch h3,
+  .z-hiscore .z-hiscore__top,
+  .z-grid__cell sup,
+  .z-bubble b,
+  .z-panel__n,
+  .z-roundel,
+  .z-folio b,
+  .z-cover__sticker p {
+    font-size: 12.5px;
+  }
+
+  .z-vinyl__label {
+    font-size: 10px;
+  }
+
+  .z-sample {
+  }
+
+  /* Headlines sized inline in millimetres get a phone size of their own. */
+  .z-page .z-h2 {
+    font-size: 32px !important;
+  }
+
+  .z-stars {
+    font-size: 17px;
+  }
+
+  .z-page .z-dek {
+    font-size: 17px !important;
+  }
+
+  .z-game__tag {
+    font-size: 20px;
+  }
+
+  .z-top5 li {
+    grid-template-columns: 30px 1fr;
+  }
+
+  .z-top5 li > b {
+    font-size: 22px;
+  }
+
+  .z-class h3 {
+    font-size: 22px;
+  }
+
+  .z-ladder__row span {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .z-signoff p:first-child {
+    font-size: 40px;
+  }
+
+  .z-signoff p:nth-child(2) {
+    font-size: 22px;
+  }
+
+  .z-riddle__q {
+    font-size: 28px;
+  }
+
+  .z-riddle__a {
+    font-size: 24px;
+  }
+
+  .z-comic__head h2 {
+    font-size: 30px;
+  }
+
+  .z-across {
+    height: auto;
+  }
+
+  .z-across__line {
+    position: static;
+    width: auto;
+  }
+
+  .z-right .z-across {
+    display: none;
+  }
+
+  .z-anno {
+    position: static;
+    margin-top: 22px;
+    font-size: 17px;
+    rotate: -2deg;
+  }
+
+  .z-anno > .z-anno__arrow {
+    display: none;
+  }
+
+  .z-print__cap {
+    font-size: 15px;
+  }
+
+  .z-stamp {
+    font-size: 26px;
+  }
+
+  .z-kicker,
+  .z-byline,
+  .z-cap,
+  .z-run,
+  .z-folio,
+  .z-player,
+  .z-cart__scores,
+  .z-comic__byline,
+  .z-yday,
+  .z-riddle summary,
+  .z-jump,
+  .z-pull cite {
+    font-size: 14px;
+  }
+
+  .z-hand,
+  .z-anno,
+  .z-print__cap {
+    font-size: 14px;
+  }
+
+  .z-page .z-print.print-print {
+    padding-bottom: 30px;
+  }
+
+  .z-cover__stamp {
+    margin-bottom: 24px !important;
+    font-size: 22px;
+  }
+
+  .z-cover__print {
+    position: relative !important;
+    top: auto;
+    right: auto;
+    width: 62%;
+    margin: 28px auto 0;
+  }
+
+  .z-choir__head,
+  .z-fish__head,
+  .z-riddle__q {
+    font-size: 28px !important;
+  }
+
+  .z-pull blockquote {
+    font-size: 22px;
+  }
+
+  .z-head__cond {
+    font-size: 18px;
+  }
+
+  .z-sold,
+  .z-answers {
+    position: static;
+    display: inline-block;
+    margin: 12px 0 0;
+  }
+
+  .z-gotw__print {
+    rotate: -2deg;
+  }
+
+  .z-xw__side span:nth-child(2) {
+    font-size: 40px;
+  }
+
+  .z-tracks li {
+    grid-template-columns: 30px 1fr auto;
+  }
+
+  .z-vinyl__disc {
+    width: 110px;
+  }
+
+  .z-vinyl__label {
+    font-size: 10px;
+  }
+
+  .z-lead__burst {
+    right: -4px;
+    width: 76px;
+  }
+
+  .z-lead__burst p {
+    font-size: 16px;
+  }
+
+  .z-label {
+    font-size: 16px;
+  }
+
+  .z-hand {
+    font-size: 17px;
+  }
+
+  .z-h3 {
+    font-size: 24px;
+  }
+
+  .z-cover__also {
+    max-width: none;
+  }
+
+  .z-cover__also b {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .z-cover__sticker {
+    width: 150px;
+  }
+
+  .z-fold-sticker p span,
+  .z-cover__sticker p span {
+    font-size: 20px;
+  }
+
+  .z-spec {
+    grid-template-columns: 1fr;
+  }
+
+  .z-roundel {
+    width: 120px;
+  }
+
+  .z-roundel span {
+    font-size: 24px;
+  }
+
+  .z-ticket__main b {
+    font-size: 26px;
+  }
+
+  .z-ticket {
+    grid-template-columns: 1fr 36px;
+  }
+}
+
+/* ---------- Pastel colourways (see @/features/print/colourways/pastels.ts) ---------- */
+
+/* The Frame carries the attribute on the desk itself; an ancestor works too. */
+[data-pastel].z-desk,
+[data-pastel] .z-desk {
+  --ink: var(--pz-ink);
+  --mint: var(--pz-mint);
+  --pink: var(--pz-pink);
+  --lilac: var(--pz-lilac);
+  --blue: var(--pz-blue);
+  --butter: var(--pz-butter);
+  --peach: var(--pz-peach);
+  --rose: var(--pz-pink-deep);
+  --peri: var(--pz-lilac-deep);
+  --apricot: var(--pz-peach-deep);
+  --deepmint: var(--pz-mint-deep);
+  --deepblue: var(--pz-blue-deep);
+  --deepbutter: var(--pz-butter-deep);
+  --rosetype: color-mix(in oklab, var(--pz-pink-deep) 70%, var(--pz-ink));
+}

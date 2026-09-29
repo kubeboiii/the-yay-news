@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { type Pastel, pastels, pastelVars } from "../colours/pastels";
+import { PastelStyles } from "@/features/print/colourways/pastel-styles";
+import { type Pastel, pastels } from "@/features/print/colourways/pastels";
 import { useStoredChoice } from "./use-stored-choice";
 
 const HOUSE = "house";
@@ -9,22 +10,6 @@ const HOUSE = "house";
 // ?pastel=<slug> in the URL wins, so a colourway can be linked or screenshotted.
 const known = (slug: string | null): slug is string =>
   slug === HOUSE || (!!slug && pastels.some((p) => p.slug === slug));
-
-/**
- * Every colourway as html[data-pastel="slug"] { --pz-*: … }. Each pastel version maps the --pz-*
- * vocabulary onto its own tokens in its stylesheet, so only the attribute changes on switch.
- */
-export function PastelStyles() {
-  const css = pastels
-    .map(
-      (p) =>
-        `html[data-pastel="${p.slug}"]{${Object.entries(pastelVars(p))
-          .map(([k, v]) => `${k}:${v}`)
-          .join(";")}}`,
-    )
-    .join("\n");
-  return <style dangerouslySetInnerHTML={{ __html: css }} />;
-}
 
 const groups: { label: string; list: Pastel[] }[] = [{ label: "Six-ink", list: pastels }];
 

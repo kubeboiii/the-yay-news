@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { siteUrl } from "@/features/reader/site";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -12,6 +13,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  // Makes every relative link-preview URL (the clippings) absolute.
+  metadataBase: siteUrl,
   title: "The Yay News",
 };
 

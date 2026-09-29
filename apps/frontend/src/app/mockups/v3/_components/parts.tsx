@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import type { Photo as PhotoData } from "@/app/mockups/_data/photos";
 import { unsplash } from "@/app/mockups/_data/photos";
 
-export const FOLIO_DATE = "Tue 30 Sep 2026";
+export const FOLIO_DATE = "Wed 30 Sep 2026";
 
 /** The printed sheet itself: a bright-white tabloid page with its section's two inks. */
 export function Sheet({

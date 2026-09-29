@@ -1,4 +1,4 @@
-import { Burst } from "@/app/mockups/_shared/burst";
+import { Burst } from "@/features/print/burst";
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { pick } from "@/app/mockups/_data/photos";
 import {
@@ -52,7 +52,7 @@ export default function FrontPage() {
                   Vol. {edition.volume} · No. {edition.issue}
                 </dd>
                 <dt>Date</dt>
-                <dd>Tue 30 Sep 2026</dd>
+                <dd>Wed 30 Sep 2026</dd>
                 <dt>Price</dt>
                 <dd>{edition.price}</dd>
                 <dt>Weather</dt>

@@ -1,0 +1,111 @@
+/*
+ * The printable edition: every page of an edition, one printed sheet apiece. On screen the pages
+ * simply stack; in print the chrome goes, each page gets a sheet shaped like its design's page, and
+ * the table-top effects (tilt, perspective, light map, shadows) are taken off so it prints flat.
+ *
+ * Every design is drawn 380 mm wide (the broadsheet's width) so none drops into its phone layout.
+ * The sheet heights follow what each design prints at that width, with a little room for a credit
+ * line: the broadsheet and tabloid print single pages (380 × 578, 289 × 380), the midi and zine
+ * print as open spreads (2 × 220 × 310, 2 × 170 × 250), so their sheets are landscape. Revisit these
+ * if a design changes its page furniture.
+ */
+
+.yn-print-page + .yn-print-page {
+  margin-top: 24px;
+}
+
+@page {
+  margin: 8mm;
+}
+
+@page broadsheet {
+  size: 380mm 600mm;
+  margin: 0;
+}
+
+@page tabloid {
+  size: 380mm 510mm;
+  margin: 0;
+}
+
+@page midi {
+  size: 380mm 280mm;
+  margin: 0;
+}
+
+@page zine {
+  size: 380mm 310mm;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    box-shadow: none !important;
+  }
+
+  .yn-print-page {
+    break-after: page;
+    break-inside: avoid;
+    margin: 0 !important;
+  }
+
+  .yn-print-page:last-child {
+    break-after: auto;
+  }
+
+  .yn-print-page[data-design="broadsheet"] {
+    page: broadsheet;
+  }
+
+  .yn-print-page[data-design="tabloid"] {
+    page: tabloid;
+  }
+
+  .yn-print-page[data-design="midi"] {
+    page: midi;
+  }
+
+  .yn-print-page[data-design="zine"] {
+    page: zine;
+  }
+
+  /* The desk goes; the sheet fills its page. */
+  .yn-print-page .print-desk,
+  .yn-print-page .yn-table {
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+
+  .yn-print-page .print-sheet-wrap,
+  .yn-print-page .yn-sheet-wrap {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  /* No tilt, perspective or lifting corners on paper that is already paper. */
+  .yn-print-page .print-sheet-wrap,
+  .yn-print-page .yn-sheet-wrap,
+  .yn-print-page .print-sheet,
+  .yn-print-page .yn-sheet {
+    transform: none !important;
+    rotate: none !important;
+    filter: none !important;
+  }
+
+  .yn-print-page .print-sheet-wrap::before,
+  .yn-print-page .print-sheet-wrap::after,
+  .yn-print-page .yn-sheet-wrap::before,
+  .yn-print-page .yn-sheet-wrap::after,
+  .yn-print-page .print-sheet--fold::after {
+    display: none !important;
+  }
+}

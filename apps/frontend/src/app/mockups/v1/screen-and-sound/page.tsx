@@ -1,19 +1,31 @@
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { pick } from "@/app/mockups/_data/photos";
-import { Burst } from "@/app/mockups/_shared/burst";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import { Folio, Photo, RunningHead, STRETCH, Zigzag } from "../_components/parts";
 
 const listings = [
   { time: "7.00", title: "Moonbeam Diner", note: "S3 E1 · “Toast of the Town”. The musical one." },
   { time: "8.15", title: "Pond Life Live", note: "Two hours of ducks. No commentary. Bliss." },
   { time: "9.00", title: "The Allotment", note: "Series finale. The marrow is finally weighed." },
-  { time: "10.30", title: "The Kindest Heist", note: "Late film. A gang breaks in to return things (U)." },
+  {
+    time: "10.30",
+    title: "The Kindest Heist",
+    note: "Late film. A gang breaks in to return things (U).",
+  },
 ];
 
 const rewatches = [
-  { n: "One", label: ["The Great", "Village Bake"], note: "Nobody is ever voted off. They all get cake." },
-  { n: "Two", label: ["Moonbeam", "Diner, S1"], note: "Catch up before the musical. You have until 7pm." },
+  {
+    n: "One",
+    label: ["The Great", "Village Bake"],
+    note: "Nobody is ever voted off. They all get cake.",
+  },
+  {
+    n: "Two",
+    label: ["Moonbeam", "Diner, S1"],
+    note: "Catch up before the musical. You have until 7pm.",
+  },
   { n: "Three", label: ["Lighthouse", "Keepers"], note: "A calm documentary about very calm men." },
   { n: "Four", label: ["Nan Reviews", "Biscuits"], note: "Six series, no biscuit below a seven." },
   { n: "Five", label: ["Pond Life", "Live, 2024"], note: "The year the heron nearly waved." },
@@ -36,7 +48,11 @@ export default function ScreenAndSound() {
   return (
     <div className="yn-sheet-wrap">
       <article className="yn-sheet yn-inside yn-theme-screen">
-        <RunningHead page={2} section="Screen & Sound" tagline="Shows, films, music and the odd trailer" />
+        <RunningHead
+          page={2}
+          section="Screen & Sound"
+          tagline="Shows, films, music and the odd trailer"
+        />
 
         <Zigzag word="now showing" />
 

@@ -7,8 +7,7 @@
 // the torn sheet (its shape, paler fibre rim and blurred shadow) is drawn as one SVG underneath.
 
 import type { CSSProperties, ReactNode } from "react";
-import { edition, type Story } from "@/app/mockups/_data/sample-edition";
-import { EDITION, type Picture, pictureFor, required } from "./assets";
+import { type Picture, required } from "./assets";
 import type { Look } from "./looks";
 import { seedFrom, type Tear, tornOutline } from "./torn";
 
@@ -29,7 +28,39 @@ const LAY: Record<
   link: { w: 1090, h: 530, x: 600, y: 320, turn: -1.1, tear: 14 },
 };
 
-export type Subject = { kind: "story"; story: Story } | { kind: "front"; story: Story };
+/** The words of a story, as the clipping prints them. */
+export type ClipStory = {
+  slug: string;
+  /** The section's name, e.g. "Discoveries". */
+  section: string;
+  kicker: string;
+  headline: string;
+  dek: string;
+  body: string[];
+  sticker?: string | null;
+};
+
+/** The issue a clipping was torn from: its folio, and the front page's "Inside today". */
+export type ClipIssue = {
+  /** "Wednesday, 30 September 2026" */
+  date: string;
+  /** "30 September 2026" */
+  shortDate: string;
+  volume: number;
+  issue: number;
+  tagline: string;
+  inside: { name: string; head: string }[];
+};
+
+/** What the clipping shows: a story, or the front page (its lead), with its photograph if any. */
+export type Subject = {
+  kind: "story" | "front";
+  story: ClipStory;
+  issue: ClipIssue;
+  picture: Picture | null;
+  /** The page the story's opening "continues" on. */
+  continuedOn: number;
+};
 
 /** WCAG relative luminance of a #rrggbb colour. */
 const lum = (hex: string) =>
@@ -56,7 +87,7 @@ const fit = (text: string, big: number, small: number, from = 28, to = 90) => {
 const upper = (s: string) => s.toUpperCase();
 
 /** The first words of a story, stopped at a sentence end near `chars`. */
-function opening(story: Story, chars: number) {
+function opening(story: ClipStory, chars: number) {
   const text = story.body.join(" ");
   if (text.length <= chars) return text;
   const cut = text.slice(0, chars);
@@ -76,11 +107,13 @@ function columns(text: string): [string, string] {
 type Parts = {
   look: Look;
   fmt: Format;
-  story: Story;
+  story: ClipStory;
+  issue: ClipIssue;
+  continuedOn: number;
   front: boolean;
 };
 
-function Folio({ look, fmt }: Parts) {
+function Folio({ look, fmt, issue }: Parts) {
   const size = fmt === "link" ? 17 : 23;
   const base: CSSProperties = {
     display: "flex",
@@ -90,8 +123,8 @@ function Folio({ look, fmt }: Parts) {
     color: look.ink,
     letterSpacing: "0.04em",
   };
-  const left = `${EDITION.date}`;
-  const right = `Vol. ${EDITION.volume} · No. ${EDITION.issue}`;
+  const left = issue.date;
+  const right = `Vol. ${issue.volume} · No. ${issue.issue}`;
   switch (look.id) {
     case "v1":
       return (
@@ -112,7 +145,7 @@ function Folio({ look, fmt }: Parts) {
     case "v4":
       return (
         <div style={{ ...base, fontFamily: look.mono }}>
-          <span>{`${EDITION.shortDate} · zine`}</span>
+          <span>{`${issue.shortDate} · zine`}</span>
           <span>{right}</span>
         </div>
       );
@@ -176,9 +209,11 @@ function Masthead({ look, fmt, front }: Parts) {
               display: "flex",
               fontFamily: look.head,
               fontWeight: 900,
-              fontSize: s(104),
+              // Sized so the masthead and the badge share the line at every format without meeting.
+              fontSize: s(92),
               lineHeight: 0.9,
               letterSpacing: "-0.035em",
+              whiteSpace: "nowrap",
               color: look.ink,
             }}
           >
@@ -197,6 +232,8 @@ function Masthead({ look, fmt, front }: Parts) {
               fontSize: s(30),
               lineHeight: 1,
               padding: `${s(8)}px ${s(12)}px`,
+              marginLeft: s(18),
+              flexShrink: 0,
               textTransform: "uppercase",
             }}
           >
@@ -471,7 +508,7 @@ function Credit({ look, fmt, pic }: Parts & { pic: Picture }) {
         color: look.ink,
       }}
     >
-      {`Photograph: ${pic.credit} / Unsplash`}
+      {pic.credit}
     </div>
   );
 }
@@ -554,7 +591,7 @@ function PhotoBlock(p: Parts & { pic: Picture; grow?: boolean }) {
   );
 }
 
-function Body({ look, story }: Parts) {
+function Body({ look, story, continuedOn }: Parts) {
   const text = opening(story, look.id === "v5" ? 250 : 290);
   const [a, b] = columns(text);
   const col: CSSProperties = {
@@ -585,16 +622,14 @@ function Body({ look, story }: Parts) {
           textTransform: "uppercase",
         }}
       >
-        {`Continued on page ${story.section === "Discoveries" ? 3 : 7} →`}
+        {`Continued on page ${continuedOn} →`}
       </div>
     </div>
   );
 }
 
-function InsideToday({ look }: Parts) {
-  const rows = edition.sections
-    .slice(0, 3)
-    .map((s) => ({ name: s.name, head: s.stories[0]?.headline ?? "" }));
+function InsideToday({ look, issue }: Parts) {
+  const rows = issue.inside.slice(0, 3);
   return (
     <div
       style={{
@@ -727,7 +762,7 @@ function Printed(p: Parts & { pic: Picture | null }) {
             marginTop: -6,
           }}
         >
-          {EDITION.tagline}
+          {p.issue.tagline}
         </div>
       ) : null}
       <Fixed>
@@ -800,8 +835,15 @@ export function Clipping({
   const specks = required("mockup/fx/ink-wear-specks.png");
   const tape = required("mockup/fx/tape.png");
   const sheet = sheetSvg(lay, tearing, paper, look.tint);
-  const pic = pictureFor(story);
-  const parts: Parts = { look, fmt, story, front };
+  const pic = subject.picture;
+  const parts: Parts = {
+    look,
+    fmt,
+    story,
+    issue: subject.issue,
+    continuedOn: subject.continuedOn,
+    front,
+  };
   const tapeW = fmt === "link" ? 220 : 300;
   // Grain and wear run over the printed area only, clear of the torn edge.
   const inset = lay.tear * 2;

@@ -1,0 +1,661 @@
+/*
+ * A broadsheet page laid out like print. Every measurement is in sheet millimetres (--u), so the
+ * whole page scales as one object on wide screens, like holding a real 380 × 578 mm sheet further
+ * away. On narrow screens the columns reflow and --u switches to a phone-sized scale, while body
+ * text gets its own fixed reading size.
+ *
+ * Colour is fluoro ink only, printed on off-white newsprint: neon yellow, pink, orange and green
+ * carry ink-black text, and electric blue is dark enough to carry paper-white. No pastels —
+ * the paper itself is the quiet colour, so wide stretches of it are left between the neon blocks
+ * and the page stays loud without becoming exhausting.
+ */
+
+.yn-table {
+  --paper: #fbf8f1;
+  --ink: #17140f;
+  --neon-yellow: #e9ff1f;
+  --neon-pink: #ff3d9a;
+  --neon-orange: #ff6a1f;
+  --neon-green: #36f28a;
+  --neon-blue: #2f5bff;
+  --neon-violet: #b14bff;
+  /* The colour of type printed on a pink or an orange ground. Ink here; colourways whose pink or
+     orange is a deep violet or blue (see features/print/colourways/neon.css) swap it for paper-white, because
+     black on those grounds falls short of AA contrast. */
+  --neon-pink-ink: var(--ink);
+  --neon-orange-ink: var(--ink);
+  /* Pink set as type on the bare paper. Fluoro pink is too light to read as small type (under 3:1
+     on newsprint), so it is overprinted with ink until it clears 4.5:1 in every colourway. */
+  --neon-pink-type: color-mix(in oklab, var(--neon-pink), var(--ink) 38%);
+  --hair: color-mix(in srgb, var(--ink) 55%, transparent);
+
+  min-height: 100vh;
+  background: #e4ded3;
+  padding: 48px 32px 96px;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  color: var(--ink);
+}
+
+.yn-sheet-wrap {
+  container-type: inline-size;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.yn-sheet {
+  --u: calc(100cqw / 380);
+  --text: calc(var(--u) * 3.4);
+  position: relative;
+  /* A full broadsheet page at least; a page with more on it than the mockup grows rather than
+     clipping (an aspect-ratio box with overflow hidden would cut its content off). */
+  min-height: calc(var(--u) * 578);
+  padding: calc(var(--u) * 12) calc(var(--u) * 12) calc(var(--u) * 10);
+  background: var(--paper);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.08),
+    0 10px 30px -10px rgb(0 0 0 / 0.3),
+    0 30px 60px -30px rgb(0 0 0 / 0.25);
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  filter: url(#press) saturate(0.9) contrast(0.97);
+  -webkit-font-smoothing: auto;
+}
+
+/* Real paper grain, printed "under" the ink. */
+.yn-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / 100% 100%;
+  mix-blend-mode: multiply;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* A broadsheet arrives folded in half: a soft crease across the middle. */
+.yn-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 46%,
+    rgb(0 0 0 / 0.035) 49%,
+    rgb(0 0 0 / 0.09) 49.85%,
+    rgb(255 255 255 / 0.35) 50.15%,
+    rgb(255 255 255 / 0.08) 51.5%,
+    transparent 54%
+  );
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* ——— Type ——— */
+
+/* Chunky hand-drawn capitals: the masthead and the big headlines. */
+.yn-chunk {
+  font-family: var(--font-chunk);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.84;
+  letter-spacing: 0.005em;
+}
+
+/* Marker handwriting, for anything that should feel lettered by hand. */
+.yn-hand {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  line-height: 0.95;
+  /* The lettering face sets its spaces very tight, so "five toasters" would read as one word. */
+  word-spacing: 0.14em;
+}
+
+.yn-zigzag span,
+.yn-burst-text,
+.yn-card .yn-hand-head {
+  word-spacing: 0.14em;
+}
+
+/* Extra-fat numerals. */
+.yn-fat {
+  font-family: var(--font-fat);
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+}
+
+.yn-body {
+  font-size: var(--text);
+  font-variation-settings: "opsz" 14;
+  font-weight: 400;
+  line-height: 1.38;
+}
+
+.yn-body p + p {
+  margin-top: 0.7em;
+}
+
+.yn-runin {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* A fluoro marker swipe behind a word. The uneven radii keep it from looking like a UI pill. */
+.yn-mark {
+  padding: 0 0.12em;
+  margin: 0 -0.04em;
+  border-radius: 0.28em 0.12em 0.34em 0.1em / 0.2em 0.36em 0.14em 0.3em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.yn-mark-yellow {
+  background: var(--neon-yellow);
+}
+
+.yn-mark-pink {
+  background: var(--neon-pink);
+  color: var(--neon-pink-ink);
+}
+
+.yn-mark-green {
+  background: var(--neon-green);
+}
+
+.yn-squiggle {
+  text-decoration: underline wavy var(--neon-orange);
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.16em;
+}
+
+.yn-credit {
+  font-size: calc(var(--u) * 2.2);
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+/* ——— Rules ——— */
+
+.yn-zigzag {
+  position: relative;
+  height: calc(var(--u) * 4);
+  margin: calc(var(--u) * 2.5) 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4' viewBox='0 0 8 4'%3E%3Cpath d='M0 3.5 L2 0.5 L4 3.5 L6 0.5 L8 3.5' fill='none' stroke='%2317140f' stroke-width='0.7'/%3E%3C/svg%3E");
+  background-size: calc(var(--u) * 3.2) calc(var(--u) * 1.6);
+  background-repeat: repeat-x;
+  background-position: left center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yn-zigzag span {
+  background: var(--paper);
+  padding: 0 calc(var(--u) * 2.5);
+  font-family: var(--font-hand);
+  font-size: calc(var(--u) * 5);
+  line-height: 1;
+}
+
+.yn-vrule {
+  width: 1px;
+  background: var(--hair);
+  align-self: stretch;
+}
+
+/* ——— Banner ——— */
+
+.yn-banner {
+  display: grid;
+  grid-template-columns: auto 1px auto 1fr;
+  align-items: center;
+  gap: calc(var(--u) * 5);
+  background: var(--neon-yellow);
+  padding: calc(var(--u) * 4.5) calc(var(--u) * 6);
+  position: relative;
+}
+
+.yn-banner .yn-vrule {
+  background: var(--ink);
+  height: 78%;
+  align-self: center;
+}
+
+.yn-banner-stack .yn-hand {
+  font-size: calc(var(--u) * 9);
+  margin-bottom: calc(var(--u) * 0.5);
+}
+
+.yn-banner-stack .yn-chunk {
+  font-size: calc(var(--u) * 17);
+}
+
+.yn-banner-number {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+}
+
+.yn-banner-number .yn-fat {
+  font-size: calc(var(--u) * 27);
+}
+
+.yn-banner-number .yn-hand {
+  font-size: calc(var(--u) * 8.5);
+  line-height: 0.9;
+}
+
+.yn-banner-photo {
+  position: relative;
+  width: calc(var(--u) * 56);
+  aspect-ratio: 4 / 3;
+  margin-left: auto;
+  margin-right: calc(var(--u) * 12);
+  border: calc(var(--u) * 1.2) solid white;
+  rotate: 3deg;
+}
+
+.yn-banner-badge {
+  position: absolute;
+  right: calc(var(--u) * -2);
+  top: 50%;
+  translate: 0 -50%;
+  width: calc(var(--u) * 29);
+  rotate: 9deg;
+}
+
+/* ——— Masthead row ——— */
+
+.yn-mast {
+  display: grid;
+  grid-template-columns: 1fr 1px 2.2fr 1px 1fr;
+  gap: calc(var(--u) * 5);
+  align-items: center;
+}
+
+.yn-spec h2 {
+  font-size: calc(var(--u) * 9.5);
+}
+
+.yn-spec dl {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 2.95);
+}
+
+.yn-spec dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  border-bottom: 1px solid var(--ink);
+  padding: calc(var(--u) * 0.7) 0;
+}
+
+.yn-spec dd {
+  font-weight: 700;
+  text-align: right;
+}
+
+.yn-wordmark {
+  text-align: center;
+}
+
+.yn-wordmark h1 {
+  font-size: calc(var(--u) * 27);
+  white-space: nowrap;
+}
+
+.yn-wordmark h1 .y1 {
+  color: var(--neon-pink);
+}
+
+.yn-wordmark h1 .y2 {
+  color: var(--neon-orange);
+}
+
+.yn-wordmark h1 .y3 {
+  color: var(--neon-blue);
+}
+
+.yn-wordmark p {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 5.4);
+}
+
+.yn-readtime {
+  background: var(--neon-pink);
+  color: var(--neon-pink-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 3.5) calc(var(--u) * 3);
+  rotate: -1.5deg;
+}
+
+.yn-readtime .yn-fat {
+  font-size: calc(var(--u) * 20);
+}
+
+.yn-readtime .yn-hand {
+  font-size: calc(var(--u) * 6.6);
+  line-height: 0.9;
+}
+
+/* ——— Lead photo ——— */
+
+.yn-hero {
+  position: relative;
+  flex: 1;
+  min-height: calc(var(--u) * 200);
+  overflow: hidden;
+}
+
+.yn-hero img {
+  mix-blend-mode: multiply;
+  filter: saturate(0.95) contrast(1.03);
+}
+
+.yn-hero-sticker {
+  position: absolute;
+  right: calc(var(--u) * 8);
+  top: calc(var(--u) * 9);
+  width: calc(var(--u) * 64);
+  rotate: 9deg;
+  z-index: 2;
+}
+
+/* Headline set on a fluoro card, lettered like the page was made by hand. */
+.yn-hero-card {
+  position: absolute;
+  left: calc(var(--u) * 6);
+  bottom: calc(var(--u) * 7);
+  width: calc(var(--u) * 205);
+  background: var(--neon-pink);
+  color: var(--neon-pink-ink);
+  padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 6);
+  rotate: -1.2deg;
+  z-index: 2;
+}
+
+.yn-hero-card .yn-hand {
+  font-size: calc(var(--u) * 7);
+}
+
+.yn-hero-card h2 {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 15.5);
+  line-height: 0.98;
+}
+
+.yn-hero-card h2 .yn-hand {
+  font-size: 0.92em;
+  text-transform: none;
+}
+
+/* Full strength here: faded to 75% on the fluoro card, the credit drops under 4.5:1. */
+.yn-hero-card .yn-credit {
+  display: block;
+  margin-top: calc(var(--u) * 3);
+  opacity: 1;
+}
+
+/* ——— Footer cards ——— */
+
+.yn-foot {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 0.95fr;
+  gap: calc(var(--u) * 4);
+  align-items: stretch;
+}
+
+.yn-card {
+  position: relative;
+  padding: calc(var(--u) * 5);
+}
+
+.yn-card-paper {
+  background: transparent;
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.yn-card-yellow {
+  background: var(--neon-yellow);
+}
+
+.yn-card-pink {
+  background: var(--neon-pink);
+  color: var(--neon-pink-ink);
+}
+
+.yn-card-orange {
+  background: var(--neon-orange);
+  color: var(--neon-orange-ink);
+}
+
+.yn-card-green {
+  background: var(--neon-green);
+}
+
+/* Electric blue is too dark for black text to read comfortably, so it carries paper-white. */
+.yn-card-blue {
+  background: var(--neon-blue);
+  color: var(--paper);
+}
+
+.yn-card-violet {
+  background: var(--neon-violet);
+  color: var(--ink);
+}
+
+.yn-card .yn-hand-head {
+  font-family: var(--font-hand);
+  font-size: calc(var(--u) * 7.2);
+  line-height: 0.98;
+}
+
+.yn-card .yn-chunk-head {
+  font-size: calc(var(--u) * 10.5);
+  line-height: 0.9;
+}
+
+.yn-card .yn-chunk-head--xl {
+  font-size: calc(var(--u) * 17);
+}
+
+.yn-card .yn-dek {
+  margin-top: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 4.6);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.yn-card .yn-body {
+  margin-top: calc(var(--u) * 2.5);
+  font-size: calc(var(--u) * 3.2);
+}
+
+.yn-card-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  margin-bottom: calc(var(--u) * 3.5);
+}
+
+.yn-card-photo img {
+  mix-blend-mode: multiply;
+}
+
+/* Over fluoro ink a multiplied photo takes on the ink's colour, so it is printed as it is. */
+.yn-card-yellow .yn-card-photo img,
+.yn-card-pink .yn-card-photo img,
+.yn-card-orange .yn-card-photo img,
+.yn-card-green .yn-card-photo img,
+.yn-card-blue .yn-card-photo img,
+.yn-card-violet .yn-card-photo img {
+  mix-blend-mode: normal;
+}
+
+.yn-index li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1);
+}
+
+.yn-index li::after {
+  content: "";
+  order: 2;
+  flex: 1;
+  border-bottom: 1.5px dotted var(--ink);
+  translate: 0 calc(var(--u) * -0.6);
+}
+
+.yn-index li span:last-child {
+  order: 3;
+  font-weight: 800;
+}
+
+.yn-share {
+  margin-top: calc(var(--u) * 4);
+  background: var(--neon-yellow);
+  padding: calc(var(--u) * 2) calc(var(--u) * 2.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  rotate: -1deg;
+}
+
+.yn-share .yn-hand {
+  font-size: calc(var(--u) * 6.4);
+}
+
+.yn-share svg {
+  width: calc(var(--u) * 4.4);
+  height: calc(var(--u) * 4.4);
+}
+
+.yn-riddle-badge {
+  position: absolute;
+  right: calc(var(--u) * -4);
+  top: calc(var(--u) * -6);
+  width: calc(var(--u) * 24);
+  rotate: 12deg;
+}
+
+.yn-burst-text {
+  font-family: var(--font-hand);
+  text-align: center;
+  line-height: 0.92;
+}
+
+/* ——— Phone: reflow into a column, same paper, same type ——— */
+
+@container (max-width: 760px) {
+  .yn-sheet {
+    --u: calc(100cqw / 160);
+    --text: 15px;
+    min-height: 0;
+    padding: calc(var(--u) * 6) calc(var(--u) * 6) calc(var(--u) * 8);
+  }
+
+  .yn-sheet::after {
+    display: none;
+  }
+
+  .yn-banner {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 6);
+    padding: calc(var(--u) * 6);
+  }
+
+  .yn-banner .yn-vrule,
+  .yn-mast .yn-vrule {
+    display: none;
+  }
+
+  .yn-banner-number .yn-fat {
+    font-size: calc(var(--u) * 24);
+  }
+
+  .yn-banner-number {
+    margin-top: calc(var(--u) * 4);
+  }
+
+  .yn-banner-photo {
+    width: 72%;
+    margin: calc(var(--u) * 2) 0 0;
+  }
+
+  .yn-banner-badge {
+    right: calc(var(--u) * -1);
+    top: auto;
+    bottom: calc(var(--u) * 2);
+    translate: none;
+  }
+
+  .yn-mast {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 6);
+  }
+
+  .yn-wordmark {
+    order: -1;
+  }
+
+  .yn-wordmark h1 {
+    font-size: calc(var(--u) * 25);
+  }
+
+  .yn-spec dl {
+    font-size: 13px;
+  }
+
+  .yn-hero {
+    flex: none;
+    min-height: calc(var(--u) * 220);
+  }
+
+  .yn-hero-sticker {
+    right: calc(var(--u) * 4);
+    top: calc(var(--u) * 5);
+    width: calc(var(--u) * 58);
+  }
+
+  .yn-hero-card {
+    left: calc(var(--u) * 4);
+    right: calc(var(--u) * 4);
+    width: auto;
+    bottom: calc(var(--u) * 5);
+  }
+
+  .yn-hero-card h2 {
+    font-size: calc(var(--u) * 13.5);
+  }
+
+  .yn-credit {
+    font-size: 11px;
+  }
+
+  .yn-foot {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 6);
+  }
+
+  .yn-card .yn-dek {
+    font-size: 19px;
+  }
+
+  .yn-card .yn-body {
+    font-size: var(--text);
+  }
+}
+
+@media (max-width: 760px) {
+  .yn-table {
+    /* The reader's page bar is fixed over the bottom of the screen. */
+    padding: 12px 10px 96px;
+  }
+}

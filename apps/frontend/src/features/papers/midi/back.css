@@ -1,0 +1,674 @@
+/* =====================================================================================
+ * BACK · puzzles on lilac (left) and the back page (right), with the sign-off across both
+ * ===================================================================================== */
+
+.m5 .m5b-left {
+  background: var(--lilac);
+}
+
+/* Both pages keep their foot clear for the sign-off, which is set across the spread. */
+.m5b-page {
+  padding-bottom: calc(var(--u) * 60);
+}
+
+.m5b-title {
+  font-weight: 900;
+  font-size: calc(var(--u) * 46);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  margin: calc(var(--u) * -8) 0 calc(var(--u) * 5) calc(var(--u) * -16);
+}
+.m5b-stand {
+  position: absolute;
+  top: calc(var(--u) * 28);
+  right: calc(var(--u) * 12);
+  width: calc(var(--u) * 40);
+  font-style: italic;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.12;
+  text-align: right;
+  z-index: 2;
+}
+
+.m5b-h {
+  font-weight: 600;
+  font-style: italic;
+  font-size: calc(var(--u) * 6);
+  line-height: 1;
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.m5b-small {
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.25;
+}
+
+.m5b-mini {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 86) 1fr;
+  column-gap: calc(var(--u) * 8);
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 2.4);
+}
+.m5b-mini > .m5b-h {
+  grid-column: 1 / -1;
+}
+.m5b-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  aspect-ratio: var(--cols, 5) / var(--rows, 5);
+  align-self: start;
+  border: calc(var(--u) * 0.9) solid var(--ink);
+  background: var(--ink);
+  gap: max(1.5px, calc(var(--u) * 0.4));
+}
+.m5b-cell {
+  position: relative;
+  background: var(--paper);
+}
+.m5b-cell--black {
+  background: var(--ink);
+}
+.m5b-cell b {
+  position: absolute;
+  top: calc(var(--u) * 0.8);
+  left: calc(var(--u) * 1.1);
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--u) * 3);
+  line-height: 1;
+}
+.m5b-clues h3 {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.6);
+  border-bottom: calc(var(--u) * 0.3) solid var(--ink);
+  padding-bottom: calc(var(--u) * 0.6);
+}
+.m5b-clues > div + div {
+  margin-top: calc(var(--u) * 4);
+}
+.m5b-clues li {
+  font-size: calc(var(--u) * 4.1);
+  line-height: 1.16;
+  padding: calc(var(--u) * 1.1) 0;
+}
+.m5b-clues li b {
+  font-family: var(--f-display), serif;
+  font-weight: 900;
+  font-variant-numeric: lining-nums;
+  margin-right: calc(var(--u) * 1.2);
+}
+.m5b-clues li i {
+  font-size: 0.85em;
+  font-variant-numeric: lining-nums;
+}
+
+.m5b-row {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 84) 1fr;
+  gap: calc(var(--u) * 10);
+  margin-top: calc(var(--u) * 9);
+}
+.m5b-ladder {
+  position: relative;
+}
+.m5b-rungs {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.8);
+  margin-top: calc(var(--u) * 3);
+}
+.m5b-rungs li {
+  display: flex;
+  gap: calc(var(--u) * 1.4);
+}
+.m5b-tile {
+  width: calc(var(--u) * 10);
+  height: calc(var(--u) * 10);
+  border: calc(var(--u) * 0.5) solid var(--ink);
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+  font-family: var(--f-display), serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 6);
+  line-height: 1;
+}
+.m5b-rungs--tall {
+  gap: calc(var(--u) * 1.2);
+}
+.m5b-rungs--tall .m5b-tile {
+  width: calc(var(--u) * 7.6);
+  height: calc(var(--u) * 7.6);
+  font-size: calc(var(--u) * 4.6);
+}
+.m5b-tile--set {
+  background: var(--butter);
+}
+.m5b-ladder-note {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--u) * 12);
+  width: calc(var(--u) * 26);
+  text-align: right;
+  transform: rotate(-5deg);
+}
+
+.m5b-riddle-q {
+  font-weight: 500;
+  font-size: calc(var(--u) * 7);
+  line-height: 1.05;
+  margin-bottom: calc(var(--u) * 3);
+  text-wrap: balance;
+}
+.m5b-answer {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.6);
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  padding: calc(var(--u) * 1.2) 0;
+}
+
+.m5b-yesterday {
+  margin-top: calc(var(--u) * 5);
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  padding-top: calc(var(--u) * 1.4);
+}
+.m5b-yesterday-h {
+  font-weight: 400;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.8);
+  margin-bottom: calc(var(--u) * 1.6);
+}
+.m5b-yesterday-h span {
+  font-family: var(--f-sans), sans-serif;
+  font-style: normal;
+  font-variant-caps: all-small-caps;
+  font-variant-numeric: lining-nums;
+  font-size: calc(var(--u) * 3);
+  margin-left: 0.4em;
+}
+.m5b-yesterday-body {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 26) 1fr;
+  gap: calc(var(--u) * 4);
+  align-items: start;
+}
+.m5b-solved {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  background: var(--ink);
+  gap: max(1px, calc(var(--u) * 0.25));
+}
+.m5b-solved span {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1;
+}
+.m5 .m5b-solved--black {
+  background: var(--ink);
+}
+.m5b-yesterday-text p {
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.25;
+}
+.m5b-yesterday-text p + p {
+  margin-top: calc(var(--u) * 1.2);
+}
+.m5b-yesterday-text b {
+  font-weight: 600;
+}
+
+/* The sign-off, set once across the spread at the foot of both pages. */
+.m5 .m5b-bye {
+  --x: calc(var(--u) * 11);
+  top: auto;
+  bottom: calc(var(--u) * 21);
+  font-weight: 900;
+  font-size: calc(var(--u) * var(--fs, 30));
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+/* ---------- the back page ---------- */
+
+.m5b-comic-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(var(--u) * 4);
+}
+.m5b-panels {
+  display: grid;
+  grid-template-columns: repeat(min(var(--panels, 4), 4), 1fr);
+  grid-auto-rows: calc(var(--u) * 96);
+  gap: calc(var(--u) * 2);
+}
+.m5b-panel {
+  position: relative;
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  overflow: hidden;
+}
+.m5b-panel--0 {
+  background: var(--powder);
+}
+.m5b-panel--1 {
+  background: var(--mint);
+}
+.m5b-bubble {
+  position: absolute;
+  top: calc(var(--u) * 2.4);
+  left: calc(var(--u) * 2.4);
+  right: calc(var(--u) * 5);
+  z-index: 1;
+  background: var(--paper);
+  border: calc(var(--u) * 0.35) solid var(--ink);
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 1.8);
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 500;
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.15;
+  font-variant-numeric: lining-nums;
+}
+.m5b-bubble--r {
+  left: calc(var(--u) * 5);
+  right: calc(var(--u) * 2.4);
+}
+.m5b-bubble b {
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+}
+/* The tail: a small ink wedge under the box, pointing at whoever is talking. */
+.m5b-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: calc(var(--u) * -3);
+  left: calc(var(--u) * 5);
+  width: calc(var(--u) * 3.2);
+  height: calc(var(--u) * 2.8);
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, 10% 100%);
+}
+.m5b-bubble--r::after {
+  left: auto;
+  right: calc(var(--u) * 5);
+  clip-path: polygon(0 0, 100% 0, 90% 100%);
+}
+.m5 .m5b-face {
+  position: absolute;
+  left: calc(var(--u) * 5);
+  bottom: calc(var(--u) * 11);
+  width: calc(var(--u) * 26);
+  height: calc(var(--u) * 26);
+}
+.m5 .m5b-face--r {
+  left: auto;
+  right: calc(var(--u) * 5);
+}
+.m5b-who {
+  position: absolute;
+  left: calc(var(--u) * 3);
+  right: calc(var(--u) * 3);
+  bottom: calc(var(--u) * 2);
+  font-weight: 700;
+  font-style: italic;
+  font-size: calc(var(--u) * 5.6);
+  line-height: 1;
+}
+.m5b-panel:nth-child(even) .m5b-who {
+  text-align: right;
+}
+
+.m5b-lower {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 70) 1fr;
+  gap: calc(var(--u) * 8);
+  margin-top: calc(var(--u) * 10);
+}
+.m5b-col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+  min-width: 0;
+}
+.m5b-col--wide {
+  border-left: calc(var(--u) * 0.3) solid var(--ink);
+  padding-left: calc(var(--u) * 6);
+}
+.m5b-corrections .m5-body {
+  font-size: calc(var(--u) * 3.5);
+}
+.m5b-letter p {
+  font-size: calc(var(--u) * 3.5);
+  line-height: 1.28;
+}
+.m5b-letter cite {
+  display: block;
+  font-style: normal;
+  margin-top: calc(var(--u) * 0.8);
+}
+.m5b-letter + .m5b-letter {
+  border-top: calc(var(--u) * 0.2) solid var(--ink);
+  margin-top: calc(var(--u) * 2);
+  padding-top: calc(var(--u) * 2);
+}
+.m5b-classifieds .m5b-h {
+  margin-bottom: calc(var(--u) * 0.6);
+}
+.m5b-class-sub {
+  font-style: italic;
+  margin-bottom: calc(var(--u) * 2);
+}
+.m5b-ads {
+  columns: 2;
+  column-gap: calc(var(--u) * 5);
+  column-rule: calc(var(--u) * 0.2) solid var(--ink);
+}
+.m5b-ads p {
+  break-inside: avoid;
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.26;
+  padding: calc(var(--u) * 1) 0 calc(var(--u) * 1.4);
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+}
+.m5b-ads b {
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.02em;
+}
+.m5 .m5b-ad-boxed {
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 2) calc(var(--u) * 2);
+  margin-top: calc(var(--u) * 1.4);
+  --wear-size: 90%;
+}
+
+.m5b-word {
+  background: var(--butter);
+  padding: calc(var(--u) * 3.4) calc(var(--u) * 4) calc(var(--u) * 4);
+  transform: rotate(-1deg);
+}
+.m5b-word-label {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.3);
+  letter-spacing: 0.03em;
+}
+.m5b-word-word {
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 9);
+  line-height: 1;
+  margin: calc(var(--u) * 0.6) 0 calc(var(--u) * 0.6);
+  overflow-wrap: anywhere;
+}
+.m5b-word-say {
+  font-family: var(--f-sans), sans-serif;
+  font-size: calc(var(--u) * 3);
+  letter-spacing: 0.04em;
+}
+.m5b-word-means {
+  font-size: calc(var(--u) * 3.8);
+  line-height: 1.22;
+  margin-top: calc(var(--u) * 1.4);
+}
+.m5b-word-eg {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.24;
+  margin-top: calc(var(--u) * 1);
+}
+
+.m5b-signoff {
+  position: absolute;
+  bottom: calc(var(--u) * 19);
+  left: calc(var(--u) * 138);
+  right: calc(var(--u) * 12);
+}
+.m5b-tomorrow {
+  font-style: italic;
+  font-size: calc(var(--u) * 6);
+  line-height: 1.02;
+  margin-bottom: calc(var(--u) * 2);
+  text-wrap: balance;
+}
+.m5b-colophon {
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.25;
+}
+.m5b-colophon a {
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+}
+.m5 .m5b-sticker {
+  position: absolute;
+  bottom: calc(var(--u) * 46);
+  left: calc(var(--u) * 98);
+  width: calc(var(--u) * 34);
+  transform: rotate(10deg);
+  z-index: 7;
+  --wear-size: 120%;
+}
+.m5b-sticker-text {
+  text-align: center;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 5);
+  line-height: 0.95;
+}
+
+/* ---------- phone ---------- */
+
+@container (max-width: 760px) {
+  .m5b-page {
+    padding-bottom: 0;
+    gap: 26px;
+  }
+  .m5b-left > .m5-runhead {
+    display: none;
+  }
+  .m5b-title {
+    font-size: calc(100cqw * 0.24);
+    margin: 0 0 -14px -22px;
+  }
+  .m5b-stand {
+    position: static;
+    order: -1;
+    width: auto;
+    text-align: left;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  .m5b-h {
+    font-size: 26px;
+  }
+  .m5b-small {
+    font-size: 16px;
+  }
+  .m5b-mini {
+    display: block;
+    border-top-width: 3px;
+    padding-top: 12px;
+  }
+  .m5b-grid {
+    max-width: 320px;
+    margin-bottom: 22px;
+  }
+  .m5b-cell b {
+    font-size: 12px;
+    top: 3px;
+    left: 5px;
+  }
+  .m5b-clues h3 {
+    font-size: 16px;
+  }
+  .m5b-clues li {
+    font-size: 18px;
+  }
+  .m5b-row {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+  }
+  .m5b-tile,
+  .m5b-rungs--tall .m5b-tile {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    border-width: 2px;
+  }
+  .m5b-rungs {
+    gap: 8px;
+  }
+  .m5b-ladder-note {
+    bottom: 40px;
+    width: 120px;
+  }
+  .m5b-riddle-q {
+    font-size: 28px;
+  }
+  .m5b-answer {
+    font-size: 16px;
+  }
+  .m5b-yesterday {
+    margin-top: 26px;
+  }
+  .m5b-yesterday-h {
+    font-size: 18px;
+  }
+  .m5b-yesterday-h span {
+    font-size: 14px;
+  }
+  .m5b-yesterday-body {
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+  }
+  .m5b-solved span {
+    font-size: 13px;
+  }
+  .m5b-yesterday-text p {
+    font-size: 16px;
+  }
+  .m5 .m5b-bye {
+    position: static;
+    font-size: calc(100cqw * 0.13);
+    line-height: 0.95;
+    white-space: normal;
+    margin: 30px 0 0;
+    text-wrap: balance;
+  }
+  .m5b-comic-head {
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .m5b-comic-head .m5b-h {
+    margin-bottom: 0;
+  }
+  .m5b-panels {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+    gap: 8px;
+  }
+  .m5b-panel {
+    aspect-ratio: 3 / 4;
+    border-width: 2px;
+  }
+  .m5b-bubble {
+    font-size: 14px;
+    padding: 5px 7px;
+    top: 7px;
+    left: 7px;
+    right: 16px;
+    border-width: 1.5px;
+  }
+  .m5b-bubble--r {
+    left: 16px;
+    right: 7px;
+  }
+  .m5b-bubble::after {
+    bottom: -9px;
+    width: 12px;
+    height: 9px;
+  }
+  .m5 .m5b-face {
+    width: 60px;
+    height: 60px;
+    bottom: 36px;
+    left: 12px;
+  }
+  .m5 .m5b-face--r {
+    left: auto;
+    right: 12px;
+  }
+  .m5b-who {
+    font-size: 20px;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+  }
+  .m5b-lower {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    margin-top: 0;
+  }
+  .m5b-col {
+    gap: 26px;
+  }
+  .m5b-col--wide {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .m5b-corrections .m5-body,
+  .m5b-letter p,
+  .m5b-ads p,
+  .m5b-colophon {
+    font-size: 16px;
+  }
+  .m5b-ads {
+    columns: 1;
+  }
+  .m5b-word {
+    padding: 16px 18px 18px;
+  }
+  .m5b-word-label,
+  .m5b-word-say {
+    font-size: 15px;
+  }
+  .m5b-word-word {
+    font-size: 38px;
+  }
+  .m5b-word-means {
+    font-size: 18px;
+  }
+  .m5b-word-eg {
+    font-size: 16px;
+  }
+  .m5b-signoff {
+    position: static;
+    margin-top: 30px;
+  }
+  .m5b-tomorrow {
+    font-size: 26px;
+  }
+  .m5 .m5b-sticker {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    width: 110px;
+    margin: -10px 0 0 auto;
+  }
+  .m5b-sticker-text {
+    font-size: 18px;
+  }
+}

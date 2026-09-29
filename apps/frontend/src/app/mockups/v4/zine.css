@@ -2752,7 +2752,7 @@ section:has(> .z-comic) {
 
 /* ---------- Pastel colourways (see ../colours/pastels.ts) ---------- */
 
-html[data-pastel] .z-desk {
+[data-pastel] .z-desk {
   --ink: var(--pz-ink);
   --mint: var(--pz-mint);
   --pink: var(--pz-pink);

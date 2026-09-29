@@ -1,7 +1,7 @@
 import { pick } from "@/app/mockups/_data/photos";
 import { edition } from "@/app/mockups/_data/sample-edition";
-import { Burst } from "@/app/mockups/_shared/burst";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import { credit, Folio, PrintPhoto } from "../_components/print";
 import "./back.css";
 

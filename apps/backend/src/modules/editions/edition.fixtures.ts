@@ -1,0 +1,203 @@
+// Test fixtures: editions shaped like the repository's records, and an in-memory stand-in for the
+// repository that answers the same questions the Prisma queries do. Used only by *.test.ts files.
+
+import { SERVED_STATUSES } from "./status.js";
+import type { EditionRecord, editionRepository, StoryRecord } from "./edition.repository.js";
+
+const at = new Date("2026-09-01T00:00:00.000Z");
+
+const section = (slug: string, name: string, kind: "core" | "guest" = "core") => ({
+  slug,
+  name,
+  tagline: `All about ${name}`,
+  kind,
+  colour: "#ff3d9a",
+  voice: "witty" as const,
+});
+
+const discoveries = section("discoveries", "Discoveries");
+const gaming = section("gaming", "Gaming");
+const foodAndWords = section("food-and-words", "Food & Words", "guest");
+
+function story(
+  id: string,
+  pageId: string,
+  order: number,
+  slot: StoryRecord["slot"],
+  sec: StoryRecord["section"],
+  withImage = false,
+): StoryRecord {
+  return {
+    id,
+    editionId: "unused",
+    pageId,
+    order,
+    slot,
+    slug: id,
+    sectionId: sec.slug,
+    section: sec,
+    kicker: "Kicker",
+    headline: `Headline for ${id}`,
+    dek: "A dek.",
+    body: ["First paragraph.", "Second paragraph."],
+    readMinutes: 1,
+    sticker: null,
+    sourceUrl: `https://example.com/${id}`,
+    sourceName: "Example Source (sample)",
+    embedUrl: null,
+    isReserve: false,
+    createdAt: at,
+    updatedAt: at,
+    images: withImage
+      ? [
+          {
+            id: `${id}-img`,
+            storyId: id,
+            order: 0,
+            url: "https://images.unsplash.com/photo-1561479639-747efc0d0bf2",
+            alt: "An orange octopus",
+            credit: "NOAA",
+            licence: "Unsplash License",
+            licenceUrl: "https://unsplash.com/license",
+            kind: "photo",
+          },
+        ]
+      : [],
+  };
+}
+
+export function makeEdition({
+  issueNumber,
+  date,
+  status = "published",
+  design = "broadsheet",
+  colourway = "original",
+  guest = false,
+}: {
+  issueNumber: number;
+  date: string;
+  status?: EditionRecord["status"];
+  design?: EditionRecord["design"];
+  colourway?: string;
+  guest?: boolean;
+}): EditionRecord {
+  const id = `e${issueNumber}`;
+  const p = (n: number) => `${id}-p${n}`;
+  return {
+    id,
+    date: new Date(`${date}T00:00:00.000Z`),
+    issueNumber,
+    volume: 1,
+    status,
+    kind: "regular",
+    design,
+    colourway,
+    guestSectionId: guest ? "food-and-words" : null,
+    guestSection: guest ? foodAndWords : null,
+    createdAt: at,
+    updatedAt: at,
+    pages: [
+      {
+        id: p(1),
+        editionId: id,
+        order: 1,
+        sectionId: null,
+        section: null,
+        layout: "front",
+        stories: [story(`lead-${issueNumber}`, p(1), 1, "lead", discoveries, true)],
+      },
+      {
+        id: p(2),
+        editionId: id,
+        order: 2,
+        sectionId: "gaming",
+        section: gaming,
+        layout: "section",
+        stories: [
+          story(`game-a-${issueNumber}`, p(2), 1, "feature", gaming),
+          story(`game-b-${issueNumber}`, p(2), 2, "brief", gaming),
+        ],
+      },
+      {
+        id: p(3),
+        editionId: id,
+        order: 3,
+        sectionId: null,
+        section: null,
+        layout: "back",
+        stories: [],
+      },
+    ],
+    features: [
+      {
+        id: `${id}-f1`,
+        editionId: id,
+        type: "number_of_day",
+        order: 0,
+        content: { value: "12,408", caption: "picnic blankets" },
+      },
+      {
+        id: `${id}-f2`,
+        editionId: id,
+        type: "weather",
+        order: 0,
+        content: { headline: "Sunny with scattered memes", detail: "Light drizzle of puns." },
+      },
+    ],
+    puzzles: [
+      {
+        id: `${id}-z1`,
+        editionId: id,
+        type: "riddle",
+        order: 0,
+        data: { title: "The Riddle", question: `Riddle number ${issueNumber}?` },
+        solution: { answer: `Answer ${issueNumber}` },
+      },
+    ],
+  };
+}
+
+/** Issue 41 (Tue), 42 (Wed, with a guest section), 43 (Thu, scheduled) and 44 (Fri, a draft). */
+export const fixtureEditions = (): EditionRecord[] => [
+  makeEdition({ issueNumber: 41, date: "2026-09-29", colourway: "acid-garden" }),
+  makeEdition({ issueNumber: 42, date: "2026-09-30", guest: true }),
+  makeEdition({
+    issueNumber: 43,
+    date: "2026-10-01",
+    status: "scheduled",
+    colourway: "blacklight",
+  }),
+  makeEdition({
+    issueNumber: 44,
+    date: "2026-10-02",
+    status: "draft",
+    colourway: "tropic-punch",
+  }),
+];
+
+type Repository = typeof editionRepository;
+
+/** An in-memory repository over `editions`, with the same semantics as the Prisma queries. */
+export function fakeRepository(editions: EditionRecord[]): Repository {
+  const newestFirst = [...editions].sort((a, b) => b.date.getTime() - a.date.getTime());
+  const published = newestFirst.filter((e) =>
+    (SERVED_STATUSES as readonly string[]).includes(e.status),
+  );
+  return {
+    findByIssue: async (issue) => editions.find((e) => e.issueNumber === issue) ?? null,
+    findByDate: async (date) => editions.find((e) => e.date.getTime() === date.getTime()) ?? null,
+    findLatestServed: async (onOrBefore) => published.find((e) => e.date <= onOrBefore) ?? null,
+    findPreviousPuzzles: async (before) => {
+      const e = published.find((x) => x.date < before);
+      return e ? { issueNumber: e.issueNumber, puzzles: e.puzzles } : null;
+    },
+    listServed: async ({ onOrBefore, before, take }) =>
+      published
+        .filter((e) => e.date <= onOrBefore && (!before || e.date < before))
+        .slice(0, take)
+        .map(({ pages, features: _f, puzzles: _p, ...e }) => ({
+          ...e,
+          stories: pages.flatMap((pg) => pg.stories).filter((s) => s.slot === "lead"),
+        })),
+  };
+}

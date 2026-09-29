@@ -35,6 +35,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
       - run: pnpm db:deploy
+      # Validates the sample editions against the shared contracts as it loads them.
+      - run: pnpm db:seed
       - run: pnpm lint
       - run: pnpm check-types
       - run: pnpm test

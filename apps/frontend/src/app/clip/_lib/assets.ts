@@ -5,8 +5,6 @@
 import "server-only";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { edition, type Story } from "@/app/mockups/_data/sample-edition";
-import { type Photo, type PhotoKey, pick } from "@/app/mockups/_data/photos";
 
 const PUBLIC = path.join(process.cwd(), "public");
 const uris = new Map<string, string>();
@@ -30,45 +28,21 @@ export function required(rel: string): string {
   return uri;
 }
 
-/** The pressed halftone print of a photo, or the CDN original. */
-export function photoSrc(p: Photo, width = 1600): string {
+const UNSPLASH = /^https:\/\/images\.unsplash\.com\/(photo-[\w-]+)/;
+
+/**
+ * The pressed halftone print of a photo (the same copy the reader prints, see
+ * features/print/photo.ts), or the CDN original for an Unsplash photo that has not been pressed.
+ * Any other URL is used as it is; Satori fetches it.
+ */
+export function photoSrc(url: string, width = 1600): string {
+  const id = UNSPLASH.exec(url)?.[1] ?? (/^photo-[\w-]+$/.test(url) ? url : null);
+  if (!id) return url;
   return (
-    asset(`mockup/press/${p.id}.jpg`) ??
-    `https://images.unsplash.com/${p.id}?w=${width}&q=80&auto=format&fit=crop`
+    asset(`mockup/press/${id}.jpg`) ??
+    `https://images.unsplash.com/${id}?w=${width}&q=80&auto=format&fit=crop`
   );
 }
 
-// Which photograph runs with which story. The picture editor's choice, not an algorithm.
-const PICTURES: Record<string, { key: PhotoKey; n?: number; focus?: string }> = {
-  "dancing-octopus": { key: "octopus", focus: "50% 40%" },
-  "moonbeam-diner-musical": { key: "retroTv", focus: "50% 55%" },
-  "village-choir-power-ballad": { key: "choir", focus: "50% 45%" },
-  "bread-and-butter": { key: "bakeryCat", focus: "50% 35%" },
-  "fishing-patch": { key: "fishing", focus: "50% 55%" },
-  "pit-crew-dance": { key: "pitStop" },
-  "six-into-fruit-bowl": { key: "cricket" },
-  "birdsong-phones": { key: "songbird", focus: "50% 40%" },
-  "fitted-sheet-robot": { key: "robot", focus: "50% 35%" },
-  "pay-it-forward-cafe": { key: "coffee" },
-  "tiny-wins-thread": { key: "stickyNotes" },
-  "benches-with-views": { key: "bench", focus: "50% 60%" },
-};
-
+/** A photograph as a clipping prints it: where it comes from, its credit line and focal point. */
 export type Picture = { src: string; alt: string; credit: string; focus: string };
-
-export function pictureFor(story: Story): Picture | null {
-  const choice = PICTURES[story.slug];
-  if (!choice) return null;
-  const p = pick(choice.key, choice.n);
-  return { src: photoSrc(p), alt: p.alt, credit: p.credit, focus: choice.focus ?? "50% 50%" };
-}
-
-export const EDITION = {
-  name: edition.name,
-  tagline: edition.tagline,
-  date: edition.date,
-  shortDate: edition.date.replace(/^\w+, /, ""),
-  volume: edition.volume,
-  issue: edition.issue,
-  price: edition.price,
-};

@@ -2,8 +2,9 @@
 // resolved from the same colourway files the mockups use: ?theme= for the broadsheet (v1),
 // ?pastel= for the Tabloid, Mini Zine and Midi Magazine (house inks when it is left off).
 
-import { type Pastel, pastels } from "@/app/mockups/colours/pastels";
-import { themes } from "@/app/mockups/colours/themes";
+import type { EditionDesign } from "@repo/shared";
+import { type Pastel, pastels } from "@/features/print/colourways/pastels";
+import { themes } from "@/features/print/colourways/themes";
 import type { FontSpec } from "./fonts";
 
 export const LOOKS = ["v1", "v3", "v4", "v5"] as const;
@@ -155,3 +156,17 @@ export function lookFor(id: LookId, theme?: string | null, pastel?: string | nul
     }
   }
 }
+
+/** Which printed look each edition design's clippings (and archive copies) come from. */
+export const LOOK_OF: Record<EditionDesign, LookId> = {
+  broadsheet: "v1",
+  tabloid: "v3",
+  zine: "v4",
+  midi: "v5",
+};
+
+/** The look for an edition: its design's, in its colourway (a neon theme or a pastel set). */
+export const editionLook = (e: { design: EditionDesign; colourway: string }): Look =>
+  e.design === "broadsheet"
+    ? lookFor("v1", e.colourway, null)
+    : lookFor(LOOK_OF[e.design], null, e.colourway);

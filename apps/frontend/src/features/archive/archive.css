@@ -1,0 +1,503 @@
+/*
+ * The back-issue newsstand (from the Phase 1 mockup at /mockups/archive): a shop card taped up and
+ * the papers standing folded in wire racks, a week to a rack. Every copy is in its own paper's
+ * face and inks (set per copy as --ar-a, --ar-b, --ar-on-a, --ar-print, --ar-tint) and aged by how
+ * long it has been lying there (--ar-paper, --ar-age and a filter).
+ */
+
+.ar-desk {
+  --ar-ink: #1d1a16;
+  min-height: 100vh;
+  padding: 44px clamp(16px, 4vw, 56px) 120px;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 30%, rgb(255 255 255 / 0.28), transparent 70%), #e4ded3;
+  color: var(--ar-ink);
+  font-family: var(--ar-caslon), Georgia, serif;
+  overflow-x: hidden;
+}
+
+/* Real newsprint grain printed under the ink of every paper object on this page. */
+.ar-sign::before,
+.ar-front__sheet::before,
+.ar-ticket::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / cover;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ——— The shop card ——— */
+.ar-sign {
+  position: relative;
+  isolation: isolate;
+  width: min(640px, 100%);
+  margin: 0 auto 56px;
+  padding: 26px 30px 22px;
+  background: #f4efe3;
+  text-align: center;
+  rotate: -0.7deg;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.1),
+    0 12px 26px -14px rgb(40 30 20 / 0.45);
+}
+
+.ar-tape {
+  position: absolute;
+  top: -12px;
+  width: 92px;
+  height: 26px;
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  opacity: 0.92;
+  z-index: 4;
+}
+
+.ar-tape--l {
+  left: -18px;
+  rotate: -32deg;
+}
+
+.ar-tape--r {
+  right: -18px;
+  rotate: 28deg;
+}
+
+.ar-sign__kicker {
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.ar-sign__title {
+  margin: 6px 0 2px;
+  font-family: var(--ar-gothic), Impact, sans-serif;
+  font-size: clamp(64px, 12vw, 120px);
+  font-weight: 400;
+  line-height: 0.86;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  border-block: 3px double var(--ar-ink);
+  padding-block: 8px 2px;
+}
+
+.ar-sign__sub {
+  margin-top: 10px;
+  font-style: italic;
+  font-size: 17px;
+}
+
+.ar-sign__sub b {
+  font-style: normal;
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: #e9ff1f;
+  padding: 1px 5px;
+  mix-blend-mode: multiply;
+}
+
+.ar-sign__note {
+  margin-top: 8px;
+  font-family: var(--ar-type), monospace;
+  font-size: 12.5px;
+}
+
+.ar-sign a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ——— Shelf-edge tickets ——— */
+.ar-ticket {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 3px 10px 2px;
+  background: #fbf8f0;
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+/* ——— A wire rack: one week's papers, folded, masthead up ——— */
+.ar-rack {
+  position: relative;
+  width: min(1240px, 100%);
+  margin: 0 auto 72px;
+}
+
+.ar-rack > .ar-ticket {
+  rotate: -1deg;
+  margin: 0 0 18px 6px;
+}
+
+.ar-rack__row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0 20px;
+}
+
+.ar-slot {
+  display: flex;
+}
+
+.ar-front {
+  --w: clamp(150px, 14.5vw, 200px);
+  position: relative;
+  flex: none;
+  width: var(--w);
+  margin-inline: calc(var(--w) * 0.03);
+  translate: 0 var(--ar-drop, 0px);
+  rotate: var(--ar-tilt, 0deg);
+  transition:
+    translate 0.25s ease,
+    rotate 0.25s ease;
+  text-decoration: none;
+  color: var(--ar-print, var(--ar-ink));
+}
+
+.ar-slot:has(.ar-front:hover),
+.ar-slot:has(.ar-front:focus-visible) {
+  position: relative;
+  z-index: 20;
+}
+
+.ar-front:hover,
+.ar-front:focus-visible {
+  translate: 0 -14px;
+  rotate: 0deg;
+  z-index: 20 !important;
+}
+
+.ar-front:focus-visible {
+  outline: none;
+}
+
+.ar-front:focus-visible .ar-front__sheet {
+  outline: 3px solid var(--ar-ink);
+  outline-offset: 3px;
+}
+
+.ar-front__sheet {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 380 / 560;
+  padding: 7% 7% 0;
+  background: var(--ar-paper, #f0ebe0);
+  overflow: hidden;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.12),
+    0 14px 20px -12px rgb(40 30 20 / 0.5),
+    /* The fold at the bottom rounds away from the light. */ inset 0 -14px 14px -12px
+      rgb(40 30 20 / 0.35);
+}
+
+.ar-front__age {
+  position: absolute;
+  inset: 0;
+  background: var(--ar-age, none);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.ar-front__ear {
+  align-self: flex-end;
+  font-family: var(--ar-type), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 4px;
+  background: rgb(255 255 255 / 0.55);
+  mix-blend-mode: multiply;
+}
+
+.ar-front__mast {
+  display: block;
+  margin-top: 4px;
+  line-height: 0.9;
+  text-align: center;
+}
+
+.ar-front__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 6px;
+  padding-block: 2px;
+  border-block: 1px solid currentColor;
+  font-family: var(--ar-franklin), sans-serif;
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* The lead, running into the fold: kicker, headline, then its photograph cut off by the crease. */
+.ar-front__lead {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 7px;
+}
+
+.ar-front__kicker {
+  align-self: flex-start;
+  padding: 1px 4px;
+  background: var(--ar-a);
+  color: var(--ar-on-a);
+  font-family: var(--ar-franklin), sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  mix-blend-mode: multiply;
+}
+
+.ar-front__head {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  font-size: calc(var(--w) * 0.075);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.ar-front__photo {
+  position: relative;
+  flex: 1;
+  min-height: 30%;
+  margin-inline: -2%;
+  overflow: hidden;
+}
+
+.ar-front__photo img {
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  filter: grayscale(0.15) contrast(1.05);
+}
+
+.ar-front__lead--quiet {
+  justify-content: flex-start;
+  font-size: calc(var(--w) * 0.06);
+  text-align: center;
+}
+
+.ar-front__tag {
+  position: absolute;
+  top: -9px;
+  left: 10%;
+  z-index: 6;
+  padding: 1px 6px;
+  background: #fbf8f0;
+  color: var(--ar-ink);
+  font-family: var(--ar-type), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  rotate: -3deg;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+}
+
+/* The rack's rail runs in front of the papers, low across their folds. */
+.ar-rack__rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7%;
+  height: 7px;
+  border-block: 2px solid #3a342c;
+  z-index: 15;
+  box-shadow: 0 5px 6px -3px rgb(20 14 8 / 0.35);
+  pointer-events: none;
+}
+
+.ar-rack__rail::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgb(255 255 255 / 0.35);
+}
+
+/* Each paper's masthead, in its own face and its colourway's inks. */
+.ar-front--broadsheet .ar-front__mast {
+  padding: 4px 3px 2px;
+  background: var(--ar-a);
+  color: var(--ar-on-a);
+  mix-blend-mode: multiply;
+  font-family: var(--ar-gothic), Impact, sans-serif;
+  font-size: calc(var(--w) * 0.2);
+  text-transform: uppercase;
+  text-shadow: 1px 0.5px 0 var(--ar-b);
+}
+
+.ar-front--broadsheet .ar-front__head {
+  font-family: var(--ar-gothic), Impact, sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--w) * 0.1);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ar-front--tabloid .ar-front__mast {
+  margin-inline: -8%;
+  padding: 3px 0 2px;
+  background: var(--ar-a);
+  color: var(--ar-on-a);
+  mix-blend-mode: multiply;
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--w) * 0.24);
+  letter-spacing: -0.03em;
+  text-shadow: 2px 1px 0 var(--ar-b);
+}
+
+.ar-front--tabloid .ar-front__head {
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.ar-front--zine .ar-front__sheet {
+  background: color-mix(in srgb, var(--ar-tint) 72%, var(--ar-paper, #f0ebe0));
+}
+
+.ar-front--zine .ar-front__mast {
+  font-family: var(--ar-slab), serif;
+  font-size: calc(var(--w) * 0.12);
+  text-transform: uppercase;
+  line-height: 0.95;
+  text-shadow: 1.5px 1.5px 0 var(--ar-b);
+}
+
+.ar-front--zine .ar-front__head {
+  font-family: var(--ar-slab), serif;
+  font-weight: 400;
+}
+
+.ar-front--midi .ar-front__mast {
+  margin-inline: -8%;
+  padding: 6px 0 4px;
+  background: var(--ar-a);
+  color: var(--ar-on-a);
+  mix-blend-mode: multiply;
+  font-family: var(--ar-bodoni), serif;
+  font-size: calc(var(--w) * 0.11);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ar-front--midi .ar-front__head {
+  font-family: var(--ar-bodoni), serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* ——— Turning to older (or back to newer) issues ——— */
+.ar-more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.ar-more a {
+  color: inherit;
+  text-decoration: none;
+  rotate: 0.6deg;
+}
+
+.ar-more a:nth-child(even) {
+  rotate: -0.8deg;
+}
+
+.ar-more a:hover,
+.ar-more a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ar-more a:focus-visible {
+  outline: 2px solid var(--ar-ink);
+  outline-offset: 3px;
+}
+
+.ar-empty {
+  text-align: center;
+  font-style: italic;
+  font-size: 18px;
+}
+
+/* ——— Narrow screens: each rack stands in rows ——— */
+@media (max-width: 900px) {
+  .ar-rack__row {
+    flex-wrap: wrap;
+    row-gap: 30px;
+    padding-inline: 0;
+  }
+
+  .ar-rack__rail {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .ar-desk {
+    padding-top: 28px;
+  }
+
+  .ar-front {
+    --w: calc((100vw - 48px) / 2);
+    margin-inline: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-front {
+    transition: none;
+  }
+}
+
+/* ——— The not-found card's way out ——— */
+.ar-nf__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.ar-nf__links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ar-nf__links a:hover,
+.ar-nf__links a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

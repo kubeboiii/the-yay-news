@@ -23,7 +23,7 @@ export type Section = {
 export const edition = {
   name: "The Yay News",
   tagline: "Only good news. Mostly fun. Occasionally weird.",
-  date: "Tuesday, 30 September 2026",
+  date: "Wednesday, 30 September 2026",
   volume: 1,
   issue: 42,
   price: "Free, forever",
@@ -36,7 +36,8 @@ export const edition = {
 
   numberOfTheDay: {
     value: "12,408",
-    caption: "picnic blankets laid end to end at a village fête — a new, entirely unofficial record",
+    caption:
+      "picnic blankets laid end to end at a village fête — a new, entirely unofficial record",
   },
 
   quoteOfTheDay: {
@@ -323,7 +324,7 @@ export const edition = {
       "PIP: Did you see the news today?",
       "PIGEON: All of it was nice.",
       "PIP: Suspicious.",
-      "PIGEON: No. Just Tuesday.",
+      "PIGEON: No. Just Wednesday.",
     ],
   },
 

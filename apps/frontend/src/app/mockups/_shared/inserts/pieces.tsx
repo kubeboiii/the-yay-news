@@ -7,8 +7,8 @@ import type {
   PointerEvent as ReactPointerEvent,
 } from "react";
 import { edition } from "@/app/mockups/_data/sample-edition";
-import { Burst } from "../burst";
-import { Mark } from "../mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import {
   artForIssue,
   couponForIssue,

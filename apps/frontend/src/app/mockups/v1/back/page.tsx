@@ -1,6 +1,6 @@
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { type Photo as PhotoT, pick } from "@/app/mockups/_data/photos";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Mark } from "@/features/print/mark";
 import { Folio, Photo, RunningHead, Stamp, Zigzag } from "../_components/parts";
 
 /** Splits a comic line like "PIP: Hello" into the speaker and what they said. */
@@ -145,7 +145,9 @@ export default function BackPage() {
             <div className="bk-ladder">
               <h2 className="yn-chunk bk-head">{wordLadder.title}</h2>
               <p className="yn-body">{wordLadder.instructions}</p>
-              <ol aria-label={`From ${wordLadder.start} to ${wordLadder.end} in ${wordLadder.steps} steps`}>
+              <ol
+                aria-label={`From ${wordLadder.start} to ${wordLadder.end} in ${wordLadder.steps} steps`}
+              >
                 {rungs.map((word, i) => (
                   <li key={`rung-${i}`}>
                     {[0, 1, 2].map((k) => (
@@ -179,7 +181,9 @@ export default function BackPage() {
                 <p key={c.slice(0, 16)}>{c}</p>
               ))}
             </div>
-            <p className="yn-jump">Spotted a mistake that was too kind? Tell the readers&rsquo; editor.</p>
+            <p className="yn-jump">
+              Spotted a mistake that was too kind? Tell the readers&rsquo; editor.
+            </p>
           </div>
           <div className="bk-classifieds">
             <h2 className="yn-chunk bk-head">Classifieds</h2>
@@ -191,7 +195,11 @@ export default function BackPage() {
                   {c.heading === "FOR HIRE" ? (
                     <figure className="bk-lighthouse print-print">
                       <span className="print-tape bk-lighthouse-tape" aria-hidden />
-                      <Photo photo={lighthouse} tag={false} sizes="(max-width: 760px) 40vw, 120px" />
+                      <Photo
+                        photo={lighthouse}
+                        tag={false}
+                        sizes="(max-width: 760px) 40vw, 120px"
+                      />
                     </figure>
                   ) : null}
                 </li>

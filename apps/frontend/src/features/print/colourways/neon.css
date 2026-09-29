@@ -1,0 +1,164 @@
+/*
+ * Colourways for the v1 broadsheet, one per theme in ../colours/themes.ts, mapped onto v1's six
+ * ink tokens (yellow, green, pink, orange, violet, blue). The front prints yellow + pink, Screen &
+ * Sound pink + blue, Gaming green + violet, the back page orange + yellow, so a multi-ink theme
+ * gives every section its own pair from one family. Blue always carries reversed white type.
+ * Set by [data-theme]; "original" (or no attribute) keeps v1's own six-ink fluoro set.
+ *
+ * Where a colourway prints pink and orange as a deep violet or blue, black type on them falls
+ * under AA contrast, so --neon-pink-ink / --neon-orange-ink switch that type to paper-white.
+ */
+
+[data-theme="acid-garden"] .yn-table {
+  --neon-yellow: #c8ff1e;
+  --neon-green: #c8ff1e;
+  --neon-pink: #7b3cff;
+  --neon-orange: #7b3cff;
+  --neon-violet: #7b3cff;
+  --neon-blue: #7b3cff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
+}
+
+[data-theme="pool-party"] .yn-table {
+  --neon-yellow: #00d8c8;
+  --neon-green: #00d8c8;
+  --neon-pink: #ff2e5b;
+  --neon-orange: #ff2e5b;
+  --neon-violet: #ff2e5b;
+  --neon-blue: #17140f;
+}
+
+[data-theme="blacklight"] .yn-table {
+  --neon-yellow: #00e1ff;
+  --neon-green: #00e1ff;
+  --neon-pink: #ff1fce;
+  --neon-orange: #ff1fce;
+  --neon-violet: #ff1fce;
+  --neon-blue: #17140f;
+}
+
+[data-theme="tropic-punch"] .yn-table {
+  --neon-yellow: #00e59b;
+  --neon-green: #00e59b;
+  --neon-pink: #ff7a00;
+  --neon-orange: #ff7a00;
+  --neon-violet: #ff7a00;
+  --neon-blue: #17140f;
+}
+
+[data-theme="lemon-laser"] .yn-table {
+  --neon-yellow: #fff200;
+  --neon-green: #fff200;
+  --neon-pink: #2d5bff;
+  --neon-orange: #2d5bff;
+  --neon-violet: #2d5bff;
+  --neon-blue: #2d5bff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
+}
+
+[data-theme="tangerine-dream"] .yn-table {
+  --neon-yellow: #ff8a00;
+  --neon-green: #ff8a00;
+  --neon-pink: #7b3cff;
+  --neon-orange: #7b3cff;
+  --neon-violet: #7b3cff;
+  --neon-blue: #7b3cff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
+}
+
+[data-theme="laser-tag"] .yn-table {
+  --neon-yellow: #00ff8c;
+  --neon-green: #00ff8c;
+  --neon-pink: #ff2a1f;
+  --neon-orange: #ff2a1f;
+  --neon-violet: #ff2a1f;
+  --neon-blue: #17140f;
+}
+
+[data-theme="fluoro-cmy"] .yn-table {
+  --neon-yellow: #fff200;
+  --neon-green: #00d9ff;
+  --neon-pink: #ff1fce;
+  --neon-orange: #ff1fce;
+  --neon-violet: #00d9ff;
+  --neon-blue: #17140f;
+}
+
+[data-theme="sunburst-uv"] .yn-table {
+  --neon-yellow: #ffe600;
+  --neon-green: #ffe600;
+  --neon-pink: #5a2bff;
+  --neon-orange: #5a2bff;
+  --neon-violet: #5a2bff;
+  --neon-blue: #5a2bff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
+}
+
+[data-theme="rave-grape"] .yn-table {
+  --neon-yellow: #00e8ff;
+  --neon-green: #00e8ff;
+  --neon-pink: #8a3cff;
+  --neon-orange: #8a3cff;
+  --neon-violet: #8a3cff;
+  --neon-blue: #8a3cff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
+}
+
+[data-theme="candy-shop"] .yn-table {
+  --neon-yellow: #fff200;
+  --neon-green: #b6ff2e;
+  --neon-pink: #ff4fb8;
+  --neon-orange: #ff8a00;
+  --neon-violet: #8a3cff;
+  --neon-blue: #8a3cff;
+}
+
+[data-theme="night-market"] .yn-table {
+  --neon-yellow: #c8ff1e;
+  --neon-green: #00e1ff;
+  --neon-pink: #ff1fce;
+  --neon-orange: #00e1ff;
+  --neon-violet: #5a2bff;
+  --neon-blue: #5a2bff;
+}
+
+[data-theme="tropical-rave"] .yn-table {
+  --neon-yellow: #ffb000;
+  --neon-green: #00e59b;
+  --neon-pink: #ff4f9a;
+  --neon-orange: #ff3d3d;
+  --neon-violet: #00b3ff;
+  --neon-blue: #2448ff;
+}
+
+[data-theme="miami"] .yn-table {
+  --neon-yellow: #ff7a1a;
+  --neon-green: #00d8c8;
+  --neon-pink: #ff2e8a;
+  --neon-orange: #ff7a1a;
+  --neon-violet: #b14bff;
+  --neon-blue: #6a2cff;
+}
+
+[data-theme="highlighter-pack"] .yn-table {
+  --neon-yellow: #fff200;
+  --neon-green: #5cff5c;
+  --neon-pink: #ff5ec4;
+  --neon-orange: #ff9a1f;
+  --neon-violet: #3db8ff;
+  --neon-blue: #6b3cff;
+}
+
+[data-theme="festival"] .yn-table {
+  --neon-yellow: #ff8a00;
+  --neon-green: #00ff8c;
+  --neon-pink: #ff2e5b;
+  --neon-orange: #00e1ff;
+  --neon-violet: #7b3cff;
+  --neon-blue: #7b3cff;
+}

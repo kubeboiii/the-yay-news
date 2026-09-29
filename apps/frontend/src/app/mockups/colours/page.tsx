@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Courier_Prime, Libre_Franklin } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { type Pastel, pastels } from "./pastels";
-import { overprint, type Theme, themes } from "./themes";
+import { type Pastel, pastels } from "@/features/print/colourways/pastels";
+import { overprint, type Theme, themes } from "@/features/print/colourways/themes";
 import "./colours.css";
 
 const sans = Libre_Franklin({ subsets: ["latin"], variable: "--cp-sans" });

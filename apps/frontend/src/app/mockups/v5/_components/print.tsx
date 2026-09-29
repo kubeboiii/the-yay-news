@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { type Photo, unsplash } from "@/app/mockups/_data/photos";
 
-export const DATE_SHORT = "Tue 30 Sep 2026";
+export const DATE_SHORT = "Wed 30 Sep 2026";
 
 /** Running head and page number, placed like a magazine: even pages left, odd pages right. */
 export function Folio({ page, section, top }: { page: number; section: string; top?: string }) {

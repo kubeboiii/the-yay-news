@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { pick } from "@/app/mockups/_data/photos";
-import { Burst } from "@/app/mockups/_shared/burst";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import {
   Barcode,
   Bars,

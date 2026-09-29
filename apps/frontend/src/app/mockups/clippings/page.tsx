@@ -3,8 +3,8 @@ import { Courier_Prime, Libre_Franklin } from "next/font/google";
 import { FORMATS, type Format } from "@/app/clip/_lib/clipping";
 import { LOOK_NAMES, LOOKS, type LookId } from "@/app/clip/_lib/looks";
 import { allStories } from "@/app/mockups/_data/sample-edition";
-import { pastels } from "../colours/pastels";
-import { themes } from "../colours/themes";
+import { pastels } from "@/features/print/colourways/pastels";
+import { themes } from "@/features/print/colourways/themes";
 import "../colours/colours.css";
 import "./clippings.css";
 

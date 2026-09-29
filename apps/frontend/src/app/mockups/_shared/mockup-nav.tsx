@@ -3,9 +3,9 @@ import { PaperToggle } from "./paper-toggle";
 import { PastelToggle } from "./pastel-toggle";
 import { EditionInsert } from "./inserts";
 import { LifeControls, PaperLife } from "./life";
-import { PressFilter } from "./press-filter";
+import { PressFilter } from "@/features/print/press-filter";
 import { ThemeToggle } from "./theme-toggle";
-import "./themes.css";
+import "@/features/print/colourways/neon.css";
 import { ReaderTools } from "./tools";
 
 export const mockupPages = [

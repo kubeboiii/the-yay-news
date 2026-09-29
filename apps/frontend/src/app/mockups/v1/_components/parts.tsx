@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { type Photo, unsplash } from "@/app/mockups/_data/photos";
 
-export const DATE_SHORT = "Tue 30 Sep 2026";
+export const DATE_SHORT = "Wed 30 Sep 2026";
 
 /** Lets a hand mark stretch to its box, for a swipe or a ring drawn to fit a word. */
 export const STRETCH = { maskSize: "100% 100%", WebkitMaskSize: "100% 100%" } as const;
@@ -45,7 +45,7 @@ export function RunningHead({
       </div>
       <div className="yn-vrule" />
       <div className="yn-run-date">
-        <p className="yn-chunk">Tuesday</p>
+        <p className="yn-chunk">Wednesday</p>
         <p>30 September 2026</p>
         <p>
           Vol. {edition.volume} · No. {edition.issue} · Free

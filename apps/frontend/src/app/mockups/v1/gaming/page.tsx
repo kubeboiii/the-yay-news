@@ -1,7 +1,7 @@
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { pick } from "@/app/mockups/_data/photos";
-import { Burst } from "@/app/mockups/_shared/burst";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import { Folio, Photo, PixelText, RunningHead, STRETCH, Zigzag } from "../_components/parts";
 
 const patch = [
@@ -64,7 +64,12 @@ export default function Gaming() {
                 <span>Insert this side up</span>
               </div>
             </div>
-            <Burst fill="var(--neon-green)" points={20} depth={0.12} className="gm-sticker print-worn">
+            <Burst
+              fill="var(--neon-green)"
+              points={20}
+              depth={0.12}
+              className="gm-sticker print-worn"
+            >
               <span className="yn-burst-text text-[calc(var(--u)*7)]">
                 No. 1
                 <br />
@@ -79,7 +84,9 @@ export default function Gaming() {
 
           <article className="gm-review">
             <p className="yn-kicker">Game of the week</p>
-            <h2 className="yn-chunk yn-hed">A cosy game about a cat running a bakery tops the charts</h2>
+            <h2 className="yn-chunk yn-hed">
+              A cosy game about a cat running a bakery tops the charts
+            </h2>
             <p className="yn-dek">{bread?.dek}</p>
             <p className="yn-byline">Reviewed by Sam Okafor · Indie, £6</p>
             <div className="yn-body">
@@ -163,8 +170,8 @@ export default function Gaming() {
               <p>{fishing?.body[0]}</p>
               <p>
                 The studio has not said why it went back. Players have stopped asking and started
-                comparing catches, and the old forums have more posts this week than in the last
-                ten years put together.
+                comparing catches, and the old forums have more posts this week than in the last ten
+                years put together.
               </p>
             </div>
             <figure>
@@ -174,9 +181,7 @@ export default function Gaming() {
           </article>
           {/* The notes themselves, torn out of the printed readme. */}
           <div className="yn-patch print-torn">
-            <p className="yn-patch-head">
-              readme.txt — patch 25.0.1
-            </p>
+            <p className="yn-patch-head">readme.txt — patch 25.0.1</p>
             <ul>
               {patch.map((p) => (
                 <li key={p.text}>
@@ -202,7 +207,9 @@ export default function Gaming() {
           </article>
           <article className="gm-speedrun">
             <p className="yn-kicker">Speedrun of the week</p>
-            <h3 className="yn-chunk yn-hed-sm">Four minutes and two seconds to bake a hundred loaves</h3>
+            <h3 className="yn-chunk yn-hed-sm">
+              Four minutes and two seconds to bake a hundred loaves
+            </h3>
             <p className="yn-body">
               Set in Bread &amp; Butter by a player whose only advice is &ldquo;never pet the
               customers, however much you want to.&rdquo;
@@ -212,8 +219,8 @@ export default function Gaming() {
             <p className="yn-ad-label">Classified</p>
             <p className="yn-chunk yn-caps">Player two wanted</p>
             <p className="yn-body">
-              Thursday games night, village hall, over-70s. Must bring biscuits. Must let Doreen
-              win at least once.
+              Thursday games night, village hall, over-70s. Must bring biscuits. Must let Doreen win
+              at least once.
             </p>
           </aside>
         </section>

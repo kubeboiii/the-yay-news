@@ -1,0 +1,439 @@
+/*
+ * Midi Magazine (from the v5 mockup) — a 220 × 310 mm magazine-format newspaper on bright 80gsm stock.
+ * Pastel grounds only; ink #1b1712 for every word. Everything inside a sheet is sized in --u
+ * (one millimetre of the sheet) so a spread scales as one printed object.
+ *
+ * Three families, one hierarchy: Bodoni Moda for masthead, headlines, pull quotes and big
+ * numerals; Crimson Pro for everything you read; Plex Sans Condensed only for the working parts
+ * of a page (folios, contents numbers, spec tables, listings times), usually in small caps.
+ */
+
+.m5 {
+  --ink: #1b1712;
+  --paper: #fffdf8;
+  --apricot: #ffc9a8;
+  --apricot-deep: #f6a47c;
+  --lilac: #d9ccff;
+  --lilac-deep: #b4a2f2;
+  --mint: #cdf3df;
+  --mint-deep: #92d8b4;
+  --blush: #ffd6e0;
+  --rose: #f4a3bf;
+  --rose-deep: #e27a9f;
+  --butter: #fff0b3;
+  --butter-deep: #ffe27a;
+  --powder: #c6e3f7;
+  --powder-deep: #8fc3ea;
+  --sheet-max: 1480px;
+  color: var(--ink);
+}
+
+.m5.print-desk {
+  background: #e2dccf;
+}
+
+/* ---------- sheets ---------- */
+
+.m5 .print-sheet {
+  --sheet-w: 220;
+  --sheet-h: 310;
+  --text: calc(var(--u) * 3.7);
+  background: var(--paper);
+  font-family: var(--f-text), Georgia, serif;
+  font-size: var(--text);
+  line-height: 1.34;
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* A sheet is at least one page tall and grows (rather than clipping) if its copy runs long. */
+.m5 .print-sheet {
+  aspect-ratio: auto;
+  min-height: calc(var(--u) * var(--sheet-h));
+}
+
+/* In a spread each page is half the container, so one millimetre is 1/440 of it. */
+.m5 .print-spread .print-sheet {
+  --u: calc(100cqw / 440);
+  --text: calc(var(--u) * 3.7);
+}
+
+/* The gutter: a faint shadow where the two pages meet at the staple. */
+.m5 .print-spread .print-sheet:first-child {
+  box-shadow:
+    inset calc(var(--u) * -6) 0 calc(var(--u) * 6) calc(var(--u) * -6) rgb(0 0 0 / 0.14),
+    0 10px 30px -10px rgb(0 0 0 / 0.3);
+}
+.m5 .print-spread .print-sheet:last-child {
+  box-shadow:
+    inset calc(var(--u) * 6) 0 calc(var(--u) * 6) calc(var(--u) * -6) rgb(0 0 0 / 0.14),
+    0 10px 30px -10px rgb(0 0 0 / 0.3);
+}
+
+.m5-page {
+  position: absolute;
+  inset: calc(var(--u) * 16) calc(var(--u) * 12) calc(var(--u) * 17);
+}
+
+/* Zero-specificity reset, so any single class below can set its own spacing. */
+:where(.m5) :where(h1, h2, h3, h4, p, ul, ol, figure, dl, dd, blockquote) {
+  margin: 0;
+  padding: 0;
+}
+.m5 ul,
+.m5 ol {
+  list-style: none;
+}
+:where(.m5) :where(h1, h2, h3, blockquote) {
+  text-wrap: balance;
+}
+
+/* ---------- the type system ---------- */
+
+.m5-display {
+  font-family: var(--f-display), "Didot", serif;
+  font-optical-sizing: auto;
+  font-variant-numeric: lining-nums;
+}
+
+/* The one kicker style: small caps in the narrow sans, no tracking tricks. */
+.m5-kicker {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.3);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+}
+
+.m5-byline {
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.4);
+  letter-spacing: 0.02em;
+}
+.m5-byline i {
+  font-variant-caps: normal;
+  letter-spacing: 0;
+}
+
+.m5-caption {
+  font-style: italic;
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.25;
+}
+.m5-credit {
+  font-family: var(--f-sans), sans-serif;
+  font-variant-caps: all-small-caps;
+  font-style: normal;
+  font-size: calc(var(--u) * 2.5);
+  letter-spacing: 0.03em;
+  font-variant-numeric: lining-nums;
+}
+
+/* Body copy set like a newspaper: justified, hyphenated, indented, no gaps between paragraphs. */
+.m5-body p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.m5-body p + p {
+  text-indent: 1em;
+}
+
+/* A note written on the page beside a photo, in the text face's italic. */
+.m5-note {
+  font-style: italic;
+  font-size: calc(var(--u) * 4);
+  line-height: 1.12;
+}
+
+/* The page's one highlight, where a page has one: a flat stroke of pastel ink behind a word. */
+.m5-highlight {
+  background: var(--mark, var(--butter-deep));
+  padding: 0 0.1em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ---------- running heads and folios ---------- */
+
+.m5-runhead {
+  position: absolute;
+  top: calc(var(--u) * 7.5);
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 2.8);
+  letter-spacing: 0.04em;
+}
+.m5-runhead.m5-folio--even {
+  left: calc(var(--u) * 12);
+}
+.m5-runhead.m5-folio--odd {
+  right: calc(var(--u) * 12);
+}
+
+.m5-folio {
+  position: absolute;
+  bottom: calc(var(--u) * 7);
+  left: calc(var(--u) * 12);
+  right: calc(var(--u) * 12);
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 3);
+  z-index: 8;
+}
+.m5-folio--odd {
+  flex-direction: row-reverse;
+}
+.m5-folio-num {
+  font-family: var(--f-display), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 5);
+  line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+.m5-folio-line {
+  font-family: var(--f-sans), sans-serif;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 2.8);
+  letter-spacing: 0.03em;
+  font-variant-numeric: lining-nums;
+}
+
+/* ---------- photos and paste-up ---------- */
+
+.m5-photo {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* Something set once across the spread: the left page prints the first half, the right page
+   repeats it shifted by one page width, and each sheet's edge crops its own half at the gutter. */
+.m5-cross {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 6;
+  white-space: nowrap;
+}
+.m5-cross--r {
+  left: calc(var(--x) - var(--u) * 220);
+}
+
+/* A photographic print pasted onto the page at an angle, with tape over one edge. */
+.m5-pasted {
+  position: absolute;
+  z-index: 4;
+}
+.m5-pasted .m5-photo {
+  width: 100%;
+  height: 100%;
+}
+.m5-pasted figcaption {
+  position: absolute;
+  left: calc(var(--u) * 1.8);
+  right: calc(var(--u) * 1.8);
+  bottom: calc(var(--u) * 1.2);
+}
+
+/* Hand-drawn marks from the kit, placed by hand. */
+.m5-hm {
+  position: absolute;
+  z-index: 7;
+  pointer-events: none;
+}
+
+/* A loop drawn round a word: bigger than the word and slightly off-centre. */
+.m5-ring {
+  position: relative;
+  white-space: nowrap;
+}
+.m5-ring-mark {
+  mask-size: 100% 100% !important;
+  -webkit-mask-size: 100% 100% !important;
+  position: absolute;
+  left: -22%;
+  right: -24%;
+  top: -30%;
+  bottom: -34%;
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+.m5-rule {
+  border: 0;
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  margin: 0;
+}
+
+/* =====================================================================================
+ * PHONE — below 760px of container the sheets stop being fixed pages and reflow.
+ * ===================================================================================== */
+
+@container (max-width: 760px) {
+  .m5 .print-sheet,
+  .m5 .print-spread .print-sheet {
+    --u: calc(100cqw / 160);
+    --text: 16px;
+    padding: 40px 18px 64px;
+    min-height: 0;
+  }
+  .m5 .print-spread .print-sheet:first-child,
+  .m5 .print-spread .print-sheet:last-child {
+    box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.3);
+  }
+  .m5-page {
+    position: static;
+    inset: auto;
+  }
+  .m5-runhead {
+    top: 14px;
+    font-size: 13px;
+  }
+  .m5-runhead.m5-folio--even,
+  .m5-runhead.m5-folio--odd {
+    left: 18px;
+    right: auto;
+  }
+  .m5-folio {
+    bottom: 18px;
+    left: 18px;
+    right: 18px;
+  }
+  .m5-folio--odd {
+    flex-direction: row;
+  }
+  .m5-folio-num {
+    font-size: 20px;
+  }
+  .m5-folio-line {
+    font-size: 14px;
+  }
+  .m5-kicker {
+    font-size: 16px;
+  }
+  .m5-byline {
+    font-size: 16px;
+  }
+  .m5-caption {
+    font-size: 14px;
+  }
+  .m5-credit {
+    font-size: 13px;
+  }
+  .m5-note {
+    font-size: 18px;
+  }
+  .m5-body p {
+    text-align: left;
+  }
+  .m5-cross {
+    position: relative;
+    left: auto;
+    top: auto;
+    white-space: normal;
+  }
+  .m5-cross--r {
+    display: none;
+  }
+  .m5-pasted {
+    position: relative;
+    inset: auto;
+  }
+}
+
+.m5-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- the reader's additions: links, flowing pages ---------- */
+
+/* Links print as type: the ink of their text, underlined only under the reader's finger. */
+.m5 a {
+  color: inherit;
+  text-decoration: none;
+}
+.m5 a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.12em;
+}
+.m5 a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.m5-photo-img {
+  object-fit: cover;
+}
+
+/* A sheet whose page area flows as a column (the page fills the sheet; furniture sits at the foot). */
+.m5 .m5-sheet-flow {
+  display: flex;
+  flex-direction: column;
+}
+.m5-page-flow {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: calc(var(--u) * 16) calc(var(--u) * 12) calc(var(--u) * 17);
+}
+
+/* "Read on" lines under a story. */
+.m5-more {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.3);
+  letter-spacing: 0.03em;
+  margin-top: calc(var(--u) * 2);
+}
+.m5-more a {
+  border-bottom: calc(var(--u) * 0.3) solid currentColor;
+}
+.m5-more a:hover {
+  text-decoration: none;
+  border-bottom-width: calc(var(--u) * 0.6);
+}
+
+@container (max-width: 760px) {
+  .m5-page-flow {
+    padding: 0;
+  }
+  .m5-more {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+  .m5-more a {
+    border-bottom-width: 1px;
+  }
+}
+
+/* ---------- Pastel colourways (see features/print/colourways/pastels.ts) ----------
+   The Frame puts data-pastel on the .m5 wrapper itself; an ancestor works too. */
+
+.m5[data-pastel],
+[data-pastel] .m5 {
+  --ink: var(--pz-ink);
+  --apricot: var(--pz-peach);
+  --apricot-deep: var(--pz-peach-deep);
+  --lilac: var(--pz-lilac);
+  --lilac-deep: var(--pz-lilac-deep);
+  --mint: var(--pz-mint);
+  --mint-deep: var(--pz-mint-deep);
+  --blush: var(--pz-pink);
+  --rose: var(--pz-pink-deep);
+  --rose-deep: color-mix(in oklab, var(--pz-pink-deep) 75%, var(--pz-ink));
+  --butter: var(--pz-butter);
+  --butter-deep: var(--pz-butter-deep);
+  --powder: var(--pz-blue);
+  --powder-deep: var(--pz-blue-deep);
+}

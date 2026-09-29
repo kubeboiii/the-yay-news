@@ -1,7 +1,7 @@
 import { pick } from "@/app/mockups/_data/photos";
 import { edition } from "@/app/mockups/_data/sample-edition";
-import { Burst } from "@/app/mockups/_shared/burst";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import { credit, Folio, PrintPhoto } from "./_components/print";
 import "./front.css";
 
@@ -29,7 +29,7 @@ export default function MidiFront() {
           <div className="m5f-top">
             <p className="m5f-stamp print-worn">Sample edition</p>
             <p className="m5f-issue">
-              Vol. 1, No. 42 · Tuesday 30 September 2026 · {edition.price}
+              Vol. 1, No. 42 · Wednesday 30 September 2026 · {edition.price}
             </p>
           </div>
 

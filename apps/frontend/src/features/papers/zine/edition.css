@@ -1,0 +1,1533 @@
+/*
+ * The zine's edition templates: what the mockup's one sample edition didn't need. Everything here
+ * is sized in millimetres of the sheet (--u) like zine.css, so a spread still scales as one object.
+ */
+
+/* A mini page never cuts its copy off: `clip` (not a scroll container) lets the page's aspect
+   ratio act as a minimum, so an unusually long page grows instead of hiding its last lines. */
+.print-sheet.z-page {
+  overflow: clip;
+}
+
+.z-spread.print-spread {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.print-sheet.z-page {
+  /* A definite width, so a page that grows taller keeps its column instead of widening by ratio. */
+  width: 100%;
+  min-width: 0;
+}
+
+@container (max-width: 900px) {
+  .z-spread.print-spread {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The deeper tone of each ground, for the blocks a print is pasted onto. */
+.z-mint {
+  --block: var(--deepmint);
+}
+.z-pink {
+  --block: var(--rose);
+}
+.z-lilac {
+  --block: var(--peri);
+}
+.z-blue {
+  --block: var(--deepblue);
+}
+.z-butter {
+  --block: var(--deepbutter);
+}
+.z-peach {
+  --block: var(--apricot);
+}
+
+/* ---------- Links: printed type that happens to be a link ---------- */
+
+.z-page a {
+  color: inherit;
+}
+
+.z-link-head,
+.z-link-block {
+  text-decoration: none;
+}
+
+.z-link-block {
+  display: block;
+}
+
+.z-link-head:hover,
+.z-link-block:hover b,
+.z-link-block:hover .z-contents__sec {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
+}
+
+.z-link {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.2em;
+}
+
+.z-page a:focus-visible {
+  outline: calc(var(--u) * 0.6) solid var(--ink);
+  outline-offset: calc(var(--u) * 0.6);
+}
+
+/* ---------- Heads whose copy comes from the edition ---------- */
+
+.z-head__cond {
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.z-head__heavy--wrap {
+  white-space: normal;
+  text-wrap: balance;
+  line-height: 1.02;
+}
+
+.z-h2.zs-lead__head,
+.z-h2.zs-brief__head,
+.z-h2.zt-head {
+  font-size: calc(var(--u) * var(--zh, 6.6));
+  overflow-wrap: break-word;
+}
+
+.z-spec__num b {
+  font-size: calc(var(--u) * var(--nb, 7.6));
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Front ---------- */
+
+.zf-weather {
+  margin-top: calc(var(--u) * 1) !important;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.zf-cover__anno {
+  right: calc(var(--u) * 42);
+  top: calc(100% + var(--u) * 26);
+}
+
+.zf-credit {
+  margin-top: calc(var(--u) * 3);
+}
+
+.zf-sticker-row {
+  position: relative;
+  height: calc(var(--u) * 10);
+}
+
+.zf-sticker-row .z-lead__burst {
+  right: 0;
+  bottom: auto;
+  top: calc(var(--u) * -6);
+}
+
+.z-lead__photo {
+  --block: var(--rose);
+}
+
+.z-cover__also {
+  max-width: calc(var(--u) * 62);
+}
+
+.z-cover__also b {
+  font-size: calc(var(--u) * 3.9);
+  line-height: 1;
+  margin-bottom: calc(var(--u) * 1);
+  text-wrap: balance;
+}
+
+.zf-others {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--u) * 40), 1fr));
+  gap: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 4);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 2.5);
+}
+
+.zf-others .z-h3 {
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+.zf-others__dek {
+  margin-top: calc(var(--u) * 1) !important;
+  font-style: italic;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.3;
+}
+
+.zf-contents ol {
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--u) * 2.5) calc(var(--u) * 3.5);
+}
+
+.zf-contents li {
+  padding-top: calc(var(--u) * 1.5);
+}
+
+.zf-contents li:nth-child(4n + 1) {
+  margin-top: 0;
+}
+.zf-contents li:nth-child(4n + 2) {
+  margin-top: calc(var(--u) * 1.5);
+}
+.zf-contents li:nth-child(4n + 3) {
+  margin-top: calc(var(--u) * 3);
+}
+.zf-contents li:nth-child(4n + 4) {
+  margin-top: calc(var(--u) * 4.5);
+}
+
+.zf-contents .z-contents__n {
+  font-size: calc(var(--u) * 8);
+}
+
+/* Nine or ten pages: five to a row, still stepped. */
+.zf-contents--5 ol {
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: calc(var(--u) * 2.5);
+}
+
+.zf-contents--5 li:nth-child(n) {
+  margin-top: 0;
+}
+.zf-contents--5 li:nth-child(5n + 2) {
+  margin-top: calc(var(--u) * 1.2);
+}
+.zf-contents--5 li:nth-child(5n + 3) {
+  margin-top: calc(var(--u) * 2.4);
+}
+.zf-contents--5 li:nth-child(5n + 4) {
+  margin-top: calc(var(--u) * 3.6);
+}
+.zf-contents--5 li:nth-child(5n + 5) {
+  margin-top: calc(var(--u) * 4.8);
+}
+
+.zf-contents--5 .z-contents__sec {
+  font-size: calc(var(--u) * 3.2);
+}
+
+.zf-contents--5 .z-contents__tease {
+  font-size: calc(var(--u) * 2.3);
+  hyphens: auto;
+}
+
+.zf-contents .z-contents__sec {
+  font-size: calc(var(--u) * 3.6);
+}
+
+.zf-contents .z-contents__tease {
+  font-size: calc(var(--u) * 2.5);
+  line-height: 1.25;
+  font-style: italic;
+  text-wrap: pretty;
+}
+
+/* ---------- Turn over: the foot of every inside spread ---------- */
+
+.z-turn {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr;
+  column-gap: calc(var(--u) * 3);
+  align-items: center;
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 2.5);
+  text-decoration: none;
+}
+
+/* The folio still has to sit at the very foot, so the card takes the page's spare room above it. */
+.z-turn + .z-folio {
+  margin-top: 0 !important;
+}
+
+.z-turn__label {
+  grid-column: 1 / -1;
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.9);
+  margin-bottom: calc(var(--u) * 1.5);
+}
+
+.z-turn__n {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 13);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-variant-numeric: lining-nums;
+}
+
+.z-turn__text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.8);
+  min-width: 0;
+}
+
+.z-turn__text b {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.1;
+}
+
+.z-turn__text > span:last-child {
+  font-style: italic;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.3;
+}
+
+.z-turn__arrow {
+  width: calc(var(--u) * 14);
+  height: calc(var(--u) * 7);
+}
+
+.z-turn:hover b {
+  text-decoration: underline;
+}
+
+.z-also {
+  /* Sits with the turn-over at the foot of the page, the story's own copy above. */
+  margin-top: auto;
+  padding-top: calc(var(--u) * 7);
+}
+
+.z-also + .z-turn {
+  margin-top: calc(var(--u) * 6);
+}
+
+.z-also ol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 4) calc(var(--u) * 5);
+}
+
+.z-also li {
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  padding-top: calc(var(--u) * 2);
+}
+
+.z-also .z-link-block {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: calc(var(--u) * 2.5);
+  align-items: start;
+}
+
+.z-also__n {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 7);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: lining-nums;
+}
+
+.z-also__text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.8);
+  min-width: 0;
+}
+
+.z-also__text b {
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.2;
+  text-wrap: pretty;
+}
+
+.z-link-block:hover .z-also__text b {
+  text-decoration: underline;
+}
+
+/* The tape on the teaser prints overhangs their top edge; keep it off the label. */
+.z-also--big ol {
+  padding-top: calc(var(--u) * 3);
+}
+
+/* A lone story with no picture: its standfirst becomes the left page's poster. */
+@container (min-width: 761px) {
+  .zs-lead.zs-lead--alone .zs-bare {
+    margin-top: calc(var(--u) * 12);
+    padding: calc(var(--u) * 13) calc(var(--u) * 9) calc(var(--u) * 18);
+    rotate: -1.4deg;
+  }
+
+  .zs-lead.zs-lead--alone .zs-bare__dek {
+    font-size: calc(var(--u) * 8.6);
+    line-height: 1.12;
+  }
+
+  .zs-lead.zs-lead--alone .zs-bare__doodle {
+    width: calc(var(--u) * 34);
+    height: calc(var(--u) * 34);
+    bottom: calc(var(--u) * -11);
+  }
+}
+
+/* A one-story spread's right page: the teasers become a feature of their own. */
+.z-also--big {
+  margin-top: calc(var(--u) * 9);
+  padding-top: 0;
+}
+
+.z-also--big + .z-turn {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 2.5);
+}
+
+.z-also--big ol {
+  row-gap: calc(var(--u) * 6);
+  column-gap: calc(var(--u) * 7);
+  margin-top: calc(var(--u) * 2);
+}
+
+.z-also--big li {
+  border-top: 0;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+}
+
+.z-also--big li:nth-child(even) {
+  margin-top: calc(var(--u) * 5);
+}
+
+.z-also__print {
+  width: 80%;
+}
+
+.z-also--big li:nth-child(even) .z-also__print {
+  align-self: flex-end;
+}
+
+.z-also--big .z-link-block {
+  border-top: calc(var(--u) * 0.4) solid var(--ink);
+  padding-top: calc(var(--u) * 2);
+}
+
+.z-also--big .z-also__n {
+  font-size: calc(var(--u) * 9);
+}
+
+.z-also--big .z-also__text b {
+  font-family: var(--z-slab), serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.z-also__dek {
+  font-style: italic;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.3;
+}
+
+/* ---------- Section spreads ---------- */
+
+.zs-empty {
+  margin-top: calc(var(--u) * 10) !important;
+  font-style: italic;
+  font-size: calc(var(--u) * 5);
+  text-align: center;
+}
+
+.zs-lead {
+  margin-top: calc(var(--u) * 4);
+}
+
+.zs-lead__kicker {
+  margin-top: calc(var(--u) * 3) !important;
+}
+
+.zs-lead .z-film + .z-cap + .zs-lead__kicker {
+  margin-top: calc(var(--u) * 4) !important;
+}
+
+.zs-lead__head {
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.zs-lead__photo {
+  margin-top: calc(var(--u) * 6);
+  margin-inline: calc(var(--u) * 2) calc(var(--u) * 1);
+  --ob-inset: calc(var(--u) * 5) calc(var(--u) * -3) calc(var(--u) * -3) calc(var(--u) * 12);
+  --ob-r: 1.4deg;
+}
+
+.zs-film__one {
+  grid-template-columns: 1fr;
+}
+
+.zs-film__one .z-photo {
+  aspect-ratio: 2 / 1 !important;
+}
+
+.zs-film__wide .z-photo {
+  aspect-ratio: 5 / 2 !important;
+}
+
+/* A story with no picture: the standfirst is set big where the print would be. */
+.zs-bare {
+  position: relative;
+  margin-top: calc(var(--u) * 6);
+  padding: calc(var(--u) * 6) calc(var(--u) * 5) calc(var(--u) * 7);
+  background: var(--block);
+  rotate: -0.8deg;
+}
+
+.zs-bare__dek {
+  font-style: italic;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1.15;
+  text-wrap: balance;
+  max-width: 88%;
+}
+
+.zs-bare__doodle {
+  position: absolute;
+  right: calc(var(--u) * 3);
+  bottom: calc(var(--u) * -5);
+  width: calc(var(--u) * 22);
+  height: calc(var(--u) * 22);
+  rotate: 8deg;
+}
+
+.zs-text {
+  margin-top: calc(var(--u) * 5);
+}
+
+.zs-text .z-dek {
+  font-size: calc(var(--u) * 3.8);
+}
+
+.zs-text--alone,
+.z-ss__story.zs-text {
+  margin-top: calc(var(--u) * 3);
+}
+
+.zs-text--alone .z-dek {
+  font-size: calc(var(--u) * 5.4);
+  line-height: 1.2;
+}
+
+.zs-body {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.zs-body--alone {
+  font-size: calc(var(--u) * 3.9);
+  line-height: 1.38;
+}
+
+.zs-ticket-wrap {
+  position: relative;
+  align-self: start;
+}
+
+.zs-briefs {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+  margin-top: calc(var(--u) * 3);
+}
+
+.zs-briefs--2 .zs-brief + .zs-brief {
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 4);
+}
+
+.zs-brief {
+  position: relative;
+}
+
+.zs-brief__head {
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.zs-brief__grid {
+  grid-template-columns: calc(var(--u) * 64) 1fr;
+  gap: calc(var(--u) * 6);
+  margin-top: calc(var(--u) * 4);
+}
+
+.zs-brief__grid--flip > :first-child {
+  order: 2;
+}
+
+.zs-brief--compact .zs-brief__grid {
+  grid-template-columns: calc(var(--u) * 48) 1fr;
+  gap: calc(var(--u) * 5);
+}
+
+.zs-brief .z-dek {
+  font-size: calc(var(--u) * 3.6);
+}
+
+.zs-brief .z-print + .z-cap {
+  margin-top: calc(var(--u) * 3) !important;
+}
+
+.zs-brief__cols {
+  margin-top: calc(var(--u) * 3);
+}
+
+.zs-brief .z-fish__photo + .z-cap {
+  margin-bottom: calc(var(--u) * 1) !important;
+}
+
+/* A brief with no picture is a clipping of white stock taped onto the ground. */
+.zs-brief--bare {
+  background: var(--paper);
+  padding: calc(var(--u) * 6) calc(var(--u) * 6) calc(var(--u) * 5);
+  rotate: 0.7deg;
+  box-shadow: 0 calc(var(--u) * 0.3) calc(var(--u) * 0.8) rgb(0 0 0 / 0.12);
+}
+
+.zs-briefs--2 .zs-brief--bare + .zs-brief--bare {
+  rotate: -0.6deg;
+  border-top: 0;
+  padding-top: calc(var(--u) * 6);
+}
+
+.zs-brief--bare .print-tape {
+  width: calc(var(--u) * 20);
+  height: calc(var(--u) * 5.5);
+  top: calc(var(--u) * -2.6);
+  left: 50%;
+  translate: -50% 0;
+  rotate: -2deg;
+}
+
+.zs-pull {
+  margin-top: calc(var(--u) * 7);
+  margin-bottom: calc(var(--u) * 6);
+}
+
+.zs-pull blockquote {
+  font-size: calc(var(--u) * 5.8);
+}
+
+/* Gaming: a cartridge with no picture pasted over its edge. */
+.zs-gotw--bare .z-cart {
+  margin-left: 0;
+}
+
+.zs-gotw--bare .z-cart__label {
+  padding-left: calc(var(--u) * 5) !important;
+}
+
+.z-gotw {
+  min-height: calc(var(--u) * 62);
+}
+
+.zs-gotw--bare {
+  min-height: 0;
+}
+
+.zs-gotw__credit {
+  margin-top: calc(var(--u) * 3);
+}
+
+.z-cart__title {
+  text-wrap: balance;
+}
+
+/* A short day's doodle, anchored at the foot of the left page. */
+.zs-doodle {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 8);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(var(--u) * 4);
+}
+
+.zs-doodle__mark {
+  width: calc(var(--u) * 38);
+  height: calc(var(--u) * 38);
+  rotate: -8deg;
+}
+
+.zs-doodle__note {
+  position: static;
+  align-items: center;
+  rotate: -3deg;
+  max-width: calc(var(--u) * 80);
+  margin-bottom: calc(var(--u) * 4) !important;
+}
+
+.zs-doodle__arrow {
+  flex: none;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 8);
+}
+
+.zs-doodle + .z-folio {
+  margin-top: 0 !important;
+}
+
+@container (max-width: 760px) {
+  .zs-doodle {
+    display: none;
+  }
+}
+
+/* Short days: the same spread, set a size up. Desktop only; phones keep their reading sizes. */
+@container (min-width: 761px) {
+  .zs-sparse .zs-body {
+    font-size: calc(var(--u) * 4.1);
+    line-height: 1.36;
+  }
+
+  .zs-sparse .zs-body--alone {
+    font-size: calc(var(--u) * 5);
+    line-height: 1.34;
+  }
+
+  .zs-sparse .zs-text .z-dek,
+  .zs-sparse .zs-brief .z-dek {
+    font-size: calc(var(--u) * 4.8);
+    line-height: 1.22;
+  }
+
+  .zs-sparse .zs-brief__head {
+    font-size: calc(var(--u) * var(--zh) * 1.18);
+  }
+
+  .zs-sparse .zs-bare__dek {
+    font-size: calc(var(--u) * 7.6);
+  }
+
+  .zs-sparse .zs-bare {
+    margin-top: calc(var(--u) * 9);
+    padding: calc(var(--u) * 9) calc(var(--u) * 7) calc(var(--u) * 12);
+  }
+
+  .zs-sparse .zs-bare__doodle {
+    width: calc(var(--u) * 30);
+    height: calc(var(--u) * 30);
+    bottom: calc(var(--u) * -9);
+  }
+
+  .zs-sparse .z-byline {
+    font-size: calc(var(--u) * 3.8);
+  }
+
+  .zs-sparse .z-cart__verdict {
+    font-size: calc(var(--u) * 4.4);
+  }
+
+  .zs-sparse .zs-brief__grid {
+    grid-template-columns: calc(var(--u) * 72) 1fr;
+  }
+}
+
+/* ---------- Guest spreads ---------- */
+
+.zg-mast {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: calc(var(--u) * 4);
+}
+
+.zg-stamp {
+  rotate: -4deg;
+  color: var(--ink);
+  font-size: calc(var(--u) * 5.4);
+}
+
+.zg-mast__doodle {
+  position: absolute;
+  right: calc(var(--u) * 6);
+  top: calc(var(--u) * -2);
+  width: calc(var(--u) * 14);
+  height: calc(var(--u) * 14);
+}
+
+.zg-note {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.35;
+  text-align: center;
+  max-width: calc(var(--u) * 110);
+  margin: calc(var(--u) * 2) auto calc(var(--u) * 5) !important;
+}
+
+.zg-clip {
+  position: relative;
+  margin-top: calc(var(--u) * 7);
+  rotate: var(--r, -1deg);
+}
+
+.zg-clip + .zg-clip {
+  margin-top: calc(var(--u) * 9);
+}
+
+.zg-clip__paper {
+  position: relative;
+  isolation: isolate;
+  padding: calc(var(--u) * 9) calc(var(--u) * 7) calc(var(--u) * 9);
+}
+
+/* The torn stock is a layer behind the copy, so the ragged edge never bites into the type. */
+.zg-clip__paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--paper);
+  mask: url("/mockup/fx/torn-edge.png") center / 100% 100% no-repeat;
+  -webkit-mask: url("/mockup/fx/torn-edge.png") center / 100% 100% no-repeat;
+}
+
+.zg-poster {
+  margin-top: calc(var(--u) * 8);
+}
+
+.zg-clip .print-tape {
+  width: calc(var(--u) * 22);
+  height: calc(var(--u) * 6);
+}
+
+.zg-clip .z-tape-tl {
+  top: calc(var(--u) * -1);
+  left: calc(var(--u) * -4);
+}
+
+.zg-clip .z-tape-tr {
+  top: calc(var(--u) * -1);
+  right: calc(var(--u) * -4);
+}
+
+.zg-clip__photo {
+  margin-top: calc(var(--u) * 4);
+}
+
+.zg-clip .z-dek {
+  margin-top: calc(var(--u) * 3) !important;
+  font-size: calc(var(--u) * 3.8);
+}
+
+/* ---------- Back ---------- */
+
+.zb-grid {
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  aspect-ratio: var(--cols, 5) / var(--rows, 5);
+  width: min(100%, calc(var(--u) * var(--cols, 5) * 15));
+}
+
+.zb-ladder__how {
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.z-ladder__row span {
+  width: calc(var(--u) * var(--cell, 7));
+  height: calc(var(--u) * var(--cell, 7));
+  font-size: calc(var(--u) * var(--cell, 7) * 0.58);
+}
+
+.z-riddle .z-yday {
+  margin-top: calc(var(--u) * 8) !important;
+}
+
+/* The strip: drawn panels on deep inks, each with its line in a bubble and a doodle. */
+.zb-strip {
+  grid-template-columns: 1fr 1fr;
+}
+
+.zb-strip--1,
+.zb-strip--3 {
+  grid-template-columns: repeat(var(--n, 1), 1fr);
+}
+
+.zb-strip--3 {
+  --n: 3;
+}
+
+.zb-panel {
+  position: relative;
+  margin: 0;
+  min-height: calc(var(--u) * 23);
+  padding: calc(var(--u) * 2.6) calc(var(--u) * 3) calc(var(--u) * 8);
+  background: var(--panel);
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  rotate: var(--r, 0deg);
+}
+
+.zb-panel--0 {
+  --panel: var(--blue);
+}
+.zb-panel--1 {
+  --panel: var(--mint);
+}
+.zb-panel--2 {
+  --panel: var(--lilac);
+}
+.zb-panel--3 {
+  --panel: var(--butter);
+}
+
+.z-bubble.zb-bubble {
+  position: relative;
+  left: auto;
+  top: auto;
+  max-width: 92%;
+  display: inline-block;
+}
+
+.zb-panel__doodle {
+  position: absolute;
+  right: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 2.5);
+  width: calc(var(--u) * 11);
+  height: calc(var(--u) * 8);
+}
+
+.zb-panel .z-panel__n {
+  left: calc(var(--u) * 3);
+  right: auto;
+  bottom: calc(var(--u) * 3);
+}
+
+.zb-lower {
+  margin-top: calc(var(--u) * 6);
+}
+
+.zb-col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 5);
+  min-width: 0;
+}
+
+.zb-yday {
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1.35;
+}
+
+.zb-yday__no {
+  font-variant-caps: normal;
+  font-family: var(--z-type), "Courier New", monospace;
+  font-weight: 400;
+  font-size: 0.7em;
+}
+
+.zb-yday__xw {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 22) 1fr;
+  gap: calc(var(--u) * 3);
+  align-items: start;
+  margin-top: calc(var(--u) * 2);
+}
+
+.zb-mini {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  gap: calc(var(--u) * 0.25);
+  background: var(--ink);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+}
+
+.zb-mini span {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 2.4);
+  line-height: 1;
+}
+
+.zb-mini span.zb-mini--black {
+  background: var(--ink);
+}
+
+.zb-yday__list,
+.zb-yday__line {
+  font-size: calc(var(--u) * 2.7);
+  line-height: 1.35;
+}
+
+.zb-yday__line {
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.zb-yday__list b,
+.zb-yday__line b {
+  font-variant-caps: all-small-caps;
+}
+
+.zb-letter {
+  margin: calc(var(--u) * 1.5) 0 0;
+  font-style: italic;
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.35;
+}
+
+.zb-letter footer {
+  margin-top: calc(var(--u) * 1);
+  font-style: normal;
+  font-variant-caps: all-small-caps;
+}
+
+.zb-word {
+  position: relative;
+  rotate: -1.4deg;
+  padding: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 2);
+}
+
+.zb-word__w {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 7);
+  line-height: 1;
+  margin-top: calc(var(--u) * 1.5) !important;
+  overflow-wrap: anywhere;
+}
+
+.zb-word__say {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.7);
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+.zb-word__means {
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.1);
+  margin-top: calc(var(--u) * 1.5) !important;
+}
+
+.zb-word__eg {
+  font-style: italic;
+  font-size: calc(var(--u) * 2.9);
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+.zb-quote {
+  margin: calc(var(--u) * 5) 0 0;
+  gap: calc(var(--u) * 1.8);
+}
+
+.z-xw.zb-xw {
+  padding: calc(var(--u) * 4);
+}
+
+.zb-comic .z-comic__head h2 {
+  font-size: calc(var(--u) * 8);
+}
+
+.zb-comic + .zb-lower {
+  margin-top: calc(var(--u) * 5);
+}
+
+.z-page .z-signoff {
+  margin-top: calc(var(--u) * 4);
+}
+
+.z-page .z-signoff p:first-child {
+  font-size: calc(var(--u) * 9.6);
+}
+
+.z-page .z-signoff p:nth-child(2) {
+  font-size: calc(var(--u) * 5);
+  margin-top: calc(var(--u) * 1) !important;
+}
+
+.zb-quote blockquote {
+  font-size: calc(var(--u) * 5.4);
+}
+
+.zb-quote figcaption {
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.1);
+  letter-spacing: 0.03em;
+}
+
+.zb-quote cite {
+  font-style: normal;
+}
+
+.z-signoff p:first-child {
+  text-wrap: balance;
+}
+
+/* ---------- A story's own page: one mini page, centred on the desk ---------- */
+
+.z-wrap--single {
+  --sheet-max: 1000px;
+}
+
+.z-single {
+  width: 62%;
+  margin-inline: auto;
+}
+
+.z-single > .print-sheet.z-page {
+  --u: calc(100cqw * 0.62 / 170);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.08),
+    0 10px 30px -10px rgb(0 0 0 / 0.3),
+    0 30px 60px -30px rgb(0 0 0 / 0.25);
+}
+
+/* One page, not a spread: the spread's light map would put a gutter down its middle. */
+.print-sheet-wrap.z-wrap--single::after {
+  background-image: url("/mockup/press/light-sheet.png");
+  left: 19%;
+  right: 19%;
+}
+
+.print-sheet-wrap.z-wrap--single::before {
+  left: 21%;
+  right: 21%;
+}
+
+@container (max-width: 900px) {
+  .z-single {
+    width: 100%;
+  }
+
+  .z-single > .print-sheet.z-page {
+    --u: calc(100cqw / 170);
+  }
+
+  .print-sheet-wrap.z-wrap--single::after,
+  .print-sheet-wrap.z-wrap--single::before {
+    left: 0;
+    right: 0;
+  }
+}
+
+.zt-doodle {
+  margin-top: auto;
+  align-self: flex-end;
+  width: calc(var(--u) * 40);
+  height: calc(var(--u) * 40);
+  margin-right: calc(var(--u) * 6);
+  rotate: -8deg;
+}
+
+.zt-doodle + .zt-nav {
+  margin-top: 0;
+}
+
+.zt-bare {
+  margin-bottom: calc(var(--u) * 6);
+}
+
+.zt-pull {
+  margin-block: calc(var(--u) * 6) calc(var(--u) * 2);
+}
+
+.zt-back {
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.9);
+}
+
+.zt-kicker {
+  margin-top: calc(var(--u) * 6) !important;
+}
+
+.zt-head {
+  margin-top: calc(var(--u) * 2) !important;
+  line-height: 1;
+}
+
+.zt-photo {
+  margin-top: calc(var(--u) * 7);
+  margin-inline: calc(var(--u) * 2) calc(var(--u) * 1);
+  --ob-inset: calc(var(--u) * 5) calc(var(--u) * -3) calc(var(--u) * -3) calc(var(--u) * 12);
+}
+
+.zt-sticker {
+  position: absolute;
+  width: calc(var(--u) * 26);
+  right: calc(var(--u) * -4);
+  top: calc(var(--u) * -12);
+  rotate: 10deg;
+}
+
+.zt-sticker p {
+  font-family: var(--z-slab), serif;
+  font-size: calc(var(--u) * 5);
+  line-height: 1;
+  text-align: center;
+}
+
+.zt-dek {
+  margin-top: calc(var(--u) * 4) !important;
+  font-size: calc(var(--u) * 5.4) !important;
+  line-height: 1.2 !important;
+  text-wrap: balance;
+}
+
+.zt-body {
+  margin-top: calc(var(--u) * 4);
+  font-size: calc(var(--u) * 3.7);
+  line-height: 1.4;
+}
+
+.zt-source {
+  margin-top: calc(var(--u) * 4) !important;
+  font-family: var(--z-type), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.9);
+  overflow-wrap: anywhere;
+}
+
+.zt-nav {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 6);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 4);
+}
+
+.zt-nav__card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.2);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 2);
+  text-decoration: none;
+}
+
+.zt-nav__card--next {
+  text-align: right;
+}
+
+.zt-nav__card b {
+  font-family: var(--z-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1.15;
+}
+
+.zt-nav__card:hover b {
+  text-decoration: underline;
+}
+
+.zt-nav__row {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: calc(var(--u) * 3);
+}
+
+.zt-nav + .z-folio {
+  margin-top: 0 !important;
+}
+
+/* ===================================================================================== */
+/* Phones: the pages reflow into one column (see zine.css for the mockup's own rules)     */
+/* ===================================================================================== */
+
+@container (max-width: 760px) {
+  .z-cover__also {
+    max-width: none;
+  }
+
+  .z-cover__also b {
+    font-size: 24px;
+  }
+
+  /* The note on a print's border goes into the border's flow, so a long one wraps rather than
+     running over the picture. */
+  .z-print__cap {
+    position: static;
+    display: block;
+    margin-top: 8px;
+  }
+
+  .z-page .z-print.print-print {
+    padding-bottom: 10px;
+  }
+
+  .z-clues li {
+    grid-template-columns: 24px 1fr;
+  }
+
+  .z-head__heavy--wrap {
+    font-size: max(calc(var(--u) * var(--hb)), 30px);
+  }
+
+  .zf-contents ol {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .zf-contents li {
+    margin-top: 0 !important;
+  }
+
+  .zf-contents .z-contents__n {
+    font-size: 34px;
+  }
+
+  .zf-contents .z-contents__sec {
+    font-size: 18px;
+  }
+
+  .zf-contents .z-contents__tease,
+  .zf-others__dek,
+  .zf-weather {
+    font-size: 14px;
+  }
+
+  .zf-cover__anno {
+    display: none;
+  }
+
+  .zf-others {
+    grid-template-columns: 1fr;
+  }
+
+  .z-turn__label,
+  .zt-back,
+  .zt-source,
+  .zg-note,
+  .zb-yday__list,
+  .zb-yday__line,
+  .zb-yday,
+  .zb-word__say {
+    font-size: 14px;
+  }
+
+  .z-turn__n {
+    font-size: 44px;
+  }
+
+  .z-also ol {
+    grid-template-columns: 1fr;
+  }
+
+  .z-also__n {
+    font-size: 30px;
+  }
+
+  .z-also__text b,
+  .z-also--big .z-also__text b {
+    font-size: 18px;
+  }
+
+  .z-also--big .z-also__n {
+    font-size: 34px;
+  }
+
+  .z-also__dek {
+    font-size: 15px;
+  }
+
+  .z-also--big li:nth-child(even) {
+    margin-top: 0;
+  }
+
+  .z-also__print {
+    width: 70%;
+  }
+
+  .z-turn__text b {
+    font-size: 19px;
+  }
+
+  .z-turn__text > span:last-child,
+  .zb-letter,
+  .zb-word__eg,
+  .zb-word__means {
+    font-size: 15px;
+  }
+
+  .z-turn__arrow {
+    width: 36px;
+    height: 18px;
+  }
+
+  .z-page .z-h2.zt-head {
+    font-size: 36px !important;
+  }
+
+  .zs-bare__dek {
+    font-size: 22px;
+    max-width: none;
+  }
+
+  .zs-bare {
+    padding: 24px 18px 40px;
+  }
+
+  .zs-bare__doodle {
+    width: 56px;
+    height: 56px;
+    bottom: -14px;
+  }
+
+  .zs-text--alone .z-dek,
+  .zt-dek {
+    font-size: 19px !important;
+  }
+
+  .zs-body--alone,
+  .zt-body {
+    font-size: 16px;
+  }
+
+  .zs-brief__grid,
+  .zs-brief--compact .zs-brief__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .zs-brief__grid--flip > :first-child {
+    order: 0;
+  }
+
+  .zs-brief--bare {
+    padding: 28px 16px 20px;
+  }
+
+  .zs-pull blockquote,
+  .zb-quote blockquote {
+    font-size: 22px;
+  }
+
+  .z-gotw {
+    min-height: 0;
+  }
+
+  .zg-clip__paper {
+    padding: 36px 16px 36px;
+  }
+
+  .zg-clip .z-tape-tl {
+    left: 4px;
+  }
+
+  .zg-clip .z-tape-tr {
+    right: 4px;
+  }
+
+  .zg-stamp {
+    font-size: 22px;
+  }
+
+  .zg-mast__doodle {
+    display: none;
+  }
+
+  .zb-grid {
+    width: 100%;
+  }
+
+  .zb-strip,
+  .zb-strip--3 {
+    grid-template-columns: 1fr;
+  }
+
+  .zb-panel {
+    min-height: 0;
+    padding: 16px 16px 48px;
+  }
+
+  .zb-panel__doodle {
+    width: 44px;
+    height: 34px;
+  }
+
+  .zb-mini span {
+    font-size: 12px;
+  }
+
+  .zb-yday__xw {
+    grid-template-columns: 96px 1fr;
+  }
+
+  .zb-word__w {
+    font-size: 30px;
+  }
+
+  .z-ladder__row span {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .zb-quote figcaption {
+    font-size: 14px;
+  }
+
+  .z-page .z-signoff p:first-child {
+    font-size: 40px;
+  }
+
+  .z-page .z-signoff p:nth-child(2) {
+    font-size: 22px;
+  }
+
+  .zt-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .z-single > .print-sheet.z-page {
+    --u: calc(100cqw / 160);
+  }
+
+  .zt-doodle {
+    display: none;
+  }
+
+  .zt-nav__card--next {
+    text-align: left;
+  }
+
+  .zt-nav__card b {
+    font-size: 17px;
+  }
+
+  .zt-nav__row {
+    font-size: 15px;
+  }
+
+  .zt-sticker {
+    width: 84px;
+    top: -30px;
+    right: -6px;
+  }
+
+  .zt-sticker p {
+    font-size: 16px;
+  }
+
+  .z-spec__num b {
+    font-size: 40px;
+  }
+
+  /* Tape, prints and blocks that overhang a page edge are pulled in so a phone never scrolls. */
+  .z-tape-tl {
+    left: -2px;
+  }
+
+  .z-tape-tr {
+    right: -2px;
+  }
+
+  .z-tape-br {
+    right: -2px;
+  }
+
+  .z-offset-block::before {
+    inset: 12px -4px -8px 20px;
+  }
+}

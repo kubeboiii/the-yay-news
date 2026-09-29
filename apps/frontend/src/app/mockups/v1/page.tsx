@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { edition } from "@/app/mockups/_data/sample-edition";
-import { Burst } from "@/app/mockups/_shared/burst";
-import { Mark } from "@/app/mockups/_shared/mark";
+import { Burst } from "@/features/print/burst";
+import { Mark } from "@/features/print/mark";
 import { Barcode, STRETCH, Stamp, Zigzag } from "./_components/parts";
 
 const pageNumbers: Record<string, number> = {
@@ -29,7 +29,12 @@ export default function BroadsheetFront() {
           <div className="yn-vrule" />
           <div className="yn-banner-number">
             <span className="yn-fat fr-number">
-              <Mark name="brush-03" ink="var(--neon-pink)" className="fr-number-swipe" style={STRETCH} />
+              <Mark
+                name="brush-03"
+                ink="var(--neon-pink)"
+                className="fr-number-swipe"
+                style={STRETCH}
+              />
               <span className="relative">{numberOfTheDay.value}</span>
             </span>
             <span className="yn-hand">
@@ -53,7 +58,12 @@ export default function BroadsheetFront() {
             </div>
             <figcaption>The fête, 11.02 am</figcaption>
           </figure>
-          <Burst fill="var(--neon-pink)" points={22} depth={0.1} className="yn-banner-badge print-worn">
+          <Burst
+            fill="var(--neon-pink)"
+            points={22}
+            depth={0.1}
+            className="yn-banner-badge print-worn"
+          >
             <span className="yn-burst-text text-[calc(var(--u)*5.2)]">
               a new
               <br />
@@ -77,7 +87,7 @@ export default function BroadsheetFront() {
               </div>
               <div>
                 <dt>Date:</dt>
-                <dd>Tue 30 Sep 2026</dd>
+                <dd>Wed 30 Sep 2026</dd>
               </div>
               <div>
                 <dt>Stories:</dt>
@@ -192,7 +202,9 @@ export default function BroadsheetFront() {
             <p className="yn-caption">
               Butter, head baker. <span className="yn-credit">Photo: Reba Spike</span>
             </p>
-            <h2 className="yn-chunk mt-[calc(var(--u)*3)]">A cat runs a bakery and tops the charts</h2>
+            <h2 className="yn-chunk mt-[calc(var(--u)*3)]">
+              A cat runs a bakery and tops the charts
+            </h2>
             <p className="yn-body">{gaming?.dek}</p>
             <p className="yn-jump">Gaming, page 3</p>
           </article>
@@ -245,7 +257,9 @@ export default function BroadsheetFront() {
             <div className="fr-ad">
               <p className="yn-ad-label">Advertisement</p>
               <p className="yn-chunk">This space was for sale.</p>
-              <p className="yn-body">Nobody bought it, so here is a nice thought instead: drink some water.</p>
+              <p className="yn-body">
+                Nobody bought it, so here is a nice thought instead: drink some water.
+              </p>
             </div>
           </aside>
         </section>

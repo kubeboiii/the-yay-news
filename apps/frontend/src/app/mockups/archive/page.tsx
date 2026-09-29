@@ -45,7 +45,7 @@ const PAPERS = [
 
 type Paper = (typeof PAPERS)[number];
 
-// Today's issue, No. 42, is dated Tuesday 30 September 2026; one issue a day before it.
+// Today's issue, No. 42, is dated Wednesday 30 September 2026; one issue a day before it.
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const DAYS_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

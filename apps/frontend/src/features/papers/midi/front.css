@@ -1,0 +1,706 @@
+/* =====================================================================================
+ * FRONT · the cover on apricot (p1) and the lead on paper (p2)
+ * ===================================================================================== */
+
+.m5 .m5f-cover {
+  background: var(--apricot);
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u) * 9) calc(var(--u) * 12) 0;
+}
+
+.m5f-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: calc(var(--u) * 4);
+  position: relative;
+  z-index: 2;
+}
+/* A rubber stamp, inked unevenly and not quite straight. */
+.m5f-stamp {
+  flex: none;
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  border: calc(var(--u) * 0.55) solid var(--ink);
+  outline: calc(var(--u) * 0.25) solid var(--ink);
+  outline-offset: calc(var(--u) * 0.6);
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 2) calc(var(--u) * 1.1);
+  transform: rotate(-3deg);
+  --wear-size: 90%;
+}
+.m5f-issue {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.2);
+  font-variant-numeric: lining-nums;
+  text-align: right;
+}
+
+.m5f-mast {
+  position: relative;
+  margin: calc(var(--u) * 1) calc(var(--u) * -1.5) 0;
+  font-weight: 900;
+  font-size: calc(var(--u) * 29.6);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  text-wrap: nowrap;
+  z-index: 2;
+}
+.m5f-rules {
+  flex: none;
+  margin-top: calc(var(--u) * 4);
+  height: calc(var(--u) * 3.6);
+  border-top: calc(var(--u) * 2.2) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.4) solid var(--ink);
+}
+
+.m5f-inside {
+  position: relative;
+  margin-top: calc(var(--u) * 1.4);
+  min-height: calc(var(--u) * 14);
+  display: grid;
+  grid-template-columns: calc(var(--u) * 7) 1fr;
+  align-items: stretch;
+  z-index: 2;
+}
+.m5f-inside-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.2);
+  text-align: center;
+}
+.m5f-inside ul {
+  display: grid;
+}
+.m5f-inside li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: calc(var(--u) * 4.2);
+  line-height: 1.12;
+  padding: calc(var(--u) * 1) calc(var(--u) * 3);
+  border-left: calc(var(--u) * 0.3) solid var(--ink);
+  text-wrap: balance;
+}
+.m5f-inside li.m5-len-m {
+  font-size: calc(var(--u) * 3.8);
+}
+.m5f-inside li.m5-len-l,
+.m5f-inside li.m5-len-xl {
+  font-size: calc(var(--u) * 3.4);
+}
+.m5f-inside li b {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--u) * 3);
+  font-variant-numeric: lining-nums;
+  margin-left: 0.3em;
+  white-space: nowrap;
+}
+
+/* The photograph runs off three edges of the sheet. */
+.m5f-bleed {
+  position: relative;
+  flex: 1;
+  min-height: calc(var(--u) * 120);
+  margin: calc(var(--u) * 3) calc(var(--u) * -12) 0;
+  z-index: 1;
+}
+.m5f-bleed .m5-photo {
+  position: absolute;
+  inset: 0;
+}
+
+/* No photograph: the lead's headline is the cover. */
+.m5f-bleed--type {
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  margin: calc(var(--u) * 3) 0 0;
+  padding: calc(var(--u) * 8) 0 calc(var(--u) * 80);
+}
+.m5f-cover-line {
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 17);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  margin-top: calc(var(--u) * 3);
+  text-wrap: balance;
+}
+.m5f-cover-line.m5-len-m {
+  font-size: calc(var(--u) * 14);
+}
+.m5f-cover-line.m5-len-l {
+  font-size: calc(var(--u) * 11.5);
+}
+.m5f-cover-line.m5-len-xl {
+  font-size: calc(var(--u) * 9.5);
+}
+.m5f-cover-doodle {
+  right: calc(var(--u) * 6);
+  bottom: calc(var(--u) * 84);
+  width: calc(var(--u) * 34);
+  height: calc(var(--u) * 24);
+  transform: rotate(-6deg);
+}
+
+.m5 .m5f-sticker {
+  position: absolute;
+  top: calc(var(--u) * 84);
+  right: calc(var(--u) * 10);
+  width: calc(var(--u) * 54);
+  transform: rotate(9deg);
+  z-index: 5;
+  --wear-size: 150%;
+}
+.m5f-sticker-text {
+  text-align: center;
+  line-height: 1;
+}
+.m5f-sticker-text .m5-display {
+  display: block;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 7.8);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.m5f-sticker-text .m5-len-m {
+  font-size: calc(var(--u) * 5.8);
+}
+.m5f-sticker-text .m5-len-l,
+.m5f-sticker-text .m5-len-xl {
+  font-size: calc(var(--u) * 4.4);
+  white-space: normal;
+}
+.m5f-sticker-text small {
+  display: block;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1.1;
+  margin-top: calc(var(--u) * 1.4);
+}
+
+/* The spec block: the cover colour cut into the photograph's bottom corner. */
+.m5f-spec {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
+  background: var(--apricot);
+  padding: calc(var(--u) * 5) calc(var(--u) * 5) calc(var(--u) * 10) calc(var(--u) * 12);
+  display: grid;
+  grid-template-columns: calc(var(--u) * 66) calc(var(--u) * 40);
+  gap: calc(var(--u) * 5);
+  align-items: end;
+}
+.m5f-no {
+  font-weight: 900;
+  font-size: calc(var(--u) * 13);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  padding-bottom: calc(var(--u) * 1.6);
+  border-bottom: calc(var(--u) * 0.6) solid var(--ink);
+}
+.m5f-spec dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  font-family: var(--f-sans), sans-serif;
+  font-size: calc(var(--u) * 2.6);
+  line-height: 1.1;
+  font-variant-numeric: lining-nums;
+}
+.m5f-spec dt,
+.m5f-spec dd {
+  padding: calc(var(--u) * 1.1) 0;
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+}
+.m5f-spec dt {
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  padding-right: calc(var(--u) * 3);
+}
+.m5f-spec dd {
+  text-align: right;
+}
+.m5f-cover-cap {
+  margin-top: calc(var(--u) * 2.2);
+}
+.m5f-box {
+  background: var(--butter-deep);
+  padding: calc(var(--u) * 2.4) calc(var(--u) * 3);
+  transform: rotate(-2.5deg);
+  --wear-size: 120%;
+  margin-bottom: calc(var(--u) * 1);
+}
+.m5f-box b {
+  display: block;
+  font-weight: 900;
+  font-size: calc(var(--u) * 12);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.m5f-box span {
+  display: block;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1.1;
+  margin-top: calc(var(--u) * 1);
+}
+
+/* ---------- page 2 ---------- */
+
+.m5f-lead {
+  flex: 1;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 44) 1fr;
+  column-gap: calc(var(--u) * 8);
+  padding: calc(var(--u) * 16) calc(var(--u) * 12) calc(var(--u) * 17);
+}
+
+.m5f-side {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+  padding-top: calc(var(--u) * 1);
+}
+.m5f-side-h {
+  font-weight: 400;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.5);
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  padding-top: calc(var(--u) * 1.2);
+  margin-bottom: calc(var(--u) * 1.2);
+}
+.m5f-side p {
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.3;
+}
+.m5 .m5f-num {
+  font-weight: 900;
+  font-size: calc(var(--u) * 10.5);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: calc(var(--u) * 1);
+  overflow-wrap: anywhere;
+}
+.m5 .m5f-num.m5-len-m {
+  font-size: calc(var(--u) * 8);
+}
+.m5 .m5f-num.m5-len-l,
+.m5 .m5f-num.m5-len-xl {
+  font-size: calc(var(--u) * 6);
+}
+.m5f-weather {
+  position: relative;
+}
+.m5f-cloud {
+  top: calc(var(--u) * 3.5);
+  right: calc(var(--u) * -3);
+  width: calc(var(--u) * 17);
+  height: calc(var(--u) * 12);
+  transform: rotate(6deg);
+}
+.m5 .m5f-weather-head {
+  font-weight: 500;
+  font-style: italic;
+  font-size: calc(var(--u) * 5.4);
+  line-height: 1.02;
+  margin-bottom: calc(var(--u) * 1.2);
+  padding-right: calc(var(--u) * 10);
+}
+.m5f-quote {
+  font-style: italic;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.12;
+  margin-bottom: calc(var(--u) * 1.4);
+}
+
+/* A clipping torn out of another page and dropped in the margin. */
+.m5f-clip {
+  background: var(--butter);
+  padding: calc(var(--u) * 5) calc(var(--u) * 3) calc(var(--u) * 6);
+  transform: rotate(-2.5deg);
+  margin: 0 calc(var(--u) * -3) 0 calc(var(--u) * -1);
+}
+.m5f-clip--front {
+  background: var(--mint);
+  transform: rotate(1.8deg);
+}
+.m5f-clip .m5-photo {
+  height: calc(var(--u) * 28);
+  margin-bottom: calc(var(--u) * 2);
+}
+.m5 .m5f-clip-label {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.1);
+}
+.m5f-clip-head {
+  font-weight: 600;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.08;
+  margin: calc(var(--u) * 0.6) 0 calc(var(--u) * 1.4);
+}
+
+.m5f-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.m5f-top-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  margin-bottom: calc(var(--u) * 3);
+}
+.m5f-top-row--still {
+  grid-template-columns: 1fr calc(var(--u) * 50);
+  column-gap: calc(var(--u) * 5);
+}
+
+/* The lead's headline, set as the page's hero: as big as its length allows. */
+.m5f-hero {
+  font-weight: 900;
+  font-size: calc(var(--u) * 14);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin-top: calc(var(--u) * 2);
+  text-wrap: balance;
+}
+.m5f-hero.m5-len-m {
+  font-size: calc(var(--u) * 10.4);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.m5f-hero.m5-len-l {
+  font-weight: 800;
+  font-size: calc(var(--u) * 8.6);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+.m5f-hero.m5-len-xl {
+  font-weight: 700;
+  font-size: calc(var(--u) * 7.2);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.m5 .m5f-still {
+  position: relative;
+  width: calc(var(--u) * 50);
+  height: calc(var(--u) * 42);
+  transform: rotate(4.5deg);
+  margin: calc(var(--u) * 1) calc(var(--u) * -3) 0 0;
+}
+.m5f-still-tape {
+  top: calc(var(--u) * -3);
+  left: calc(var(--u) * 14);
+  transform: rotate(-6deg);
+}
+
+.m5f-dek {
+  font-style: italic;
+  font-size: calc(var(--u) * 4.9);
+  line-height: 1.16;
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.m5f-byline {
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.m5f-drop::first-letter {
+  float: left;
+  font-family: var(--f-display), serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 16.4);
+  line-height: 0.8;
+  margin: calc(var(--u) * 0.9) calc(var(--u) * 1.6) 0 0;
+}
+
+.m5f-pull {
+  position: relative;
+  font-style: italic;
+  font-weight: 500;
+  font-size: calc(var(--u) * 6.2);
+  line-height: 1.1;
+  text-align: center;
+  padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 4);
+}
+.m5f-pull-mark {
+  position: absolute;
+  left: 38%;
+  right: 38%;
+  bottom: calc(var(--u) * 1);
+  height: calc(var(--u) * 2.4);
+  mask-size: 100% 100% !important;
+  -webkit-mask-size: 100% 100% !important;
+}
+
+.m5f-contents {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 5);
+}
+.m5f-contents h2 {
+  font-weight: 600;
+  font-style: italic;
+  font-size: calc(var(--u) * 6);
+  line-height: 1;
+  margin-bottom: calc(var(--u) * 1.5);
+}
+.m5f-contents li a {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 12) auto 1fr;
+  align-items: baseline;
+  column-gap: calc(var(--u) * 3);
+  border-top: calc(var(--u) * 0.35) solid var(--apricot-deep);
+  padding: calc(var(--u) * 1) 0 calc(var(--u) * 1.2);
+}
+.m5f-contents li i {
+  font-style: normal;
+  font-weight: 900;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1;
+}
+.m5f-contents li b {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.5);
+  white-space: nowrap;
+}
+.m5f-contents li span {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.5);
+  line-height: 1.2;
+}
+
+/* ---------- phone ---------- */
+
+@container (max-width: 760px) {
+  .m5 .m5f-cover {
+    padding: 40px 18px 64px;
+  }
+  .m5f-top {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: -14px;
+  }
+  .m5f-stamp {
+    font-size: 16px;
+    border-width: 2px;
+    outline-width: 1px;
+    outline-offset: 2px;
+    padding: 3px 8px 5px;
+  }
+  .m5f-issue {
+    font-size: 15px;
+    text-align: left;
+  }
+  .m5f-mast {
+    font-size: calc(100cqw * 0.17);
+    margin: 10px 0 0;
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 0.92;
+  }
+  .m5f-rules {
+    height: 9px;
+    border-top-width: 5px;
+    border-bottom-width: 1px;
+    margin-top: 10px;
+  }
+  .m5f-inside {
+    min-height: 0;
+    display: block;
+    margin-top: 10px;
+  }
+  .m5f-inside-label {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 16px;
+    display: block;
+    text-align: left;
+    margin-bottom: 4px;
+  }
+  .m5f-inside ul {
+    display: block;
+  }
+  .m5 .m5f-inside li {
+    display: block;
+    text-align: left;
+    border-left: 0;
+    border-top: 1px solid var(--ink);
+    font-size: 19px;
+    padding: 8px 0;
+  }
+  .m5f-inside li b {
+    font-size: 14px;
+  }
+  .m5f-bleed {
+    flex: none;
+    min-height: 0;
+    margin: 12px -18px 0;
+    aspect-ratio: 4 / 5;
+  }
+  .m5f-bleed--type {
+    aspect-ratio: auto;
+    margin: 12px 0 0;
+    padding: 20px 0 24px;
+  }
+  .m5 .m5f-cover-line {
+    font-size: 40px;
+  }
+  .m5f-cover-doodle {
+    display: none;
+  }
+  .m5 .m5f-sticker {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 170px;
+    margin: -120px 4px 0 auto;
+  }
+  .m5f-bleed--type + .m5f-sticker {
+    margin-top: 0;
+  }
+  .m5 .m5f-sticker-text .m5-display {
+    font-size: 26px;
+  }
+  .m5f-sticker-text small {
+    font-size: 14px;
+  }
+  .m5f-spec {
+    position: relative;
+    grid-template-columns: 1fr;
+    padding: 18px 0 0;
+    gap: 18px;
+  }
+  .m5f-no {
+    font-size: 48px;
+  }
+  .m5f-spec dl {
+    font-size: 14px;
+  }
+  .m5f-spec dt,
+  .m5f-spec dd {
+    padding: 6px 0;
+  }
+  .m5f-box {
+    width: fit-content;
+    padding: 10px 16px;
+  }
+  .m5f-box b {
+    font-size: 48px;
+  }
+  .m5f-box span {
+    font-size: 16px;
+  }
+
+  .m5f-lead {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 32px;
+    padding: 0;
+  }
+  .m5f-side {
+    gap: 26px;
+  }
+  .m5f-side-h {
+    font-size: 17px;
+  }
+  .m5f-side p {
+    font-size: 16px;
+  }
+  .m5 .m5f-num,
+  .m5 .m5f-num.m5-len-m,
+  .m5 .m5f-num.m5-len-l,
+  .m5 .m5f-num.m5-len-xl {
+    font-size: 48px;
+  }
+  .m5f-cloud {
+    width: 60px;
+    height: 42px;
+    top: 10px;
+    right: 0;
+  }
+  .m5 .m5f-weather-head {
+    font-size: 26px;
+  }
+  .m5f-quote {
+    font-size: 22px;
+  }
+  .m5f-clip {
+    margin: 0;
+    padding: 20px 14px 24px;
+  }
+  .m5f-clip .m5-photo {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+  .m5 .m5f-clip-label {
+    font-size: 16px;
+  }
+  .m5f-clip-head {
+    font-size: 22px;
+  }
+  .m5f-top-row--still {
+    grid-template-columns: 1fr;
+  }
+  .m5 .m5f-hero {
+    font-size: 40px;
+  }
+  .m5 .m5f-hero.m5-len-l,
+  .m5 .m5f-hero.m5-len-xl {
+    font-size: 32px;
+  }
+  .m5 .m5f-still {
+    width: 72%;
+    height: auto;
+    aspect-ratio: 5 / 4;
+    margin: 24px 0 8px auto;
+    transform: rotate(3deg);
+  }
+  .m5f-dek {
+    font-size: 21px;
+  }
+  .m5f-drop::first-letter {
+    font-size: 64px;
+    margin: 4px 8px 0 0;
+  }
+  .m5f-pull {
+    font-size: 26px;
+    padding: 28px 4px 24px;
+  }
+  .m5f-pull-mark {
+    height: 10px;
+  }
+  .m5f-contents {
+    margin-top: 24px;
+  }
+  .m5f-contents h2 {
+    font-size: 26px;
+  }
+  .m5f-contents li a {
+    grid-template-columns: 44px 1fr;
+    padding: 8px 0;
+  }
+  .m5f-contents li i {
+    font-size: 26px;
+    grid-row: span 2;
+  }
+  .m5f-contents li b {
+    font-size: 16px;
+    white-space: normal;
+  }
+  .m5f-contents li span {
+    font-size: 16px;
+  }
+}

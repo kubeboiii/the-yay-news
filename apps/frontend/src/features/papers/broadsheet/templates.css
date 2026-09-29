@@ -1,0 +1,1791 @@
+/*
+ * The broadsheet templates: what turns the mockup's one hand-set edition into pages that print any
+ * edition. Loaded after the mockup's own sheets (broadsheet, sections, paste-up, type), so it only
+ * adds: section inks for the sections the mockup never drew, the flexible parts (a lead whose
+ * picture grows to fill the page, a row for one or two more stories, a guest supplement, a
+ * story's own page) and their phone reflow.
+ */
+
+/* ——— Inks ——— */
+
+/*
+ * Type on violet. In every colourway the broadsheet prints today violet is either the same ink as
+ * pink or light enough for black, so it follows --neon-pink-ink; the three sets that print violet
+ * as a deep purple beside a light pink need paper-white on it.
+ */
+.yn-table {
+  --neon-violet-ink: var(--neon-pink-ink);
+}
+
+[data-theme="candy-shop"] .yn-table,
+[data-theme="night-market"] .yn-table,
+[data-theme="festival"] .yn-table {
+  --neon-violet-ink: var(--paper);
+}
+
+.yn-theme-front {
+  --pop: var(--neon-pink);
+  --pop-ink: var(--neon-pink-ink);
+  --pop2: var(--neon-yellow);
+  --pop2-ink: var(--ink);
+}
+
+.yn-theme-sports {
+  --pop: var(--neon-orange);
+  --pop-ink: var(--neon-orange-ink);
+  --pop2: var(--neon-blue);
+  --pop2-ink: var(--paper);
+}
+
+.yn-theme-tech {
+  --pop: var(--neon-yellow);
+  --pop-ink: var(--ink);
+  --pop2: var(--neon-blue);
+  --pop2-ink: var(--paper);
+}
+
+.yn-theme-discoveries {
+  --pop: var(--neon-green);
+  --pop-ink: var(--ink);
+  --pop2: var(--neon-pink);
+  --pop2-ink: var(--neon-pink-ink);
+}
+
+.yn-theme-money {
+  --pop: var(--neon-yellow);
+  --pop-ink: var(--ink);
+  --pop2: var(--neon-pink);
+  --pop2-ink: var(--neon-pink-ink);
+}
+
+.yn-theme-internet {
+  --pop: var(--neon-violet);
+  --pop-ink: var(--neon-violet-ink);
+  --pop2: var(--neon-yellow);
+  --pop2-ink: var(--ink);
+}
+
+.yn-theme-guest {
+  --pop: var(--neon-pink);
+  --pop-ink: var(--neon-pink-ink);
+  --pop2: var(--neon-yellow);
+  --pop2-ink: var(--ink);
+}
+
+/* The page number block takes its section's ink, so its type does too. */
+.yn-run-page {
+  color: var(--pop-ink, var(--ink));
+}
+
+.bs-on-pink {
+  color: var(--neon-pink-ink);
+}
+
+.bs-on-yellow {
+  color: var(--ink);
+}
+
+/* ——— Links: printed type that happens to be clickable ——— */
+
+.bs-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bs-link:hover,
+.bs-link:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
+}
+
+.bs-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.bs-link-under {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.bs-burst-text {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* A running-head title may be longer than the mockup's: let it wrap rather than run off. */
+.yn-run-title .bs-run-h1 {
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.yn-note-foot {
+  margin-bottom: 0;
+}
+
+/* ================================================================
+   Front page
+   ================================================================ */
+
+/* Without the mockup's picnic print the number and its caption take the whole banner. */
+.yn-banner.bs-banner {
+  grid-template-columns: auto 1px 1fr;
+  padding-right: calc(var(--u) * 54);
+}
+
+.bs-banner .yn-banner-number {
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2) calc(var(--u) * 5);
+}
+
+.bs-banner .fr-number {
+  white-space: nowrap;
+}
+
+.yn-banner-number .bs-banner-caption {
+  flex: 1 1 calc(var(--u) * 80);
+  max-width: calc(var(--u) * 128);
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1.08;
+  text-wrap: pretty;
+}
+
+.yn-banner .bs-banner-badge {
+  width: calc(var(--u) * 44);
+  right: calc(var(--u) * 5);
+  top: 50%;
+  bottom: auto;
+  translate: 0 -50%;
+  rotate: 9deg;
+}
+
+/* The lead with no photo: the card sits on a block of fluoro instead. */
+.yn-hero.bs-hero-type {
+  background: var(--neon-yellow);
+  min-height: calc(var(--u) * 150);
+}
+
+.bs-hero-type .yn-hero-card {
+  left: calc(var(--u) * 10);
+  right: calc(var(--u) * 50);
+  width: auto;
+}
+
+.bs-hero-dek {
+  margin-top: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 5.4);
+}
+
+.yn-hero-card.bs-hero-card-long h2 {
+  font-size: calc(var(--u) * 16.5);
+}
+
+.bs-hero-burst {
+  font-size: calc(var(--u) * 8.4);
+}
+
+.yn-hero .fr-stamp {
+  z-index: 4;
+}
+
+.bs-cat-flag {
+  position: relative;
+  min-height: calc(var(--u) * 10);
+}
+
+.bs-cat-flag .bs-cat-sticker {
+  width: calc(var(--u) * 40);
+  rotate: -6deg;
+  margin-bottom: calc(var(--u) * 2);
+}
+
+.fr-lead h2.yn-chunk {
+  font-size: calc(var(--u) * 9.4);
+  line-height: 0.95;
+  text-wrap: pretty;
+}
+
+.yn-index a {
+  flex: none;
+  max-width: 78%;
+}
+
+.fr-riddle .bs-link-under {
+  font-weight: 700;
+}
+
+/* ================================================================
+   Inside pages
+   ================================================================ */
+
+/* Everything between the running head and the last row shares the height the page has left, so a
+   page with one story fills the sheet with its picture rather than with empty paper. */
+.bs-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-main > .bs-top,
+.bs-main > .bs-spread {
+  flex: 1 1 auto;
+}
+
+.bs-lead {
+  min-width: 0;
+}
+
+.bs-media {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--u) * 150);
+}
+
+.bs-media .bs-grow {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: calc(var(--u) * 130);
+}
+
+.bs-solo .bs-media {
+  min-height: calc(var(--u) * 200);
+}
+
+/* A print pasted on the page: white border, taped at two corners, a little off square. */
+.bs-print {
+  rotate: -0.8deg;
+  margin: calc(var(--u) * 2) calc(var(--u) * 1) 0;
+  padding-bottom: calc(var(--u) * 1.8);
+}
+
+.bs-print-tape-l,
+.bs-print-tape-r {
+  top: calc(var(--u) * -3);
+  width: calc(var(--u) * 22);
+  z-index: 4;
+}
+
+.bs-print-tape-l {
+  left: calc(var(--u) * -6);
+  rotate: -30deg;
+}
+
+.bs-print-tape-r {
+  right: calc(var(--u) * 24);
+  rotate: 6deg;
+}
+
+/* No photo: the lead's headline set big on a solid block of the section's loud ink. */
+.bs-poster {
+  position: relative;
+  background: var(--pop);
+  color: var(--pop-ink);
+  padding: calc(var(--u) * 9) calc(var(--u) * 8) calc(var(--u) * 8);
+  justify-content: flex-end;
+  gap: calc(var(--u) * 3);
+  rotate: -0.6deg;
+}
+
+.bs-poster .yn-kicker {
+  color: inherit;
+  font-size: calc(var(--u) * 5.2);
+}
+
+.bs-poster .bs-poster-hed {
+  font-size: calc(var(--u) * var(--poster, 22));
+  line-height: 0.9;
+  max-width: 94%;
+  text-wrap: balance;
+  text-shadow: calc(var(--u) * 0.6) calc(var(--u) * 0.45) 0 var(--pop2);
+}
+
+.bs-poster .bs-poster-dek {
+  font-size: calc(var(--u) * 6);
+  line-height: 1.2;
+  max-width: 88%;
+}
+
+.bs-poster-mark {
+  position: absolute;
+  left: calc(var(--u) * 8);
+  top: calc(var(--u) * 8);
+  width: calc(var(--u) * 14);
+  height: calc(var(--u) * 20);
+  rotate: -14deg;
+}
+
+.bs-empty {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--u) * 120);
+}
+
+.bs-lead-copy > * + * {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.bs-lead-copy .yn-body {
+  font-size: calc(var(--u) * 3.4);
+}
+
+.bs-dek-big {
+  font-size: calc(var(--u) * 5.6);
+  line-height: 1.2;
+}
+
+.bs-cap {
+  margin-top: calc(var(--u) * 3);
+}
+
+.ss-lead-text > div > .yn-dek + .yn-body {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.bs-top .ss-sticker {
+  top: calc(var(--u) * 6);
+}
+
+/* The listings column: every other page of the paper, in the section's partner ink. */
+.bs-listings .ss-list li {
+  border-bottom-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+.bs-listings .ss-list li:last-child {
+  border-bottom: 0;
+}
+
+.bs-listings .yn-label {
+  margin-top: calc(var(--u) * 5);
+}
+
+.bs-listings-flag {
+  font-size: calc(var(--u) * 20);
+  line-height: 0.86;
+  text-transform: uppercase;
+  padding-bottom: calc(var(--u) * 3);
+  border-bottom: calc(var(--u) * 1.2) solid currentColor;
+}
+
+.bs-listings .ss-list {
+  font-size: calc(var(--u) * 3.2);
+}
+
+/* Whatever height the column has left goes to its ear: the section's name, set sideways. */
+.bs-ear {
+  flex: 1 1 0;
+  min-height: 0;
+  margin-top: calc(var(--u) * 4);
+  display: flex;
+}
+
+.bs-ear svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bs-ear-text {
+  font-family: var(--font-head), "Arial Narrow", sans-serif;
+  font-size: 88px;
+  fill: currentColor;
+  dominant-baseline: alphabetic;
+}
+
+/* ——— A page with one story ——— */
+
+.bs-solo-top {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+}
+
+.yn-hero.bs-solo-hero {
+  flex: 1 1 auto;
+  min-height: calc(var(--u) * 190);
+  margin-top: calc(var(--u) * 2);
+}
+
+.bs-solo-hero--type {
+  background: var(--pop2);
+  rotate: -0.4deg;
+}
+
+.bs-solo-mark {
+  position: absolute;
+  right: calc(var(--u) * 26);
+  top: calc(var(--u) * 16);
+  width: calc(var(--u) * 20);
+  height: calc(var(--u) * 30);
+  rotate: 18deg;
+}
+
+.bs-solo-stars {
+  position: absolute;
+  left: calc(var(--u) * 12);
+  top: calc(var(--u) * 12);
+  width: calc(var(--u) * 26);
+  height: calc(var(--u) * 18);
+}
+
+.yn-hero .bs-solo-card {
+  background: var(--pop);
+  color: var(--pop-ink);
+  width: calc(var(--u) * 230);
+}
+
+.bs-solo-hero--type .bs-solo-card {
+  left: calc(var(--u) * 10);
+  bottom: calc(var(--u) * 12);
+}
+
+.bs-solo-card .yn-kicker {
+  color: inherit;
+  font-size: calc(var(--u) * 4.6);
+}
+
+.bs-solo-card .bs-solo-hed {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 19);
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.bs-solo-text {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr calc(var(--u) * 100);
+  gap: calc(var(--u) * 7);
+  align-items: start;
+}
+
+.bs-solo-text .yn-body {
+  font-size: calc(var(--u) * 3.4);
+}
+
+.bs-solo-listings {
+  background: var(--pop2);
+  color: var(--pop2-ink);
+  padding: calc(var(--u) * 4) calc(var(--u) * 5);
+  rotate: 0.8deg;
+}
+
+.bs-solo-list {
+  margin-top: calc(var(--u) * 1);
+}
+
+.bs-solo-list li {
+  border-bottom-color: color-mix(in srgb, currentColor 40%, transparent);
+  padding: calc(var(--u) * 1.4) 0;
+}
+
+.bs-solo-list li:last-child {
+  border-bottom: 0;
+}
+
+/* ——— Gaming's cartridge ——— */
+
+.bs-cart-label .yn-photo.bs-grow {
+  height: calc(var(--u) * 166);
+  min-height: 0;
+}
+
+.bs-solo .bs-cart-label .yn-photo.bs-grow,
+.bs-solo .bs-cart-screen {
+  height: calc(var(--u) * 230);
+}
+
+.bs-cart-screen {
+  --px: calc(var(--u) * 1.5);
+  height: calc(var(--u) * 166);
+  background: var(--pop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yn-cart-title .bs-cart-kicker {
+  font-size: calc(var(--u) * 12);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The cartridge's shell is violet: its small print takes violet's type colour. */
+.bs-cart .yn-cart-foot {
+  color: var(--neon-violet-ink);
+}
+
+.gm-review .gm-verdict {
+  margin-top: calc(var(--u) * 5);
+}
+
+.gm-review .gm-verdict .gm-total .yn-fat {
+  font-size: calc(var(--u) * 34);
+}
+
+.gm-review .ss-list,
+.gm-also {
+  position: relative;
+}
+
+.gm-review .bs-cap {
+  margin-top: calc(var(--u) * 2);
+}
+
+.gm-review > .yn-jump {
+  margin-bottom: calc(var(--u) * 3);
+}
+
+/* ——— One more story, set beside its picture ——— */
+
+.bs-more {
+  display: grid;
+  gap: calc(var(--u) * 6);
+  align-items: start;
+}
+
+.bs-more--img {
+  grid-template-columns: calc(var(--u) * 118) 1fr;
+}
+
+.bs-more--img.bs-more--flourish {
+  grid-template-columns: calc(var(--u) * 118) 1fr calc(var(--u) * 92);
+}
+
+.bs-more--text {
+  grid-template-columns: 1fr;
+}
+
+.bs-more--text.bs-more--flourish {
+  grid-template-columns: 1fr calc(var(--u) * 92);
+}
+
+.bs-more-text {
+  position: relative;
+  min-width: 0;
+}
+
+.bs-more-head > * + *,
+.bs-more-copy > * + * {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.bs-more-copy {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+/* With no picture and nothing beside it, the story sets its head and its text side by side
+   instead of in one line as wide as the page. */
+.bs-more--text:not(.bs-more--flourish) .bs-more-text {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: calc(var(--u) * 8);
+  align-items: start;
+}
+
+.bs-more--text:not(.bs-more--flourish) .bs-more-copy {
+  margin-top: 0;
+  padding-top: calc(var(--u) * 1);
+}
+
+.bs-more--text .bs-more-copy .yn-body {
+  font-size: calc(var(--u) * 3.4);
+}
+
+.bs-more .bs-more-hed {
+  font-size: calc(var(--u) * 11.5);
+}
+
+.bs-more--text .bs-more-hed {
+  font-size: calc(var(--u) * 14);
+}
+
+.bs-collage {
+  position: relative;
+}
+
+.bs-more-sticker {
+  position: absolute;
+  right: calc(var(--u) * -6);
+  top: calc(var(--u) * -2);
+  width: calc(var(--u) * 30);
+  rotate: 10deg;
+  z-index: 4;
+}
+
+.bs-more-head > .bs-more-sticker--text {
+  position: relative;
+  float: right;
+  right: auto;
+  top: auto;
+  margin: 0 0 calc(var(--u) * 2) calc(var(--u) * 4);
+}
+
+.bs-cols-2 {
+  columns: 2;
+  column-gap: calc(var(--u) * 6);
+}
+
+.bs-record {
+  min-width: 0;
+}
+
+.bs-hiscore {
+  --px: calc(var(--u) * 3.2);
+  min-width: 0;
+}
+
+.bs-hiscore .yn-kicker,
+.bs-hiscore .yn-body {
+  color: var(--paper);
+}
+
+/* ——— Two more stories, side by side ——— */
+
+.bs-more-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 7);
+  align-items: start;
+}
+
+.bs-brief {
+  position: relative;
+  min-width: 0;
+}
+
+.bs-brief > * + * {
+  margin-top: calc(var(--u) * 2.2);
+}
+
+.bs-brief--ruled {
+  border-left: 1px solid var(--hair);
+  padding-left: calc(var(--u) * 7);
+  margin-left: calc(var(--u) * -3.5);
+}
+
+.bs-brief-print {
+  position: relative;
+  rotate: -1.4deg;
+  margin-bottom: calc(var(--u) * 4);
+}
+
+.bs-brief--ruled .bs-brief-print {
+  rotate: 1.6deg;
+}
+
+.bs-brief-photo {
+  height: calc(var(--u) * 78);
+}
+
+.bs-brief-tape {
+  left: 50%;
+  top: calc(var(--u) * -3);
+  translate: -50% 0;
+  rotate: -4deg;
+}
+
+.bs-brief-sticker {
+  position: absolute;
+  right: calc(var(--u) * -3);
+  top: calc(var(--u) * -5);
+  width: calc(var(--u) * 28);
+  rotate: 9deg;
+  z-index: 4;
+}
+
+.bs-brief .yn-hed-sm {
+  font-size: calc(var(--u) * 10.5);
+}
+
+.bs-brief-credit {
+  display: block;
+}
+
+/* ——— The last row ——— */
+
+.ss-row.bs-row {
+  grid-template-columns: 1.3fr 1fr 0.8fr;
+  margin-bottom: calc(var(--u) * 4);
+}
+
+.bs-ticket {
+  grid-template-columns: 1fr calc(var(--u) * 22);
+  min-height: calc(var(--u) * 50);
+}
+
+.bs-ticket-main {
+  padding: calc(var(--u) * 4) calc(var(--u) * 5);
+  min-width: 0;
+}
+
+.bs-ticket-main .yn-hed-sm {
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.yn-ticket .bs-ticket-body {
+  margin-top: calc(var(--u) * 1.5);
+  text-align: left;
+  hyphens: none;
+}
+
+.bs-quote .yn-pullquote {
+  text-wrap: pretty;
+}
+
+.bs-ad .yn-chunk {
+  text-wrap: balance;
+}
+
+/* ================================================================
+   Guest section
+   ================================================================ */
+
+.bs-guest-band {
+  position: relative;
+  isolation: isolate;
+  margin: 0 calc(var(--u) * -12);
+  padding: calc(var(--u) * 8) calc(var(--u) * 12) calc(var(--u) * 9);
+  display: grid;
+  grid-template-columns: auto 1fr calc(var(--u) * 42);
+  gap: calc(var(--u) * 7);
+  align-items: center;
+  color: var(--pop-ink);
+}
+
+.bs-guest-band-ink {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--pop);
+  --wear-size: 130%;
+}
+
+.bs-guest-page {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2.5);
+  border: calc(var(--u) * 0.8) solid currentColor;
+  padding: calc(var(--u) * 3) calc(var(--u) * 4);
+  rotate: -2deg;
+}
+
+.bs-guest-page .yn-hand {
+  font-size: calc(var(--u) * 5);
+}
+
+.bs-guest-page .yn-fat {
+  font-size: calc(var(--u) * 24);
+}
+
+.bs-guest-title {
+  min-width: 0;
+}
+
+.bs-guest-presents {
+  font-size: calc(var(--u) * 5);
+}
+
+.bs-guest-h1 {
+  margin-top: calc(var(--u) * 1.5);
+  text-transform: uppercase;
+  line-height: 0.86;
+  text-shadow: calc(var(--u) * 0.9) calc(var(--u) * 0.7) 0 var(--pop2);
+  text-wrap: balance;
+}
+
+.bs-guest-tag {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 5.2);
+}
+
+.bs-guest-sticker {
+  width: calc(var(--u) * 42);
+  rotate: 10deg;
+}
+
+.bs-guest-dateline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: calc(var(--u) * 1) calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 3);
+  padding-bottom: calc(var(--u) * 2);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-sans), sans-serif;
+  font-size: calc(var(--u) * 3);
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+  font-variant-numeric: lining-nums;
+}
+
+/* The feature, set like a magazine spread: a big print with the headline pasted on, the story
+   under it, and the guest's own extra in a column beside. */
+.bs-spread {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 96);
+  gap: calc(var(--u) * 7);
+  align-items: stretch;
+}
+
+.bs-spread-main {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+  min-width: 0;
+}
+
+.yn-hero.bs-spread-hero {
+  min-height: calc(var(--u) * 170);
+}
+
+.bs-spread-hero .bs-solo-card {
+  width: calc(var(--u) * 190);
+}
+
+.bs-spread-text {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: calc(var(--u) * 7);
+  align-items: start;
+}
+
+.bs-spread-text .yn-body {
+  font-size: calc(var(--u) * 3.4);
+}
+
+/* A short story is set in the side column, beside its picture, like a magazine's standfirst. */
+.bs-spread-side > .bs-spread-text {
+  grid-template-columns: 1fr;
+  gap: calc(var(--u) * 3);
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+.bs-spread-side .bs-lead-copy > * + * {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.bs-lead-copy .yn-body {
+  font-size: calc(var(--u) * 3.4);
+}
+
+.bs-dek-big {
+  font-size: calc(var(--u) * 5);
+}
+
+.bs-spread-side {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 7);
+  padding-top: calc(var(--u) * 2);
+}
+
+.bs-guest-note {
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-top: calc(var(--u) * 2.5);
+}
+
+.bs-guest-note .yn-body {
+  margin-top: calc(var(--u) * 1.5);
+  text-align: left;
+  hyphens: none;
+}
+
+.bs-extra {
+  position: relative;
+  isolation: isolate;
+  align-self: start;
+  padding: calc(var(--u) * 5);
+  color: var(--pop2-ink);
+}
+
+.bs-extra > * + * {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.bs-extra-ink {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--pop2);
+  --wear-size: 150%;
+}
+
+.bs-word {
+  rotate: 1.2deg;
+}
+
+.bs-word-word {
+  font-size: calc(var(--u) * 15);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.bs-word-say {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 3.2);
+  letter-spacing: 0.04em;
+}
+
+.bs-extra .bs-word-means {
+  font-size: calc(var(--u) * 3.6);
+  text-align: left;
+  hyphens: none;
+}
+
+.bs-word-eg {
+  font-size: calc(var(--u) * 4.2);
+}
+
+.bs-then {
+  rotate: -1deg;
+  padding-bottom: calc(var(--u) * 22);
+}
+
+.bs-then-day {
+  font-size: calc(var(--u) * 13);
+}
+
+.bs-then-date {
+  font-size: calc(var(--u) * 8);
+}
+
+.bs-extra .yn-body {
+  text-align: left;
+  hyphens: none;
+}
+
+.bs-then-stamp {
+  right: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 2);
+  rotate: -8deg;
+}
+
+.bs-specimen {
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  color: var(--ink);
+}
+
+.bs-spec-row {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 16) 1fr;
+  gap: calc(var(--u) * 3);
+  align-items: center;
+  padding-bottom: calc(var(--u) * 2.5);
+  border-bottom: 1px solid var(--hair);
+  font-size: calc(var(--u) * 3.2);
+  line-height: 1.3;
+}
+
+.bs-spec-aa {
+  font-size: calc(var(--u) * 12);
+  line-height: 1;
+}
+
+.bs-spec-serif {
+  font-family: var(--font-text), serif;
+}
+
+.bs-spec-sans {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 800;
+  font-size: calc(var(--u) * 10);
+}
+
+.bs-spec-arrow {
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 9);
+  rotate: 160deg;
+}
+
+.bs-letters {
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  color: var(--ink);
+}
+
+.bs-letter blockquote {
+  font-style: italic;
+}
+
+/* ================================================================
+   Back page
+   ================================================================ */
+
+.bk-strip.bs-strip {
+  grid-template-columns: repeat(var(--cols, 4), 1fr);
+}
+
+.bs-strip .bk-panel:nth-child(4n + 1) {
+  grid-column: auto;
+}
+
+.bs-puzzles--nogrid {
+  grid-template-columns: 1fr calc(var(--u) * 100);
+}
+
+.bs-yesterday > * + * {
+  margin-top: calc(var(--u) * 2);
+}
+
+.bs-yesterday b {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.03em;
+}
+
+.bs-y-xword {
+  display: flow-root;
+}
+
+.bs-mini {
+  float: left;
+  display: grid;
+  width: calc(var(--u) * 26);
+  margin: calc(var(--u) * 0.5) calc(var(--u) * 3) calc(var(--u) * 1) 0;
+  gap: calc(var(--u) * 0.25);
+  background: var(--ink);
+  border: calc(var(--u) * 0.5) solid var(--ink);
+}
+
+.bs-mini span {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  font-family: var(--font-head), sans-serif;
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1;
+}
+
+.bs-mini span.block {
+  background: var(--ink);
+}
+
+.bs-small--one {
+  grid-template-columns: 1fr;
+}
+
+.bk-classifieds ul.bs-classifieds {
+  grid-template-columns: repeat(var(--cols, 4), 1fr);
+}
+
+.bs-odds {
+  margin-top: calc(var(--u) * 6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--u) * 90), 1fr));
+  gap: calc(var(--u) * 7);
+  align-items: start;
+}
+
+.bs-odd {
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+.bs-odd > * + * {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.bs-odd-letter blockquote {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.6);
+}
+
+.bs-odd-quote .yn-pullquote {
+  font-size: calc(var(--u) * 7);
+  text-wrap: pretty;
+}
+
+.bs-odds .bs-word {
+  --pop2: var(--neon-yellow);
+  --pop2-ink: var(--ink);
+}
+
+.bs-back .bk-signoff .bk-signoff-big {
+  white-space: normal;
+  text-wrap: balance;
+}
+
+/* ================================================================
+   A story's own page
+   ================================================================ */
+
+.bs-story-top {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 50);
+  gap: calc(var(--u) * 6);
+  align-items: start;
+  margin-top: calc(var(--u) * 2);
+}
+
+.bs-story-top--type .bs-story-head {
+  background: var(--pop);
+  color: var(--pop-ink);
+  padding: calc(var(--u) * 8);
+  rotate: -0.6deg;
+}
+
+.bs-story-top--type .yn-kicker {
+  color: inherit;
+}
+
+.bs-story-head {
+  min-width: 0;
+}
+
+.bs-story-head .yn-kicker {
+  font-size: calc(var(--u) * 5.4);
+}
+
+.bs-story-h1 {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 30);
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.bs-story-h1.bs-story-h1--long {
+  font-size: calc(var(--u) * 22);
+}
+
+.bs-story-dek {
+  margin-top: calc(var(--u) * 7);
+  font-size: calc(var(--u) * 6.6);
+  line-height: 1.2;
+  max-width: 88%;
+}
+
+.bs-story-byline {
+  margin-top: calc(var(--u) * 5);
+  padding-top: calc(var(--u) * 2);
+  border-top: 1px solid currentColor;
+}
+
+.bs-story-sticker {
+  width: calc(var(--u) * 48);
+  rotate: 9deg;
+  margin-top: calc(var(--u) * 4);
+}
+
+.bs-story-print {
+  position: relative;
+  rotate: -0.7deg;
+  margin: calc(var(--u) * 5) calc(var(--u) * 2) calc(var(--u) * 2);
+  padding-bottom: calc(var(--u) * 2.5);
+}
+
+.bs-story-photo {
+  height: calc(var(--u) * 200);
+}
+
+.bs-story-print figcaption {
+  margin-top: calc(var(--u) * 2);
+  color: #4a4238;
+}
+
+.bs-story-main {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 84);
+  gap: calc(var(--u) * 9);
+  align-items: start;
+}
+
+.bs-story-body {
+  columns: 2;
+  column-gap: calc(var(--u) * 8);
+  font-size: calc(var(--u) * 4.3);
+}
+
+.bs-story-body.bs-story-body--short {
+  columns: 1;
+  max-width: 44em;
+}
+
+/* A story cut out of the paper is only as long as the story, so the sheet's light layer follows
+   the sheet rather than a full page's proportions. */
+.yn-sheet.bs-story {
+  min-height: 0;
+}
+
+.yn-sheet-wrap:has(> .bs-story)::after {
+  inset: 0;
+  aspect-ratio: auto;
+}
+
+.bs-story-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 6);
+}
+
+.bs-story-time {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+  background: var(--pop);
+  color: var(--pop-ink);
+  padding: calc(var(--u) * 3.5) calc(var(--u) * 4);
+  rotate: -1.5deg;
+}
+
+.bs-story-time .yn-fat {
+  font-size: calc(var(--u) * 22);
+}
+
+.bs-story-time .yn-hand {
+  font-size: calc(var(--u) * 4.6);
+}
+
+.bs-story-source,
+.bs-story-back {
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-top: calc(var(--u) * 2.5);
+}
+
+.bs-story-side .yn-body {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 3.4);
+  text-align: left;
+  hyphens: none;
+}
+
+.bs-story-stars {
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 11);
+  align-self: flex-end;
+}
+
+.bs-story-nav {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr 1fr;
+  gap: calc(var(--u) * 6);
+  margin-bottom: calc(var(--u) * 5);
+}
+
+.bs-story-turn {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 4) calc(var(--u) * 5);
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  min-width: 0;
+}
+
+.bs-story-turn--page {
+  background: var(--pop2);
+  color: var(--pop2-ink);
+  border-color: transparent;
+  rotate: -1deg;
+}
+
+.bs-story-turn--next {
+  text-align: right;
+}
+
+.bs-story-turn .yn-hed-sm {
+  font-size: calc(var(--u) * 8.4);
+  text-wrap: balance;
+}
+
+/* ================================================================
+   Phone: every template reflows into one column
+   ================================================================ */
+
+@container (max-width: 760px) {
+  .yn-banner.bs-banner {
+    grid-template-columns: 1fr;
+    padding-right: calc(var(--u) * 6);
+  }
+
+  .yn-banner .bs-banner-badge {
+    position: relative;
+    top: auto;
+    right: auto;
+    translate: none;
+    justify-self: end;
+    margin-top: calc(var(--u) * -8);
+    width: calc(var(--u) * 42);
+  }
+
+  .yn-banner-number .bs-banner-caption {
+    flex-basis: 100%;
+    max-width: none;
+    font-size: 18px;
+  }
+
+  .bs-hero-type .yn-hero-card {
+    left: calc(var(--u) * 4);
+    right: calc(var(--u) * 4);
+  }
+
+  .yn-hero.bs-hero-type {
+    min-height: calc(var(--u) * 200);
+  }
+
+  .yn-hero-card.bs-hero-card-long h2 {
+    font-size: calc(var(--u) * 14);
+  }
+
+  .bs-hero-dek {
+    font-size: 17px;
+  }
+
+  .fr-lead h2.yn-chunk {
+    font-size: 30px;
+  }
+
+  .yn-index a {
+    max-width: 85%;
+  }
+
+  .bs-media,
+  .bs-solo .bs-media {
+    min-height: 0;
+  }
+
+  .bs-media .bs-grow {
+    flex: none;
+    height: calc(var(--u) * 110);
+    min-height: 0;
+  }
+
+  .bs-poster {
+    padding: calc(var(--u) * 12) calc(var(--u) * 6) calc(var(--u) * 7);
+  }
+
+  .bs-poster .bs-poster-hed {
+    font-size: calc(var(--u) * 17);
+    max-width: none;
+  }
+
+  .bs-poster .yn-kicker {
+    font-size: 16px;
+  }
+
+  .bs-lead-copy > * + * {
+    margin-top: calc(var(--u) * 2.5);
+  }
+
+  .bs-lead-copy .yn-body {
+    font-size: calc(var(--u) * 3.4);
+  }
+
+  .bs-dek-big {
+    font-size: 19px;
+  }
+
+  .bs-listings-flag {
+    font-size: calc(var(--u) * 16);
+  }
+
+  .bs-cart-label .yn-photo.bs-grow,
+  .bs-solo .bs-cart-label .yn-photo.bs-grow,
+  .bs-cart-screen,
+  .bs-solo .bs-cart-screen {
+    height: calc(var(--u) * 100);
+  }
+
+  .bs-cart-screen {
+    --px: calc(var(--u) * 0.9);
+  }
+
+  .yn-cart-title .bs-cart-kicker {
+    font-size: calc(var(--u) * 12);
+  }
+
+  .yn-hero.bs-solo-hero {
+    flex: none;
+    min-height: calc(var(--u) * 200);
+  }
+
+  .yn-hero .bs-solo-card {
+    left: calc(var(--u) * 4);
+    right: calc(var(--u) * 4);
+    width: auto;
+    bottom: calc(var(--u) * 5);
+  }
+
+  .bs-solo-card .bs-solo-hed {
+    font-size: calc(var(--u) * 14);
+  }
+
+  .bs-solo-card .yn-kicker {
+    font-size: 15px;
+  }
+
+  .bs-solo-text,
+  .bs-more,
+  .bs-more--img,
+  .bs-more--img.bs-more--flourish,
+  .bs-more--text.bs-more--flourish,
+  .bs-more-2,
+  .ss-row.bs-row,
+  .bs-spread,
+  .bs-spread-text,
+  .bs-puzzles--nogrid,
+  .bs-story-top,
+  .bs-story-main,
+  .bs-story-nav {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 8);
+  }
+
+  .bs-more .bs-more-hed,
+  .bs-more--text .bs-more-hed,
+  .bs-brief .yn-hed-sm {
+    font-size: 30px;
+  }
+
+  .bs-more-sticker {
+    right: calc(var(--u) * 2);
+    width: calc(var(--u) * 36);
+  }
+
+  .bs-cols-2,
+  .bs-story-body {
+    columns: 1;
+  }
+
+  .bs-brief--ruled {
+    border-left: 0;
+    border-top: 1px solid var(--hair);
+    padding: calc(var(--u) * 6) 0 0;
+    margin-left: 0;
+  }
+
+  .bs-brief-photo {
+    height: calc(var(--u) * 100);
+  }
+
+  .bs-brief-sticker {
+    right: calc(var(--u) * 1);
+    width: calc(var(--u) * 34);
+  }
+
+  /* The record may slide off the sheet on a desk; on a phone it stays inside the screen. */
+  .bs-record.ss-record {
+    height: calc(var(--u) * 110);
+  }
+
+  .bs-record.ss-record .ss-vinyl {
+    width: calc(var(--u) * 100);
+    left: calc(var(--u) * 24);
+    border-width: calc(var(--u) * 26);
+    outline-offset: calc(var(--u) * -19);
+  }
+
+  .bs-hiscore {
+    --px: calc(var(--u) * 2.6);
+  }
+
+  .bs-ticket {
+    min-height: 0;
+  }
+
+  .bs-guest-band {
+    margin: 0 calc(var(--u) * -6);
+    padding: calc(var(--u) * 7) calc(var(--u) * 6);
+    grid-template-columns: 1fr auto;
+    gap: calc(var(--u) * 5);
+  }
+
+  .bs-guest-title {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  .bs-guest-h1 {
+    font-size: calc(var(--u) * 20) !important;
+  }
+
+  .bs-guest-presents,
+  .bs-guest-tag {
+    font-size: 16px;
+  }
+
+  .bs-guest-sticker {
+    width: calc(var(--u) * 40);
+  }
+
+  .bs-guest-dateline {
+    font-size: 13px;
+  }
+
+  .yn-hero.bs-spread-hero {
+    min-height: calc(var(--u) * 200);
+  }
+
+  .bs-word-say,
+  .bs-spec-row {
+    font-size: 14px;
+  }
+
+  .bs-extra .bs-word-means,
+  .bs-odd-letter blockquote,
+  .bs-story-side .yn-body,
+  .bs-yesterday {
+    font-size: 15px;
+  }
+
+  .bs-word-eg {
+    font-size: 17px;
+  }
+
+  .bs-odd-quote .yn-pullquote {
+    font-size: 22px;
+  }
+
+  .bk-strip.bs-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bk-classifieds ul.bs-classifieds {
+    grid-template-columns: 1fr;
+  }
+
+  .bs-mini span {
+    font-size: 11px;
+  }
+
+  .bs-mini {
+    width: 84px;
+  }
+
+  .bs-back .bk-signoff .bk-signoff-big {
+    font-size: calc(var(--u) * 34) !important;
+  }
+
+  .bs-story-h1,
+  .bs-story-h1.bs-story-h1--long {
+    font-size: calc(var(--u) * 20);
+  }
+
+  .bs-story-head .yn-kicker {
+    font-size: 16px;
+  }
+
+  .bs-story-dek {
+    font-size: 19px;
+    max-width: none;
+  }
+
+  .bs-story-sticker {
+    position: absolute;
+    right: 0;
+    top: calc(var(--u) * -6);
+    width: calc(var(--u) * 34);
+    margin: 0;
+  }
+
+  .bs-story-head {
+    padding-right: calc(var(--u) * 20);
+  }
+
+  .bs-story-top--type .bs-story-head {
+    padding: calc(var(--u) * 7) calc(var(--u) * 24) calc(var(--u) * 7) calc(var(--u) * 6);
+  }
+
+  .bs-story-body {
+    font-size: 16px;
+  }
+
+  .bs-story-photo {
+    height: calc(var(--u) * 110);
+  }
+
+  .bs-story-turn .yn-hed-sm {
+    font-size: 26px;
+  }
+
+  .bs-story-turn--next {
+    text-align: left;
+  }
+}
+
+/* ——— Progress through the paper, in the last row ——— */
+
+.bs-progress {
+  position: relative;
+  padding: calc(var(--u) * 2) calc(var(--u) * 2) 0 calc(var(--u) * 10);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 4);
+}
+
+.bs-progress-n {
+  display: flex;
+  align-items: baseline;
+  flex: none;
+  text-shadow: calc(var(--u) * 0.9) calc(var(--u) * 0.7) 0 var(--pop);
+}
+
+.bs-progress-n .yn-fat {
+  font-size: calc(var(--u) * 30);
+}
+
+.bs-progress-n .bs-progress-of {
+  font-size: calc(var(--u) * 15);
+}
+
+.bs-progress-note {
+  font-size: calc(var(--u) * 5);
+  line-height: 1.15;
+  min-width: 0;
+}
+
+/* ——— A one-story page without a photo: a poster in the section's loud ink ——— */
+
+.bs-solo-hero.bs-solo-hero--type {
+  background: var(--pop);
+  color: var(--pop-ink);
+}
+
+.bs-solo-hero--type .bs-solo-card {
+  background: none;
+  color: inherit;
+  left: calc(var(--u) * 10);
+  right: calc(var(--u) * 10);
+  bottom: calc(var(--u) * 10);
+  width: auto;
+  rotate: none;
+  padding: 0;
+}
+
+.bs-solo-hero--type .bs-solo-card .print-tape {
+  display: none;
+}
+
+.bs-solo-hero--type .bs-solo-hed {
+  font-size: calc(var(--u) * var(--poster, 34));
+  line-height: 0.88;
+  text-shadow: calc(var(--u) * 0.8) calc(var(--u) * 0.6) 0 var(--pop2);
+}
+
+.bs-solo-hero--type .yn-kicker {
+  font-size: calc(var(--u) * 6);
+}
+
+@container (max-width: 760px) {
+  .bs-solo-hero--type .bs-solo-hed {
+    font-size: calc(var(--u) * 19);
+  }
+
+  .bs-solo-hero--type .bs-solo-card {
+    left: calc(var(--u) * 6);
+    right: calc(var(--u) * 6);
+    bottom: calc(var(--u) * 7);
+  }
+
+  .bs-solo-hero--type .yn-kicker {
+    font-size: 16px;
+  }
+
+  .bs-progress-note {
+    font-size: 17px;
+  }
+}
+
+@container (max-width: 760px) {
+  .bs-more--text:not(.bs-more--flourish) .bs-more-text {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .bs-more--text:not(.bs-more--flourish) .bs-more-copy {
+    margin-top: calc(var(--u) * 3);
+  }
+}
+
+@container (max-width: 760px) {
+  .bs-ear {
+    display: none;
+  }
+
+  .bs-poster .bs-poster-hed {
+    font-size: calc(var(--u) * 17);
+  }
+
+  .bs-poster .bs-poster-dek {
+    font-size: 18px;
+    max-width: none;
+  }
+}
+
+/* A running-head title set as a paragraph (the story page keeps its one h1 for the headline). */
+.yn-run-title p.bs-run-h1 {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 27);
+  text-transform: uppercase;
+  line-height: 0.86;
+}
+
+@container (max-width: 760px) {
+  .yn-run-title p.bs-run-h1 {
+    font-size: calc(var(--u) * 22);
+  }
+
+  .bs-listings .ss-list,
+  .bs-solo-list {
+    font-size: 14px;
+  }
+
+  .bs-story-time .yn-hand {
+    font-size: 15px;
+  }
+
+  .bs-guest-page {
+    justify-self: start;
+  }
+
+  .bs-solo-hero.bs-solo-hero--type {
+    min-height: calc(var(--u) * 150);
+  }
+
+  .yn-banner .bs-banner-badge {
+    width: calc(var(--u) * 52);
+  }
+}
+
+/* The cartridge grows with its row, so the review beside it never leaves a gap under the cart. */
+.bs-top > .gm-cart-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-top > .gm-cart-wrap > .bs-cart {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-cart > .bs-cart-label {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-cart-label > .yn-photo.bs-grow,
+.bs-cart-label > .bs-cart-screen {
+  flex: 1 1 auto;
+  min-height: calc(var(--u) * 166);
+}
+
+@container (max-width: 760px) {
+  .bs-cart-label > .yn-photo.bs-grow,
+  .bs-cart-label > .bs-cart-screen {
+    flex: none;
+    min-height: 0;
+  }
+}
