@@ -1,24 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { type Pastel, pastels, pastelVars } from "../colours/pastels";
+import { useStoredChoice } from "./use-stored-choice";
 
 const HOUSE = "house";
 
+// ?pastel=<slug> in the URL wins, so a colourway can be linked or screenshotted.
 const known = (slug: string | null): slug is string =>
-  !!slug && pastels.some((p) => p.slug === slug);
-
-const readSaved = (): string => {
-  // ?pastel=<slug> in the URL wins, so a colourway can be linked or screenshotted.
-  const fromUrl = new URLSearchParams(window.location.search).get("pastel");
-  if (fromUrl === HOUSE || known(fromUrl)) return fromUrl;
-  try {
-    const saved = localStorage.getItem("yn-pastel");
-    return known(saved) ? saved : HOUSE;
-  } catch {
-    return HOUSE;
-  }
-};
+  slug === HOUSE || (!!slug && pastels.some((p) => p.slug === slug));
 
 /**
  * Every colourway as html[data-pastel="slug"] { --pz-*: … }. Each pastel version maps the --pz-*
@@ -40,20 +30,11 @@ const groups: { label: string; list: Pastel[] }[] = [{ label: "Six-ink", list: p
 
 /** Switches a pastel version between its own house inks and the shared pastel colourways. */
 export function PastelToggle() {
-  const [pastel, setPastel] = useState(HOUSE);
-
-  useEffect(() => {
-    setPastel(readSaved());
-  }, []);
+  const [pastel, setPastel] = useStoredChoice("yn-pastel", "pastel", known, HOUSE);
 
   useEffect(() => {
     if (pastel === HOUSE) delete document.documentElement.dataset.pastel;
     else document.documentElement.dataset.pastel = pastel;
-    try {
-      localStorage.setItem("yn-pastel", pastel);
-    } catch {
-      // Storage blocked: the choice still applies to this page view.
-    }
     return () => {
       delete document.documentElement.dataset.pastel;
     };

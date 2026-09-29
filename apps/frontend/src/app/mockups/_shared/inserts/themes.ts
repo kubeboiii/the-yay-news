@@ -40,19 +40,6 @@ const themes: Record<string, InsertTheme> = {
     backing: "#f3f0ea",
     postStock: "#f4efe2",
   },
-  v2: {
-    display: 'var(--font-text), "Old Standard TT", Georgia, serif',
-    displayCase: "none",
-    displayWeight: 700,
-    displayTracking: "-0.01em",
-    text: 'var(--font-text), "Old Standard TT", Georgia, serif',
-    small: 'var(--font-gothic), "Pathway Gothic One", "Arial Narrow", sans-serif',
-    ink: "#1a1814",
-    inks: ["#e58fa4", "#7fb3d9", "#f3c4cf", "#bcd9ee", "#e6d7b5"],
-    couponStock: "#f3d9de",
-    backing: "#f1ede4",
-    postStock: "#f2ecdd",
-  },
   v3: {
     display: 'var(--font-head), "Libre Franklin", "Franklin Gothic", sans-serif',
     displayCase: "uppercase",
@@ -94,7 +81,7 @@ const themes: Record<string, InsertTheme> = {
   },
 };
 
-export const themeFor = (version: string): InsertTheme => themes[version] ?? themes.v2!;
+export const themeFor = (version: string): InsertTheme => themes[version] ?? themes.v1!;
 
 /** The theme as custom properties, set on every element this layer renders. */
 export const themeVars = (t: InsertTheme): CSSProperties =>

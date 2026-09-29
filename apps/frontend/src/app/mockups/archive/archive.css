@@ -9,8 +9,7 @@
   min-height: 100vh;
   padding: 44px clamp(16px, 4vw, 56px) 120px;
   background:
-    radial-gradient(ellipse 90% 70% at 50% 30%, rgb(255 255 255 / 0.28), transparent 70%),
-    #e4ded3;
+    radial-gradient(ellipse 90% 70% at 50% 30%, rgb(255 255 255 / 0.28), transparent 70%), #e4ded3;
   color: var(--ar-ink);
   font-family: var(--ar-caslon), Georgia, serif;
   overflow-x: hidden;
@@ -184,7 +183,8 @@
   box-shadow:
     0 1px 1px rgb(0 0 0 / 0.12),
     0 14px 20px -12px rgb(40 30 20 / 0.5),
-    /* The fold at the bottom rounds away from the light. */ inset 0 -14px 14px -12px rgb(40 30 20 / 0.35);
+    /* The fold at the bottom rounds away from the light. */ inset 0 -14px 14px -12px
+      rgb(40 30 20 / 0.35);
 }
 
 .ar-front__age,
@@ -260,9 +260,12 @@
   flex: 1;
   margin-top: 3px;
   background:
-    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) left top / 31% 100% no-repeat,
-    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) center top / 31% 100% no-repeat,
-    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) right top / 31% 100% no-repeat;
+    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) left
+      top / 31% 100% no-repeat,
+    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) center
+      top / 31% 100% no-repeat,
+    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) right
+      top / 31% 100% no-repeat;
   opacity: 0.5;
   mask: url("/mockup/fx/ink-wear.png") center / 160% repeat;
   -webkit-mask: url("/mockup/fx/ink-wear.png") center / 160% repeat;
@@ -312,17 +315,6 @@
   font-size: calc(var(--w) * 0.2);
   text-transform: uppercase;
   text-shadow: 1px 0.5px 0 #ff3d9a;
-}
-
-.ar-front--v2 .ar-front__mast {
-  padding-block: 4px 3px;
-  border-block: 3px double currentColor;
-  font-family: var(--ar-blackletter), serif;
-  font-size: calc(var(--w) * 0.155);
-}
-
-.ar-front--v2 .ar-front__ear {
-  background: #bcd9ee;
 }
 
 .ar-front--v3 .ar-front__mast {
@@ -409,7 +401,13 @@
   /* The fold is the rounded end; the open edge shows every page inside. */
   border-radius: 13px 2px 2px 13px / 13px 3px 3px 13px;
   background:
-    linear-gradient(to bottom, rgb(255 255 255 / 0.45), transparent 35%, transparent 60%, rgb(50 36 20 / 0.2)),
+    linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0.45),
+      transparent 35%,
+      transparent 60%,
+      rgb(50 36 20 / 0.2)
+    ),
     var(--ar-paper, #f0ebe0);
   box-shadow:
     0 1px 0 rgb(40 30 20 / 0.28),
@@ -484,15 +482,6 @@
   font-family: var(--ar-gothic), Impact, sans-serif;
   font-size: 19px;
   text-transform: uppercase;
-}
-
-.ar-spine--v2 {
-  --flash: #bcd9ee;
-}
-
-.ar-spine--v2 .ar-spine__no {
-  font-family: var(--ar-blackletter), serif;
-  font-size: 16px;
 }
 
 .ar-spine--v3 {

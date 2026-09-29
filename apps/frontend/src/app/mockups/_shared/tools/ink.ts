@@ -36,7 +36,12 @@ const CHISEL = (78 * Math.PI) / 180;
  * pen, how hard it is pressing. The result is eased toward the previous width so the line swells
  * and thins smoothly instead of jumping between samples.
  */
-export function nextWidth(tool: Tool, prev: number | undefined, speed: number, pressure: number | undefined) {
+export function nextWidth(
+  tool: Tool,
+  prev: number | undefined,
+  speed: number,
+  pressure: number | undefined,
+) {
   const nib = NIBS[tool];
   const bySpeed = 1.15 - Math.min(1, speed / 2.2) * nib.speedThin * 1.6;
   const byPressure = pressure === undefined ? 1 : 0.45 + pressure * 1.1;
@@ -48,7 +53,10 @@ export function nextWidth(tool: Tool, prev: number | undefined, speed: number, p
 const r1 = (n: number) => Math.round(n * 10) / 10;
 
 /** Rounds a stroke for storage: a tenth of a sheet unit is far below what the eye can see. */
-export const packStroke = (s: Stroke): Stroke => ({ tool: s.tool, pts: s.pts.map(([x, y, w]) => [r1(x), r1(y), r1(w)]) });
+export const packStroke = (s: Stroke): Stroke => ({
+  tool: s.tool,
+  pts: s.pts.map(([x, y, w]) => [r1(x), r1(y), r1(w)]),
+});
 
 /** Light smoothing: each point pulled toward its neighbours, ends kept where the hand put them. */
 function smooth(pts: InkPoint[], passes = 2): InkPoint[] {
@@ -60,7 +68,11 @@ function smooth(pts: InkPoint[], passes = 2): InkPoint[] {
       const a = out[i - 1] as InkPoint;
       const b = out[i] as InkPoint;
       const c = out[i + 1] as InkPoint;
-      next.push([(a[0] + b[0] * 2 + c[0]) / 4, (a[1] + b[1] * 2 + c[1]) / 4, (a[2] + b[2] * 2 + c[2]) / 4]);
+      next.push([
+        (a[0] + b[0] * 2 + c[0]) / 4,
+        (a[1] + b[1] * 2 + c[1]) / 4,
+        (a[2] + b[2] * 2 + c[2]) / 4,
+      ]);
     }
     next.push(out[out.length - 1] as InkPoint);
     out = next;
@@ -143,7 +155,9 @@ export function outline(stroke: Stroke): string {
   const end = pts[pts.length - 1] as InkPoint;
   const start = pts[0] as InkPoint;
   const cap = (r: number, to: [number, number]) =>
-    tool === "highlighter" ? `L${f(to[0])} ${f(to[1])}` : `A${f(r)} ${f(r)} 0 0 1 ${f(to[0])} ${f(to[1])}`;
+    tool === "highlighter"
+      ? `L${f(to[0])} ${f(to[1])}`
+      : `A${f(r)} ${f(r)} 0 0 1 ${f(to[0])} ${f(to[1])}`;
 
   return (
     `M${f(l0[0])} ${f(l0[1])}` +

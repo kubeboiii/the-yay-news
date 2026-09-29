@@ -13,10 +13,12 @@ type Box = { x: number; y: number; w: number; h: number };
 /** What the scissors go round: one element, or a run of sibling blocks that read as one story. */
 export type Piece = { els: HTMLElement[]; sheet: HTMLElement; box: Box };
 
-const shareOf = (el: HTMLElement, sheetArea: number) => (el.offsetWidth * el.offsetHeight) / sheetArea;
+const shareOf = (el: HTMLElement, sheetArea: number) =>
+  (el.offsetWidth * el.offsetHeight) / sheetArea;
 
 const isBlock = (el: Element): el is HTMLElement =>
-  el instanceof HTMLElement && !["inline", "contents", "none"].includes(getComputedStyle(el).display);
+  el instanceof HTMLElement &&
+  !["inline", "contents", "none"].includes(getComputedStyle(el).display);
 
 const HEADS = "h1, h2, h3";
 const startsStory = (el: Element) => el.matches(HEADS) || !!el.querySelector(HEADS);
@@ -110,7 +112,9 @@ function paperOf(el: HTMLElement) {
 
 function headlineOf(el: HTMLElement) {
   const h = el.querySelector("h1, h2, h3, h4, h5, figcaption, strong");
-  const text = ((h as HTMLElement | null)?.innerText || h?.textContent || el.innerText || "").replace(/\s+/g, " ").trim();
+  const text = ((h as HTMLElement | null)?.innerText || h?.textContent || el.innerText || "")
+    .replace(/\s+/g, " ")
+    .trim();
   return text.length > 90 ? `${text.slice(0, 87).trimEnd()}…` : text;
 }
 
@@ -121,7 +125,12 @@ function screenRect(p: Piece) {
   const rs = p.els.map((e) => e.getBoundingClientRect());
   const left = Math.min(...rs.map((r) => r.left));
   const top = Math.min(...rs.map((r) => r.top));
-  return new DOMRect(left, top, Math.max(...rs.map((r) => r.right)) - left, Math.max(...rs.map((r) => r.bottom)) - top);
+  return new DOMRect(
+    left,
+    top,
+    Math.max(...rs.map((r) => r.right)) - left,
+    Math.max(...rs.map((r) => r.bottom)) - top,
+  );
 }
 
 const ours = (n: Node) => !(n instanceof Element && n.closest(".rt-ink, .rt-cutline"));
@@ -132,7 +141,8 @@ const ours = (n: Node) => !(n instanceof Element && n.closest(".rt-ink, .rt-cutl
  */
 async function rasterise(p: Piece, wrap: HTMLElement, paper: string): Promise<Blob> {
   const only = p.els.length === 1 ? p.els[0] : undefined;
-  if (only) return domToBlob(only, { scale: 2, backgroundColor: paper, type: "image/png", filter: ours });
+  if (only)
+    return domToBlob(only, { scale: 2, backgroundColor: paper, type: "image/png", filter: ours });
   const s = boxWithin(p.sheet, wrap);
   // Keep the whole-sheet render inside what a phone's canvas can hold.
   const scale = Math.min(2, Math.sqrt(15e6 / Math.max(1, s.w * s.h)));
@@ -143,8 +153,20 @@ async function rasterise(p: Piece, wrap: HTMLElement, paper: string): Promise<Bl
   out.height = Math.round(p.box.h * 2);
   const ctx = out.getContext("2d");
   if (!ctx) throw new Error("No canvas");
-  ctx.drawImage(full, (p.box.x - s.x) * k, (p.box.y - s.y) * k, p.box.w * k, p.box.h * k, 0, 0, out.width, out.height);
-  return new Promise((resolve, reject) => out.toBlob((b) => (b ? resolve(b) : reject(new Error("No image"))), "image/png"));
+  ctx.drawImage(
+    full,
+    (p.box.x - s.x) * k,
+    (p.box.y - s.y) * k,
+    p.box.w * k,
+    p.box.h * k,
+    0,
+    0,
+    out.width,
+    out.height,
+  );
+  return new Promise((resolve, reject) =>
+    out.toBlob((b) => (b ? resolve(b) : reject(new Error("No image"))), "image/png"),
+  );
 }
 
 /** The same piece measured again after the page reflowed. */
@@ -152,7 +174,15 @@ function pickFresh(p: Piece, wrap: HTMLElement): Piece | null {
   const boxes = p.els.map((e) => boxWithin(e, wrap));
   const x = Math.min(...boxes.map((b) => b.x));
   const y = Math.min(...boxes.map((b) => b.y));
-  return { ...p, box: { x, y, w: Math.max(...boxes.map((b) => b.x + b.w)) - x, h: Math.max(...boxes.map((b) => b.y + b.h)) - y } };
+  return {
+    ...p,
+    box: {
+      x,
+      y,
+      w: Math.max(...boxes.map((b) => b.x + b.w)) - x,
+      h: Math.max(...boxes.map((b) => b.y + b.h)) - y,
+    },
+  };
 }
 
 /** The scissors glyph: two blades crossing at a screw, two finger rings. Drawn, not typed. */
@@ -163,7 +193,13 @@ function ScissorsGlyph() {
       <path d="M13.2 14.4 29 27.2c.7.5 1.4-.3.9-.9L16 12.4Z" fill="#3a3a3a" />
       <circle cx="7.6" cy="9.6" r="4.6" fill="none" stroke="#b3262d" strokeWidth="2.6" />
       <circle cx="7.6" cy="22.4" r="4.6" fill="none" stroke="#b3262d" strokeWidth="2.6" />
-      <path d="M11.4 12.2 14.4 16l-3 3.8" fill="none" stroke="#b3262d" strokeWidth="2.6" strokeLinecap="round" />
+      <path
+        d="M11.4 12.2 14.4 16l-3 3.8"
+        fill="none"
+        stroke="#b3262d"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
       <circle cx="16" cy="16" r="1.2" fill="#d9d4c8" />
     </svg>
   );
@@ -190,7 +226,8 @@ export function ScissorsLayer({
   const [cutting, setCutting] = useState<Box | null>(null);
   const busy = useRef(false);
   const touchPicked = useRef<HTMLElement | null>(null);
-  const same = (a: Piece | null, b: Piece | null) => a?.els[0] === b?.els[0] && a?.els.length === b?.els.length;
+  const same = (a: Piece | null, b: Piece | null) =>
+    a?.els[0] === b?.els[0] && a?.els.length === b?.els.length;
 
   const point = useCallback(
     (x: number, y: number) => {
@@ -219,7 +256,9 @@ export function ScissorsLayer({
           id,
           version,
           page: window.location.pathname,
-          headline: headlineOf(piece.els.find((e) => e.matches(HEADS) || e.querySelector(HEADS)) ?? first),
+          headline: headlineOf(
+            piece.els.find((e) => e.matches(HEADS) || e.querySelector(HEADS)) ?? first,
+          ),
           createdAt: Date.now(),
           image: blob,
           w: Math.round(piece.box.w),
@@ -241,6 +280,7 @@ export function ScissorsLayer({
 
   useEffect(() => {
     if (!active) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resets when the tool is put down
       setHover(null);
       touchPicked.current = null;
       return;
@@ -257,7 +297,8 @@ export function ScissorsLayer({
       e.stopPropagation();
       const hit = point(e.clientX, e.clientY);
       if (!hit) return;
-      const touch = (e as PointerEvent).pointerType === "touch" || matchMedia("(hover: none)").matches;
+      const touch =
+        (e as PointerEvent).pointerType === "touch" || matchMedia("(hover: none)").matches;
       if (touch && touchPicked.current !== hit.els[0]) {
         // On a phone there is no hover: the first tap shows the cut line, the second cuts.
         touchPicked.current = hit.els[0] ?? null;
@@ -305,10 +346,17 @@ export function ScissorsLayer({
         <rect x="1.5" y="1.5" width={w - 3} height={h - 3} rx="1.5" className="rt-cutline__halo" />
         <rect x="1.5" y="1.5" width={w - 3} height={h - 3} rx="1.5" className="rt-cutline__dash" />
         {cutting && (
-          <path d={d} className="rt-cutline__cut" style={{ strokeDasharray: perimeter, strokeDashoffset: perimeter }} />
+          <path
+            d={d}
+            className="rt-cutline__cut"
+            style={{ strokeDasharray: perimeter, strokeDashoffset: perimeter }}
+          />
         )}
       </svg>
-      <span className="rt-cutline__snips" style={cutting ? { offsetPath: `path("${d}")` } : undefined}>
+      <span
+        className="rt-cutline__snips"
+        style={cutting ? { offsetPath: `path("${d}")` } : undefined}
+      >
         <ScissorsGlyph />
       </span>
     </div>,
@@ -335,7 +383,9 @@ async function fly(blob: Blob, from: DOMRect) {
     await img.decode().catch(() => undefined);
     const board = document.querySelector("[data-rt-board]")?.getBoundingClientRect();
     const tx = board ? board.left + board.width / 2 - (from.left + from.width / 2) : 0;
-    const ty = board ? board.top + board.height / 2 - (from.top + from.height / 2) : window.innerHeight;
+    const ty = board
+      ? board.top + board.height / 2 - (from.top + from.height / 2)
+      : window.innerHeight;
     const s = Math.max(0.04, Math.min(0.2, 60 / Math.max(from.width, from.height)));
     const anim = piece.animate(
       [

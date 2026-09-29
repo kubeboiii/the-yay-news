@@ -4,6 +4,9 @@
  * Sound pink + blue, Gaming green + violet, the back page orange + yellow, so a multi-ink theme
  * gives every section its own pair from one family. Blue always carries reversed white type.
  * Set by html[data-theme]; "original" (or no attribute) keeps v1's own six-ink fluoro set.
+ *
+ * Where a colourway prints pink and orange as a deep violet or blue, black type on them falls
+ * under AA contrast, so --neon-pink-ink / --neon-orange-ink switch that type to paper-white.
  */
 
 html[data-theme="acid-garden"] .yn-table {
@@ -13,6 +16,8 @@ html[data-theme="acid-garden"] .yn-table {
   --neon-orange: #7b3cff;
   --neon-violet: #7b3cff;
   --neon-blue: #7b3cff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
 }
 
 html[data-theme="pool-party"] .yn-table {
@@ -49,6 +54,8 @@ html[data-theme="lemon-laser"] .yn-table {
   --neon-orange: #2d5bff;
   --neon-violet: #2d5bff;
   --neon-blue: #2d5bff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
 }
 
 html[data-theme="tangerine-dream"] .yn-table {
@@ -58,6 +65,8 @@ html[data-theme="tangerine-dream"] .yn-table {
   --neon-orange: #7b3cff;
   --neon-violet: #7b3cff;
   --neon-blue: #7b3cff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
 }
 
 html[data-theme="laser-tag"] .yn-table {
@@ -85,6 +94,8 @@ html[data-theme="sunburst-uv"] .yn-table {
   --neon-orange: #5a2bff;
   --neon-violet: #5a2bff;
   --neon-blue: #5a2bff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
 }
 
 html[data-theme="rave-grape"] .yn-table {
@@ -94,6 +105,8 @@ html[data-theme="rave-grape"] .yn-table {
   --neon-orange: #8a3cff;
   --neon-violet: #8a3cff;
   --neon-blue: #8a3cff;
+  --neon-pink-ink: var(--paper);
+  --neon-orange-ink: var(--paper);
 }
 
 html[data-theme="candy-shop"] .yn-table {

@@ -15,15 +15,6 @@ const versions = [
     swatch: ["#e9ff1f", "#ff3d9a", "#36f28a", "#2f5bff"],
   },
   {
-    slug: "v2",
-    name: "Morning Edition",
-    family: "Pastel",
-    basis: "A mid-century city broadsheet",
-    description:
-      "A dense, confident 380 × 578 mm daily: blackletter nameplate with ears, banner headline, decks and column rules, in ink with two pastel spot tints.",
-    swatch: ["#1a1814", "#bcd9ee", "#f3c4cf"],
-  },
-  {
     slug: "v3",
     name: "Tabloid Brights",
     family: "Neon",
@@ -59,15 +50,23 @@ export default function MockupsIndex() {
         <p className="text-sm font-medium tracking-wide text-neutral-600 uppercase">
           The Yay News · design exploration
         </p>
-        <h1 className="mt-2 text-4xl font-bold tracking-tight">Five papers, one sample edition</h1>
+        <h1 className="mt-2 text-4xl font-bold tracking-tight">Four papers, one sample edition</h1>
         <p className="mt-3 max-w-2xl text-neutral-700">
-          Each version prints the same invented edition across four section pages, on real newsprint with
-          halftone-printed photos. Two are neon, three are pastel.
+          Each version prints the same invented edition across four section pages, on real newsprint
+          with halftone-printed photos. The broadsheet switches between neon colourways; the other
+          three switch between pastel ones. Compare them all on the{" "}
+          <Link href="/mockups/colours" className="underline underline-offset-4">
+            colour proofs
+          </Link>
+          .
         </p>
         <ol className="mt-10 divide-y divide-neutral-400/60 border-y border-neutral-400/60">
-          {versions.map((v, i) => (
-            <li key={v.slug} className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr_auto] sm:items-start">
-              <span className="text-3xl font-bold tabular-nums">{i + 1}</span>
+          {versions.map((v) => (
+            <li
+              key={v.slug}
+              className="grid gap-4 py-6 sm:grid-cols-[4rem_1fr_auto] sm:items-start"
+            >
+              <span className="text-3xl font-bold tabular-nums">{v.slug}</span>
               <div>
                 <h2 className="text-xl font-semibold">
                   <Link href={`/mockups/${v.slug}`} className="underline-offset-4 hover:underline">
@@ -92,7 +91,11 @@ export default function MockupsIndex() {
               </div>
               <div className="flex gap-1">
                 {v.swatch.map((c) => (
-                  <span key={c} className="size-7 border border-black/15" style={{ background: c }} />
+                  <span
+                    key={c}
+                    className="size-7 border border-black/15"
+                    style={{ background: c }}
+                  />
                 ))}
               </div>
             </li>

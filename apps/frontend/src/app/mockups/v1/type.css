@@ -110,6 +110,14 @@
   text-transform: none;
 }
 
+/* On a pink or orange ground a kicker takes the ground's type colour, which is paper-white in the
+   colourways that print those inks as a deep violet or blue. */
+.yn-hero-card .yn-kicker,
+.fr-riddle .yn-kicker,
+.bk-side .yn-kicker {
+  color: inherit;
+}
+
 .yn-byline {
   font-size: calc(var(--u) * 2.9);
   font-weight: 600;

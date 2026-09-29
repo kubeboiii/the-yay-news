@@ -7,8 +7,7 @@ import { seeded } from "../edition-seed";
 import { type Clipping, seedOf } from "./board-store";
 
 export type Edge =
-  | { kind: "cut"; poly: [number, number][] }
-  | { kind: "torn"; offset: number; depth: number };
+  { kind: "cut"; poly: [number, number][] } | { kind: "torn"; offset: number; depth: number };
 
 export type Tape = { x: number; y: number; angle: number; w: number };
 
@@ -31,7 +30,11 @@ export function edgeFor(c: Pick<Clipping, "id" | "w">): Edge {
       ],
     };
   }
-  return { kind: "torn", offset: Math.round(r() * 100), depth: Math.max(26, Math.min(64, c.w * 0.1)) };
+  return {
+    kind: "torn",
+    offset: Math.round(r() * 100),
+    depth: Math.max(26, Math.min(64, c.w * 0.1)),
+  };
 }
 
 /** Where the tape goes, as fractions of the clipping's width and height. */
@@ -45,14 +48,18 @@ export function tapesFor(c: Pick<Clipping, "id" | "w" | "h">): Tape[] {
   return [
     { x: 0.04 + r() * 0.03, y: 0.02, angle: -a, w },
     { x: 0.96 - r() * 0.03, y: 0.02, angle: a - r() * 6, w },
-    ...(r() < 0.35 ? [{ x: 0.5 + (r() - 0.5) * 0.4, y: 1, angle: (r() - 0.5) * 20, w: w * 0.9 }] : []),
+    ...(r() < 0.35
+      ? [{ x: 0.5 + (r() - 0.5) * 0.4, y: 1, angle: (r() - 0.5) * 20, w: w * 0.9 }]
+      : []),
   ];
 }
 
 /** CSS mask or clip for an edge, at a given on-board width in pixels. */
 export function edgeStyle(edge: Edge, scale: number): CSSProperties {
   if (edge.kind === "cut") {
-    return { clipPath: `polygon(${edge.poly.map(([x, y]) => `${x.toFixed(2)}% ${y.toFixed(2)}%`).join(", ")})` };
+    return {
+      clipPath: `polygon(${edge.poly.map(([x, y]) => `${x.toFixed(2)}% ${y.toFixed(2)}%`).join(", ")})`,
+    };
   }
   const d = edge.depth * scale;
   const torn = 'url("/mockup/fx/torn-edge.png")';
@@ -72,10 +79,15 @@ const loadImage = (src: string) =>
  * The clipping as it hangs on the board, as a PNG: newsprint grain printed through it, its edge,
  * a soft shadow and its tape, on a transparent ground so it can be dropped onto anything.
  */
-export async function printClipping(c: Clipping, paper: "newsprint" | "white" = "newsprint"): Promise<Blob> {
+export async function printClipping(
+  c: Clipping,
+  paper: "newsprint" | "white" = "newsprint",
+): Promise<Blob> {
   const [shot, grain, torn, tape] = await Promise.all([
     createImageBitmap(c.image),
-    loadImage(paper === "white" ? "/mockup/press/newsprint-white.jpg" : "/mockup/press/newsprint.jpg"),
+    loadImage(
+      paper === "white" ? "/mockup/press/newsprint-white.jpg" : "/mockup/press/newsprint.jpg",
+    ),
     loadImage("/mockup/fx/torn-edge.png"),
     loadImage("/mockup/fx/tape.png"),
   ]);
@@ -93,7 +105,8 @@ export async function printClipping(c: Clipping, paper: "newsprint" | "white" = 
   p.globalCompositeOperation = "multiply";
   const gw = 900 * k;
   const gh = (grain.height / grain.width) * gw;
-  for (let y = 0; y < ih; y += gh) for (let x = 0; x < iw; x += gw) p.drawImage(grain, x, y, gw, gh);
+  for (let y = 0; y < ih; y += gh)
+    for (let x = 0; x < iw; x += gw) p.drawImage(grain, x, y, gw, gh);
 
   const mask = document.createElement("canvas");
   mask.width = iw;
@@ -103,7 +116,9 @@ export async function printClipping(c: Clipping, paper: "newsprint" | "white" = 
   const edge = edgeFor(c);
   if (edge.kind === "cut") {
     m.beginPath();
-    edge.poly.forEach(([x, y], i) => (i ? m.lineTo((x / 100) * iw, (y / 100) * ih) : m.moveTo((x / 100) * iw, (y / 100) * ih)));
+    edge.poly.forEach(([x, y], i) =>
+      i ? m.lineTo((x / 100) * iw, (y / 100) * ih) : m.moveTo((x / 100) * iw, (y / 100) * ih),
+    );
     m.closePath();
     m.fill();
   } else {
@@ -140,5 +155,7 @@ export async function printClipping(c: Clipping, paper: "newsprint" | "white" = 
     o.restore();
   }
 
-  return new Promise((resolve, reject) => out.toBlob((b) => (b ? resolve(b) : reject(new Error("No image"))), "image/png"));
+  return new Promise((resolve, reject) =>
+    out.toBlob((b) => (b ? resolve(b) : reject(new Error("No image"))), "image/png"),
+  );
 }

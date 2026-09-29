@@ -13,11 +13,16 @@ import {
   seedOf,
   updateClipping,
 } from "@/app/mockups/_shared/tools/board-store";
-import { edgeFor, edgeStyle, printClipping, tapesFor } from "@/app/mockups/_shared/tools/print-clipping";
+import { useStoredChoice } from "@/app/mockups/_shared/use-stored-choice";
+import {
+  edgeFor,
+  edgeStyle,
+  printClipping,
+  tapesFor,
+} from "@/app/mockups/_shared/tools/print-clipping";
 
 const VERSIONS: Record<string, string> = {
   v1: "Fluoro Broadsheet",
-  v2: "Morning Edition",
   v3: "Tabloid Brights",
   v4: "Mini Zine",
   v5: "Midi Magazine",
@@ -36,13 +41,16 @@ function sourceOf(c: Clipping) {
   return `${VERSIONS[c.version] ?? c.version}, ${PAGES[rest] ?? "a page"}`;
 }
 
-const dateOf = (t: number) => new Date(t).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+const dateOf = (t: number) =>
+  new Date(t).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 
 type Placed = Clipping & { x: number; y: number; rot: number; z: number };
 
 /** Display size of a clipping on a board of width W: a newspaper story shrinks to fridge scale. */
 function sizeOn(c: Clipping, W: number, phone: boolean) {
-  const fw = phone ? Math.max(0.52, Math.min(0.86, c.w / 400)) : Math.max(0.14, Math.min(0.36, c.w / 1500));
+  const fw = phone
+    ? Math.max(0.52, Math.min(0.86, c.w / 400))
+    : Math.max(0.14, Math.min(0.36, c.w / 1500));
   const w = fw * W;
   return { fw, w, h: (w * c.h) / Math.max(1, c.w) };
 }
@@ -51,7 +59,11 @@ function sizeOn(c: Clipping, W: number, phone: boolean) {
  * Finds somewhere to hang each clipping that has not been placed yet: wherever along the board the
  * pile is lowest across its width, tucked a little under what is already up, as a real board fills.
  */
-function place(all: Clipping[], phone: boolean, top0: number): { placed: Placed[]; fresh: Placed[] } {
+function place(
+  all: Clipping[],
+  phone: boolean,
+  top0: number,
+): { placed: Placed[]; fresh: Placed[] } {
   const placed: Placed[] = [];
   const fresh: Placed[] = [];
   const bottomUnder = (x: number, fw: number) =>
@@ -88,16 +100,11 @@ function place(all: Clipping[], phone: boolean, top0: number): { placed: Placed[
   return { placed, fresh };
 }
 
+const isPaper = (v: string | null): v is "newsprint" | "white" =>
+  v === "white" || v === "newsprint";
+
 function usePaper() {
-  const [paper, setPaper] = useState<"newsprint" | "white">("newsprint");
-  useEffect(() => {
-    try {
-      if (localStorage.getItem("yn-paper") === "white") setPaper("white");
-    } catch {
-      // Newsprint it is.
-    }
-  }, []);
-  return paper;
+  return useStoredChoice("yn-paper", "paper", isPaper, "newsprint")[0];
 }
 
 /** The reader's clippings, taped up on a wall of newsprint. */
@@ -129,13 +136,16 @@ export function Pinboard() {
     }
   }, [W, phone, at]);
 
+  // Clippings live in IndexedDB, so the board loads them after mount.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- async load from IndexedDB
     void refresh();
   }, [refresh]);
 
   useEffect(() => {
     try {
       const r = localStorage.getItem("yn-board-return");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of browser storage
       if (r?.startsWith("/mockups/")) setBack(r);
     } catch {
       // The list of mockups is a fine place to go back to.
@@ -147,6 +157,7 @@ export function Pinboard() {
   // One object URL per clipping image, released when the clipping goes.
   useEffect(() => {
     if (!items) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- object URLs are browser resources
     setUrls((prev) => {
       const next: Record<string, string> = {};
       for (const c of items) next[c.id] = prev[c.id] ?? URL.createObjectURL(c.image);
@@ -171,7 +182,9 @@ export function Pinboard() {
     return () => clearTimeout(t);
   }, [slip]);
 
-  const say = (text: string, undo?: Clipping) => setSlip({ text, n: Date.now(), undo });
+  // Each message gets a fresh key, so saying the same thing twice still replays the slip.
+  const said = useRef(0);
+  const say = (text: string, undo?: Clipping) => setSlip({ text, n: ++said.current, undo });
 
   const layout = useMemo(() => {
     if (!items || !W) return [];
@@ -216,7 +229,12 @@ export function Pinboard() {
     d.moved = true;
     const x = (e.clientX - b.left - d.dx) / W;
     const y = (e.clientY - b.top - d.dy) / W;
-    setItems((cur) => cur?.map((c) => (c.id === d.id ? { ...c, x: Math.max(-0.05, Math.min(0.98, x)), y: Math.max(0.04, y) } : c)) ?? cur);
+    setItems(
+      (cur) =>
+        cur?.map((c) =>
+          c.id === d.id ? { ...c, x: Math.max(-0.05, Math.min(0.98, x)), y: Math.max(0.04, y) } : c,
+        ) ?? cur,
+    );
   };
 
   const onUp = () => {
@@ -234,7 +252,12 @@ export function Pinboard() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `yay-news-${c.headline.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40) || "clipping"}.png`;
+      a.download = `yay-news-${
+        c.headline
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .slice(0, 40) || "clipping"
+      }.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -250,7 +273,11 @@ export function Pinboard() {
       const blob = await printClipping(c, paper);
       const file = new File([blob], "yay-news-clipping.png", { type: "image/png" });
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: "The Yay News", text: c.headline || "Cut from The Yay News" });
+        await navigator.share({
+          files: [file],
+          title: "The Yay News",
+          text: c.headline || "Cut from The Yay News",
+        });
         return;
       }
     } catch (err) {
@@ -277,7 +304,11 @@ export function Pinboard() {
   };
 
   return (
-    <div className="pb-room" data-paper={paper} onPointerDown={(e) => e.target === e.currentTarget && setSelected(null)}>
+    <div
+      className="pb-room"
+      data-paper={paper}
+      onPointerDown={(e) => e.target === e.currentTarget && setSelected(null)}
+    >
       <nav
         aria-label="Board"
         className="pb-bar fixed inset-x-0 top-3 z-50 mx-auto flex w-fit max-w-[calc(100%-1.5rem)] flex-wrap items-center justify-center gap-1 rounded-full bg-black/85 px-2 py-1.5 font-sans text-xs text-white shadow-lg backdrop-blur"
@@ -323,7 +354,12 @@ export function Pinboard() {
               onClick={() => setSelected(c.id)}
             >
               <div className="pb-piece">
-                <div className="pb-paper" style={{ height: h, backgroundColor: c.paper, ...edgeStyle(edge, scale) }}>
+                <div
+                  className="pb-paper"
+                  style={{ height: h, backgroundColor: c.paper, ...edgeStyle(edge, scale) }}
+                >
+                  {/* A blob: URL from IndexedDB, which next/image cannot optimise. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   {url && <img src={url} alt={c.headline || "A clipping"} draggable={false} />}
                   <span className="pb-grain" aria-hidden />
                 </div>
@@ -334,7 +370,13 @@ export function Pinboard() {
                       key={i}
                       className="pb-tape"
                       aria-hidden
-                      style={{ left: t.x * w - tw / 2, top: t.y * h - tw * 0.13, width: tw, height: tw * 0.27, rotate: `${t.angle}deg` }}
+                      style={{
+                        left: t.x * w - tw / 2,
+                        top: t.y * h - tw * 0.13,
+                        width: tw,
+                        height: tw * 0.27,
+                        rotate: `${t.angle}deg`,
+                      }}
                     />
                   );
                 })}
@@ -351,7 +393,11 @@ export function Pinboard() {
                     Share
                   </button>
                   <Link href={c.page}>Read it</Link>
-                  <button type="button" onClick={() => void takeDown(c)} aria-label={`Take down ${c.headline}`}>
+                  <button
+                    type="button"
+                    onClick={() => void takeDown(c)}
+                    aria-label={`Take down ${c.headline}`}
+                  >
                     Take down
                   </button>
                 </span>
@@ -385,10 +431,12 @@ function EmptyNote({ back }: { back: string }) {
         <p className="pb-note__head">Nothing up here yet!</p>
         <Mark name="brush-03" ink="#d42a2f" className="pb-note__swash" />
         <p>
-          Open any page of the paper, pick <b>Scissors</b> in the black bar at the bottom, then click a story you
-          like.
+          Open any page of the paper, pick <b>Scissors</b> in the black bar at the bottom, then
+          click a story you like.
         </p>
-        <p>It gets cut out and taped up right here — drag it about, save it, send it to a friend.</p>
+        <p>
+          It gets cut out and taped up right here — drag it about, save it, send it to a friend.
+        </p>
         <Link href={back} className="pb-note__go">
           Back to the paper
           <Mark name="arrows-06" ink="currentColor" className="pb-note__arrow" />

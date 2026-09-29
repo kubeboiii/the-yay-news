@@ -108,10 +108,13 @@ export function ReaderTools({ version }: { version: string }) {
   const key = `yn-ink:${pathname}:${layout}`;
   const loadedKey = useRef<string | null>(null);
 
+  // The toolbar portals into document.body, which only exists on the client.
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only portal target
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!size.w) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- drawings load from storage once the layout is known
     setStrokes(load(key));
     loadedKey.current = key;
   }, [key, size.w]);
@@ -127,6 +130,7 @@ export function ReaderTools({ version }: { version: string }) {
   // ?tool=marker or ?tool=scissors opens a page with a tool already in hand, for previews.
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("tool");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of the URL
     if (t === "marker" || t === "scissors") setMode(t);
   }, []);
 
@@ -196,12 +200,22 @@ export function ReaderTools({ version }: { version: string }) {
   }, []);
 
   const toggle = (m: Mode) => setMode((cur) => (cur === m ? "off" : m));
-  const pill = (on: boolean) => `rounded-full px-2.5 py-0.5 ${on ? "bg-white text-black" : "hover:bg-white/15"}`;
+  const pill = (on: boolean) =>
+    `rounded-full px-2.5 py-0.5 ${on ? "bg-white text-black" : "hover:bg-white/15"}`;
 
   return (
     <>
-      <span className="flex items-center gap-0.5 rounded-full bg-white/15 p-0.5" role="group" aria-label="Reader tools">
-        <button type="button" aria-pressed={mode === "marker"} onClick={() => toggle("marker")} className={pill(mode === "marker")}>
+      <span
+        className="flex items-center gap-0.5 rounded-full bg-white/15 p-0.5"
+        role="group"
+        aria-label="Reader tools"
+      >
+        <button
+          type="button"
+          aria-pressed={mode === "marker"}
+          onClick={() => toggle("marker")}
+          className={pill(mode === "marker")}
+        >
           Marker
         </button>
         <button
@@ -212,13 +226,22 @@ export function ReaderTools({ version }: { version: string }) {
         >
           Scissors
         </button>
-        <Link href="/mockups/pinboard" data-rt-board className={`${pill(false)} rt-board-link`} aria-label={`Your board, ${count ?? 0} clippings`}>
+        <Link
+          href="/mockups/pinboard"
+          data-rt-board
+          className={`${pill(false)} rt-board-link`}
+          aria-label={`Your board, ${count ?? 0} clippings`}
+        >
           Board{count !== null ? ` (${count})` : ""}
         </Link>
       </span>
 
       {mode !== "off" && (
-        <div className="rt-tray" role="toolbar" aria-label={mode === "marker" ? "Marker" : "Scissors"}>
+        <div
+          className="rt-tray"
+          role="toolbar"
+          aria-label={mode === "marker" ? "Marker" : "Scissors"}
+        >
           {mode === "marker" ? (
             <>
               {TOOLS.map((t) => (
@@ -234,7 +257,12 @@ export function ReaderTools({ version }: { version: string }) {
                 </button>
               ))}
               <span className="mx-1 h-4 w-px bg-white/25" aria-hidden />
-              <button type="button" onClick={() => commit(strokes.slice(0, -1))} disabled={!strokes.length} className={`${pill(false)} disabled:opacity-40`}>
+              <button
+                type="button"
+                onClick={() => commit(strokes.slice(0, -1))}
+                disabled={!strokes.length}
+                className={`${pill(false)} disabled:opacity-40`}
+              >
                 Undo
               </button>
               <button
@@ -256,7 +284,12 @@ export function ReaderTools({ version }: { version: string }) {
               <span className="rt-touch-only">Tap a story, tap again to cut</span>
             </span>
           )}
-          <button type="button" onClick={() => setMode("off")} className={pill(false)} aria-label="Put the tool down (Esc)">
+          <button
+            type="button"
+            onClick={() => setMode("off")}
+            className={pill(false)}
+            aria-label="Put the tool down (Esc)"
+          >
             Done
           </button>
         </div>
@@ -272,7 +305,15 @@ export function ReaderTools({ version }: { version: string }) {
           onStroke={(s) => commit([...strokes, packStroke(s)])}
         />
       )}
-      {wrap && <ScissorsLayer wrap={wrap} active={mode === "scissors"} version={version} onCut={bump} onSlip={showSlip} />}
+      {wrap && (
+        <ScissorsLayer
+          wrap={wrap}
+          active={mode === "scissors"}
+          version={version}
+          onCut={bump}
+          onSlip={showSlip}
+        />
+      )}
 
       {mounted &&
         slip &&

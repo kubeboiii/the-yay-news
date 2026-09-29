@@ -15,7 +15,13 @@ export function PressFilter() {
       <defs>
         <filter id="press" x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
           {/* Ragged edges */}
-          <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="fibre" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="1.1"
+            numOctaves="2"
+            seed="4"
+            result="fibre"
+          />
           <feDisplacementMap
             in="SourceGraphic"
             in2="fibre"
@@ -33,7 +39,13 @@ export function PressFilter() {
           </feComponentTransfer>
           {/* Uneven inking: soft patches where the press laid down a little less ink (the brightest
               parts of a slow noise become a faint white wash) */}
-          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="3" seed="11" result="blotch" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.012 0.03"
+            numOctaves="3"
+            seed="11"
+            result="blotch"
+          />
           <feColorMatrix
             in="blotch"
             type="matrix"
@@ -42,7 +54,13 @@ export function PressFilter() {
           />
           <feBlend in="gained" in2="lift" mode="screen" result="inked" />
           {/* Speckle: tiny dropouts where fibres didn't take ink (only the top of fine noise) */}
-          <feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="1" seed="23" result="dust" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="2.2"
+            numOctaves="1"
+            seed="23"
+            result="dust"
+          />
           <feColorMatrix
             in="dust"
             type="matrix"

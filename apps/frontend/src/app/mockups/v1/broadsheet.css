@@ -19,6 +19,14 @@
   --neon-green: #36f28a;
   --neon-blue: #2f5bff;
   --neon-violet: #b14bff;
+  /* The colour of type printed on a pink or an orange ground. Ink here; colourways whose pink or
+     orange is a deep violet or blue (see ../_shared/themes.css) swap it for paper-white, because
+     black on those grounds falls short of AA contrast. */
+  --neon-pink-ink: var(--ink);
+  --neon-orange-ink: var(--ink);
+  /* Pink set as type on the bare paper. Fluoro pink is too light to read as small type (under 3:1
+     on newsprint), so it is overprinted with ink until it clears 4.5:1 in every colourway. */
+  --neon-pink-type: color-mix(in oklab, var(--neon-pink), var(--ink) 38%);
   --hair: color-mix(in srgb, var(--ink) 55%, transparent);
 
   min-height: 100vh;
@@ -147,6 +155,7 @@
 
 .yn-mark-pink {
   background: var(--neon-pink);
+  color: var(--neon-pink-ink);
 }
 
 .yn-mark-green {
@@ -314,6 +323,7 @@
 
 .yn-readtime {
   background: var(--neon-pink);
+  color: var(--neon-pink-ink);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -361,6 +371,7 @@
   bottom: calc(var(--u) * 7);
   width: calc(var(--u) * 205);
   background: var(--neon-pink);
+  color: var(--neon-pink-ink);
   padding: calc(var(--u) * 5) calc(var(--u) * 6) calc(var(--u) * 6);
   rotate: -1.2deg;
   z-index: 2;
@@ -381,9 +392,11 @@
   text-transform: none;
 }
 
+/* Full strength here: faded to 75% on the fluoro card, the credit drops under 4.5:1. */
 .yn-hero-card .yn-credit {
   display: block;
   margin-top: calc(var(--u) * 3);
+  opacity: 1;
 }
 
 /* ——— Footer cards ——— */
@@ -413,10 +426,12 @@
 
 .yn-card-pink {
   background: var(--neon-pink);
+  color: var(--neon-pink-ink);
 }
 
 .yn-card-orange {
   background: var(--neon-orange);
+  color: var(--neon-orange-ink);
 }
 
 .yn-card-green {

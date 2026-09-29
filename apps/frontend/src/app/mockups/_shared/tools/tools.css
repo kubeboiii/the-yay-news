@@ -224,7 +224,21 @@ html[data-paper="white"] .rt-flying::after {
   box-shadow:
     0 1px 1px rgb(0 0 0 / 0.12),
     2px 8px 14px -6px rgb(40 30 20 / 0.45);
-  clip-path: polygon(0 3%, 12% 0, 31% 2%, 55% 0, 78% 3%, 100% 0, 99% 50%, 100% 97%, 71% 100%, 44% 97%, 19% 100%, 0 97%, 1% 48%);
+  clip-path: polygon(
+    0 3%,
+    12% 0,
+    31% 2%,
+    55% 0,
+    78% 3%,
+    100% 0,
+    99% 50%,
+    100% 97%,
+    71% 100%,
+    44% 97%,
+    19% 100%,
+    0 97%,
+    1% 48%
+  );
   transform: translateX(-50%) rotate(-1.6deg);
   animation: rt-slip 3.4s ease-out forwards;
   pointer-events: none;
@@ -277,7 +291,9 @@ html[data-paper="white"] .rt-flying::after {
   padding: 0.3rem 0.4rem;
   border-radius: 1.1rem;
   background: rgb(0 0 0 / 0.85);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
   backdrop-filter: blur(8px);
 }
 

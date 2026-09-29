@@ -120,11 +120,28 @@
   background: #f5f0e3 url("/mockup/press/newsprint-bright.jpg") center / 600px auto;
   background-blend-mode: multiply;
   color: #1f1c17;
-  font: 400 12px/1.25 var(--pb-type), "Courier New", ui-monospace, monospace;
+  font:
+    400 12px/1.25 var(--pb-type),
+    "Courier New",
+    ui-monospace,
+    monospace;
   box-shadow:
     0 1px 1px rgb(0 0 0 / 0.15),
     1px 5px 8px -3px rgb(40 28 14 / 0.35);
-  clip-path: polygon(0 4%, 20% 0, 48% 3%, 76% 0, 100% 3%, 99% 55%, 100% 97%, 64% 100%, 36% 97%, 9% 100%, 0 96%, 1% 45%);
+  clip-path: polygon(
+    0 4%,
+    20% 0,
+    48% 3%,
+    76% 0,
+    100% 3%,
+    99% 55%,
+    100% 97%,
+    64% 100%,
+    36% 97%,
+    9% 100%,
+    0 96%,
+    1% 45%
+  );
   opacity: 0;
   visibility: hidden;
   transition:
@@ -200,7 +217,10 @@
   background: #fbf7ea url("/mockup/press/newsprint-bright.jpg") center / 700px auto;
   background-blend-mode: multiply;
   color: #23201b;
-  font: 500 24px/1.18 var(--pb-hand), "Bradley Hand", cursive;
+  font:
+    500 24px/1.18 var(--pb-hand),
+    "Bradley Hand",
+    cursive;
   /* Lined notepaper, the blue rules printed faintly under the hand. */
   background-image:
     repeating-linear-gradient(to bottom, transparent 0 27px, rgb(70 110 190 / 0.22) 27px 28px),
@@ -281,11 +301,29 @@
   background: #f3eee1 url("/mockup/press/newsprint.jpg") center / 700px auto;
   background-blend-mode: multiply;
   color: #1f1c17;
-  font: 400 14px/1.3 var(--pb-type), "Courier New", ui-monospace, monospace;
+  font:
+    400 14px/1.3 var(--pb-type),
+    "Courier New",
+    ui-monospace,
+    monospace;
   box-shadow:
     0 1px 1px rgb(0 0 0 / 0.12),
     2px 8px 14px -6px rgb(40 30 20 / 0.45);
-  clip-path: polygon(0 3%, 12% 0, 31% 2%, 55% 0, 78% 3%, 100% 0, 99% 50%, 100% 97%, 71% 100%, 44% 97%, 19% 100%, 0 97%, 1% 48%);
+  clip-path: polygon(
+    0 3%,
+    12% 0,
+    31% 2%,
+    55% 0,
+    78% 3%,
+    100% 0,
+    99% 50%,
+    100% 97%,
+    71% 100%,
+    44% 97%,
+    19% 100%,
+    0 97%,
+    1% 48%
+  );
   transform: translateX(-50%) rotate(-1.4deg);
   animation: pb-slip 0.35s ease-out;
 }

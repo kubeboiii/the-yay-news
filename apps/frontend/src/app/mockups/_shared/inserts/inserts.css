@@ -86,7 +86,12 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgb(30 20 10 / 0.24), rgb(30 20 10 / 0.06) 7px, transparent 14px);
+  background: linear-gradient(
+    90deg,
+    rgb(30 20 10 / 0.24),
+    rgb(30 20 10 / 0.06) 7px,
+    transparent 14px
+  );
   pointer-events: none;
 }
 
@@ -675,7 +680,13 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(118deg, transparent 22%, rgb(255 255 255 / 0.55) 33%, rgb(255 255 255 / 0.1) 41%, transparent 47%),
+    linear-gradient(
+      118deg,
+      transparent 22%,
+      rgb(255 255 255 / 0.55) 33%,
+      rgb(255 255 255 / 0.1) 41%,
+      transparent 47%
+    ),
     linear-gradient(118deg, transparent 56%, rgb(255 255 255 / 0.3) 60%, transparent 66%),
     linear-gradient(180deg, rgb(255 255 255 / 0.25), transparent 30%, rgb(0 0 0 / 0.03));
   pointer-events: none;
@@ -743,7 +754,8 @@
 
 .yi-slot--empty .yi-vinyl {
   filter: brightness(0) invert(0.97) drop-shadow(2px 0 0 #f6f4ef) drop-shadow(-2px 0 0 #f6f4ef)
-    drop-shadow(0 2px 0 #f6f4ef) drop-shadow(0 -2px 0 #f6f4ef) drop-shadow(0 0 0.6px rgb(0 0 0 / 0.5));
+    drop-shadow(0 2px 0 #f6f4ef) drop-shadow(0 -2px 0 #f6f4ef)
+    drop-shadow(0 0 0.6px rgb(0 0 0 / 0.5));
 }
 
 /* ——————————————— 3. Coupon ——————————————— */
@@ -841,8 +853,13 @@
   bottom: 0;
   width: 6px;
   transform: translateX(-3px);
-  background: radial-gradient(circle, rgb(40 30 20 / 0.4) 1.2px, rgb(255 255 255 / 0.4) 1.6px, transparent 2px) center 0 /
-    6px 8px repeat-y;
+  background: radial-gradient(
+      circle,
+      rgb(40 30 20 / 0.4) 1.2px,
+      rgb(255 255 255 / 0.4) 1.6px,
+      transparent 2px
+    )
+    center 0 / 6px 8px repeat-y;
   z-index: 2;
   pointer-events: none;
 }
@@ -1531,7 +1548,12 @@
 }
 
 .yi-fold--0 > .yi-fold__shade {
-  background-image: linear-gradient(90deg, transparent 86%, rgb(0 0 0 / 0.05) 96%, rgb(0 0 0 / 0.16) 100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent 86%,
+    rgb(0 0 0 / 0.05) 96%,
+    rgb(0 0 0 / 0.16) 100%
+  );
 }
 
 .yi-fold--1 > .yi-fold__shade {
@@ -1548,7 +1570,12 @@
 }
 
 .yi-fold--2 > .yi-fold__shade {
-  background-image: linear-gradient(90deg, rgb(0 0 0 / 0.08) 0%, rgb(0 0 0 / 0.03) 5%, transparent 14%);
+  background-image: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.08) 0%,
+    rgb(0 0 0 / 0.03) 5%,
+    transparent 14%
+  );
 }
 
 .yi-poster.is-open .yi-fold--1 > .yi-fold__shade {

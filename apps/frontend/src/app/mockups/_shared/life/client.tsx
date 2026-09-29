@@ -61,19 +61,71 @@ function arrive(wrap: HTMLElement, seen: () => void) {
   const k = (n: number) => String(Math.round(s * n * 1000) / 1000);
   const wrapAnim = wrap.animate(
     [
-      { offset: 0, opacity: 0, translate: "0 -80px", scale: k(0.96), rotate: "-3deg", clipPath: folded, easing: "cubic-bezier(.5,0,.9,.6)" },
-      { offset: 0.26, opacity: 1, translate: "0 5px", scale: k(1.01), rotate: "-1.6deg", clipPath: folded, easing: "ease-out" },
-      { offset: 0.33, translate: "0 -3px", scale: k(1), rotate: "-1.5deg", clipPath: folded, easing: "ease-in-out" },
+      {
+        offset: 0,
+        opacity: 0,
+        translate: "0 -80px",
+        scale: k(0.96),
+        rotate: "-3deg",
+        clipPath: folded,
+        easing: "cubic-bezier(.5,0,.9,.6)",
+      },
+      {
+        offset: 0.26,
+        opacity: 1,
+        translate: "0 5px",
+        scale: k(1.01),
+        rotate: "-1.6deg",
+        clipPath: folded,
+        easing: "ease-out",
+      },
+      {
+        offset: 0.33,
+        translate: "0 -3px",
+        scale: k(1),
+        rotate: "-1.5deg",
+        clipPath: folded,
+        easing: "ease-in-out",
+      },
       { offset: 0.4, translate: "0 0", scale: k(1), rotate: "-1.5deg", clipPath: folded },
-      { offset: 0.5, translate: "0 0", scale: k(1), rotate: "-1.5deg", clipPath: folded, easing: "cubic-bezier(.45,0,.3,1)" },
+      {
+        offset: 0.5,
+        translate: "0 0",
+        scale: k(1),
+        rotate: "-1.5deg",
+        clipPath: folded,
+        easing: "cubic-bezier(.45,0,.3,1)",
+      },
       // Opened out where it lies, then drawn up to reading distance.
-      { offset: 0.8, translate: "0 0", scale: k(1), rotate: "-1.1deg", clipPath: "inset(0 0 0% 0)", easing: "cubic-bezier(.3,0,.2,1)" },
-      { offset: 1, opacity: 1, translate: "0 0", scale: "1", rotate: "0deg", clipPath: "inset(0 0 0% 0)" },
+      {
+        offset: 0.8,
+        translate: "0 0",
+        scale: k(1),
+        rotate: "-1.1deg",
+        clipPath: "inset(0 0 0% 0)",
+        easing: "cubic-bezier(.3,0,.2,1)",
+      },
+      {
+        offset: 1,
+        opacity: 1,
+        translate: "0 0",
+        scale: "1",
+        rotate: "0deg",
+        clipPath: "inset(0 0 0% 0)",
+      },
     ],
     { duration: D },
   );
-  const unfold = { delay: D * 0.5, duration: D * 0.3, easing: "cubic-bezier(.45,0,.3,1)", fill: "both" as const };
-  const shadeAnim = shade.animate([{ opacity: 1 }, { opacity: 0.6, offset: 0.5 }, { opacity: 0 }], unfold);
+  const unfold = {
+    delay: D * 0.5,
+    duration: D * 0.3,
+    easing: "cubic-bezier(.45,0,.3,1)",
+    fill: "both" as const,
+  };
+  const shadeAnim = shade.animate(
+    [{ opacity: 1 }, { opacity: 0.6, offset: 0.5 }, { opacity: 0 }],
+    unfold,
+  );
   const edgeAnim = edge.animate(
     [
       { top: pct(f), opacity: 0 },
@@ -121,7 +173,8 @@ function arrive(wrap: HTMLElement, seen: () => void) {
 /** The next page swings in from the right edge (or back in from the left) with a curl shadow. */
 function turn(wraps: HTMLElement[], forward: boolean) {
   if (reducedMotion()) {
-    for (const w of wraps) w.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: "ease-out" });
+    for (const w of wraps)
+      w.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: "ease-out" });
     return;
   }
   rustle();
@@ -146,8 +199,14 @@ function turn(wraps: HTMLElement[], forward: boolean) {
     );
     curl.animate(
       forward
-        ? [{ left: "70%", opacity: 1 }, { left: "-40%", opacity: 0 }]
-        : [{ left: "-10%", opacity: 1 }, { left: "100%", opacity: 0 }],
+        ? [
+            { left: "70%", opacity: 1 },
+            { left: "-40%", opacity: 0 },
+          ]
+        : [
+            { left: "-10%", opacity: 1 },
+            { left: "100%", opacity: 0 },
+          ],
       { duration: 450, easing: "ease-out", fill: "both" },
     );
     anim.finished
@@ -175,8 +234,21 @@ function EditionPress({ f, soften }: { f: Press; soften: number }) {
   return (
     <svg aria-hidden width="0" height="0" style={{ position: "absolute" }}>
       <defs>
-        <filter id="press-edition" x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed={f.fibreSeed} result="fibre" />
+        <filter
+          id="press-edition"
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="1.1"
+            numOctaves="2"
+            seed={f.fibreSeed}
+            result="fibre"
+          />
           <feDisplacementMap
             in="SourceGraphic"
             in2="fibre"
@@ -185,13 +257,23 @@ function EditionPress({ f, soften }: { f: Press; soften: number }) {
             yChannelSelector="G"
             result="wicked"
           />
-          <feGaussianBlur in="wicked" stdDeviation={Math.round((f.blur + soften) * 100) / 100} result="spread" />
+          <feGaussianBlur
+            in="wicked"
+            stdDeviation={Math.round((f.blur + soften) * 100) / 100}
+            result="spread"
+          />
           <feComponentTransfer in="spread" result="gained">
             <feFuncR type="linear" slope={f.slope} intercept={f.intercept} />
             <feFuncG type="linear" slope={f.slope} intercept={f.intercept} />
             <feFuncB type="linear" slope={f.slope} intercept={f.intercept} />
           </feComponentTransfer>
-          <feTurbulence type="fractalNoise" baseFrequency={f.blotchFreq} numOctaves="3" seed={f.blotchSeed} result="blotch" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency={f.blotchFreq}
+            numOctaves="3"
+            seed={f.blotchSeed}
+            result="blotch"
+          />
           <feColorMatrix
             in="blotch"
             type="matrix"
@@ -199,7 +281,13 @@ function EditionPress({ f, soften }: { f: Press; soften: number }) {
             result="lift"
           />
           <feBlend in="gained" in2="lift" mode="screen" result="inked" />
-          <feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="1" seed={f.dustSeed} result="dust" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="2.2"
+            numOctaves="1"
+            seed={f.dustSeed}
+            result="dust"
+          />
           <feColorMatrix
             in="dust"
             type="matrix"
@@ -269,7 +357,7 @@ export function PaperLifeClient({ version }: { version: string }) {
   // Reading mode is known before the first paint, so the early stylesheet can hand over to it.
   useLayoutEffect(() => {
     const url = urlParam("reading");
-    let saved: string | null = null;
+    let saved: string | null;
     try {
       saved = localStorage.getItem("yn-reading");
     } catch {
@@ -284,7 +372,8 @@ export function PaperLifeClient({ version }: { version: string }) {
     const issue = issueOf(issueRef);
     const here = place(pathname);
     // A re-run for the same page (React re-mounting effects in development) is not a navigation.
-    const before = previous.current && previous.current !== pathname ? place(previous.current) : null;
+    const before =
+      previous.current && previous.current !== pathname ? place(previous.current) : null;
     previous.current = pathname;
     if (!here || here.version !== version) {
       document.getElementById("life-early")?.remove();
@@ -380,12 +469,15 @@ function useToggle(name: "reading" | "sound", storageKey: string, fromUrl: boole
   const [value, setValue] = useState<Toggle | null>(null);
   useEffect(() => {
     const url = fromUrl ? urlParam(name) : null;
-    let saved: string | null = null;
+    let saved: string | null;
     try {
       saved = localStorage.getItem(storageKey);
     } catch {
       saved = null;
     }
+    // Read once after mount: the value is unknown (null) on the server and the first render, and
+    // becomes known here, so nothing is switched off before the saved choice is read.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of browser storage
     setValue(url === "on" || url === "off" ? url : saved === "on" ? "on" : "off");
   }, [name, storageKey, fromUrl]);
   useEffect(() => {
@@ -403,7 +495,8 @@ function useToggle(name: "reading" | "sound", storageKey: string, fromUrl: boole
 }
 
 const pill = "flex items-center gap-0.5 rounded-full bg-white/15 p-0.5";
-const option = (on: boolean) => `rounded-full px-2.5 py-0.5 ${on ? "bg-white text-black" : "hover:bg-white/15"}`;
+const option = (on: boolean) =>
+  `rounded-full px-2.5 py-0.5 ${on ? "bg-white text-black" : "hover:bg-white/15"}`;
 
 /** Toolbar controls for paper life: reading mode, sound and touch, and the archive of back issues. */
 export function LifeControls() {

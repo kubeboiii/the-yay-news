@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
+import type {
+  CSSProperties,
+  MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
+} from "react";
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { Burst } from "../burst";
 import { Mark } from "../mark";
@@ -62,7 +66,10 @@ export function ArtPrintInsert({ issue }: { issue: number }) {
             src={art.src}
             alt={`${art.title}, drawn by ${art.artist}`}
             className="yi-print__art"
-            style={{ aspectRatio: String(art.ratio), width: art.ratio < 1 ? `${Math.round(art.ratio * 100)}%` : "100%" }}
+            style={{
+              aspectRatio: String(art.ratio),
+              width: art.ratio < 1 ? `${Math.round(art.ratio * 100)}%` : "100%",
+            }}
             draggable={false}
           />
         </div>
@@ -187,6 +194,8 @@ export function CouponInsert({ issue, startTorn }: { issue: number; startTorn: b
   const [tearing, setTearing] = useState(false);
 
   useEffect(() => {
+    // The coupon renders whole on the server; a saved tear is only known once storage is readable.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of browser storage
     setTorn(startTorn || read(storeKey) === "torn");
   }, [startTorn, storeKey]);
 
@@ -226,7 +235,11 @@ export function CouponInsert({ issue, startTorn }: { issue: number; startTorn: b
         className="yi-coupon__main"
         style={torn ? { clipPath: mainClip } : undefined}
         onClick={tear}
-        aria-label={torn ? `${coupon.head} — torn off and yours to keep` : `${coupon.head}. Tear it off along the dotted line`}
+        aria-label={
+          torn
+            ? `${coupon.head} — torn off and yours to keep`
+            : `${coupon.head}. Tear it off along the dotted line`
+        }
       >
         <span className="yi-coupon__over">
           <span>The Yay News · Coupon</span>
@@ -236,7 +249,9 @@ export function CouponInsert({ issue, startTorn }: { issue: number; startTorn: b
         <span className="yi-coupon__small">{coupon.small} No cash value. Never expires.</span>
         <span className="yi-coupon__foot">
           <span className="yi-coupon__no">Serial {serial}</span>
-          <span className="yi-coupon__tear">{torn ? "Yours now. Spend it well." : "Tear along the dotted line"}</span>
+          <span className="yi-coupon__tear">
+            {torn ? "Yours now. Spend it well." : "Tear along the dotted line"}
+          </span>
         </span>
         <Burst fill="var(--yi-a)" points={18} depth={0.16} className="yi-coupon__burst print-worn">
           <span className="yi-coupon__free">Free</span>
@@ -264,7 +279,8 @@ export function PostcardInsert({ issue, startBack }: { issue: number; startBack:
   const send = async () => {
     // Send the page itself, without the switches used to preview this card.
     const u = new URL(window.location.href);
-    for (const k of ["insert-open", "insert-side", "insert-torn", "arrive"]) u.searchParams.delete(k);
+    for (const k of ["insert-open", "insert-side", "insert-torn", "arrive"])
+      u.searchParams.delete(k);
     u.hash = "";
     const url = u.toString();
     setShareUrl(url);
@@ -306,10 +322,22 @@ export function PostcardInsert({ issue, startBack }: { issue: number; startBack:
     <div className={`yi-post ${back ? "is-back" : ""}`}>
       <div className="yi-post__card">
         <div className="yi-post__face yi-post__front" onClick={flipFromFace} aria-hidden={back}>
-          <div className="yi-post__photo" style={{ backgroundImage: `url(${card.photo})` }} role="img" aria-label={card.caption} />
+          <div
+            className="yi-post__photo"
+            style={{ backgroundImage: `url(${card.photo})` }}
+            role="img"
+            aria-label={card.caption}
+          />
           <p className="yi-post__caption">{card.caption}</p>
-          <p className="yi-post__credit">Photograph: {card.credit} · The Yay News, issue {issue}</p>
-          <button type="button" className="yi-post__turn" onClick={() => setBack(true)} tabIndex={back ? -1 : 0}>
+          <p className="yi-post__credit">
+            Photograph: {card.credit} · The Yay News, issue {issue}
+          </p>
+          <button
+            type="button"
+            className="yi-post__turn"
+            onClick={() => setBack(true)}
+            tabIndex={back ? -1 : 0}
+          >
             Turn it over
           </button>
         </div>
@@ -324,16 +352,29 @@ export function PostcardInsert({ issue, startBack }: { issue: number; startBack:
           </div>
           <div className="yi-post__right">
             <div className="yi-post__stamp">
-              <div className="yi-post__stamp-photo" style={{ backgroundImage: `url(${stampPhoto})` }} />
+              <div
+                className="yi-post__stamp-photo"
+                style={{ backgroundImage: `url(${stampPhoto})` }}
+              />
               <span className="yi-post__stamp-val">{issue}p</span>
             </div>
             <div className="yi-post__postmark" aria-hidden>
               <svg viewBox="0 0 100 100" className="yi-post__postmark-ring">
                 <defs>
-                  <path id={`yi-pm-${issue}`} d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0" />
+                  <path
+                    id={`yi-pm-${issue}`}
+                    d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"
+                  />
                 </defs>
                 <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="2" />
-                <circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="27"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                />
                 <text fontSize="10.5" letterSpacing="2.2" fill="currentColor">
                   <textPath href={`#yi-pm-${issue}`} startOffset="2%">
                     THE YAY NEWS · GOOD NEWS DESK ·
@@ -342,12 +383,27 @@ export function PostcardInsert({ issue, startBack }: { issue: number; startBack:
                 <text x="50" y="47" fontSize="6.6" textAnchor="middle" fill="currentColor">
                   {postmarkDate}
                 </text>
-                <text x="50" y="60" fontSize="10" textAnchor="middle" fill="currentColor" fontWeight="700">
+                <text
+                  x="50"
+                  y="60"
+                  fontSize="10"
+                  textAnchor="middle"
+                  fill="currentColor"
+                  fontWeight="700"
+                >
                   No. {issue}
                 </text>
               </svg>
-              <Mark name="brush-02" ink="currentColor" className="yi-post__cancel yi-post__cancel--1" />
-              <Mark name="brush-02" ink="currentColor" className="yi-post__cancel yi-post__cancel--2" />
+              <Mark
+                name="brush-02"
+                ink="currentColor"
+                className="yi-post__cancel yi-post__cancel--1"
+              />
+              <Mark
+                name="brush-02"
+                ink="currentColor"
+                className="yi-post__cancel yi-post__cancel--2"
+              />
             </div>
             <div className="yi-post__address">
               <p>
@@ -371,7 +427,12 @@ export function PostcardInsert({ issue, startBack }: { issue: number; startBack:
               Copy this address to send it: <span>{shareUrl}</span>
             </p>
           ) : null}
-          <button type="button" className="yi-post__turn yi-post__turn--back" onClick={() => setBack(false)} tabIndex={back ? 0 : -1}>
+          <button
+            type="button"
+            className="yi-post__turn yi-post__turn--back"
+            onClick={() => setBack(false)}
+            tabIndex={back ? 0 : -1}
+          >
             Turn it over
           </button>
         </div>
@@ -401,7 +462,11 @@ export function ColouringInsert({ issue }: { issue: number }) {
     const el = canvasRef.current;
     if (!el) return;
     const cs = getComputedStyle(el);
-    setInks(["--yi-a", "--yi-b", "--yi-c", "--yi-d", "--yi-ink"].map((v) => cs.getPropertyValue(v).trim() || "#e33"));
+    setInks(
+      ["--yi-a", "--yi-b", "--yi-c", "--yi-d", "--yi-ink"].map(
+        (v) => cs.getPropertyValue(v).trim() || "#e33",
+      ),
+    );
     const saved = read(storeKey);
     if (saved) {
       const img = new Image();
@@ -414,7 +479,10 @@ export function ColouringInsert({ issue }: { issue: number }) {
     // The panel lies almost square on the desk (a fraction of a degree), so its on-screen box
     // maps straight onto the canvas without a visible offset.
     const r = e.currentTarget.getBoundingClientRect();
-    return { x: ((e.clientX - r.left) / r.width) * CANVAS_W, y: ((e.clientY - r.top) / r.height) * canvasH };
+    return {
+      x: ((e.clientX - r.left) / r.width) * CANVAS_W,
+      y: ((e.clientY - r.top) / r.height) * canvasH,
+    };
   };
 
   const strokeTo = useCallback(
@@ -435,7 +503,12 @@ export function ColouringInsert({ issue }: { issue: number }) {
           const a = Math.random() * Math.PI * 2;
           const r = Math.sqrt(Math.random()) * 11;
           ctx.globalAlpha = 0.1 + Math.random() * 0.22;
-          ctx.fillRect(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 1.4 + Math.random() * 2.2, 1.2 + Math.random() * 1.8);
+          ctx.fillRect(
+            cx + Math.cos(a) * r,
+            cy + Math.sin(a) * r,
+            1.4 + Math.random() * 2.2,
+            1.2 + Math.random() * 1.8,
+          );
         }
       }
       ctx.globalAlpha = 1;
@@ -529,7 +602,15 @@ export function ColouringInsert({ issue }: { issue: number }) {
 
 // ———————————————————————————— 6. Fold-out poster ————————————————————————————
 
-export function PosterInsert({ issue, open, onFoldAway }: { issue: number; open: boolean; onFoldAway: () => void }) {
+export function PosterInsert({
+  issue,
+  open,
+  onFoldAway,
+}: {
+  issue: number;
+  open: boolean;
+  onFoldAway: () => void;
+}) {
   const poster = posterForIssue(issue);
   const art = (offset: number) => (
     <div className="yi-poster__art" style={{ left: `${-offset * 100}%` }}>
@@ -545,7 +626,11 @@ export function PosterInsert({ issue, open, onFoldAway }: { issue: number; open:
   );
   return (
     <div className={`yi-poster ${open ? "is-open" : ""}`}>
-      <div className="yi-poster__scroller" tabIndex={0} aria-label={`Fold-out poster: ${poster.head}`}>
+      <div
+        className="yi-poster__scroller"
+        tabIndex={0}
+        aria-label={`Fold-out poster: ${poster.head}`}
+      >
         <div className="yi-poster__track">
           <div className="yi-fold yi-fold--0">
             <div className="yi-fold__face">{art(0)}</div>

@@ -312,6 +312,20 @@ Reader first, on hand-made sample editions; automation after the reading experie
 **Done when:** a static sample front page and inside page look right on desktop and mobile, pass AA
 contrast, and a clipping renders for a sample story.
 
+**Status (2026-09-29): done, with one item moved to Phase 2.**
+
+- Four designs kept, each with four pages: v1 Broadsheet (17 neon colourways) and v3 Tabloid, v4 Mini
+  Zine, v5 Midi Magazine (house inks plus Gelato Counter, Paint Box and Carousel pastels). v2 was
+  dropped. Mockups at `/mockups`, colour proofs at `/mockups/colours`.
+- AA contrast passes on every page, colourway and paper at desktop and phone widths, with two known
+  exceptions: the "12,408" banner number in v1 Sunburst UV, where the numerals mostly sit on yellow,
+  and the unlit rating stars on v5 Screen & Sound, which are a graphic whose value is in their label.
+- Clippings render at `/clip/{story|post|link}?story=…&look=v1|v3|v4|v5` in all three formats and
+  every colourway (preview at `/mockups/clippings`). Fonts are fetched from Google Fonts at render
+  time, so the renderer needs network access.
+- Moved to Phase 2: page components in `packages/ui`. They should be built once it is decided
+  whether readers get one design, a choice of design, or a rotation.
+
 ### Phase 2 — Reader MVP
 
 - New data model; 3–5 hand-made sample editions seeded

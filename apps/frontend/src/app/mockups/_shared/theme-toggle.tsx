@@ -1,25 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { themes } from "../colours/themes";
+import { useStoredChoice } from "./use-stored-choice";
 
 const ORIGINAL = "original";
 
 const known = (slug: string | null): slug is string =>
   !!slug && themes.some((t) => t.slug === slug);
 
-const readSaved = (): string => {
-  // ?theme=<slug> in the URL wins, so a colourway can be linked or screenshotted. A saved choice
-  // that has since been discarded falls back to the original.
-  const fromUrl = new URLSearchParams(window.location.search).get("theme");
-  if (known(fromUrl)) return fromUrl;
-  try {
-    const saved = localStorage.getItem("yn-theme");
-    return known(saved) ? saved : ORIGINAL;
-  } catch {
-    return ORIGINAL;
-  }
-};
+// ?theme=<slug> in the URL wins, so a colourway can be linked or screenshotted. A saved choice
+// that has since been discarded falls back to the original.
 
 const groups = [
   { label: "The original", list: themes.filter((t) => t.slug === "original") },
@@ -32,20 +23,11 @@ const groups = [
 
 /** Switches the broadsheet between its colourways and remembers the choice. */
 export function ThemeToggle() {
-  const [theme, setTheme] = useState(ORIGINAL);
-
-  useEffect(() => {
-    setTheme(readSaved());
-  }, []);
+  const [theme, setTheme] = useStoredChoice("yn-theme", "theme", known, ORIGINAL);
 
   useEffect(() => {
     if (theme === ORIGINAL) delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = theme;
-    try {
-      localStorage.setItem("yn-theme", theme);
-    } catch {
-      // Storage blocked: the choice still applies to this page view.
-    }
   }, [theme]);
 
   return (

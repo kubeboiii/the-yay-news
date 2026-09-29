@@ -1,24 +1,28 @@
 /*
  * Inside pages of the broadsheet. They share the front page's sheet, rules and type, and swap the
  * full masthead for a running head. Each section is printed in its own pair of fluoro inks, set
- * once on the sheet as --pop (the loud one, always under black text) and --pop2 (its partner),
- * so a page reads as one section of one paper.
+ * once on the sheet as --pop (the loud one) and --pop2 (its partner), so a page reads as one
+ * section of one paper. --pop-ink and --pop2-ink are the colours of type printed on each: black,
+ * except where a colourway prints the ink as a deep violet or blue that only paper-white reads on.
  */
 
 .yn-theme-screen {
   --pop: var(--neon-pink);
+  --pop-ink: var(--neon-pink-ink);
   --pop2: var(--neon-blue);
   --pop2-ink: var(--paper);
 }
 
 .yn-theme-gaming {
   --pop: var(--neon-green);
+  --pop-ink: var(--ink);
   --pop2: var(--neon-violet);
   --pop2-ink: var(--ink);
 }
 
 .yn-theme-back {
   --pop: var(--neon-orange);
+  --pop-ink: var(--neon-orange-ink);
   --pop2: var(--neon-yellow);
   --pop2-ink: var(--ink);
 }
@@ -46,6 +50,7 @@
 
 .yn-run-page {
   background: var(--pop);
+  color: var(--pop-ink);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,6 +194,7 @@
 
 .yn-mark-pop {
   background: var(--pop);
+  color: var(--pop-ink);
 }
 
 .yn-nowrap {
@@ -437,6 +443,7 @@
 
 .yn-tile {
   background: var(--pop);
+  color: var(--pop-ink);
   padding: calc(var(--u) * 6);
   display: flex;
 }
@@ -469,6 +476,7 @@
   border-radius: 50%;
   background: var(--pop);
   border: calc(var(--u) * 9) solid var(--ink);
+  color: var(--pop-ink);
   outline: 1px solid var(--ink);
   outline-offset: calc(var(--u) * -6);
   display: flex;
@@ -553,6 +561,7 @@
   display: grid;
   grid-template-columns: 1fr calc(var(--u) * 22);
   background: var(--pop);
+  color: var(--pop-ink);
 }
 
 .yn-ticket-main {
@@ -704,7 +713,13 @@
   position: relative;
   background: var(--pop2);
   padding: calc(var(--u) * 16) calc(var(--u) * 9) calc(var(--u) * 11);
-  clip-path: polygon(0 0, calc(100% - var(--u) * 16) 0, 100% calc(var(--u) * 16), 100% 100%, 0 100%);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--u) * 16) 0,
+    100% calc(var(--u) * 16),
+    100% 100%,
+    0 100%
+  );
 }
 
 .yn-cart-ridges {
@@ -1128,6 +1143,7 @@
 
 .bk-side {
   background: var(--pop);
+  color: var(--pop-ink);
   padding: calc(var(--u) * 5);
   display: flex;
   flex-direction: column;
@@ -1156,6 +1172,8 @@
   justify-content: center;
   border: calc(var(--u) * 0.5) solid var(--ink);
   background: var(--paper);
+  /* Its own paper tile, so always ink, even where the panel around it prints paper-white type. */
+  color: var(--ink);
   font-family: var(--font-chunk);
   font-weight: 900;
   font-size: calc(var(--u) * 7.4);
@@ -1242,6 +1260,7 @@
 .bk-classifieds li h3 {
   display: inline-block;
   background: var(--pop);
+  color: var(--pop-ink);
   font-family: var(--font-chunk);
   font-weight: 900;
   font-size: calc(var(--u) * 5.2);
@@ -1253,6 +1272,7 @@
 .bk-signoff {
   position: relative;
   background: var(--pop);
+  color: var(--pop-ink);
   padding: calc(var(--u) * 15) calc(var(--u) * 10);
   display: flex;
   align-items: center;

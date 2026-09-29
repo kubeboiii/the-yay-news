@@ -31,6 +31,9 @@
   --blue-type: var(--blue);
   --a-type: var(--orange-type);
   --b-type: var(--blue-type);
+  /* Spot-ink type below large-text size (the jump lines): even the deep tones sit near 2.5:1 on
+     the paper, so the plate is overprinted with ink until it clears 4.5:1 in every colourway. */
+  --a-type-small: color-mix(in oklab, var(--a-type), var(--ink) 50%);
   --rev: #fff;
   background: #fbfbf7;
   color: var(--ink);
@@ -1359,7 +1362,7 @@
   margin-top: calc(var(--u) * 1.4);
 }
 .tb-teaser-jump b {
-  color: var(--a-type);
+  color: var(--a-type-small);
 }
 .tb-teaser2 {
   border-left: calc(var(--u) * 0.2) solid var(--ink);

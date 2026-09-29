@@ -10,12 +10,15 @@
 
 /* ——— Shared bits ——— */
 
+/* The rim prints in the fluoro itself; the lettering in the deeper type tone, because fluoro pink
+   on bare paper is too light to read at this size. */
 .yn-stamp {
+  --stamp: var(--neon-pink);
   position: absolute;
   z-index: 4;
-  color: var(--neon-pink);
-  border: calc(var(--u) * 1.1) solid currentColor;
-  outline: calc(var(--u) * 0.45) solid currentColor;
+  color: var(--neon-pink-type);
+  border: calc(var(--u) * 1.1) solid var(--stamp);
+  outline: calc(var(--u) * 0.45) solid var(--stamp);
   outline-offset: calc(var(--u) * 0.9);
   padding: calc(var(--u) * 1.6) calc(var(--u) * 3.4) calc(var(--u) * 1.2);
   text-align: center;
@@ -329,6 +332,7 @@
 
 .fr-riddle {
   isolation: isolate;
+  color: var(--neon-pink-ink);
   padding: calc(var(--u) * 6) calc(var(--u) * 4.5) calc(var(--u) * 5);
   margin-top: calc(var(--u) * 3);
   rotate: 1.2deg;
@@ -1173,7 +1177,8 @@
   right: calc(var(--u) * 22);
   top: calc(var(--u) * 8);
   rotate: -9deg;
-  color: var(--ink);
+  --stamp: var(--pop-ink);
+  color: var(--pop-ink);
 }
 
 .bk-stars {

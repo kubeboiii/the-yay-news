@@ -3,7 +3,14 @@ import { seeded } from "../edition-seed";
 // What goes into the edition. Everything here is chosen from the issue number, so an issue
 // always falls open on the same insert, the same print and the same serial number.
 
-export const INSERT_TYPES = ["print", "stickers", "coupon", "postcard", "colouring", "poster"] as const;
+export const INSERT_TYPES = [
+  "print",
+  "stickers",
+  "coupon",
+  "postcard",
+  "colouring",
+  "poster",
+] as const;
 export type InsertType = (typeof INSERT_TYPES)[number];
 
 const aliases: Record<string, InsertType> = {
@@ -130,15 +137,34 @@ export const lineArtForIssue = (issue: number): LineArt => lineArt[issue % lineA
 // ——— Coupon ———
 
 export const coupons = [
-  { head: "Good for one compliment", small: "Redeemable from anyone, about anything, at any time of day." },
-  { head: "One free high-five", small: "Present to a friend, a colleague or a bus driver who looks like they need it." },
-  { head: "Redeemable for one long lunch", small: "Valid on any weekday. The second sandwich is on the house." },
-  { head: "Good for five more minutes in bed", small: "Not valid on days with a train to catch. Very valid on all the others." },
-  { head: "Admits one to the front of the biscuit tin", small: "First pick of the chocolate ones. No swaps, no refunds." },
-  { head: "Good for one excellent nap", small: "Twenty minutes, one blanket, zero guilt. Cat not included." },
+  {
+    head: "Good for one compliment",
+    small: "Redeemable from anyone, about anything, at any time of day.",
+  },
+  {
+    head: "One free high-five",
+    small: "Present to a friend, a colleague or a bus driver who looks like they need it.",
+  },
+  {
+    head: "Redeemable for one long lunch",
+    small: "Valid on any weekday. The second sandwich is on the house.",
+  },
+  {
+    head: "Good for five more minutes in bed",
+    small: "Not valid on days with a train to catch. Very valid on all the others.",
+  },
+  {
+    head: "Admits one to the front of the biscuit tin",
+    small: "First pick of the chocolate ones. No swaps, no refunds.",
+  },
+  {
+    head: "Good for one excellent nap",
+    small: "Twenty minutes, one blanket, zero guilt. Cat not included.",
+  },
 ];
 
-export const couponForIssue = (issue: number) => coupons[Math.floor(issueRand(issue, 3)() * coupons.length)]!;
+export const couponForIssue = (issue: number) =>
+  coupons[Math.floor(issueRand(issue, 3)() * coupons.length)]!;
 
 // ——— Postcard: pressed photographs, printed like a picture postcard ———
 
@@ -169,7 +195,8 @@ export const postcards = [
   },
 ];
 
-export const postcardForIssue = (issue: number) => postcards[Math.floor(issueRand(issue, 5)() * postcards.length)]!;
+export const postcardForIssue = (issue: number) =>
+  postcards[Math.floor(issueRand(issue, 5)() * postcards.length)]!;
 
 export const stampPhoto = "/mockup/press/photo-1609421543722-919530d6b864.jpg";
 
@@ -202,4 +229,5 @@ export const posters = [
   },
 ];
 
-export const posterForIssue = (issue: number) => posters[Math.floor(issueRand(issue, 7)() * posters.length)]!;
+export const posterForIssue = (issue: number) =>
+  posters[Math.floor(issueRand(issue, 7)() * posters.length)]!;

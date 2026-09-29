@@ -49,10 +49,12 @@ export function nudge(issue: number, root: ParentNode = document) {
     outer.forEach((el, i) => {
       clear(el);
       const r = drift(issue, `s${s}:${keyOf(el, i)}`);
-      const delta = el.dataset.lifeRot ?? String(round((r() < 0.5 ? -1 : 1) * (0.2 + r() * 1.3), 100));
+      const delta =
+        el.dataset.lifeRot ?? String(round((r() < 0.5 ? -1 : 1) * (0.2 + r() * 1.3), 100));
       el.dataset.lifeRot = delta;
       const base = getComputedStyle(el).rotate;
-      const baseDeg = base === "none" ? 0 : /^-?[\d.]+deg$/.test(base) ? Number.parseFloat(base) : null;
+      const baseDeg =
+        base === "none" ? 0 : /^-?[\d.]+deg$/.test(base) ? Number.parseFloat(base) : null;
       // An element turned about another axis keeps its own rotation untouched.
       if (baseDeg === null) return;
       el.style.rotate = `${round(baseDeg + Number(delta), 100)}deg`;
@@ -61,7 +63,8 @@ export function nudge(issue: number, root: ParentNode = document) {
     sheet.querySelectorAll<Nudged>(".print-misreg").forEach((el, i) => {
       clear(el);
       const r = drift(issue, `m${s}:${keyOf(el, i)}`);
-      const fx = el.dataset.lifeReg ?? `${round(0.45 + r() * 1.2, 100)},${round(0.4 + r() * 1.3, 100)}`;
+      const fx =
+        el.dataset.lifeReg ?? `${round(0.45 + r() * 1.2, 100)},${round(0.4 + r() * 1.3, 100)}`;
       el.dataset.lifeReg = fx;
       const [kx, ky] = fx.split(",").map(Number);
       const shadow = getComputedStyle(el).textShadow;

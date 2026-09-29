@@ -36,10 +36,10 @@ html[data-life] .print-sheet-wrap::before {
 html[data-life] .yn-sheet {
   box-shadow:
     0 1px 1px rgb(0 0 0 / 0.08),
-    var(--light-sx, 0px) calc(10px + var(--light-sy, 0px)) calc(30px * var(--light-stretch, 1)) -10px
-      rgb(0 0 0 / calc(0.3 * var(--light-strength, 1))),
-    calc(var(--light-sx, 0px) * 1.6) calc(30px + var(--light-sy, 0px)) calc(60px * var(--light-stretch, 1)) -30px
-      rgb(0 0 0 / calc(0.25 * var(--light-strength, 1)));
+    var(--light-sx, 0px) calc(10px + var(--light-sy, 0px))
+      calc(30px * var(--light-stretch, 1)) -10px rgb(0 0 0 / calc(0.3 * var(--light-strength, 1))),
+    calc(var(--light-sx, 0px) * 1.6) calc(30px + var(--light-sy, 0px))
+      calc(60px * var(--light-stretch, 1)) -30px rgb(0 0 0 / calc(0.25 * var(--light-strength, 1)));
 }
 
 /* ——— Seeded paper: the stock is cut from a different part of the roll each edition ——— */
@@ -53,14 +53,16 @@ html[data-life] .yn-sheet::before {
 /* ——— The edition's own press run, aged by how long the paper has been lying around ——— */
 html[data-life] .print-sheet,
 html[data-life] .yn-sheet {
-  filter: url(#press-edition) saturate(calc(0.9 * var(--age-saturate, 1))) contrast(calc(0.97 * var(--age-contrast, 1)))
-    sepia(var(--age-sepia, 0)) brightness(var(--age-brightness, 1));
+  filter: url(#press-edition) saturate(calc(0.9 * var(--age-saturate, 1)))
+    contrast(calc(0.97 * var(--age-contrast, 1))) sepia(var(--age-sepia, 0))
+    brightness(var(--age-brightness, 1));
 }
 
 html[data-life][data-paper="white"] .print-sheet,
 html[data-life][data-paper="white"] .yn-sheet {
   filter: url(#press-edition) saturate(calc(0.97 * var(--age-saturate, 1)))
-    contrast(calc(0.99 * var(--age-contrast, 1))) sepia(var(--age-sepia, 0)) brightness(var(--age-brightness, 1));
+    contrast(calc(0.99 * var(--age-contrast, 1))) sepia(var(--age-sepia, 0))
+    brightness(var(--age-brightness, 1));
 }
 
 /* Toned, sun-faded edges and foxing, laid into the paper under nothing but the grain. */
@@ -125,7 +127,12 @@ html[data-arriving] :is(.print-sheet-wrap, .yn-sheet-wrap) {
   top: 50%;
   height: 14%;
   translate: 0 -100%;
-  background: linear-gradient(to bottom, transparent, rgb(30 20 10 / 0.32) 85%, rgb(30 20 10 / 0.12));
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(30 20 10 / 0.32) 85%,
+    rgb(30 20 10 / 0.12)
+  );
 }
 
 /* The curl shadow sweeping across a page as it turns. */

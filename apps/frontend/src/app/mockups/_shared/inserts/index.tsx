@@ -23,7 +23,14 @@ import {
   PosterInsert,
   StickerSheetInsert,
 } from "./pieces";
-import { StickerArt, readPlaced, savePlaced, stickerById, stickerDefs, type Placed } from "./stickers";
+import {
+  StickerArt,
+  readPlaced,
+  savePlaced,
+  stickerById,
+  stickerDefs,
+  type Placed,
+} from "./stickers";
 import { themeFor, themeVars } from "./themes";
 import "./inserts.css";
 
@@ -57,6 +64,8 @@ export function EditionInsert({ version }: { version: string }) {
   useEffect(() => {
     const wrap = document.querySelector<HTMLElement>(".print-sheet-wrap, .yn-sheet-wrap");
     if (!wrap) {
+      // The insert attaches to the printed sheet, which only exists in the DOM after mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reads the rendered page
       setSetup(null);
       return;
     }
@@ -102,13 +111,20 @@ export function EditionInsert({ version }: { version: string }) {
         out={open}
         onOpen={() => setOpen(true)}
       />
-      <Stuck wrap={setup.wrap} placed={placed} issue={setup.issue} vars={vars} version={version} onChange={updatePlaced} />
+      <Stuck
+        wrap={setup.wrap}
+        placed={placed}
+        issue={setup.issue}
+        vars={vars}
+        version={version}
+        onChange={updatePlaced}
+      />
       {open ? (
         <Desk
           setup={setup}
           vars={vars}
           version={version}
-          slip={slipRef.current}
+          slipRef={slipRef}
           placed={placed}
           onPlaced={updatePlaced}
           onClosed={close}
@@ -155,7 +171,12 @@ function Slip({
       const rand = seeded(issue * 31 + 5);
       if (narrow) {
         const r = lastSheet.getBoundingClientRect();
-        setPos({ narrow, top: (r.bottom - w.top) * k, left: width * (0.42 + rand() * 0.16), peek: 30 });
+        setPos({
+          narrow,
+          top: (r.bottom - w.top) * k,
+          left: width * (0.42 + rand() * 0.16),
+          peek: 30,
+        });
       } else {
         const r = first.getBoundingClientRect();
         const room = window.innerWidth - (w.left + wrap.offsetWidth);
@@ -227,7 +248,13 @@ function Stuck({
 }) {
   const [peeling, setPeeling] = useState<string | null>(null);
   const [moving, setMoving] = useState<{ id: string; x: number; y: number } | null>(null);
-  const press = useRef<{ id: string; sx: number; sy: number; moved: boolean; timer: number } | null>(null);
+  const press = useRef<{
+    id: string;
+    sx: number;
+    sy: number;
+    moved: boolean;
+    timer: number;
+  } | null>(null);
 
   const peel = (id: string) => {
     setPeeling(id);
@@ -305,7 +332,12 @@ function Stuck({
             onPointerCancel={up}
             onContextMenu={(e) => e.preventDefault()}
             onKeyDown={(e) => {
-              if (e.key === "Delete" || e.key === "Backspace" || e.key === "Enter" || e.key === " ") {
+              if (
+                e.key === "Delete" ||
+                e.key === "Backspace" ||
+                e.key === "Enter" ||
+                e.key === " "
+              ) {
                 e.preventDefault();
                 peel(p.id);
               }
@@ -330,7 +362,7 @@ function Desk({
   setup,
   vars,
   version,
-  slip,
+  slipRef,
   placed,
   onPlaced,
   onClosed,
@@ -338,7 +370,7 @@ function Desk({
   setup: Setup;
   vars: CSSProperties;
   version: string;
-  slip: HTMLElement | null;
+  slipRef: RefObject<HTMLElement | null>;
   placed: Placed[];
   onPlaced: (next: Placed[]) => void;
   onClosed: () => void;
@@ -355,15 +387,22 @@ function Desk({
     return (r * 5 - 2.5).toFixed(2);
   }, [issue, type]);
 
-  // The object starts where the slip is, so it visibly comes out of the paper.
-  const from = useMemo(() => {
-    if (!slip) return { x: "40vw", y: "0px" };
+  // The object starts where the slip is, so it visibly comes out of the paper. Measured after
+  // mount but before paint, and before the enter effect below lays out the starting pose.
+  useLayoutEffect(() => {
+    const slip = slipRef.current;
+    const object = objectRef.current;
+    if (!slip || !object) return;
     const r = slip.getBoundingClientRect();
-    return {
-      x: `${Math.round(r.left + r.width / 2 - window.innerWidth / 2)}px`,
-      y: `${Math.round(r.top + r.height / 2 - window.innerHeight / 2)}px`,
-    };
-  }, [slip]);
+    object.style.setProperty(
+      "--from-x",
+      `${Math.round(r.left + r.width / 2 - window.innerWidth / 2)}px`,
+    );
+    object.style.setProperty(
+      "--from-y",
+      `${Math.round(r.top + r.height / 2 - window.innerHeight / 2)}px`,
+    );
+  }, [slipRef]);
 
   useEffect(() => {
     if (phase !== "enter") return;
@@ -398,13 +437,18 @@ function Desk({
         e.preventDefault();
         requestClose();
       } else if (e.key === "Tab" && objectRef.current) {
-        const f = [...objectRef.current.querySelectorAll<HTMLElement>("button:not([tabindex='-1']), [tabindex='0']")].filter(
-          (el) => el.offsetParent !== null,
-        );
+        const f = [
+          ...objectRef.current.querySelectorAll<HTMLElement>(
+            "button:not([tabindex='-1']), [tabindex='0']",
+          ),
+        ].filter((el) => el.offsetParent !== null);
         const firstEl = f[0];
         const lastEl = f[f.length - 1];
         if (!firstEl || !lastEl) return;
-        if (e.shiftKey && (document.activeElement === firstEl || document.activeElement === objectRef.current)) {
+        if (
+          e.shiftKey &&
+          (document.activeElement === firstEl || document.activeElement === objectRef.current)
+        ) {
           e.preventDefault();
           lastEl.focus();
         } else if (!e.shiftKey && document.activeElement === lastEl) {
@@ -418,7 +462,10 @@ function Desk({
   }, [requestClose]);
 
   // ——— Peeling a sticker off the sheet and carrying it to the page ———
-  const onSheet = useMemo(() => new Set(stickerDefs.map((s) => s.id).filter((id) => !placed.some((p) => p.id === id))), [placed]);
+  const onSheet = useMemo(
+    () => new Set(stickerDefs.map((s) => s.id).filter((id) => !placed.some((p) => p.id === id))),
+    [placed],
+  );
 
   const stickAt = useCallback(
     (id: string, clientX: number, clientY: number) => {
@@ -426,7 +473,9 @@ function Desk({
       const x = (clientX - r.left) / r.width;
       const y = (clientY - r.top) / r.height;
       if (x < 0 || x > 1 || y < 0 || y > 1) return false;
-      const rot = Math.round((seeded(issue * 101 + id.length * 7 + Math.round(x * 97))() * 24 - 12) * 10) / 10;
+      const rot =
+        Math.round((seeded(issue * 101 + id.length * 7 + Math.round(x * 97))() * 24 - 12) * 10) /
+        10;
       onPlaced([...placed.filter((p) => p.id !== id), { id, x, y, rot }]);
       return true;
     },
@@ -464,7 +513,11 @@ function Desk({
     const vx1 = Math.min(r.right, window.innerWidth);
     const vy0 = Math.max(r.top, 0);
     const vy1 = Math.min(r.bottom, window.innerHeight);
-    stickAt(id, vx0 + (vx1 - vx0) * (0.15 + rand() * 0.7), vy0 + (vy1 - vy0) * (0.2 + rand() * 0.6));
+    stickAt(
+      id,
+      vx0 + (vx1 - vx0) * (0.15 + rand() * 0.7),
+      vy0 + (vy1 - vy0) * (0.2 + rand() * 0.6),
+    );
   };
 
   const piece = (() => {
@@ -472,7 +525,9 @@ function Desk({
       case "print":
         return <ArtPrintInsert issue={issue} />;
       case "stickers":
-        return <StickerSheetInsert issue={issue} onSheet={onSheet} onGrab={grab} onPlace={placeByKey} />;
+        return (
+          <StickerSheetInsert issue={issue} onSheet={onSheet} onGrab={grab} onPlace={placeByKey} />
+        );
       case "coupon":
         return <CouponInsert issue={issue} startTorn={setup.couponTorn} />;
       case "postcard":
@@ -490,7 +545,9 @@ function Desk({
     <div
       className={`yi-desk yi-${version} ${drag ? "is-dragging" : ""}`}
       data-phase={phase}
-      style={{ ...vars, "--from-x": from.x, "--from-y": from.y, "--rot": `${rot}deg` } as CSSProperties}
+      style={
+        { ...vars, "--from-x": "40vw", "--from-y": "0px", "--rot": `${rot}deg` } as CSSProperties
+      }
     >
       <div className="yi-desk__scrim" onClick={requestClose} aria-hidden />
       <div className="yi-desk__place">

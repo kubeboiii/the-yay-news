@@ -8,7 +8,6 @@ import {
   League_Gothic,
   Libre_Caslon_Text,
   Libre_Franklin,
-  UnifrakturCook,
 } from "next/font/google";
 import { TODAY_ISSUE, ageInDays, seeded } from "@/app/mockups/_shared/edition-seed";
 import { ageBackground, ageLook, agedPaper } from "@/app/mockups/_shared/life/age";
@@ -16,18 +15,29 @@ import "./archive.css";
 
 // Each paper's own display face, so a back issue's spine reads as that paper.
 const gothic = League_Gothic({ subsets: ["latin"], variable: "--ar-gothic" });
-const blackletter = UnifrakturCook({ subsets: ["latin"], weight: "700", variable: "--ar-blackletter" });
-const franklin = Libre_Franklin({ subsets: ["latin"], weight: ["500", "800", "900"], variable: "--ar-franklin" });
+const franklin = Libre_Franklin({
+  subsets: ["latin"],
+  weight: ["500", "800", "900"],
+  variable: "--ar-franklin",
+});
 const slab = Alfa_Slab_One({ subsets: ["latin"], weight: "400", variable: "--ar-slab" });
 const bodoni = Bodoni_Moda({ subsets: ["latin"], variable: "--ar-bodoni" });
-const caslon = Libre_Caslon_Text({ subsets: ["latin"], weight: ["400", "700"], style: ["normal", "italic"], variable: "--ar-caslon" });
-const typewriter = Courier_Prime({ subsets: ["latin"], weight: ["400", "700"], variable: "--ar-type" });
+const caslon = Libre_Caslon_Text({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--ar-caslon",
+});
+const typewriter = Courier_Prime({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--ar-type",
+});
 
 export const metadata: Metadata = { title: "Back issues · Mockup" };
 
 const PAPERS = [
   { slug: "v1", name: "Fluoro Broadsheet", short: "Fluoro" },
-  { slug: "v2", name: "Morning Edition", short: "Morning" },
   { slug: "v3", name: "Tabloid Brights", short: "Tabloid" },
   { slug: "v4", name: "Mini Zine", short: "Zine" },
   { slug: "v5", name: "Midi Magazine", short: "Midi" },
@@ -66,7 +76,8 @@ function dateOf(issue: number) {
 }
 
 // The five papers take the run in turn, today's broadsheet first.
-const paperOf = (issue: number): Paper => PAPERS[(TODAY_ISSUE - issue) % PAPERS.length] ?? PAPERS[0];
+const paperOf = (issue: number): Paper =>
+  PAPERS[(TODAY_ISSUE - issue) % PAPERS.length] ?? PAPERS[0];
 
 function aged(issue: number): CSSProperties {
   const look = ageLook(ageInDays(issue), issue);
@@ -159,7 +170,9 @@ function Spine({ issue }: { issue: number }) {
 }
 
 export default function ArchivePage() {
-  const fonts = [gothic, blackletter, franklin, slab, bodoni, caslon, typewriter].map((f) => f.variable).join(" ");
+  const fonts = [gothic, franklin, slab, bodoni, caslon, typewriter]
+    .map((f) => f.variable)
+    .join(" ");
   return (
     <main className={`ar-desk ${fonts}`}>
       <header className="ar-sign">
@@ -170,7 +183,9 @@ export default function ArchivePage() {
         <p className="ar-sign__sub">
           Nos. {TODAY_ISSUE} to 1 · every one still good news · <b>free, forever</b>
         </p>
-        <p className="ar-sign__note">Five papers take turns. Pull any copy out and read it as it was printed.</p>
+        <p className="ar-sign__note">
+          Five papers take turns. Pull any copy out and read it as it was printed.
+        </p>
       </header>
 
       <section className="ar-rack" aria-label={`This week: Nos. ${rack[0]} to ${rack.at(-1)}`}>
@@ -195,7 +210,8 @@ export default function ArchivePage() {
                 ))}
               </ol>
               <p className="ar-ticket ar-ticket--pile">
-                Nos. {pile[0]}–{pile.at(-1)} · {dateOf(pile.at(-1) ?? 1).day} – {dateOf(pile[0] ?? 1).day}
+                Nos. {pile[0]}–{pile.at(-1)} · {dateOf(pile.at(-1) ?? 1).day} –{" "}
+                {dateOf(pile[0] ?? 1).day}
               </p>
             </div>
           ))}
@@ -213,7 +229,11 @@ export default function ArchivePage() {
         </Link>
         <span className="px-2 font-semibold">Back issues</span>
         {PAPERS.map((p) => (
-          <Link key={p.slug} href={`/mockups/${p.slug}`} className="rounded-full px-3 py-1 hover:bg-white/15">
+          <Link
+            key={p.slug}
+            href={`/mockups/${p.slug}`}
+            className="rounded-full px-3 py-1 hover:bg-white/15"
+          >
             {p.name}
           </Link>
         ))}

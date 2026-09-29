@@ -72,7 +72,11 @@ export function StickerArt({ id, issue }: { id: string; issue: number }) {
     case "hi":
       return (
         <span className="yi-st-dot" style={{ background: "var(--yi-e)" }}>
-          <Mark name="sketch-09" ink="var(--yi-ink)" className="yi-st-dot__mark yi-st-dot__mark--hi" />
+          <Mark
+            name="sketch-09"
+            ink="var(--yi-ink)"
+            className="yi-st-dot__mark yi-st-dot__mark--hi"
+          />
         </span>
       );
     default:

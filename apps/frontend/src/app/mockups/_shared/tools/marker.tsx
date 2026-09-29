@@ -26,7 +26,11 @@ export function MarkerLayer({
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [live, setLive] = useState<Stroke | null>(null);
-  const drawing = useRef<{ id: number; stroke: Stroke; last: { x: number; y: number; t: number } } | null>(null);
+  const drawing = useRef<{
+    id: number;
+    stroke: Stroke;
+    last: { x: number; y: number; t: number };
+  } | null>(null);
   const touches = useRef(new Map<number, { x: number; y: number }>());
   const panY = useRef<number | null>(null);
   const frame = useRef(0);
@@ -40,6 +44,7 @@ export function MarkerLayer({
       drawing.current = null;
       touches.current.clear();
       panY.current = null;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resets when the tool is put down
       setLive(null);
     }
   }, [active]);
@@ -112,7 +117,12 @@ export function MarkerLayer({
       if (dist < 0.25) continue;
       const dt = Math.max(1, s.timeStamp - d.last.t);
       const prev = d.stroke.pts[d.stroke.pts.length - 1] as InkPoint;
-      const w = nextWidth(tool, prev[2], dist / unitsPerPx / dt, s.pointerType === "pen" ? s.pressure : undefined);
+      const w = nextWidth(
+        tool,
+        prev[2],
+        dist / unitsPerPx / dt,
+        s.pointerType === "pen" ? s.pressure : undefined,
+      );
       d.stroke.pts.push([p.x, p.y, w]);
       d.last = { x: p.x, y: p.y, t: s.timeStamp };
     }
@@ -148,7 +158,13 @@ export function MarkerLayer({
         {/* Graphite and wax catch only the tops of the paper's tooth, so a pencil line is broken
             up by fine grain; the gaps let the sheet through. */}
         <filter id="rt-grain" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence type="fractalNoise" baseFrequency="1.35" numOctaves="2" seed="7" result="tooth" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="1.35"
+            numOctaves="2"
+            seed="7"
+            result="tooth"
+          />
           <feColorMatrix
             in="tooth"
             type="matrix"
@@ -159,8 +175,20 @@ export function MarkerLayer({
         </filter>
         {/* A felt nib bleeds a hair into the fibres: its edge wobbles by a fraction of a unit. */}
         <filter id="rt-bleed" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="1" seed="3" result="fibre" />
-          <feDisplacementMap in="SourceGraphic" in2="fibre" scale="0.9" xChannelSelector="R" yChannelSelector="G" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.6"
+            numOctaves="1"
+            seed="3"
+            result="fibre"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="fibre"
+            scale="0.9"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
         </filter>
       </defs>
       {strokes.map((s, i) => (
