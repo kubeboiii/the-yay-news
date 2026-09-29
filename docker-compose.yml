@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: yay
+      POSTGRES_PASSWORD: yay
+      POSTGRES_DB: yay_news
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yay -d yay_news"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Full stack in containers: `docker compose --profile app up --build`
+  backend:
+    profiles: [app]
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://yay:yay@postgres:5432/yay_news?schema=public
+      PORT: 4000
+      CORS_ORIGIN: http://localhost:3000
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    profiles: [app]
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    environment:
+      BACKEND_URL: http://backend:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres-data:

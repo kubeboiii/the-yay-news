@@ -1,159 +1,85 @@
-# Turborepo starter
+# The Yay News
 
-This Turborepo starter is maintained by the Turborepo core team.
+Full-stack TypeScript monorepo: **pnpm + Turborepo**, **Next.js 16 + Tailwind CSS v4**,
+**Hono** API, **PostgreSQL + Prisma 7**, with **zod** contracts shared end to end.
 
-## Using this example
+## Structure
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
+```
+apps/
+  frontend/                 Next.js App Router (port 3000)
+    src/
+      app/                  routes, layouts, loading/error/not-found boundaries
+      components/           app-wide components (site header, …)
+      features/<feature>/   feature slices: api.ts (server-side data access) + components/
+      lib/                  api client, formatting helpers
+      config/env.ts         zod-validated env (server-only)
+  backend/                  Hono REST API on Node (port 4000)
+    src/
+      index.ts              server bootstrap + graceful shutdown
+      app.ts                createApp(): middleware, routes, error handling
+      config/env.ts         zod-validated env
+      modules/<module>/     *.routes.ts (HTTP) · *.service.ts (data/business logic) · *.test.ts
+      middleware/           error + not-found handlers
+      lib/                  error classes, validation helper
+packages/
+  db/                       Prisma schema, migrations, seed, shared `prisma` client (@repo/db)
+  shared/                   zod schemas + inferred types used by both apps (@repo/shared)
+  ui/                       shared Tailwind React components (@repo/ui/*)
+  eslint-config/            shared ESLint configs
+  typescript-config/        shared tsconfigs
 ```
 
-## What's inside?
+Dependency direction: `frontend → shared, ui` · `backend → shared, db`. The frontend never touches the
+database; it talks to the backend over HTTP and validates responses with the same zod schemas the
+backend validates requests with.
 
-This Turborepo includes the following packages/apps:
+## Getting started
 
-### Apps and Packages
+Requires Node 24 (`.nvmrc`), pnpm 11 (`corepack enable`), and Docker.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `@next/eslint-plugin-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+pnpm install
+cp packages/db/.env.example packages/db/.env
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env.local
+pnpm db:up        # Postgres 17 in Docker
+pnpm db:migrate   # apply migrations
+pnpm db:seed      # sample articles
+pnpm dev          # frontend + backend with hot reload
 ```
 
-Without global `turbo`, use your package manager:
+Run the whole stack in containers instead:
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm exec turbo build
-pnpm exec turbo build
+```bash
+docker compose --profile app up --build
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Scripts
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+| Script                                         | What                                                                        |
+| ---------------------------------------------- | --------------------------------------------------------------------------- |
+| `pnpm dev` / `pnpm build`                      | all apps, via Turborepo                                                     |
+| `pnpm lint` / `pnpm check-types` / `pnpm test` | quality gates (also run in CI)                                              |
+| `pnpm format` / `pnpm format:check`            | Prettier, with Tailwind class sorting                                       |
+| `pnpm db:up` / `pnpm db:down`                  | start/stop local Postgres                                                   |
+| `pnpm db:generate`                             | regenerate the Prisma client (runs automatically before dev/build/test)     |
+| `pnpm db:migrate`                              | create + apply a migration after editing `packages/db/prisma/schema.prisma` |
+| `pnpm db:deploy`                               | apply pending migrations (production/CI)                                    |
+| `pnpm db:seed` / `pnpm db:studio`              | seed data / browse the database                                             |
 
-```sh
-turbo build --filter=docs
-```
+## API
 
-Without global `turbo`:
+Responses are `{ "data": … }`; errors are `{ "error": { "code", "message", "details?" } }`.
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+- `GET /health` — liveness
+- `GET /health/ready` — readiness (checks the database)
+- `GET /api/v1/articles?category=<slug>&limit=<1-100>`
+- `GET /api/v1/articles/:slug`
 
-### Develop
+## Adding a feature
 
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+1. Model it in `packages/db/prisma/schema.prisma`, then `pnpm db:migrate`.
+2. Define its request/response schemas in `packages/shared/src/schemas/`.
+3. Add `apps/backend/src/modules/<name>/` (routes, service, test) and mount it in `app.ts`.
+4. Add `apps/frontend/src/features/<name>/` (api.ts + components) and a route under `src/app/`.

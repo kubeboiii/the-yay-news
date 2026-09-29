@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* Shared components live in packages/ui; scan them for class names too. */
+@source "../../../../packages/ui/src";
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
