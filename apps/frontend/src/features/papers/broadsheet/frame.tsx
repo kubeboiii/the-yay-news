@@ -5,6 +5,7 @@ import "./sections.css";
 import "./paste-up.css";
 import "./type.css";
 import "./templates.css";
+import "./compose.css";
 
 // The condensed gothic newspapers have set headlines in for a century: masthead, heads, numerals.
 const head = League_Gothic({ subsets: ["latin"], axes: ["wdth"], variable: "--font-head" });

@@ -2,6 +2,7 @@ import { Alfa_Slab_One, Courier_Prime, PT_Serif } from "next/font/google";
 import type { ReactNode } from "react";
 import "./zine.css";
 import "./edition.css";
+import "./compose.css";
 
 // Wood-type slab: the cover masthead, the big heads and the contents numerals.
 const slab = Alfa_Slab_One({ subsets: ["latin"], weight: "400", variable: "--z-slab" });

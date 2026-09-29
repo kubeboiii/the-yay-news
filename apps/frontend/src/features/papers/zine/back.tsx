@@ -2,10 +2,15 @@ import type { Puzzle, SolvedPuzzle } from "@repo/shared";
 import { Fragment, type ReactNode } from "react";
 import { Mark } from "@/features/print/mark";
 import type { PageProps } from "../types";
-import { Folio, Head, OnFold, Page, Ring, RunningHead, Spread, Tape, Zig } from "./parts";
+import { backComposition } from "./compose";
+import { Folio, Head, Page, Ring, RunningHead, Spread, Tape, Zig } from "./parts";
 import { byOrder, feature, features, folios, shortDate, signOffLines } from "./text";
 
 /*
+ * Two compositions alternate by issue (compose.ts): "puzzles-left" (puzzles on page 1, the strip,
+ * features and sign-off on page 2) and "comic-left" (the strip and features first, then the
+ * puzzles and sign-off).
+ *
  * The back route prints the last spread. Left: the puzzles, printed not interactive (the Mini
  * crossword from `rows`/`numbers` with its clues, the word ladder and the riddle). Right: the comic
  * (a drawn strip: the edition carries its lines, not pictures), yesterday's answers, then whichever
@@ -38,13 +43,11 @@ export function Back({ edition, page, reading }: PageProps) {
   // mockup; the rest go, in order, to whichever column is shorter so far.
   const blocks: { key: string; height: (w: number) => number; node: ReactNode; wide?: boolean }[] =
     [];
-  if (yesterday && yesterday.puzzles.length) {
-    blocks.push({
-      key: "yday",
-      height: () => 44,
-      node: <Yesterday issue={yesterday.issueNumber} puzzles={byOrder(yesterday.puzzles)} />,
-    });
-  }
+  // Yesterday's answers sit with today's puzzles.
+  const yesterdayNode =
+    yesterday && yesterday.puzzles.length ? (
+      <Yesterday issue={yesterday.issueNumber} puzzles={byOrder(yesterday.puzzles)} />
+    ) : null;
   if (corrections.length) {
     blocks.push({
       key: "corr",
@@ -84,7 +87,6 @@ export function Back({ edition, page, reading }: PageProps) {
                 <b>{c.content.heading.toLowerCase()}.</b> {c.content.text}
               </p>
             ))}
-            <p className="z-class__rate">Lines free. Kindness preferred.</p>
           </div>
         </section>
       ),
@@ -144,116 +146,131 @@ export function Back({ edition, page, reading }: PageProps) {
     load[i]! += b.height(WIDTH[i]!) + 5;
   }
 
-  return (
-    <Spread label="Back page spread">
-      <Page ground="butter" side="left">
-        <RunningHead>The Yay Zine · The back page</RunningHead>
-        <Head as="h1" top="Pencils out, it’s the back page" bottom="Puzzles" size={18} />
-
-        {crossword ? <CrosswordBlock data={crossword} /> : null}
-
-        {ladder || riddle ? (
-          <div className="z-puzz">
-            {ladder ? <LadderBlock data={ladder} /> : <div />}
-            {riddle ? (
-              <section className="z-riddle" aria-labelledby="riddle">
-                <h2 className="z-h3" id="riddle">
-                  {riddle.title}
-                </h2>
-                <p className="z-riddle__q">{riddle.question}</p>
-                <p className="z-stamp print-worn z-answers" aria-hidden>
-                  Answers
-                  <small>tomorrow, as ever</small>
-                </p>
-                <p className="z-yday">Answers to today’s puzzles are printed in tomorrow’s zine.</p>
-              </section>
-            ) : null}
-          </div>
-        ) : null}
-
-        <Folio n={lf} date={date} />
-      </Page>
-
-      <Page ground="peach" side="right">
-        <RunningHead>The Yay Zine · The back page</RunningHead>
-
-        {comic ? (
-          <section aria-labelledby="comic" className="zb-comic">
-            <div className="z-comic__head">
-              <h2 id="comic">{comic.content.title}</h2>
-              <p className="z-comic__byline">
-                A strip in {comic.content.panels.length}{" "}
-                {comic.content.panels.length === 1 ? "panel" : "panels"}
-              </p>
-            </div>
-            <div
-              className={`z-comic zb-strip zb-strip--${Math.min(comic.content.panels.length, 4)}`}
-            >
-              {comic.content.panels.map((line, i) => {
-                const { who, said } = splitLine(line);
-                return (
-                  <figure
-                    className={`zb-panel zb-panel--${i % 4}`}
-                    key={i}
-                    style={{ ["--r" as string]: `${[-1.4, 1.1, 0.9, -1.2][i % 4]}deg` }}
-                  >
-                    <Mark
-                      name={DOODLES[i % DOODLES.length]!}
-                      ink="var(--ink)"
-                      className="zb-panel__doodle"
-                    />
-                    <figcaption className="z-bubble zb-bubble">
-                      {who ? <b>{who}</b> : null}
-                      {said}
-                    </figcaption>
-                    <span className="z-panel__n" aria-hidden>
-                      {i + 1}
-                    </span>
-                  </figure>
-                );
-              })}
-            </div>
+  const puzzlesHead = (
+    <Head as="h1" top="Pencils out, it’s the back page" bottom="Puzzles" size={18} />
+  );
+  const crosswordNode = crossword ? <CrosswordBlock data={crossword} /> : null;
+  const smallPuzzles =
+    ladder || riddle ? (
+      <div className="z-puzz">
+        {ladder ? <LadderBlock data={ladder} /> : <div />}
+        {riddle ? (
+          <section className="z-riddle" aria-labelledby="riddle">
+            <h2 className="z-h3" id="riddle">
+              {riddle.title}
+            </h2>
+            <p className="z-riddle__q">{riddle.question}</p>
+            <p className="z-yday">Answers to today’s puzzles are printed in tomorrow’s zine.</p>
           </section>
         ) : null}
-
-        <div className="z-back__lower zb-lower">
-          {columns.map((col, i) => (
-            <div className="zb-col" key={i}>
-              {col.map((b) => (
-                <Fragment key={b.key}>{b.node}</Fragment>
-              ))}
-            </div>
+      </div>
+    ) : null;
+  const comicNode = comic ? (
+    <section aria-labelledby="comic" className="zb-comic">
+      <div className="z-comic__head">
+        <h2 id="comic">{comic.content.title}</h2>
+      </div>
+      <div className={`z-comic zb-strip zb-strip--${Math.min(comic.content.panels.length, 4)}`}>
+        {comic.content.panels.map((line, i) => {
+          const { who, said } = splitLine(line);
+          return (
+            <figure
+              className={`zb-panel zb-panel--${i % 4}`}
+              key={i}
+              style={{ ["--r" as string]: `${[-1.4, 1.1, 0.9, -1.2][i % 4]}deg` }}
+            >
+              <Mark
+                name={DOODLES[i % DOODLES.length]!}
+                ink="var(--ink)"
+                className="zb-panel__doodle"
+              />
+              <figcaption className="z-bubble zb-bubble">
+                {who ? <b>{who}</b> : null}
+                {said}
+              </figcaption>
+              <span className="z-panel__n" aria-hidden>
+                {i + 1}
+              </span>
+            </figure>
+          );
+        })}
+      </div>
+    </section>
+  ) : null;
+  const lowerNode = (
+    <div className="z-back__lower zb-lower">
+      {columns.map((col, i) => (
+        <div className="zb-col" key={i}>
+          {col.map((b) => (
+            <Fragment key={b.key}>{b.node}</Fragment>
           ))}
         </div>
+      ))}
+    </div>
+  );
+  const quoteNode = quote ? (
+    <figure className="z-pull zb-quote">
+      <Zig short />
+      <blockquote>
+        <p>“{quote.content.text}”</p>
+      </blockquote>
+      <figcaption>
+        <cite>{quote.content.by}</cite>
+      </figcaption>
+    </figure>
+  ) : null;
+  const signoffNode = (
+    <div className="z-signoff">
+      <p>
+        <SignOff text={signBig} />
+      </p>
+      {signRest ? <p>{signRest}</p> : null}
+    </div>
+  );
+  const comp = backComposition(edition);
 
-        {quote ? (
-          <figure className="z-pull zb-quote">
-            <Zig short />
-            <blockquote>
-              <p>“{quote.content.text}”</p>
-            </blockquote>
-            <figcaption>
-              <cite>{quote.content.by}</cite>
-            </figcaption>
-          </figure>
-        ) : null}
+  if (comp === "comic-left") {
+    // The strip and the paper's short features open the spread; the puzzles and the sign-off close it.
+    return (
+      <Spread label="Back page spread">
+        <Page ground="lilac" side="left" composition={comp}>
+          <RunningHead>The Yay Zine · The back page</RunningHead>
+          {comicNode}
+          {yesterdayNode}
+          {lowerNode}
+          {quoteNode}
+          <Folio n={lf} date={date} />
+        </Page>
+        <Page ground="butter" side="right">
+          <RunningHead>The Yay Zine · The back page</RunningHead>
+          {puzzlesHead}
+          {crosswordNode}
+          {smallPuzzles}
+          {signoffNode}
+          <Folio n={rf} date={date} />
+        </Page>
+      </Spread>
+    );
+  }
 
-        <div className="z-signoff">
-          <p>
-            <SignOff text={signBig} />
-          </p>
-          {signRest ? <p>{signRest}</p> : null}
-        </div>
-
+  return (
+    <Spread label="Back page spread">
+      <Page ground="butter" side="left" composition={comp}>
+        <RunningHead>The Yay Zine · The back page</RunningHead>
+        {puzzlesHead}
+        {crosswordNode}
+        {smallPuzzles}
+        {yesterdayNode}
+        <Folio n={lf} date={date} />
+      </Page>
+      <Page ground="peach" side="right">
+        <RunningHead>The Yay Zine · The back page</RunningHead>
+        {comicNode}
+        {lowerNode}
+        {quoteNode}
+        {signoffNode}
         <Folio n={rf} date={date} />
       </Page>
-
-      <OnFold gx={0} gy={24} rotate={-12}>
-        <p className="z-roundel">
-          <span>No. {edition.issueNumber + 1}</span>
-          out tomorrow
-        </p>
-      </OnFold>
     </Spread>
   );
 }

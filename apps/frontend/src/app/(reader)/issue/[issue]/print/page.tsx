@@ -4,6 +4,7 @@ import { getEdition, issueParam } from "@/features/editions/api";
 import { EditionPrintView } from "@/features/papers/edition-view";
 import { issueHref } from "@/features/papers/reading";
 import { PrintButton } from "@/features/reader/print-button";
+import { PrintFit } from "@/features/reader/print-fit";
 import { previewFrom } from "../../../_preview";
 import "@/features/reader/print-edition.css";
 
@@ -42,11 +43,12 @@ export default async function PrintableEditionPage({
           <PrintButton />
         </nav>
       </div>
-      <main>
+      <main className="yn-print-edition">
         <h1 className="sr-only">
           The Yay News, No. {edition.issueNumber}, {edition.date}: printable edition
         </h1>
         <EditionPrintView edition={edition} design={preview.design} />
+        <PrintFit />
       </main>
     </>
   );

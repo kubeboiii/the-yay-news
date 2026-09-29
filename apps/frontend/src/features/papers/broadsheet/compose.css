@@ -1,0 +1,1029 @@
+/*
+ * The compositions. Every page is set from the same parts (a story head, its whole text in
+ * columns, its picture once, an "In brief" column) in the mockup's type and inks; these rules
+ * arrange those parts into the several compositions each page type chooses between.
+ *
+ * Reading text is set at a real reading size: never under 16px on a desk, about 16.5px on a
+ * phone, at 1.45 leading, in columns kept to roughly 45–70 characters, in full-strength ink.
+ */
+
+/* Set on the sheet, where --u (one sheet millimetre) is defined. */
+.yn-sheet {
+  --read: max(16px, calc(var(--u) * 5.1));
+  --gap: calc(var(--u) * 7);
+}
+
+/* ——— Furniture never drops below a legible size ——— */
+
+.yn-table .yn-folio,
+.yn-table .yn-byline,
+.yn-table .yn-label,
+.yn-table .yn-zigzag span,
+.yn-table .yn-spec dl,
+.yn-table .yn-run-date,
+.yn-table .yn-pullquote-by {
+  font-size: max(11.5px, calc(var(--u) * 3));
+}
+
+.yn-table .yn-caption {
+  font-size: max(13px, calc(var(--u) * 3.3));
+  color: var(--ink);
+}
+
+/* ——— The page body ——— */
+
+.bs-page {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 5);
+  margin-bottom: calc(var(--u) * 5);
+}
+
+.bs-page > .yn-zigzag,
+.bs-front > .yn-zigzag {
+  margin: 0;
+}
+
+.bs-front {
+  gap: calc(var(--u) * 5);
+}
+
+.bs-grid {
+  display: grid;
+  gap: var(--gap);
+  align-items: start;
+}
+
+.bs-stack {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 4.5);
+  min-width: 0;
+}
+
+.bs-ruled-left {
+  border-left: 1px solid var(--hair);
+  padding-left: var(--gap);
+  margin-left: calc(var(--gap) * -0.5);
+}
+
+.bs-ruled-top {
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+/* ——— Story heads ——— */
+
+.bs-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2.2);
+  min-width: 0;
+}
+
+.yn-table .bs-kick {
+  font-size: max(15px, calc(var(--u) * 4.4));
+  line-height: 1.1;
+}
+
+.bs-hed {
+  line-height: 0.94;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.bs-hed--xxl {
+  font-size: calc(var(--u) * 19);
+  line-height: 0.9;
+}
+
+.bs-hed--xl {
+  font-size: calc(var(--u) * 15);
+}
+
+.bs-hed--lg {
+  font-size: calc(var(--u) * 11.5);
+}
+
+.bs-hed--md {
+  font-size: calc(var(--u) * 9.4);
+}
+
+.bs-hed--sm {
+  font-size: calc(var(--u) * 7.6);
+}
+
+.bs-hed--brief {
+  font-size: max(20px, calc(var(--u) * 7));
+  line-height: 0.98;
+}
+
+.yn-table .bs-dek {
+  font-size: max(17px, calc(var(--u) * 5.8));
+  line-height: 1.25;
+  max-width: 44em;
+}
+
+.bs-head--across .bs-dek {
+  font-size: max(18px, calc(var(--u) * 6.6));
+}
+
+.yn-table .bs-dek-big {
+  font-size: max(19px, calc(var(--u) * 7));
+  line-height: 1.22;
+}
+
+.yn-table .bs-src {
+  margin-top: calc(var(--u) * 0.5);
+}
+
+.bs-head--rule {
+  padding-bottom: calc(var(--u) * 4);
+  border-bottom: calc(var(--u) * 1.2) solid var(--ink);
+}
+
+.bs-head--front .bs-hed--xxl {
+  font-size: calc(var(--u) * 22);
+}
+
+/* ——— Reading text ——— */
+
+.yn-table .bs-copy {
+  font-size: var(--read);
+  line-height: 1.45;
+  color: var(--ink);
+  column-gap: calc(var(--u) * 7);
+  column-rule: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  orphans: 2;
+  widows: 2;
+  overflow-wrap: anywhere;
+}
+
+.bs-copy--1 {
+  max-width: 40em;
+}
+
+.bs-copy--2 {
+  columns: 2 15em;
+}
+
+.bs-copy--3 {
+  columns: 3 14em;
+}
+
+.bs-copy.yn-dropcap > p:first-child::first-letter {
+  font-size: 3.3em;
+  line-height: 0.78;
+  padding-top: 0.06em;
+}
+
+/* ——— Pictures ——— */
+
+.bs-media {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+}
+
+.bs-media .bs-pic {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+}
+
+.bs-m-wide .bs-pic {
+  aspect-ratio: 16 / 9;
+}
+
+.bs-m-tall .bs-pic {
+  aspect-ratio: 4 / 5;
+}
+
+.bs-m-portrait .bs-pic {
+  aspect-ratio: 3 / 4;
+}
+
+.bs-print {
+  position: relative;
+  rotate: -0.7deg;
+  padding-bottom: calc(var(--u) * 1.8);
+}
+
+.bs-print-tape-l,
+.bs-print-tape-r {
+  top: calc(var(--u) * -3);
+  width: calc(var(--u) * 20);
+  z-index: 4;
+}
+
+.bs-print-tape-l {
+  left: calc(var(--u) * -5);
+  rotate: -30deg;
+}
+
+.bs-print-tape-r {
+  right: calc(var(--u) * 16);
+  rotate: 6deg;
+}
+
+.bs-flat {
+  border-top: calc(var(--u) * 1.2) solid var(--pop);
+  padding-top: calc(var(--u) * 1.5);
+}
+
+.bs-film {
+  padding: calc(var(--u) * 7) calc(var(--u) * 4.5);
+  rotate: -0.8deg;
+}
+
+.bs-film .yn-film-edge {
+  bottom: calc(var(--u) * 5.8);
+}
+
+.bs-cart {
+  padding: calc(var(--u) * 13) calc(var(--u) * 7) calc(var(--u) * 7);
+  rotate: -1deg;
+}
+
+.bs-cart-label {
+  padding: calc(var(--u) * 2.5);
+}
+
+.bs-cap {
+  margin-top: calc(var(--u) * 2);
+}
+
+.bs-media-sticker {
+  position: absolute;
+  right: calc(var(--u) * -4);
+  top: calc(var(--u) * -5);
+  width: calc(var(--u) * 30);
+  rotate: 9deg;
+  z-index: 5;
+}
+
+/* No picture: the standfirst on a block of the section's ink, in the picture's place. */
+.bs-inkpull {
+  position: relative;
+  background: var(--pop);
+  color: var(--pop-ink);
+  padding: calc(var(--u) * 8) calc(var(--u) * 8) calc(var(--u) * 9);
+  rotate: -0.5deg;
+}
+
+.bs-inkpull-text {
+  font-size: calc(var(--u) * 12);
+  line-height: 0.98;
+  text-wrap: balance;
+  max-width: 92%;
+}
+
+/* ——— In brief ——— */
+
+.bs-briefs {
+  min-width: 0;
+}
+
+.bs-briefs-title {
+  padding-bottom: calc(var(--u) * 1.5);
+  border-bottom: calc(var(--u) * 1.2) solid currentColor;
+}
+
+.bs-briefs-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.bs-brief {
+  display: flex;
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 3.5) 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+}
+
+.bs-brief:last-child {
+  border-bottom: 0;
+}
+
+.bs-brief-body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.8);
+  min-width: 0;
+}
+
+.bs-brief-dek {
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-size: max(16px, calc(var(--u) * 4.8));
+  line-height: 1.3;
+}
+
+.bs-brief .bs-copy {
+  text-align: left;
+  hyphens: manual;
+}
+
+.bs-brief-n {
+  flex: none;
+  width: calc(var(--u) * 11);
+  font-size: calc(var(--u) * 17);
+  color: var(--ink);
+  text-shadow: calc(var(--u) * 0.8) calc(var(--u) * 0.6) 0 var(--pop);
+}
+
+/* A rail: a heavy rule of the section's ink across the top. */
+.bs-briefs--rail {
+  border-top: calc(var(--u) * 2.4) solid var(--pop);
+  padding-top: calc(var(--u) * 2.5);
+}
+
+/* A strip across the page, the briefs side by side between rules. */
+.bs-briefs--strip .bs-briefs-list,
+.bs-briefs--ink .bs-briefs-list {
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.bs-briefs--strip .bs-brief,
+.bs-briefs--ink .bs-brief {
+  border-bottom: 0;
+}
+
+.bs-briefs--strip .bs-brief + .bs-brief {
+  border-left: 1px solid var(--hair);
+  padding-left: var(--gap);
+  margin-left: calc(var(--gap) * -0.5);
+}
+
+/* The briefs printed on a band of ink right across the sheet. */
+.bs-briefs--ink {
+  position: relative;
+  margin: 0 calc(var(--u) * -12);
+  padding: calc(var(--u) * 4) calc(var(--u) * 12) calc(var(--u) * 3);
+  background: var(--pop);
+  color: var(--pop-ink);
+}
+
+.bs-briefs--ink .yn-kicker,
+.bs-briefs--ink .bs-copy,
+.bs-box .yn-kicker,
+.bs-box .bs-copy,
+.bs-postblock .yn-kicker,
+.bs-picture-card .yn-kicker,
+.bs-inkpull .yn-kicker {
+  color: inherit;
+}
+
+.bs-briefs--ink .bs-brief + .bs-brief {
+  border-left: 1px solid color-mix(in srgb, currentColor 45%, transparent);
+  padding-left: var(--gap);
+  margin-left: calc(var(--gap) * -0.5);
+}
+
+/* ——— The second story ——— */
+
+.bs-story-block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 4);
+  min-width: 0;
+}
+
+/* Boxed in the partner ink. */
+.bs-box {
+  background: var(--pop2);
+  color: var(--pop2-ink);
+  padding: calc(var(--u) * 5) calc(var(--u) * 5.5) calc(var(--u) * 6);
+}
+
+.bs-box .bs-flat {
+  border-top-color: var(--pop2-ink);
+}
+
+.bs-box .yn-caption {
+  color: inherit;
+}
+
+/* Across the foot: head and picture on the left, its text in columns on the right. */
+.bs-second-across,
+.bs-second-split {
+  display: grid;
+  gap: var(--gap);
+  align-items: start;
+}
+
+.bs-second-across {
+  grid-template-columns: 1fr 2fr;
+}
+
+.bs-second-split {
+  grid-template-columns: 0.9fr 1.4fr;
+}
+
+.bs-second-across > .bs-head,
+.bs-second-across > .bs-media,
+.bs-second-split > .bs-head,
+.bs-second-split > .bs-media {
+  grid-column: 1;
+}
+
+.bs-second-across > .bs-copy,
+.bs-second-split > .bs-copy {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+}
+
+.bs-second-split > .bs-copy {
+  columns: 1;
+}
+
+/* ——— Section compositions ——— */
+
+.bs-g-rail {
+  grid-template-columns: 1fr calc(var(--u) * 92);
+}
+
+.bs-g-boxed {
+  grid-template-columns: 1.65fr 1fr;
+}
+
+.bs-g-inset {
+  grid-template-columns: 1.25fr 1fr;
+}
+
+.bs-g-foot {
+  grid-template-columns: 1.7fr 1fr;
+}
+
+.bs-g-side {
+  grid-template-columns: calc(var(--u) * 118) 1fr;
+}
+
+.bs-g-picture {
+  grid-template-columns: 1fr 2.2fr;
+}
+
+.bs-g-ticker {
+  grid-template-columns: 1.75fr 1fr;
+}
+
+.bs-g-guestcover {
+  grid-template-columns: 1fr;
+}
+
+.bs-g-guestcover:has(> .bs-extra) {
+  grid-template-columns: 1fr calc(var(--u) * 92);
+}
+
+.bs-g-guestcols {
+  grid-template-columns: 1.7fr 1fr;
+}
+
+/* A picture story: the photo across the sheet with the head pasted on. */
+.yn-hero.bs-picture,
+.yn-hero.bs-front-hero {
+  flex: none;
+  min-height: 0;
+  height: calc(var(--u) * 215);
+}
+
+.bs-picture-media,
+.bs-front-hero .yn-hero-photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.bs-picture-media .bs-flat,
+.bs-front-hero .yn-hero-photo .bs-flat {
+  height: 100%;
+  border: 0;
+  padding: 0;
+}
+
+.bs-picture-media .bs-pic,
+.bs-front-hero .yn-hero-photo .bs-pic {
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.bs-picture-media .bs-cap,
+.bs-picture-media .bs-media-sticker {
+  display: none;
+}
+
+.yn-hero .bs-picture-card {
+  background: var(--pop);
+  color: var(--pop-ink);
+  width: calc(var(--u) * 225);
+}
+
+.bs-picture-card .bs-hed--xl {
+  font-size: calc(var(--u) * 14);
+}
+
+/* The lead's head on a block of ink, its picture pasted over the edge. */
+.bs-postblock {
+  position: relative;
+  isolation: isolate;
+  color: var(--pop-ink);
+  padding: calc(var(--u) * 8) calc(var(--u) * 8) calc(var(--u) * 8);
+}
+
+.bs-postblock-ink {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--pop);
+  --wear-size: 140%;
+}
+
+.bs-postblock--photo {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 130);
+  gap: calc(var(--u) * 8);
+  align-items: center;
+}
+
+.bs-postblock-media {
+  rotate: 2.5deg;
+  margin: calc(var(--u) * -12) calc(var(--u) * -4) calc(var(--u) * -14) 0;
+}
+
+.bs-postblock .bs-postblock-media .bs-cap {
+  color: inherit;
+}
+
+.bs-postblock .bs-dek {
+  font-size: max(18px, calc(var(--u) * 6.6));
+}
+
+.bs-postblock .bs-hed--xxl {
+  text-shadow: calc(var(--u) * 0.7) calc(var(--u) * 0.5) 0 var(--pop2);
+}
+
+/* ——— Front compositions ——— */
+
+.bs-front .yn-mast,
+.bs-front .yn-banner {
+  flex: none;
+}
+
+.yn-banner.bs-banner {
+  grid-template-columns: auto 1px 1fr;
+}
+
+.bs-banner .yn-banner-number {
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2) calc(var(--u) * 5);
+}
+
+.bs-banner .fr-number {
+  white-space: nowrap;
+}
+
+.yn-banner-number .bs-banner-caption {
+  flex: 1 1 calc(var(--u) * 90);
+  max-width: calc(var(--u) * 180);
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1.1;
+  text-wrap: pretty;
+}
+
+.bs-banner--compact {
+  padding-block: calc(var(--u) * 3);
+}
+
+.bs-banner--compact .yn-banner-stack .yn-chunk {
+  font-size: calc(var(--u) * 13);
+}
+
+.bs-banner--compact .yn-banner-stack .yn-hand {
+  font-size: calc(var(--u) * 4.6);
+}
+
+.bs-spec-title {
+  font-size: calc(var(--u) * 11);
+  text-transform: uppercase;
+}
+
+.bs-f-classic {
+  grid-template-columns: 1fr calc(var(--u) * 86);
+}
+
+.bs-f-headline {
+  grid-template-columns: 1fr 1.15fr;
+}
+
+.bs-f-row3 {
+  grid-template-columns: 1fr 1fr calc(var(--u) * 90);
+}
+
+.bs-f-rail-grid {
+  grid-template-columns: 1fr calc(var(--u) * 92);
+}
+
+.bs-f-pair {
+  grid-template-columns: 1fr 1fr;
+}
+
+.bs-f-split {
+  grid-template-columns: calc(var(--u) * 110) 1fr;
+}
+
+.bs-f-strip {
+  grid-template-columns: 1fr 2.2fr;
+}
+
+.bs-f-poster {
+  grid-template-columns: 1fr calc(var(--u) * 92);
+}
+
+.bs-f-rail {
+  gap: calc(var(--u) * 6);
+}
+
+/* The day's number set tall on pink, for a rail. */
+.bs-numtall {
+  position: relative;
+  isolation: isolate;
+  color: var(--neon-pink-ink);
+  padding: calc(var(--u) * 5) calc(var(--u) * 5) calc(var(--u) * 6);
+  rotate: -1deg;
+}
+
+.bs-numtall-ink {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--neon-pink);
+  --wear-size: 150%;
+}
+
+.bs-numtall .yn-hand {
+  font-size: max(15px, calc(var(--u) * 4.6));
+}
+
+.bs-numtall-n {
+  margin-top: calc(var(--u) * 1);
+  line-height: 0.85;
+  white-space: nowrap;
+}
+
+.bs-numtall-cap {
+  margin-top: calc(var(--u) * 2);
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-size: max(16px, calc(var(--u) * 4.8));
+  line-height: 1.25;
+}
+
+.bs-weather {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+}
+
+.bs-weather-head {
+  position: relative;
+  padding-right: calc(var(--u) * 10);
+}
+
+/* "Inside today": the front page's one index of the paper. */
+.bs-index-title {
+  padding-bottom: calc(var(--u) * 1.5);
+  border-bottom: calc(var(--u) * 1.2) solid var(--ink);
+}
+
+.bs-index li {
+  padding: calc(var(--u) * 2) 0;
+  border-bottom: 1px solid var(--hair);
+  break-inside: avoid;
+}
+
+.bs-index-link {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1.5);
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-size: max(13px, calc(var(--u) * 3.6));
+}
+
+.bs-index-link::after {
+  content: "";
+  order: 2;
+  flex: 1;
+  border-bottom: 1.5px dotted var(--ink);
+}
+
+.bs-index-p {
+  order: 3;
+}
+
+.bs-index-hed {
+  display: block;
+  margin-top: calc(var(--u) * 0.8);
+  font-family: var(--font-text), Georgia, serif;
+  font-style: italic;
+  font-size: max(14px, calc(var(--u) * 3.9));
+  line-height: 1.25;
+}
+
+.bs-index--wide ol {
+  columns: 3 14em;
+  column-gap: var(--gap);
+}
+
+.yn-hero.bs-front-hero {
+  height: calc(var(--u) * 230);
+}
+
+.bs-front-hero .yn-hero-card h2 {
+  text-wrap: balance;
+}
+
+.yn-hero.bs-hero-type {
+  background: var(--neon-yellow);
+  height: calc(var(--u) * 150);
+}
+
+/* ——— Back page ——— */
+
+.bs-b-funnies {
+  grid-template-columns: 1.35fr 1fr;
+}
+
+.bs-strip.bs-strip--grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.bs-strip--grid .bk-panel {
+  height: calc(var(--u) * 92);
+}
+
+.bs-back .bk-corrections .yn-body,
+.bs-back .bs-odd-letter blockquote,
+.bs-back .bk-classifieds li p,
+.bs-back .bk-riddle .yn-body,
+.bs-back .bk-ladder .yn-body,
+.bs-back .bs-yesterday {
+  font-size: var(--read);
+  line-height: 1.4;
+}
+
+.bs-back .bk-clues li {
+  font-size: max(16px, calc(var(--u) * 4.8));
+}
+
+.bs-back .bs-odds {
+  margin-top: 0;
+}
+
+.bs-back--puzzles-first .bs-odds {
+  grid-template-columns: 1fr;
+}
+
+.bk-signoff .bk-signoff-small {
+  margin-top: calc(var(--u) * 2);
+}
+
+/* ——— Guest page ——— */
+
+.bs-guest-band {
+  grid-template-columns: auto 1fr auto;
+}
+
+.bs-guest-date {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-size: max(12px, calc(var(--u) * 3.4));
+  line-height: 1.5;
+  text-align: right;
+  font-variant-numeric: lining-nums;
+}
+
+.bs-extra .bs-copy {
+  color: inherit;
+}
+
+/* ——— Story page ——— */
+
+.bs-credit {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+  font-size: 10.5px;
+  color: color-mix(in srgb, var(--ink) 72%, var(--paper));
+}
+
+.yn-table .bs-story-body {
+  overflow-wrap: anywhere;
+  font-size: max(17px, calc(var(--u) * 5.4));
+  line-height: 1.5;
+  columns: 2 16em;
+}
+
+.yn-table .bs-story-body.bs-story-body--short {
+  columns: 1;
+  max-width: 38em;
+}
+
+/* ================================================================
+   Phone: every composition reflows into one readable column
+   ================================================================ */
+
+@container (max-width: 760px) {
+  .yn-sheet {
+    --read: 16.5px;
+    --gap: calc(var(--u) * 7);
+  }
+
+  .bs-grid,
+  .bs-g-rail,
+  .bs-g-boxed,
+  .bs-g-inset,
+  .bs-g-foot,
+  .bs-g-side,
+  .bs-g-picture,
+  .bs-g-ticker,
+  .bs-g-guestcover,
+  .bs-g-guestcover:has(> .bs-extra),
+  .bs-g-guestcols,
+  .bs-f-classic,
+  .bs-f-headline,
+  .bs-f-row3,
+  .bs-f-rail-grid,
+  .bs-f-pair,
+  .bs-f-split,
+  .bs-f-strip,
+  .bs-f-poster,
+  .bs-b-funnies,
+  .bs-second-across,
+  .bs-second-split,
+  .bs-postblock--photo {
+    grid-template-columns: 1fr;
+  }
+
+  .bs-second-across > .bs-copy,
+  .bs-second-split > .bs-copy {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .bs-ruled-left {
+    border-left: 0;
+    padding-left: 0;
+    margin-left: 0;
+    border-top: 1px solid var(--hair);
+    padding-top: calc(var(--u) * 6);
+  }
+
+  .bs-copy--2,
+  .bs-copy--3 {
+    columns: 1;
+  }
+
+  .yn-table .bs-copy {
+    column-rule: 0;
+    text-align: left;
+  }
+
+  .bs-hed--xxl,
+  .bs-head--front .bs-hed--xxl {
+    font-size: calc(var(--u) * 17);
+  }
+
+  .bs-hed--xl {
+    font-size: calc(var(--u) * 15);
+  }
+
+  .bs-hed--lg {
+    font-size: calc(var(--u) * 13);
+  }
+
+  .bs-hed--md {
+    font-size: calc(var(--u) * 12);
+  }
+
+  .bs-hed--brief {
+    font-size: 22px;
+  }
+
+  .yn-table .bs-kick {
+    font-size: 15px;
+  }
+
+  .yn-table .bs-dek,
+  .bs-head--across .bs-dek,
+  .bs-postblock .bs-dek {
+    font-size: 18px;
+  }
+
+  .yn-table .bs-dek-big {
+    font-size: 19px;
+  }
+
+  .bs-inkpull-text {
+    font-size: calc(var(--u) * 12);
+  }
+
+  .bs-media-sticker {
+    right: calc(var(--u) * 1);
+    width: calc(var(--u) * 34);
+  }
+
+  .bs-briefs--strip .bs-briefs-list,
+  .bs-briefs--ink .bs-briefs-list {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .bs-briefs--strip .bs-brief + .bs-brief,
+  .bs-briefs--ink .bs-brief + .bs-brief {
+    border-left: 0;
+    padding-left: 0;
+    margin-left: 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  }
+
+  .bs-briefs--ink {
+    margin: 0 calc(var(--u) * -6);
+    padding: calc(var(--u) * 5) calc(var(--u) * 6);
+  }
+
+  .bs-brief-n {
+    width: calc(var(--u) * 12);
+    font-size: calc(var(--u) * 16);
+  }
+
+  .yn-hero.bs-picture,
+  .yn-hero.bs-front-hero {
+    height: calc(var(--u) * 190);
+  }
+
+  .yn-hero .bs-picture-card {
+    left: calc(var(--u) * 4);
+    right: calc(var(--u) * 4);
+    width: auto;
+    bottom: calc(var(--u) * 5);
+  }
+
+  .bs-picture-card .bs-hed--xl {
+    font-size: calc(var(--u) * 12);
+  }
+
+  .bs-postblock {
+    padding: calc(var(--u) * 7) calc(var(--u) * 6);
+  }
+
+  .bs-postblock-media {
+    margin: 0;
+    rotate: 1.5deg;
+  }
+
+  .yn-banner-number .bs-banner-caption {
+    flex-basis: 100%;
+    max-width: none;
+    font-size: 18px;
+  }
+
+  .bs-numtall-cap,
+  .bs-brief-dek {
+    font-size: 16px;
+  }
+
+  .bs-index-link {
+    font-size: 14px;
+  }
+
+  .bs-index-hed {
+    font-size: 15px;
+  }
+
+  .bs-index--wide ol {
+    columns: 1;
+  }
+
+  .bs-strip--grid .bk-panel {
+    height: calc(var(--u) * 78);
+  }
+
+  .bs-guest-band {
+    grid-template-columns: auto 1fr;
+  }
+
+  .bs-guest-date {
+    text-align: left;
+    font-size: 13px;
+  }
+
+  .yn-table .bs-story-body {
+    font-size: 17px;
+    columns: 1;
+  }
+}

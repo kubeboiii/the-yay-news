@@ -275,3 +275,34 @@
 .m5t .m5t-nav {
   margin-top: 0;
 }
+
+/* The one picture credit the paper prints, for an image from a real article: one tiny line. */
+.m5t-credit {
+  font-family: var(--f-sans), sans-serif;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--ink) 74%, var(--paper));
+  padding: 4px calc(var(--u) * 12) 0;
+}
+.m5 .m5t-more .m5t-credit {
+  padding: 3px 0 0;
+}
+.m5 .m5t-body {
+  font-size: max(17px, calc(var(--u) * 4.3));
+  line-height: 1.45;
+}
+@container (max-width: 760px) {
+  .m5t-credit {
+    padding: 4px 18px 0;
+  }
+  .m5 .m5t-body {
+    font-size: 17px;
+  }
+}
+.m5t-text > * {
+  min-width: 0;
+}
+.m5t-body {
+  overflow-wrap: break-word;
+}

@@ -6,13 +6,13 @@ import {
   featureOf,
   featuresOf,
   folioDate,
-  issueLine,
   pad2,
   speech,
   splitFirstSentence,
   titleCase,
 } from "./edition-data";
-import { Folio, Masthead, MiniMark, Sheet, Stamp, fit } from "./parts";
+import { backComposition } from "./compose";
+import { Folio, Masthead, MiniMark, Sheet, fit } from "./parts";
 import { fs } from "./story-bits";
 
 // The back page: today's puzzles printed to be done in pencil (interactivity comes later),
@@ -153,56 +153,20 @@ export function Back({ edition, page, reading }: PageProps) {
   const [signHead, signRest] = splitFirstSentence(signOff);
   const [boxed, ...plain] = [...classifieds].reverse();
   const puzzleCount = [crossword, ladder, riddle].filter(Boolean).length;
-  const onPage = [
-    crossword
-      ? `a ${crossword.data.rows.length}-by-${crossword.data.rows[0]?.length ?? 0} crossword`
-      : null,
-    ladder ? `a ${ladder.data.steps}-step ladder` : null,
-    riddle ? "one riddle" : null,
-    comic ? comic.content.title : null,
-  ].filter(Boolean);
-
-  return (
-    <Sheet theme="back" label={`The back page, page ${page.order}`}>
-      <Masthead
-        eyebrow={
-          <MiniMark href={reading.pages[0]?.href ?? "/"}>
-            Page {page.order} · The back page · {date}
-          </MiniMark>
-        }
-        title="Puzzles & play"
-        size={{ measure: 150, max: 17.5 }}
-        aside={
-          <>
-            <p className="tb-kicker">On today&rsquo;s back page:</p>
-            <p>
-              {onPage.length ? `${onPage.join(", ").replace(/^a/, "A")}. ` : ""}Pencil optional,
-              answers tomorrow.
-            </p>
-          </>
-        }
-        box={
-          <>
-            <span className="tb-box-num">{pad2(page.order)}</span>
-            <span className="tb-box-words">
-              Pencils ready
-              <small>The back page</small>
-            </span>
-          </>
-        }
-      />
-
+  const order = backComposition(edition);
+  const puzzlesBlock = (
+    <>
       {puzzleCount ? (
-        <section className={`tb-puzzles tb-puzzles--${puzzleCount}`} aria-label="Puzzles">
+        <section
+          data-composition={`back-${order}`}
+          className={`tb-puzzles tb-puzzles--${puzzleCount}`}
+          aria-label="Puzzles"
+        >
           {crossword ? (
             <article className="tb-tile tb-tile--xw" aria-labelledby="xw-title">
               <h2 id="xw-title" className="tb-tile-head tb-cond">
                 {crossword.data.title}
               </h2>
-              <p className="tb-note tb-back2-note" aria-hidden>
-                start with 1 across
-              </p>
-              <Mark name="arrows-10" ink="var(--b)" className="tb-mark tb-back2-arrow" />
               <div className="tb-xw">
                 <CrosswordGrid data={crossword.data} />
                 <Clues data={crossword.data} />
@@ -246,10 +210,6 @@ export function Back({ edition, page, reading }: PageProps) {
                   ))}
                 </li>
               </ol>
-              <Stamp className="tb-back2-stamp2">
-                Answers
-                <small>in tomorrow&rsquo;s paper</small>
-              </Stamp>
             </article>
           ) : null}
 
@@ -312,16 +272,16 @@ export function Back({ edition, page, reading }: PageProps) {
           </div>
         </section>
       ) : null}
-
+    </>
+  );
+  const comicBlock = (
+    <>
       {comic ? (
         <section className="tb-comic tb-grow" aria-labelledby="comic-title">
           <div className="tb-comic-head">
             <h2 id="comic-title" className="tb-tile-head tb-cond">
               {comic.content.title}
             </h2>
-            <p className="tb-source">
-              A strip in {comic.content.panels.length} panels, drawn by the desk
-            </p>
           </div>
           <ol
             className="tb-comic-panels"
@@ -342,6 +302,41 @@ export function Back({ edition, page, reading }: PageProps) {
           </ol>
         </section>
       ) : null}
+    </>
+  );
+
+  return (
+    <Sheet theme="back" label={`The back page, page ${page.order}`}>
+      <Masthead
+        eyebrow={
+          <MiniMark href={reading.pages[0]?.href ?? "/"}>
+            Page {page.order} · The back page · {date}
+          </MiniMark>
+        }
+        title="Puzzles & play"
+        size={{ measure: 150, max: 17.5 }}
+        box={
+          <>
+            <span className="tb-box-num">{pad2(page.order)}</span>
+            <span className="tb-box-words">
+              Back
+              <small>page</small>
+            </span>
+          </>
+        }
+      />
+
+      {order === "comic-first" ? (
+        <>
+          {comicBlock}
+          {puzzlesBlock}
+        </>
+      ) : (
+        <>
+          {puzzlesBlock}
+          {comicBlock}
+        </>
+      )}
 
       <section className="tb-band tb-back-band" aria-label="Corrections, classifieds and letters">
         <article className="tb-col tb-body">
@@ -382,39 +377,36 @@ export function Back({ edition, page, reading }: PageProps) {
           ) : null}
         </article>
 
-        <aside className="tb-col" aria-label={word ? "Word of the day" : "Quote of the day"}>
-          <div className="tb-share">
-            <Mark name="stars-14" ink="var(--a)" className="tb-mark tb-over tb-share-stars" />
-            {word ? (
-              <>
-                <p className="tb-kicker">Word of the day:</p>
-                <h2
-                  className="tb-share-head tb-cond"
-                  style={fs(fit(word.content.word, { max: 10.5, min: 6, measure: 50, em: 0.6 }))}
+        {word || quote ? (
+          <aside className="tb-col" aria-label={word ? "Word of the day" : "Quote of the day"}>
+            <div className="tb-share">
+              <Mark name="stars-14" ink="var(--a)" className="tb-mark tb-over tb-share-stars" />
+              {word ? (
+                <>
+                  <p className="tb-kicker">Word of the day:</p>
+                  <h2
+                    className="tb-share-head tb-cond"
+                    style={fs(fit(word.content.word, { max: 10.5, min: 6, measure: 50, em: 0.6 }))}
+                  >
+                    {word.content.word}
+                  </h2>
+                  <p className="tb-word-say">{word.content.pronunciation}</p>
+                  <p>{word.content.meaning}</p>
+                  <p className="tb-word-eg">&ldquo;{word.content.example}&rdquo;</p>
+                </>
+              ) : null}
+              {quote ? (
+                <blockquote
+                  className={word ? "tb-share-quote" : "tb-share-quote tb-share-quote--solo"}
                 >
-                  {word.content.word}
-                </h2>
-                <p className="tb-word-say">{word.content.pronunciation}</p>
-                <p>{word.content.meaning}</p>
-                <p className="tb-word-eg">&ldquo;{word.content.example}&rdquo;</p>
-              </>
-            ) : quote ? null : (
-              <>
-                <h2 className="tb-share-head tb-cond">Share your answers</h2>
-                <p>Solved the Mini before the kettle boiled? Photograph your page and tag us.</p>
-              </>
-            )}
-            {quote ? (
-              <blockquote
-                className={word ? "tb-share-quote" : "tb-share-quote tb-share-quote--solo"}
-              >
-                <p className="tb-kicker">Quote of the day:</p>
-                <p className="tb-share-quote-text">&ldquo;{quote.content.text}&rdquo;</p>
-                <footer className="tb-pull-by">{quote.content.by}</footer>
-              </blockquote>
-            ) : null}
-          </div>
-        </aside>
+                  <p className="tb-kicker">Quote of the day:</p>
+                  <p className="tb-share-quote-text">&ldquo;{quote.content.text}&rdquo;</p>
+                  <footer className="tb-pull-by">{quote.content.by}</footer>
+                </blockquote>
+              ) : null}
+            </div>
+          </aside>
+        ) : null}
       </section>
 
       <section className="tb-signoff2 print-worn" aria-label="Sign-off">
@@ -440,7 +432,7 @@ export function Back({ edition, page, reading }: PageProps) {
         {signRest ? <p className="tb-hand">{signRest}</p> : null}
       </section>
 
-      <Folio page={page.order} section="The back page" date={date} issue={issueLine(edition)} />
+      <Folio page={page.order} section="The back page" date={date} />
     </Sheet>
   );
 }

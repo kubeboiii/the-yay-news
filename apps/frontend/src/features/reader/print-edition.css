@@ -10,8 +10,56 @@
  * if a design changes its page furniture.
  */
 
+/*
+ * On screen too, the edition is laid out exactly as it prints: 380 mm wide and flat. That lets
+ * PrintFit (print-fit.tsx) measure each page calmly on screen and work out how far to reduce it so
+ * it prints on one sheet; the reduction (--fit) is only applied in print. Narrow screens see the
+ * same pages scaled down as a whole (--screen-fit on the edition).
+ */
+.yn-print-edition {
+  zoom: var(--screen-fit, 1);
+}
+
+.yn-print-page {
+  width: 380mm;
+  margin-inline: auto;
+}
+
 .yn-print-page + .yn-print-page {
   margin-top: 24px;
+}
+
+/* The desk goes; the sheet fills its page. */
+.yn-print-edition .yn-print-page .print-desk,
+.yn-print-edition .yn-print-page .yn-table {
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+}
+
+.yn-print-edition .yn-print-page .print-sheet-wrap,
+.yn-print-edition .yn-print-page .yn-sheet-wrap {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+/* No tilt, perspective or lifting corners on paper that is already paper. */
+.yn-print-edition .yn-print-page .print-sheet-wrap,
+.yn-print-edition .yn-print-page .yn-sheet-wrap,
+.yn-print-edition .yn-print-page .print-sheet,
+.yn-print-edition .yn-print-page .yn-sheet {
+  transform: none !important;
+  rotate: none !important;
+  filter: none !important;
+}
+
+.yn-print-edition .yn-print-page .print-sheet-wrap::before,
+.yn-print-edition .yn-print-page .print-sheet-wrap::after,
+.yn-print-edition .yn-print-page .yn-sheet-wrap::before,
+.yn-print-edition .yn-print-page .yn-sheet-wrap::after,
+.yn-print-edition .yn-print-page .print-sheet--fold::after {
+  display: none !important;
 }
 
 @page {
@@ -50,10 +98,16 @@
     box-shadow: none !important;
   }
 
+  .yn-print-edition {
+    zoom: 1;
+  }
+
   .yn-print-page {
+    zoom: var(--fit, 1);
     break-after: page;
     break-inside: avoid;
-    margin: 0 !important;
+    /* A reduced page sits centred on its sheet. */
+    margin: 0 auto !important;
   }
 
   .yn-print-page:last-child {
@@ -74,38 +128,5 @@
 
   .yn-print-page[data-design="zine"] {
     page: zine;
-  }
-
-  /* The desk goes; the sheet fills its page. */
-  .yn-print-page .print-desk,
-  .yn-print-page .yn-table {
-    min-height: 0 !important;
-    padding: 0 !important;
-    background: none !important;
-  }
-
-  .yn-print-page .print-sheet-wrap,
-  .yn-print-page .yn-sheet-wrap {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-  }
-
-  /* No tilt, perspective or lifting corners on paper that is already paper. */
-  .yn-print-page .print-sheet-wrap,
-  .yn-print-page .yn-sheet-wrap,
-  .yn-print-page .print-sheet,
-  .yn-print-page .yn-sheet {
-    transform: none !important;
-    rotate: none !important;
-    filter: none !important;
-  }
-
-  .yn-print-page .print-sheet-wrap::before,
-  .yn-print-page .print-sheet-wrap::after,
-  .yn-print-page .yn-sheet-wrap::before,
-  .yn-print-page .yn-sheet-wrap::after,
-  .yn-print-page .print-sheet--fold::after {
-    display: none !important;
   }
 }

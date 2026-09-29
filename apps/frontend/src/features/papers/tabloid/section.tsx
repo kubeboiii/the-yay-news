@@ -1,365 +1,143 @@
 import type { StoryItem } from "@repo/shared";
-import Link from "next/link";
-import type { ReactNode } from "react";
-import { Mark } from "@/features/print/mark";
-import type { PageProps, Reading } from "../types";
-import { capitalise, folioDate, issueLine, ordered, pad2 } from "./edition-data";
+import type { PageProps } from "../types";
+import { type Area, gridStyle, insideComposition, places } from "./compose";
+import { folioDate, ordered, pad2 } from "./edition-data";
+import { Folio, Masthead, MiniMark, PixelType, Sheet, themeFor, type Theme } from "./parts";
 import {
-  Body,
-  Folio,
-  Masthead,
-  MiniMark,
-  Photo,
-  PixelType,
-  Sheet,
-  Tape,
-  creditLine,
-  themeFor,
-  type Theme,
-} from "./parts";
-import { Jump, PlateWord, Source, Splash, pullQuote } from "./story-bits";
+  AreaBox,
+  Briefs,
+  MainPhoto,
+  SecondStory,
+  StoryHead,
+  StoryText,
+  measureOf,
+} from "./story-bits";
 
-// A core section's inside page. Every section prints through the same template: masthead, the
-// top story's photograph (or a plate of ink) run big, then a band of columns for the rest. Screen
-// & Sound and Gaming get the mockup's flourishes on top.
+// A core section's inside page: the main story with its photograph, the second story and the
+// briefs, set in the composition this page drew for the day (see compose.ts). Every story on the
+// page is printed whole; nothing here trails another page.
 
-/** What the coloured box in each section's masthead says. */
-const BOX: Record<string, string> = {
-  "screen-and-sound": "Admit one",
-  gaming: "Player 1, ready",
-  sports: "Full time",
-  discoveries: "Eureka!",
-  tech: "Switched on",
-  money: "Pocket change",
-  "internet-and-culture": "Going viral",
-  "food-and-words": "Second helpings",
-  "art-design-and-books": "Hang it up",
-  "on-this-day": "Once upon a time",
-};
-
-/** How a picture sits in a column: pasted on with tape, in a film strip, or on a cartridge. */
-function ColumnPicture({ story, slug, index }: { story: StoryItem; slug: string; index: number }) {
-  const image = story.images[0];
-  if (!image) return null;
-  if (slug === "screen-and-sound") {
-    const holes = Array.from({ length: 12 }, (_, i) => <i key={i} />);
-    return (
-      <>
-        <div className="tb-filmstrip tb-screen2-strip">
-          <div className="tb-sprockets" aria-hidden>
-            {holes}
-          </div>
-          <Photo image={image} sizes="(max-width: 760px) 100vw, 360px" width={900} />
-          <div className="tb-sprockets" aria-hidden>
-            {holes}
-          </div>
-          <Tape />
-        </div>
-        <p className="tb-credit-line">{creditLine(image)}</p>
-      </>
-    );
-  }
-  return (
-    <>
-      <div className={`tb-pasted print-print tb-col-print ${index % 2 ? "tb-col-print--r" : ""}`}>
-        <Photo image={image} sizes="(max-width: 760px) 100vw, 360px" width={900} />
-        <Tape />
-      </div>
-      <p className="tb-credit-line">{creditLine(image)}</p>
-    </>
-  );
+/** The page's stories by role: the main story, the second, and the briefs. */
+export function roles(stories: StoryItem[]) {
+  const all = ordered(stories);
+  const features = all.filter((s) => s.slot !== "brief");
+  const briefs = all.filter((s) => s.slot === "brief");
+  // A page with no brief slot still gets a column: anything after the first two runs as a brief.
+  const [main, second, ...extra] = features;
+  return { main, second, briefs: [...extra, ...briefs] };
 }
 
-/** A story in the band below the splash: kicker, headline, picture, standfirst, body. */
-function ColumnStory({
-  story,
+export function StoriesGrid({
+  page,
+  reading,
+  composition,
   slug,
-  index,
-  reading,
-  children,
-}: {
-  story: StoryItem;
+}: Pick<PageProps, "page" | "reading"> & {
+  composition: ReturnType<typeof insideComposition>;
   slug: string;
-  index: number;
-  reading: Reading;
-  /** Anything set under the story in the same column. */
-  children?: ReactNode;
 }) {
-  const href = reading.storyHref(story.slug);
-  if (slug === "gaming" && story.images[0]) {
-    return (
-      <article className="tb-col">
-        <div className="tb-cart tb-cart--col">
-          <div className="tb-cart-grip" aria-hidden>
-            {Array.from({ length: 14 }, (_, i) => (
-              <i key={i} />
-            ))}
-          </div>
-          <Photo image={story.images[0]} sizes="(max-width: 760px) 100vw, 360px" width={900} />
-          <div className="tb-cart-text">
-            <p className="tb-kicker">{story.kicker}:</p>
-            <h3 className="tb-cond tb-h3-sm tb-cart-head">
-              <Link href={href}>{story.headline}</Link>
-            </h3>
-            <p className="tb-dek">{story.dek}</p>
-            <div className="tb-body">
-              <Body paragraphs={story.body} />
-            </div>
-            <Source story={story} />
-            <Jump href={href} />
-          </div>
-        </div>
-        {children}
-      </article>
-    );
-  }
+  const { main, second, briefs } = roles(page.stories);
+  const at = places(composition);
+  const present: Area[] = [
+    ...(main ? (["head", "body"] as Area[]) : []),
+    ...(main?.images.length ? (["photo"] as Area[]) : []),
+    ...(second ? (["second"] as Area[]) : []),
+    ...(briefs.length ? (["briefs"] as Area[]) : []),
+  ];
+  const href = (s: StoryItem) => reading.storyHref(s.slug);
+  const onPhoto = composition.onPhoto && Boolean(main?.images.length);
   return (
-    <article className="tb-col">
-      <div className="tb-colhead">
-        <p className="tb-kicker">{story.kicker}:</p>
-        <h3 className="tb-cond tb-h3-sm">
-          <Link href={href}>{story.headline}</Link>
-        </h3>
-      </div>
-      <ColumnPicture story={story} slug={slug} index={index} />
-      <p className="tb-dek">{story.dek}</p>
-      <div className="tb-body">
-        <Body paragraphs={story.body} />
-      </div>
-      <Source story={story} />
-      <Jump href={href} />
-      {children}
-    </article>
-  );
-}
-
-/** The column that sends the reader on: what's over the page, and the page after that. */
-function TurnTo({
-  edition,
-  reading,
-  inline,
-}: Pick<PageProps, "edition" | "reading"> & { inline?: boolean }) {
-  const ahead = [reading.next, reading.pages[reading.pages.indexOf(reading.current) + 2]]
-    .filter((p): p is NonNullable<typeof p> => Boolean(p))
-    .map((link) => ({
-      link,
-      top: ordered(edition.pages.find((p) => p.order === link.order)?.stories ?? [])[0],
-    }));
-  return (
-    <aside
-      className={inline ? "tb-turn tb-turn--inline" : "tb-col tb-turn"}
-      aria-label="Over the page"
+    <div
+      className={`tb-comp ${composition.boxed ? "tb-comp--boxed" : ""}`}
+      data-composition={composition.name}
+      style={gridStyle(composition, present)}
     >
-      <div className="tb-colhead">
-        <p className="tb-kicker">Over the page:</p>
-        <h3 className="tb-cond tb-h3">Turn to</h3>
-      </div>
-      <ol className="tb-turn-list">
-        {ahead.map(({ link, top }) => (
-          <li key={link.order}>
-            <Link href={top ? reading.storyHref(top.slug) : link.href}>
-              <span className="tb-turn-no">{pad2(link.order)}</span>
-              <span>
-                <span className="tb-turn-label">{link.label}</span>
-                <span className="tb-turn-head tb-cond">
-                  {top
-                    ? top.headline
-                    : link.slug === "back"
-                      ? "Puzzles, comics and the sign-off"
-                      : link.label}
-                </span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ol>
-      <p className="tb-jump">
-        <Link href={reading.pages[0]?.href ?? "/"}>
-          Back to the front, <b>page 1 →</b>
-        </Link>
-      </p>
-    </aside>
-  );
-}
-
-/** The cinema letterboard under Screen & Sound's masthead. */
-function Letterboard({ rows, tag }: { rows: string[]; tag: ReactNode }) {
-  return (
-    <div className="tb-letterboard" aria-hidden>
-      <div className="tb-letterboard-rows">
-        {rows.map((line, r) => (
-          <div key={r} className="tb-letterboard-row">
-            {line.split(" ").map((word, w) => (
-              <span key={w} className="tb-letterboard-word">
-                {[...word].map((ch, i) => (
-                  <span key={i} className="tb-letter">
-                    {ch}
-                  </span>
-                ))}
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
-      <span className="tb-letterboard-tag tb-cond">{tag}</span>
+      {main ? (
+        <article className="tb-main" aria-label={main.headline}>
+          {onPhoto ? null : (
+            <AreaBox area="head" place={at.head}>
+              <StoryHead story={main} href={href(main)} span={at.head?.span ?? 3} />
+            </AreaBox>
+          )}
+          <AreaBox area="photo" place={at.photo}>
+            <MainPhoto
+              story={main}
+              href={href(main)}
+              measure={measureOf(at.photo?.span ?? 3) - 24}
+              onPhoto={onPhoto}
+              priority
+              sizes="(max-width: 760px) 100vw, 740px"
+            />
+          </AreaBox>
+          <AreaBox area="body" place={at.body}>
+            {onPhoto ? <p className="tb-dek">{main.dek}</p> : null}
+            <StoryText story={main} dropcap />
+          </AreaBox>
+        </article>
+      ) : null}
+      {second ? (
+        <AreaBox
+          area="second"
+          place={at.second}
+          as="article"
+          label={second.headline}
+          className={composition.boxed ? "tb-boxed" : ""}
+        >
+          <SecondStory story={second} href={href(second)} span={at.second?.span ?? 1} slug={slug} />
+        </AreaBox>
+      ) : null}
+      {briefs.length ? (
+        <AreaBox area="briefs" place={at.briefs} as="aside" label="In brief">
+          <Briefs stories={briefs} storyHref={reading.storyHref} span={at.briefs?.span ?? 1} />
+        </AreaBox>
+      ) : null}
     </div>
   );
 }
 
-export function SectionPage({
-  edition,
-  page,
-  reading,
-  eyebrowLabel,
-  boxWords,
-  boxSmall,
-  asideKicker,
-  after,
-  theme: forced,
-}: PageProps & {
-  eyebrowLabel?: string;
-  boxWords?: string;
-  boxSmall?: string;
-  asideKicker?: string;
-  after?: ReactNode;
-  theme?: Theme;
-}) {
+export function Section({ edition, page, reading }: PageProps) {
   const section = page.section;
   const slug = section?.slug ?? "";
   const name = section?.name ?? reading.current.label;
-  const [top, ...rest] = ordered(page.stories);
-  const theme: Theme = forced ?? (slug === "gaming" ? "gaming" : themeFor(page.order));
+  const theme: Theme = slug === "gaming" ? "gaming" : themeFor(page.order);
   const date = folioDate(edition.date);
-  const quote = pullQuote(page.stories);
-  const minutes = page.stories.reduce((n, s) => n + s.readMinutes, 0);
-  const cols = rest.length >= 2 ? "three" : rest.length === 1 ? "two" : "one";
-  // With two stories, "Over the page" goes under whichever story leaves the shorter column.
-  const second = rest[0];
-  const weight = (s: StoryItem) => s.body.join("").length + s.headline.length + s.dek.length;
-  const turnUnder =
-    cols !== "two" || !second
-      ? null
-      : second.images.length || weight(second) > weight(top!) * 1.3
-        ? "top"
-        : "second";
-  const words = boxWords ?? BOX[slug] ?? "Good news";
+  const composition = insideComposition(edition, page);
 
   return (
     <Sheet theme={theme} label={`${name}, page ${page.order}`}>
       <Masthead
         eyebrow={
           <MiniMark href={reading.pages[0]?.href ?? "/"}>
-            Page {page.order} · {eyebrowLabel ?? name} · {date}
+            Page {page.order} · {name} · {date}
           </MiniMark>
         }
         title={name}
         size={{ measure: 158, max: slug === "gaming" ? 24 : 17.5 }}
-        aside={
-          section ? (
-            <>
-              <p className="tb-kicker">{asideKicker ?? "In this section:"}</p>
-              <p>
-                <span className="tb-runin">{section.tagline}. </span>
-                {page.stories.length} {page.stories.length === 1 ? "story" : "stories"}, {minutes}{" "}
-                min to read.
-              </p>
-            </>
-          ) : undefined
-        }
+        aside={section ? <p className="tb-mast-tagline">{section.tagline}.</p> : undefined}
         box={
           slug === "gaming" ? (
             <>
-              <PixelType text="1UP" />
+              <PixelType text={pad2(page.order)} />
               <span className="tb-box-words">
-                {words}
-                <small>Page {pad2(page.order)} · the games desk</small>
+                Page
+                <small>{name}</small>
               </span>
             </>
           ) : (
             <>
               <span className="tb-box-num">{pad2(page.order)}</span>
               <span className="tb-box-words">
-                {words}
-                <small>{boxSmall ?? name}</small>
+                Page
+                <small>{name}</small>
               </span>
             </>
           )
         }
       />
 
-      {slug === "screen-and-sound" && top ? (
-        <Letterboard
-          rows={["NOW SHOWING", top.kicker.toUpperCase()]}
-          tag={
-            <>
-              {minutes} min
-              <br />
-              of good
-            </>
-          }
-        />
-      ) : null}
+      <StoriesGrid page={page} reading={reading} composition={composition} slug={slug} />
 
-      {after}
-
-      {top ? (
-        <Splash
-          story={top}
-          href={reading.storyHref(top.slug)}
-          measure={228}
-          priority
-          className={`tb-section-splash tb-splash--${slug}`}
-        />
-      ) : (
-        <div className="tb-grow tb-plate tb-empty">
-          <PlateWord text="Good news only" measure={228} />
-        </div>
-      )}
-
-      {top ? (
-        <section
-          className={`tb-band tb-sec-band tb-sec-band--${cols}`}
-          aria-label={`${name} stories`}
-        >
-          <article className="tb-col">
-            <div className={cols === "one" ? "tb-story-cols" : ""}>
-              <p className="tb-byline">
-                By our {name} desk · <b>{top.readMinutes} min read</b>
-              </p>
-              {top.images.length ? <p className="tb-dek">{top.dek}</p> : null}
-              <div className={`tb-body ${cols === "two" ? "tb-body--lead" : ""}`}>
-                <Body paragraphs={top.body} dropcap={cols !== "three"} />
-              </div>
-              <Source story={top} extra={top.images[0] ? creditLine(top.images[0]) : undefined} />
-              <Jump href={reading.storyHref(top.slug)} />
-            </div>
-            {quote && cols !== "three" ? (
-              <blockquote className="tb-pull">
-                <p className="tb-cond">&ldquo;{quote.text}&rdquo;</p>
-                {quote.by ? <footer className="tb-pull-by">{capitalise(quote.by)}</footer> : null}
-              </blockquote>
-            ) : null}
-            {slug === "screen-and-sound" ? (
-              <Mark name="sketch-24" ink="var(--b)" className="tb-mark tb-sec-music" />
-            ) : null}
-            {turnUnder === "top" ? <TurnTo edition={edition} reading={reading} inline /> : null}
-          </article>
-          {rest.slice(0, 2).map((s, i) => (
-            <ColumnStory key={s.slug} story={s} slug={slug} index={i} reading={reading}>
-              {turnUnder === "second" ? (
-                <TurnTo edition={edition} reading={reading} inline />
-              ) : null}
-            </ColumnStory>
-          ))}
-          {cols === "one" ? <TurnTo edition={edition} reading={reading} /> : null}
-        </section>
-      ) : null}
-
-      <Folio page={page.order} section={name} date={date} issue={issueLine(edition)} />
+      <Folio page={page.order} section={name} date={date} next={reading.next} />
     </Sheet>
   );
-}
-
-export function Section(props: PageProps) {
-  return <SectionPage {...props} />;
 }

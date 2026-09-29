@@ -3,19 +3,8 @@ import { Burst } from "@/features/print/burst";
 import { Mark } from "@/features/print/mark";
 import type { StoryProps } from "../types";
 import { pageLabel } from "../reading";
-import {
-  Body,
-  Byline,
-  Credit,
-  doodleFor,
-  Page,
-  Print,
-  printNote,
-  Pull,
-  Ringed,
-  RunningHead,
-} from "./parts";
-import { groundsFor, headSize, pad2, pullQuote, shortDate, longDate } from "./text";
+import { Body, Byline, doodleFor, Page, Print, printNote, Ringed, RunningHead } from "./parts";
+import { groundsFor, headSize, pad2, shortDate, longDate } from "./text";
 
 /*
  * A story's own page: the story cut out of its spread and laid out as a single mini page of its
@@ -24,18 +13,12 @@ import { groundsFor, headSize, pad2, pullQuote, shortDate, longDate } from "./te
  */
 export function Story({ data, links }: StoryProps) {
   const { story, edition, page } = data;
-  const guest = page.layout === "guest";
-  const slug =
-    page.layout === "front"
-      ? "front"
-      : page.layout === "back"
-        ? "back"
-        : (page.section?.slug ?? "");
-  const [ground] = groundsFor(slug, page.order, guest);
+  const [ground] = groundsFor(edition.issueNumber, page.order);
   const date = shortDate(edition.date);
   const where = pageLabel(page);
   const image = story.images[0] ?? null;
-  const pull = pullQuote([story]);
+  // Only a picture taken from a real article is credited, in one tiny line on its own page.
+  const credit = image && image.licence === "Credited to its source" ? image.credit : null;
   // The mini page it was cut from: the front's lead is on page 2; a section's opens its spread.
   const from = page.layout === "front" ? 2 : 2 * (page.order - 1) + 1;
 
@@ -81,9 +64,7 @@ export function Story({ data, links }: StoryProps) {
                     </Burst>
                   ) : null}
                 </div>
-                <div className="zf-credit">
-                  <Credit photos={story.images.slice(0, 1)} />
-                </div>
+                {credit ? <p className="zt-credit">Image: {credit}</p> : null}
                 <p className="z-dek zt-dek">{story.dek}</p>
               </>
             ) : (
@@ -113,7 +94,6 @@ export function Story({ data, links }: StoryProps) {
                 {story.sourceName} ↗
               </a>
             </p>
-            {pull ? <Pull text={pull} className="zs-pull zt-pull" /> : null}
 
             {!image && story.body.join("").length < 700 ? (
               <Mark name={doodleFor(story.section.slug)} ink="var(--ink)" className="zt-doodle" />

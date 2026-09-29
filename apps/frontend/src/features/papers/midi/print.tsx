@@ -25,9 +25,9 @@ export const weekday = (date: string) => part(date, { weekday: "long" });
 
 // ——— Page numbers ———
 //
-// Every route of the edition prints as one two-page spread. The front is the cover (page 1) and
-// page 2 beside it; after that each spread starts on an even, left-hand page, so the reading
-// order's n-th page (0-based) opens on page 2n + 2: Screen & Sound 4–5, Gaming 6–7, and so on.
+// The front route prints the cover (page 1) and the opening spread (pages 2–3); every other route
+// prints one two-page spread starting on an even, left-hand page, so the reading order's n-th
+// page (0-based) opens on page 2n + 2: Screen & Sound 4–5, Gaming 6–7, and so on.
 
 export const pageNumber = (index: number) => (index <= 0 ? 1 : 2 * index + 2);
 
@@ -37,7 +37,7 @@ export const pageNumberOf = (reading: Reading, link: PageLink) =>
 /** The two page numbers printed on the current route's spread. */
 export function spreadNumbers(reading: Reading): [number, number] {
   const i = reading.pages.indexOf(reading.current);
-  return i <= 0 ? [1, 2] : [pageNumber(i), pageNumber(i) + 1];
+  return i <= 0 ? [2, 3] : [pageNumber(i), pageNumber(i) + 1];
 }
 
 // ——— Running heads and folios ———
@@ -74,8 +74,12 @@ export function Folio({
 
 // ——— Photographs ———
 
-export const credit = (image: EditionImage) =>
-  `Photo: ${image.credit}${/unsplash/i.test(image.licence) ? " · unsplash.com" : ""}`;
+/**
+ * The only picture credit the paper prints: for an image taken from a real article, one tiny line
+ * on the story's own page. Pool and sample photographs are credited in their metadata only.
+ */
+export const articleCredit = (image: EditionImage) =>
+  image.licence === "Credited to its source" && image.credit ? `Image: ${image.credit}` : null;
 
 /** A photograph printed onto the sheet, cropped by its frame. */
 export function PrintPhoto({

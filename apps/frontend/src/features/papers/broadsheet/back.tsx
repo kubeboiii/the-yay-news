@@ -3,8 +3,8 @@ import type { CSSProperties } from "react";
 import { Mark } from "@/features/print/mark";
 import type { PageProps } from "../types";
 import { WordCard, guestTakes } from "./guest";
-import { featureOf, featuresOf, fitSize, puzzleOf, solvedOf } from "./lib";
-import { Folio, Photo, RunningHead, Stamp, Zigzag } from "./parts";
+import { backComp, featureOf, featuresOf, fitSize, puzzleOf, solvedOf } from "./lib";
+import { Folio, Photo, RunningHead, Zigzag } from "./parts";
 
 // The back page: the comic, the puzzles with yesterday's answers, the small print (corrections,
 // classifieds, letters, the quote and the word of the day, whichever the edition has) and the
@@ -78,7 +78,7 @@ const titleCase = (w: string) =>
     .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
     .join(" ");
 
-function Comic({ comic }: { comic: { title: string; panels: string[] } }) {
+function Comic({ comic, grid }: { comic: { title: string; panels: string[] }; grid?: boolean }) {
   const seen: Record<string, number> = {};
   const speakers: string[] = [];
   const panels = comic.panels.slice(0, 6).map((line, i) => {
@@ -91,7 +91,6 @@ function Comic({ comic }: { comic: { title: string; panels: string[] } }) {
     const side = speakers.indexOf(who) % 2 === 1 ? "right" : "left";
     return { who, said, cast, side, key: `${i}-${line}` };
   });
-  const credits = [...new Set(panels.map((p) => p.cast.photo.credit))];
   return (
     <section aria-labelledby="bs-comic-title">
       <div className="bk-comic-title">
@@ -101,17 +100,18 @@ function Comic({ comic }: { comic: { title: string; panels: string[] } }) {
         <p className="yn-caption">
           {speakers.length
             ? `Starring ${speakers.map(titleCase).join(" and ")}.`
-            : "Today’s strip."}{" "}
-          <span className="yn-credit">Photos: {credits.join(", ")}</span>
+            : "Today’s strip."}
         </p>
       </div>
-      <ol className="bk-strip bs-strip" style={{ "--cols": panels.length } as CSSProperties}>
+      <ol
+        className={`bk-strip bs-strip ${grid ? "bs-strip--grid" : ""}`}
+        style={{ "--cols": panels.length } as CSSProperties}
+      >
         {panels.map((p) => (
           <li key={p.key} className="bk-panel">
             <Photo
               image={p.cast.photo}
               position={p.cast.position}
-              tag={false}
               sizes="(max-width: 760px) 50vw, 280px"
               width={800}
             />
@@ -152,10 +152,6 @@ function Crossword({ data }: { data: Extract<Puzzle, { type: "crossword" }>["dat
           }),
         )}
       </div>
-      <p className="yn-note bk-note" aria-hidden>
-        pencil recommended
-      </p>
-      <Mark name="arrows-07" className="yn-mark-abs bk-note-arrow" />
     </div>
   );
 }
@@ -226,11 +222,34 @@ export function Back({ edition, reading }: PageProps) {
       : [signOff.slice(0, cut + 1), signOff.slice(cut + 2)];
   const bigSize = fitSize(signSecond, 350, 78, 0.29);
   const hasPuzzles = crossword || ladder || riddle;
-  const hasOdds = letters.length || word || quote;
+  const hasOdds = Boolean(letters.length || word || quote);
+  const comp = backComp(edition);
+  const odds = (
+    <section className="bs-odds" aria-label="Letters and odds">
+      {letters.map((l, i) => (
+        <figure key={i} className="bs-odd bs-odd-letter">
+          <p className="yn-label">Letter to the editor</p>
+          <blockquote className="yn-body">{l.text}</blockquote>
+          <figcaption className="yn-pullquote-by">— {l.from}</figcaption>
+        </figure>
+      ))}
+      {quote ? (
+        <figure className="bs-odd bs-odd-quote">
+          <p className="yn-label">Quote of the day</p>
+          <blockquote className="yn-pullquote">&ldquo;{quote.text}&rdquo;</blockquote>
+          <figcaption className="yn-pullquote-by">{quote.by}</figcaption>
+        </figure>
+      ) : null}
+      {word ? <WordCard word={word} /> : null}
+    </section>
+  );
 
   return (
     <div className="yn-sheet-wrap">
-      <article className="yn-sheet yn-inside yn-theme-back bs-inside bs-back">
+      <article
+        className={`yn-sheet yn-inside yn-theme-back bs-inside bs-back bs-back--${comp}`}
+        data-comp={comp}
+      >
         <RunningHead
           edition={edition}
           reading={reading}
@@ -238,7 +257,7 @@ export function Back({ edition, reading }: PageProps) {
           tagline="Puzzles, small print, and the bit where you’re done"
         />
 
-        {comic ? (
+        {comic && comp === "strip-first" ? (
           <>
             <Zigzag word="the funnies" />
             <Comic comic={comic} />
@@ -292,14 +311,22 @@ export function Back({ edition, reading }: PageProps) {
                     <div className="bk-riddle">
                       <p className="yn-kicker">{riddle.data.title}</p>
                       <p className="yn-chunk">{riddle.data.question}</p>
-                      <p className="yn-body">
-                        Sleep on it. The answer is printed in tomorrow&rsquo;s paper, right here.
-                      </p>
+                      <p className="yn-body">The answer is printed in tomorrow&rsquo;s paper.</p>
                     </div>
                   ) : null}
                 </div>
               ) : null}
             </section>
+          </>
+        ) : null}
+
+        {comp === "puzzles-first" && (comic || hasOdds) ? (
+          <>
+            <Zigzag word="the funnies" />
+            <div className={`bs-grid ${comic && hasOdds ? "bs-b-funnies" : ""}`}>
+              {comic ? <Comic comic={comic} grid={Boolean(hasOdds)} /> : null}
+              {hasOdds ? odds : null}
+            </div>
           </>
         ) : null}
 
@@ -343,25 +370,7 @@ export function Back({ edition, reading }: PageProps) {
           </>
         ) : null}
 
-        {hasOdds ? (
-          <section className="bs-odds" aria-label="Letters and odds">
-            {letters.map((l, i) => (
-              <figure key={i} className="bs-odd bs-odd-letter">
-                <p className="yn-label">Letter to the editor</p>
-                <blockquote className="yn-body">{l.text}</blockquote>
-                <figcaption className="yn-pullquote-by">— {l.from}</figcaption>
-              </figure>
-            ))}
-            {quote ? (
-              <figure className="bs-odd bs-odd-quote">
-                <p className="yn-label">Quote of the day</p>
-                <blockquote className="yn-pullquote">&ldquo;{quote.text}&rdquo;</blockquote>
-                <figcaption className="yn-pullquote-by">{quote.by}</figcaption>
-              </figure>
-            ) : null}
-            {word ? <WordCard word={word} /> : null}
-          </section>
-        ) : null}
+        {comp === "strip-first" && hasOdds ? odds : null}
 
         <section className="bk-signoff" aria-label="Sign-off">
           <div className="bk-signoff-ink" aria-hidden />
@@ -372,11 +381,6 @@ export function Back({ edition, reading }: PageProps) {
           >
             {signSecond}
           </p>
-          <Stamp className="bk-stamp">
-            All
-            <br />
-            done
-          </Stamp>
           <Mark name="stars-06" className="yn-mark-abs bk-stars" />
         </section>
 

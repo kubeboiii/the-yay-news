@@ -1,0 +1,480 @@
+/* =====================================================================================
+ * FRONT · the cover on its own (page 1), then the opening spread (pages 2–3)
+ * ===================================================================================== */
+
+/* The cover lies alone on the desk, the size of one page of the spread below it. */
+.m5c-single {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.m5 .m5c-single .print-sheet {
+  width: 50%;
+}
+.m5c-cover-wrap::after {
+  left: 25%;
+  right: 25%;
+  background-image: url("/mockup/press/light-sheet.png") !important;
+}
+.m5c-cover-wrap::before {
+  left: 27%;
+  right: 27%;
+}
+.m5c-spread-wrap {
+  margin-top: 48px;
+}
+
+.m5 .m5c-cover {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u) * 9) calc(var(--u) * 12) 0;
+  background: var(--apricot);
+}
+.m5 .m5c-cover--type-cover {
+  background: var(--butter);
+}
+.m5 .m5c-cover--framed-cover {
+  background: var(--powder);
+}
+
+.m5c-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: calc(var(--u) * 4);
+}
+.m5c-issue {
+  font-style: italic;
+  font-size: max(12px, calc(var(--u) * 3.4));
+  font-variant-numeric: lining-nums;
+  text-align: right;
+}
+.m5c-mast {
+  margin: calc(var(--u) * 1) calc(var(--u) * -1.5) 0;
+  font-weight: 900;
+  font-size: calc(var(--u) * 29.6);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+.m5c-rules {
+  flex: none;
+  margin-top: calc(var(--u) * 3);
+  height: calc(var(--u) * 3.6);
+  border-top: calc(var(--u) * 2.2) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.4) solid var(--ink);
+}
+.m5c-tagline {
+  font-style: italic;
+  font-size: max(12px, calc(var(--u) * 3.8));
+  text-align: right;
+  margin: calc(var(--u) * 1.2) 0 calc(var(--u) * 4);
+}
+
+/* The cover line: the lead's kicker, headline and standfirst. */
+.m5c-line {
+  position: relative;
+  z-index: 3;
+  padding: calc(var(--u) * 4) 0 calc(var(--u) * 12);
+}
+.m5c-line-head {
+  font-weight: 800;
+  font-size: calc(var(--u) * 11.6);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin: calc(var(--u) * 1.4) 0 calc(var(--u) * 2.4);
+  text-wrap: balance;
+}
+.m5c-line-head.m5-len-l {
+  font-size: calc(var(--u) * 10);
+}
+.m5c-line-head.m5-len-xl {
+  font-size: calc(var(--u) * 8.8);
+}
+.m5c-line-dek {
+  font-style: italic;
+  font-size: max(16px, calc(var(--u) * 5.4));
+  line-height: 1.2;
+}
+
+/* photo-cover: the index down the left, the photograph bled off the right. */
+.m5c-cover-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 62) 1fr;
+  gap: calc(var(--u) * 6);
+  margin-right: calc(var(--u) * -12);
+  min-height: calc(var(--u) * 120);
+}
+.m5c-bleed {
+  position: relative;
+}
+.m5c-bleed .m5-photo {
+  position: absolute;
+  inset: 0;
+}
+.m5c-cover--photo-cover .m5c-line {
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  margin-top: calc(var(--u) * 5);
+}
+
+/* type-cover: the headline is the cover. */
+.m5c-type {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.m5c-cover--type-cover .m5c-line {
+  padding: calc(var(--u) * 6) calc(var(--u) * 24) calc(var(--u) * 8) 0;
+}
+.m5c-cover--type-cover .m5c-line-head {
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 17);
+  line-height: 0.93;
+}
+.m5c-cover--type-cover .m5c-line-head.m5-len-m {
+  font-size: calc(var(--u) * 15);
+}
+.m5c-cover--type-cover .m5c-line-head.m5-len-l {
+  font-size: calc(var(--u) * 13);
+}
+.m5c-cover--type-cover .m5c-line-head.m5-len-xl {
+  font-size: calc(var(--u) * 11.4);
+}
+.m5c-cover--type-cover .m5c-line-dek {
+  font-size: max(17px, calc(var(--u) * 6.4));
+  max-width: calc(var(--u) * 150);
+}
+
+/* framed-cover: the photograph pasted on as a print. */
+.m5c-framed {
+  position: relative;
+  padding: calc(var(--u) * 3) calc(var(--u) * 4) 0;
+}
+.m5 .m5c-print {
+  --ar: 3 / 2;
+  width: 100%;
+  transform: rotate(-1.8deg);
+}
+.m5c-cover--framed-cover .m5c-line {
+  padding-bottom: calc(var(--u) * 5);
+}
+
+.m5 .m5c-sticker {
+  position: absolute;
+  top: calc(var(--u) * 6);
+  right: calc(var(--u) * 6);
+  width: calc(var(--u) * 44);
+  transform: rotate(9deg);
+  z-index: 5;
+  --wear-size: 150%;
+}
+.m5c-type .m5c-sticker {
+  top: auto;
+  bottom: calc(var(--u) * 4);
+  right: 0;
+}
+.m5c-framed .m5c-sticker {
+  top: auto;
+  bottom: calc(var(--u) * -10);
+  right: calc(var(--u) * -4);
+}
+.m5c-sticker-text {
+  text-align: center;
+  line-height: 1;
+}
+.m5c-sticker-text .m5-display {
+  display: block;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 6.6);
+  letter-spacing: -0.02em;
+}
+.m5c-sticker-text .m5-len-m {
+  font-size: calc(var(--u) * 5.2);
+}
+.m5c-sticker-text .m5-len-l,
+.m5c-sticker-text .m5-len-xl {
+  font-size: calc(var(--u) * 4.2);
+}
+
+/* ---------- the one index ---------- */
+
+.m5c-index-h {
+  font-weight: 700;
+  font-style: italic;
+  font-size: calc(var(--u) * 5.6);
+  line-height: 1;
+  border-bottom: calc(var(--u) * 0.6) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1.4);
+  margin-bottom: calc(var(--u) * 1);
+}
+.m5c-index li a {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 9) 1fr;
+  column-gap: calc(var(--u) * 2);
+  align-items: baseline;
+  padding: calc(var(--u) * 1.2) 0 calc(var(--u) * 1.4);
+  border-bottom: calc(var(--u) * 0.25) solid var(--ink);
+}
+.m5c-index li b {
+  grid-row: span 2;
+  font-weight: 900;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1;
+}
+.m5c-index-name {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: max(12px, calc(var(--u) * 3.5));
+  letter-spacing: 0.03em;
+}
+.m5c-index-line {
+  font-style: italic;
+  font-size: max(13px, calc(var(--u) * 3.7));
+  line-height: 1.2;
+}
+.m5c-index--rail {
+  padding-bottom: calc(var(--u) * 2);
+}
+.m5c-index--cols ol,
+.m5c-index--box ol {
+  columns: 2;
+  column-gap: calc(var(--u) * 7);
+}
+.m5c-index--cols li,
+.m5c-index--box li {
+  break-inside: avoid;
+}
+.m5c-index--cols {
+  padding-bottom: calc(var(--u) * 12);
+}
+.m5c-index--box {
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  padding: calc(var(--u) * 3) calc(var(--u) * 4) calc(var(--u) * 2);
+  margin-bottom: calc(var(--u) * 12);
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+/* ---------- the day's figures ---------- */
+
+.m5c-fig-h {
+  font-weight: 400;
+  font-style: italic;
+  font-size: max(13px, calc(var(--u) * 3.8));
+  border-top: calc(var(--u) * 0.4) solid var(--ink);
+  padding-top: calc(var(--u) * 1.2);
+  margin-bottom: calc(var(--u) * 1.2);
+}
+.m5c-fig-text {
+  font-size: max(14px, calc(var(--u) * 4.2));
+  line-height: 1.3;
+}
+.m5c-num {
+  font-weight: 900;
+  font-size: calc(var(--u) * 11);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: calc(var(--u) * 1);
+  overflow-wrap: anywhere;
+}
+.m5c-num.m5-len-m {
+  font-size: calc(var(--u) * 8);
+}
+.m5c-num.m5-len-l,
+.m5c-num.m5-len-xl {
+  font-size: calc(var(--u) * 6);
+}
+.m5c-weather {
+  position: relative;
+}
+.m5c-cloud {
+  top: calc(var(--u) * 3.5);
+  right: 0;
+  width: calc(var(--u) * 15);
+  height: calc(var(--u) * 11);
+  transform: rotate(6deg);
+}
+.m5c-weather-head {
+  font-weight: 500;
+  font-style: italic;
+  font-size: calc(var(--u) * 6);
+  line-height: 1.04;
+  margin-bottom: calc(var(--u) * 1.2);
+  padding-right: calc(var(--u) * 16);
+}
+.m5c-quote {
+  font-style: italic;
+  font-size: calc(var(--u) * 5.6);
+  line-height: 1.12;
+  margin-bottom: calc(var(--u) * 1.4);
+}
+.m5c-figures--band {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 5);
+  margin: calc(var(--u) * 7) 0;
+}
+.m5c-figures--band:first-child {
+  margin-top: 0;
+}
+.m5c-figures--rail {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 7);
+}
+.m5c-railed {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 52) 1fr;
+  gap: calc(var(--u) * 7);
+  align-items: start;
+}
+.m5c-railed-main > * + * {
+  margin-top: calc(var(--u) * 7);
+}
+.m5c-lead-photo {
+  --ar: 16 / 10;
+}
+
+/* ---------- phone ---------- */
+
+@container (max-width: 760px) {
+  .m5 .m5c-single .print-sheet {
+    width: 100%;
+  }
+  .m5c-cover-wrap::after,
+  .m5c-cover-wrap::before {
+    left: 0;
+    right: 0;
+  }
+  .m5 .m5c-cover {
+    padding: 40px 18px 40px;
+  }
+  .m5c-top {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: -14px;
+  }
+  .m5c-issue {
+    font-size: 15px;
+    text-align: left;
+  }
+  .m5c-mast {
+    font-size: calc(100cqw * 0.17);
+    margin: 10px 0 0;
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 0.92;
+  }
+  .m5c-rules {
+    height: 9px;
+    border-top-width: 5px;
+    border-bottom-width: 1px;
+    margin-top: 10px;
+  }
+  .m5c-tagline {
+    font-size: 15px;
+    text-align: left;
+    margin: 6px 0 16px;
+  }
+  .m5c-cover-body {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 0 -18px;
+    min-height: 0;
+  }
+  .m5c-bleed {
+    aspect-ratio: 4 / 3;
+  }
+  .m5c-index--rail {
+    padding: 0 18px;
+  }
+  .m5 .m5c-line-head,
+  .m5 .m5c-cover--type-cover .m5c-line-head {
+    font-size: 34px;
+  }
+  .m5c-line-dek,
+  .m5c-cover--type-cover .m5c-line-dek {
+    font-size: 19px;
+  }
+  .m5 .m5c-line,
+  .m5 .m5c-cover--type-cover .m5c-line {
+    padding: 18px 0 20px;
+  }
+  .m5 .m5c-sticker {
+    width: 120px;
+  }
+  .m5 .m5c-type .m5c-sticker,
+  .m5 .m5c-framed .m5c-sticker {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    right: auto;
+    margin: 0 0 0 auto;
+  }
+  .m5 .m5c-sticker-text .m5-display {
+    font-size: 20px;
+  }
+  .m5c-framed {
+    padding: 4px 0 0;
+  }
+  .m5c-index-h {
+    font-size: 24px;
+  }
+  .m5c-index--cols ol,
+  .m5c-index--box ol {
+    columns: 1;
+  }
+  .m5c-index li a {
+    grid-template-columns: 40px 1fr;
+    padding: 8px 0;
+  }
+  .m5c-index li b {
+    font-size: 24px;
+  }
+  .m5c-index-name {
+    font-size: 14px;
+  }
+  .m5c-index-line {
+    font-size: 16px;
+  }
+  .m5c-index--cols,
+  .m5c-index--box {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+  .m5c-spread-wrap {
+    margin-top: 12px;
+  }
+  .m5c-figures--band,
+  .m5c-railed {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .m5c-fig-h {
+    font-size: 16px;
+  }
+  .m5c-fig-text {
+    font-size: 16px;
+  }
+  .m5 .m5c-num,
+  .m5 .m5c-num.m5-len-m,
+  .m5 .m5c-num.m5-len-l,
+  .m5 .m5c-num.m5-len-xl {
+    font-size: 44px;
+  }
+  .m5c-weather-head {
+    font-size: 24px;
+  }
+  .m5c-quote {
+    font-size: 22px;
+  }
+  .m5c-cloud {
+    width: 56px;
+    height: 40px;
+  }
+}

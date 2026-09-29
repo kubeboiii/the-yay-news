@@ -1,15 +1,249 @@
 import type { StoryItem } from "@repo/shared";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Mark } from "@/features/print/mark";
-import { host, sentence } from "./edition-data";
-import { Bars, fit, Photo, Sticker, Stamp } from "./parts";
+import type { Area, Place } from "./compose";
+import { host } from "./edition-data";
+import { Bars, Body, Photo, Sticker, Tape, fit } from "./parts";
 
-// Pieces of a story as the tabloid prints them, shared by the front, the inside pages and the
-// guest section.
+// The pieces of a page as the tabloid prints them — a story's head, its photograph, its text, the
+// second story and the briefs — each dropped into one area of the page's composition.
 
 export const fs = (u: number) =>
   ({ fontSize: `calc(var(--u) * ${u.toFixed(2)})` }) as CSSProperties;
+
+/** The measure of an area that spans `span` of the three columns, in sheet millimetres. */
+export const measureOf = (span: number) => [0, 80, 168, 258][Math.min(Math.max(span, 1), 3)]!;
+
+/** A headline sized to its area: bigger across the page, never broken inside a word. */
+export function headSize(headline: string, span: number, scale = 1) {
+  const [max, lines] = span >= 3 ? [12.5, 2] : span === 2 ? [10, 3] : [7.4, 5];
+  return fit(headline, { max: max * scale, min: 5.2, measure: measureOf(span), lines, em: 0.52 });
+}
+
+/** The splash headline set on a photograph, in caps on highlighter bars. */
+export function splashSize(headline: string, measure: number, max = 11, lines = 3) {
+  return fit(headline.toUpperCase(), { max, min: 6, measure, lines, em: 0.64 });
+}
+
+/** One area of the page's grid, with the rules a newspaper draws between its columns. */
+export function AreaBox({
+  area,
+  place,
+  as: Tag = "div",
+  className,
+  label,
+  children,
+}: {
+  area: Area;
+  place: Place | undefined;
+  as?: "div" | "section" | "aside" | "article" | "nav";
+  className?: string;
+  label?: string;
+  children: ReactNode;
+}) {
+  if (!place) return null;
+  return (
+    <Tag
+      className={`tb-area tb-a-${area} tb-span-${place.span} ${place.row === 0 ? "tb-r0" : ""} ${place.col === 0 ? "tb-c0" : ""} ${className ?? ""}`}
+      style={{ gridArea: area }}
+      aria-label={label}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+/** "Source: Hollowmere Herald", linked to the original. */
+export function Source({ story }: { story: StoryItem }) {
+  return (
+    <p className="tb-source">
+      Source:{" "}
+      <a href={story.sourceUrl} rel="noopener noreferrer" target="_blank">
+        {story.sourceName || host(story.sourceUrl)}
+      </a>
+    </p>
+  );
+}
+
+/** A story's kicker, headline and standfirst. */
+export function StoryHead({
+  story,
+  href,
+  span,
+  level = "h2",
+  scale,
+  byline,
+}: {
+  story: StoryItem;
+  href: string;
+  span: number;
+  level?: "h2" | "h3";
+  scale?: number;
+  byline?: ReactNode;
+}) {
+  const H = level;
+  return (
+    <>
+      <p className="tb-kicker">{story.kicker}:</p>
+      <H className="tb-cond tb-head" style={fs(headSize(story.headline, span, scale))}>
+        <Link href={href}>{story.headline}</Link>
+      </H>
+      <p className="tb-dek">{story.dek}</p>
+      {byline ? <p className="tb-byline">{byline}</p> : null}
+    </>
+  );
+}
+
+/** A story's whole body, flowing into as many columns as its area has room for. */
+export function StoryText({ story, dropcap }: { story: StoryItem; dropcap?: boolean }) {
+  return (
+    <div className="tb-flow">
+      <Body paragraphs={story.body} dropcap={dropcap} />
+      <Source story={story} />
+    </div>
+  );
+}
+
+/**
+ * The main story's photograph, filling its area. On a splash the headline is printed on it in
+ * caps on highlighter bars; the sticker, when the story has one, goes in a corner.
+ */
+export function MainPhoto({
+  story,
+  href,
+  measure,
+  onPhoto,
+  priority,
+  sizes,
+}: {
+  story: StoryItem;
+  href: string;
+  measure: number;
+  onPhoto?: boolean;
+  priority?: boolean;
+  sizes: string;
+}) {
+  const image = story.images[0];
+  if (!image) return null;
+  return (
+    <Photo image={image} sizes={sizes} className="tb-fill tb-photo--open" priority={priority}>
+      {story.sticker ? (
+        <Sticker text={story.sticker} plate="b" className="tb-splash-sticker" />
+      ) : null}
+      {onPhoto ? (
+        <div className="tb-onphoto">
+          <p className="tb-kicker">{story.kicker}:</p>
+          <h2 className="tb-splash" style={fs(splashSize(story.headline, measure))}>
+            <Link href={href}>
+              <Bars className="tb-bars--over">{story.headline}</Bars>
+            </Link>
+          </h2>
+        </div>
+      ) : null}
+    </Photo>
+  );
+}
+
+/** The second story's picture, in the section's own treatment where it has one. */
+function SecondPicture({ story, slug }: { story: StoryItem; slug: string }) {
+  const image = story.images[0];
+  if (!image) return null;
+  const photo = <Photo image={image} sizes="(max-width: 760px) 100vw, 380px" width={900} />;
+  if (slug === "screen-and-sound") {
+    const holes = Array.from({ length: 12 }, (_, i) => <i key={i} />);
+    return (
+      <div className="tb-filmstrip tb-second-pic">
+        <div className="tb-sprockets" aria-hidden>
+          {holes}
+        </div>
+        {photo}
+        <div className="tb-sprockets" aria-hidden>
+          {holes}
+        </div>
+      </div>
+    );
+  }
+  if (slug === "gaming") {
+    return (
+      <div className="tb-cart tb-cart--pic tb-second-pic">
+        <div className="tb-cart-grip" aria-hidden>
+          {Array.from({ length: 14 }, (_, i) => (
+            <i key={i} />
+          ))}
+        </div>
+        {photo}
+      </div>
+    );
+  }
+  return (
+    <div className="tb-pasted print-print tb-col-print tb-second-pic">
+      {photo}
+      <Tape />
+    </div>
+  );
+}
+
+/** The page's second story: head, picture and whole text, laid across its area. */
+export function SecondStory({
+  story,
+  href,
+  span,
+  slug,
+}: {
+  story: StoryItem;
+  href: string;
+  span: number;
+  slug: string;
+}) {
+  const wide = span >= 2 && story.images.length > 0;
+  return (
+    <div className={`tb-second ${wide ? "tb-second--wide" : ""}`}>
+      {wide ? <SecondPicture story={story} slug={slug} /> : null}
+      <div className="tb-second-text">
+        <StoryHead
+          story={story}
+          href={href}
+          span={wide ? span - 1 : span}
+          level="h3"
+          scale={0.82}
+        />
+        {wide ? null : <SecondPicture story={story} slug={slug} />}
+        <StoryText story={story} />
+      </div>
+    </div>
+  );
+}
+
+/** "In brief": the page's short items, as a column or a strip across the page. */
+export function Briefs({
+  stories,
+  storyHref,
+  span,
+}: {
+  stories: StoryItem[];
+  storyHref: (slug: string) => string;
+  span: number;
+}) {
+  if (!stories.length) return null;
+  return (
+    <>
+      <h2 className="tb-briefs-head tb-cond">In brief</h2>
+      <ol className={`tb-briefs tb-briefs--${span >= 3 ? "strip" : span === 2 ? "pair" : "rail"}`}>
+        {stories.map((s) => (
+          <li key={s.slug} className="tb-brief">
+            <p className="tb-kicker">{s.kicker}:</p>
+            <h3 className="tb-cond tb-brief-head">
+              <Link href={storyHref(s.slug)}>{s.headline}</Link>
+            </h3>
+            {s.dek ? <p className="tb-brief-dek">{s.dek}</p> : null}
+            <Body paragraphs={s.body} />
+            <Source story={s} />
+          </li>
+        ))}
+      </ol>
+    </>
+  );
+}
 
 /** The big outline word printed across a plate of ink, sized to its plate on desk and phone. */
 export function PlateWord({ text, measure }: { text: string; measure: number }) {
@@ -25,132 +259,4 @@ export function PlateWord({ text, measure }: { text: string; measure: number }) 
       {text}
     </span>
   );
-}
-
-/** The splash headline, sized so even a long one sits in three lines on the photograph. */
-export function splashSize(headline: string, measure: number, max = 11.5, lines = 3) {
-  return fit(headline.toUpperCase(), { max, min: 6.5, measure, lines, em: 0.64 });
-}
-
-/**
- * The top of a page: the story's photograph run big, with its sticker and the headline printed
- * on it; or, with no photograph, a solid plate of the second ink with the headline set larger.
- */
-export function Splash({
-  story,
-  href,
-  className,
-  bleed,
-  measure,
-  priority,
-  note,
-  stamp,
-  children,
-}: {
-  story: StoryItem;
-  href: string;
-  className?: string;
-  bleed?: boolean;
-  /** The headline's measure on the sheet, in mm. */
-  measure: number;
-  priority?: boolean;
-  /** A pencilled editor's note on the art. */
-  note?: string;
-  stamp?: ReactNode;
-  children?: ReactNode;
-}) {
-  const image = story.images[0];
-  const head = (
-    <div className="tb-onphoto">
-      <p className="tb-kicker">{story.kicker}:</p>
-      <h2
-        className="tb-splash"
-        style={fs(
-          image ? splashSize(story.headline, measure) : splashSize(story.headline, measure, 16, 4),
-        )}
-      >
-        <Link href={href}>
-          <Bars className={image ? "tb-bars--over" : "tb-bars--plate"}>{story.headline}</Bars>
-        </Link>
-      </h2>
-      {image ? null : <p className="tb-plate-dek">{story.dek}</p>}
-    </div>
-  );
-  const extras = (
-    <>
-      {story.sticker ? (
-        <Sticker text={story.sticker} plate={image ? "b" : "a"} className="tb-splash-sticker" />
-      ) : null}
-      {note ? (
-        <>
-          <p className="tb-note tb-splash-note" aria-hidden>
-            {note}
-          </p>
-          <Mark name="stars-06" ink="var(--a)" className="tb-mark tb-splash-sparks" />
-        </>
-      ) : null}
-      {stamp ? <Stamp className="tb-splash-stamp">{stamp}</Stamp> : null}
-      {children}
-    </>
-  );
-  const cls = `tb-grow tb-splash-art ${bleed ? "tb-bleed" : ""} ${className ?? ""}`;
-  if (!image) {
-    return (
-      <div className={`tb-plate ${cls}`}>
-        <PlateWord text={story.kicker} measure={bleed ? 250 : 228} />
-        <Mark name="doodles-02" ink="var(--a)" className="tb-mark tb-plate-star" />
-        {extras}
-        {head}
-      </div>
-    );
-  }
-  return (
-    <Photo
-      image={image}
-      sizes={bleed ? "(max-width: 760px) 100vw, 1100px" : "(max-width: 760px) 100vw, 1000px"}
-      className={`${cls} tb-photo--open`}
-      position="50% 45%"
-      priority={priority}
-    >
-      {extras}
-      {head}
-    </Photo>
-  );
-}
-
-/** "Source: Hollowmere Herald" with a link to the original. */
-export function Source({ story, extra }: { story: StoryItem; extra?: string }) {
-  return (
-    <p className="tb-source">
-      Source:{" "}
-      <a href={story.sourceUrl} rel="noopener noreferrer" target="_blank">
-        {story.sourceName || host(story.sourceUrl)}
-      </a>
-      {extra ? ` · ${extra}` : null}
-    </p>
-  );
-}
-
-/** The jump to a story's own page, set like a tabloid's "continued" line. */
-export function Jump({ href, children }: { href: string; children?: ReactNode }) {
-  return (
-    <p className="tb-jump">
-      <Link href={href}>
-        {children ?? "The whole story"}, <b>on its own page →</b>
-      </Link>
-    </p>
-  );
-}
-
-/** The first line of a story's body that someone said out loud, for a pull quote. */
-export function pullQuote(stories: StoryItem[]): { text: string; by: string } | null {
-  for (const s of stories) {
-    for (const para of s.body) {
-      const m = /[“"]([^”"]{24,150})[”"](?:,)?\s+(?:said|says|added)\s+([^.,]{3,60})/.exec(para);
-      if (m) return { text: sentence(m[1]!.replace(/[,]$/, "")), by: m[2]! };
-      const q = /[“"]([^”"]{30,150})[”"]/.exec(para);
-      if (q) return { text: sentence(q[1]!.replace(/[,]$/, "")), by: "" };
-    }
-  }
-  return null;
 }

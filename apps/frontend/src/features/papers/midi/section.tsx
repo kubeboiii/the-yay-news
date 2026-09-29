@@ -1,34 +1,14 @@
-import type { Edition, Image as EditionImage } from "@repo/shared";
-import Link from "next/link";
-import type { CSSProperties } from "react";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import type { CSSProperties, ReactNode } from "react";
 import type { PageProps, Reading, StoryItem } from "../types";
-import {
-  credit,
-  Folio,
-  type Ground,
-  groundFor,
-  lengthClass,
-  minutes,
-  pageNumberOf,
-  PrintPhoto,
-  pullQuote,
-  ranked,
-  readMinutes,
-  spreadNumbers,
-} from "./print";
+import { Body, Briefs, Photo, SectionTitle, StoryHead } from "./blocks";
+import { guestComposition, type InsideComposition, insideCompositions } from "./compose";
+import { Folio, type Ground, groundFor, minutes, PrintPhoto, ranked, spreadNumbers } from "./print";
 
-// An inside page prints as a spread. The left-hand page is the section's opener, on the section's
-// pastel ground; the right-hand page, on paper, carries the stories. The opener has three forms:
-//
-//   · a photograph bled off the top of the page with the section's name set over its edge, when
-//     the first story has a photograph (Gaming says "Press play" instead, as in the mockup);
-//   · Screen & Sound's paste-up of every photograph on the page, when it has any;
-//   · without a photograph, the name set huge off the page's edge above "In these pages".
-//
-// The right-hand page sets the first (lead or feature) story in full, then the briefs in a band
-// at the foot, then the way over the page. The guest section has its own spread (see Guest).
+// An inside page prints as a spread: the main story with its photograph, the second story, and an
+// "In brief" column of the short items, each printed once and in full. Eight compositions arrange
+// them differently (see compose.ts): which page carries the section's colour, where the photograph
+// sits and how big, how the headline is set, whether the second story is ruled off or boxed, and
+// whether the briefs run as a numbered column or a strip.
 
 /** Display type that must fit a page's measure: sized by its longest word and its whole length. */
 function fitted(text: string, max: number, perWord: number, perText: number): CSSProperties {
@@ -37,610 +17,511 @@ function fitted(text: string, max: number, perWord: number, perText: number): CS
   return { "--fs": size.toFixed(2) } as CSSProperties;
 }
 
-const groundClass = (g: Ground) => `m5-ground m5-ground--${g}`;
-
-function Contents({
-  stories,
-  reading,
-  big,
-}: {
-  stories: StoryItem[];
-  reading: Reading;
-  big?: boolean;
-}) {
-  return (
-    <ol className={big ? "m5o-contents m5o-contents--big" : "m5o-contents"}>
-      {stories.map((s, i) => (
-        <li key={s.slug}>
-          <b className="m5-display" aria-hidden>
-            {i + 1}
-          </b>
-          <span>
-            <span className="m5-kicker">{s.kicker}</span>
-            <Link href={reading.storyHref(s.slug)} className="m5o-contents-head">
-              {s.headline}
-            </Link>
-            {big ? <i>{s.dek}</i> : null}
-          </span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-/** A photographic print pasted on at an angle, with tape across one edge. */
-function Pasted({
-  image,
-  className,
-  sizes,
-  position,
-}: {
-  image: EditionImage;
-  className: string;
-  sizes: string;
-  position?: string;
-}) {
-  return (
-    <figure className={`m5-pasted print-print ${className}`}>
-      <PrintPhoto image={image} sizes={sizes} position={position} />
-      <span className="print-tape m5-pasted-tape" aria-hidden />
-      <figcaption className="m5-credit">{credit(image)}</figcaption>
-    </figure>
-  );
-}
-
-function OverThePage({
-  edition,
-  reading,
-  big,
-}: {
-  edition: Edition;
-  reading: Reading;
-  big?: boolean;
-}) {
-  const next = reading.next;
-  if (!next) return null;
-  const back = next.slug === "back";
-  const label = back ? "Puzzles & the back page" : next.label;
-  const where = `page ${pageNumberOf(reading, next)}`;
-  if (!big) {
-    return (
-      <p className="m5r-turn">
-        <b>Over the page</b>{" "}
-        <Link href={next.href}>
-          {label}, {where} <span aria-hidden>→</span>
-        </Link>
-      </p>
-    );
-  }
-  // With no briefs to fill the foot of the page, the way on is set as a proper teaser.
-  const top = ranked(edition.pages.find((p) => p.order === next.order)?.stories ?? [])[0];
-  return (
-    <aside className="m5r-next" aria-label="Over the page">
-      <p className="m5r-next-label">
-        Over the page · {label}, {where}
-      </p>
-      <p className="m5-display m5r-next-head">
-        <Link href={next.href}>
-          {top?.headline ?? (back ? "The Mini, a word ladder, a riddle and the small ads" : label)}
-        </Link>
-      </p>
-      {top ? <p className="m5r-next-dek">{top.dek}</p> : null}
-      <Mark name="arrows-08" className="m5-hm m5r-next-arrow" />
-    </aside>
-  );
-}
-
-/** The right-hand page: the first story in full, the briefs at the foot. */
-function StoryPage({
-  edition,
-  name,
-  stories,
-  reading,
-  page,
-  date,
-  photosUsed,
-  mainPhotoUsed,
-}: {
-  edition: Edition;
-  name: string;
-  stories: StoryItem[];
-  reading: Reading;
-  page: number;
-  date: string;
-  photosUsed: boolean;
-  mainPhotoUsed: boolean;
-}) {
-  const [main, ...briefs] = stories;
-  const said = main ? pullQuote(main.body) : null;
-  // A page with little copy sets it larger, with the pull quote as the page's centrepiece.
-  const copy = stories.reduce(
-    (n, s) => n + s.headline.length + s.dek.length + s.body.join("").length,
-    0,
-  );
-  const roomy = copy < 1500;
-  return (
-    <article
-      className={`print-sheet print-sheet--bright m5-sheet-flow m5r ${roomy ? "m5r--roomy" : ""} ${
-        // Little copy and nothing to picture: the headline is set as the page's picture.
-        roomy && !said && !(main?.images[0] && !mainPhotoUsed) ? "m5r--hero" : ""
-      }`}
-      aria-label={`Page ${page}`}
-    >
-      <Folio page={page} section={name} date={date} />
-      <div className="m5-page-flow">
-        {main ? (
-          <section className="m5r-main" aria-labelledby={`m5-${main.slug}`}>
-            <p className="m5-kicker">
-              {main.slot === "brief" ? name : `${main.slot === "lead" ? "The lead" : "Feature"}`} ·{" "}
-              {main.kicker}
-            </p>
-            <h2
-              id={`m5-${main.slug}`}
-              className={`m5-display m5r-head ${lengthClass(main.headline, [50, 76, 100])}`}
-            >
-              <Link href={reading.storyHref(main.slug)}>{main.headline}</Link>
-            </h2>
-            <p className="m5r-dek">{main.dek}</p>
-            <p className="m5-byline m5r-by">
-              By the Yay {name.toLowerCase()} desk <i>· {minutes(main.readMinutes)} to read</i>
-            </p>
-            {!mainPhotoUsed && main.images[0] ? (
-              <Pasted
-                image={main.images[0]}
-                className="m5r-print"
-                sizes="(max-width: 760px) 90vw, 360px"
-              />
-            ) : null}
-            <div className={said && !roomy ? "m5r-grid m5r-grid--pull" : "m5r-grid"}>
-              <div className="m5-body m5r-cols">
-                {main.body.map((p, i) => (
-                  <p key={i} className={i === 0 ? "m5r-first" : undefined}>
-                    {p}
-                  </p>
-                ))}
-              </div>
-              {said && !roomy ? (
-                <blockquote className="m5-display m5r-pull">“{said}”</blockquote>
-              ) : null}
-            </div>
-            <p className="m5-more">
-              <Link href={reading.storyHref(main.slug)}>
-                The whole story, with its source <span aria-hidden>→</span>
-              </Link>
-            </p>
-          </section>
-        ) : (
-          <p className="m5r-empty">Nothing on this page today. Turn over for the rest.</p>
-        )}
-
-        {said && roomy ? (
-          <blockquote className="m5-display m5r-centre">
-            “{said}”
-            <Mark name="brush-03" ink="var(--apricot-deep)" className="m5r-centre-mark" />
-          </blockquote>
-        ) : null}
-
-        <div className="m5r-foot">
-          {briefs.length ? (
-            <section className="m5r-briefs" aria-labelledby="m5r-briefs">
-              <h2 id="m5r-briefs" className="m5-display m5r-briefs-head">
-                Also in {name}
-              </h2>
-              <div className="m5r-brief-row" data-count={Math.min(briefs.length, 3)}>
-                {briefs.map((b) => (
-                  <article key={b.slug} className="m5r-brief">
-                    {!photosUsed && b.images[0] ? (
-                      <div className="m5r-brief-photo">
-                        <PrintPhoto image={b.images[0]} sizes="(max-width: 760px) 90vw, 300px" />
-                        <p className="m5-credit">{credit(b.images[0])}</p>
-                      </div>
-                    ) : null}
-                    <p className="m5-kicker">{b.kicker}</p>
-                    <h3 className="m5-display m5r-brief-head">
-                      <Link href={reading.storyHref(b.slug)}>{b.headline}</Link>
-                    </h3>
-                    <p className="m5r-brief-dek">{b.dek}</p>
-                    <div className="m5-body m5r-brief-body">
-                      {b.body.map((p, i) => (
-                        <p key={i}>{p}</p>
-                      ))}
-                    </div>
-                    <p className="m5-more">
-                      <Link href={reading.storyHref(b.slug)}>
-                        Read on <span aria-hidden>→</span>
-                      </Link>
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ) : null}
-          <OverThePage edition={edition} reading={reading} big={!briefs.length} />
-        </div>
-      </div>
-    </article>
-  );
-}
-
-/** Screen & Sound's opener: the page's photographs, pasted up on the ground. */
-function Collage({
-  name,
-  tagline,
-  stories,
-  photos,
-  reading,
-  page,
-  date,
-  ground,
-}: {
+type Parts = {
   name: string;
   tagline: string;
-  stories: StoryItem[];
-  photos: EditionImage[];
+  main?: StoryItem;
+  second?: StoryItem;
+  briefs: StoryItem[];
   reading: Reading;
-  page: number;
-  date: string;
-  ground: Ground;
-}) {
-  const single = photos.length === 1;
-  const [first, ...more] = photos;
-  return (
-    <article
-      className={`print-sheet print-sheet--bright m5-sheet-flow m5s-left ${groundClass(ground)}`}
-      aria-label={`Page ${page}`}
-    >
-      <Folio page={page} section={name} date={date} />
-      <div className={`m5-page-flow m5s-collage ${single ? "m5s-collage--one" : ""}`}>
-        <div className="m5s-top">
-          <header className="m5s-head">
-            <h1 className="m5-display m5s-title">{name}</h1>
-            <p className="m5s-sub">{tagline}</p>
-          </header>
-          {first ? (
-            <div className="m5s-first">
-              <Pasted image={first} className="m5s-tv" sizes="(max-width: 760px) 90vw, 440px" />
-              <p className="m5-note m5s-note" aria-hidden>
-                {first.alt.toLowerCase()}
-              </p>
-              <Mark name="arrows-07" className="m5-hm m5s-arrow" />
-            </div>
-          ) : null}
-        </div>
-        {more.length ? (
-          <div className="m5s-row" data-count={more.length}>
-            {more.map((img, i) => (
-              <Pasted
-                key={img.url}
-                image={img}
-                className={i % 2 ? "m5s-print m5s-print--b" : "m5s-print m5s-print--a"}
-                sizes="(max-width: 760px) 90vw, 300px"
-              />
-            ))}
-          </div>
-        ) : null}
-        <Mark name="sketch-24" className="m5-hm m5s-notes" />
-        <section className="m5s-picks" aria-label="In these pages">
-          <p className="m5o-label">In these pages</p>
-          <Contents stories={stories} reading={reading} />
-        </section>
-      </div>
-    </article>
-  );
-}
-
-/** The opener with a photograph bled off the top, and the name set across its lower edge. */
-function PhotoOpener({
-  slug,
-  name,
-  tagline,
-  stories,
-  image,
-  reading,
-  page,
-  date,
-  ground,
-}: {
-  slug: string;
-  name: string;
-  tagline: string;
-  stories: StoryItem[];
-  image: EditionImage;
-  reading: Reading;
-  page: number;
-  date: string;
-  ground: Ground;
-}) {
-  const gaming = slug === "gaming";
-  const word = gaming ? "Press play" : name;
-  const mins = readMinutes(stories);
-  return (
-    <article
-      className={`print-sheet print-sheet--bright m5-sheet-flow m5g-left ${groundClass(ground)}`}
-      aria-label={`Page ${page}`}
-    >
-      <Folio page={page} section={name} date={date} />
-      <div className="m5g-bleed">
-        <PrintPhoto
-          image={image}
-          priority
-          sizes="(max-width: 760px) 100vw, 700px"
-          position="50% 42%"
-        />
-      </div>
-      <p className="m5-credit m5g-bleed-credit">{credit(image)}</p>
-      {gaming ? (
-        <>
-          <p className="m5g-slip print-torn" aria-hidden>
-            {image.alt.toLowerCase()}
-          </p>
-          <span className="print-tape m5g-slip-tape" aria-hidden />
-        </>
-      ) : null}
-
-      <h1
-        className="m5-display m5g-word print-misreg"
-        style={fitted(word, 44, 330, 520)}
-        aria-label={gaming ? `${name}: ${word}` : undefined}
-      >
-        {word}
-      </h1>
-
-      <div className="m5g-under">
-        <p className="m5g-stand">
-          {tagline}. {stories.length === 1 ? "One story" : `${stories.length} stories`},{" "}
-          {minutes(mins)} of reading, over the page.
-        </p>
-        <section className="m5g-score" aria-label="In these pages">
-          <p className="m5o-label">In these pages</p>
-          <Contents stories={stories} reading={reading} />
-        </section>
-      </div>
-    </article>
-  );
-}
-
-/** The opener without a photograph: the name, huge, running off the edge of the page. */
-const DOODLES: Record<string, string> = {
-  sports: "doodles-01",
-  tech: "sketch-40",
-  money: "doodles-02",
-  discoveries: "stars-06",
-  "internet-and-culture": "doodles-06",
-  gaming: "doodles-03",
-  "screen-and-sound": "sketch-24",
 };
-const doodleFor = (slug: string) => DOODLES[slug] ?? "stars-06";
 
-function TypeOpener({
-  slug,
-  name,
-  tagline,
-  stories,
-  reading,
+/** Main story, second story (a second feature, if there is one) and briefs. */
+function split(stories: StoryItem[]) {
+  const [main, ...rest] = ranked(stories);
+  const second = rest[0] && rest[0].slot !== "brief" ? rest[0] : undefined;
+  const briefs = second ? rest.slice(1) : rest;
+  return { main, second, briefs };
+}
+
+const desk = (name: string) => `By the Yay ${name.toLowerCase()} desk`;
+const byline = (name: string, s: StoryItem) => `${desk(name)} · ${minutes(s.readMinutes)} to read`;
+
+function Sheet({
   page,
+  name,
   date,
   ground,
+  className,
+  children,
 }: {
-  slug: string;
-  name: string;
-  tagline: string;
-  stories: StoryItem[];
-  reading: Reading;
   page: number;
+  name: string;
   date: string;
-  ground: Ground;
+  ground?: Ground;
+  className?: string;
+  children: ReactNode;
 }) {
-  const mins = readMinutes(stories);
   return (
     <article
-      className={`print-sheet print-sheet--bright m5-sheet-flow m5o-left ${groundClass(ground)}`}
+      className={`print-sheet print-sheet--bright m5-sheet-flow ${ground ? `m5-ground m5-ground--${ground}` : ""} ${className ?? ""}`}
       aria-label={`Page ${page}`}
     >
       <Folio page={page} section={name} date={date} />
-      <div className="m5-page-flow m5o-page">
-        <h1 className="m5-display m5o-title" style={fitted(name, 46, 330, 640)}>
-          {name}
-        </h1>
-        <p className="m5o-stand">{tagline}</p>
-        <section className="m5o-inside" aria-label="In these pages">
-          <p className="m5o-label">In these pages</p>
-          <Contents stories={stories} reading={reading} big />
-        </section>
-        {/* A block of the section's deeper ink with a drawing on it, where a photograph would go. */}
-        <div className="m5o-poster" aria-hidden>
-          <span className="print-tape m5o-poster-tape" />
-          <Mark name={doodleFor(slug)} className="m5o-poster-mark" />
-          <Burst
-            fill="var(--paper)"
-            points={12}
-            depth={0.14}
-            wobble={1}
-            className="m5o-sticker print-worn"
-          >
-            <p className="m5o-sticker-text">
-              <b className="m5-display">{mins}</b>
-              <span>{mins === 1 ? "minute" : "minutes"}, start to finish</span>
-            </p>
-          </Burst>
-        </div>
-      </div>
+      {children}
     </article>
   );
+}
+
+/** The main story's photograph bled off the top of the page, the section's name across its edge. */
+function BleedTitle({ p, tall }: { p: Parts; tall?: boolean }) {
+  const image = p.main?.images[0];
+  return (
+    <>
+      {image ? (
+        <div className={tall ? "m5k-bleed m5k-bleed--tall" : "m5k-bleed"}>
+          <PrintPhoto image={image} priority sizes="(max-width: 760px) 100vw, 700px" />
+        </div>
+      ) : null}
+      <h1 className="m5-display m5k-edge print-misreg" style={fitted(p.name, 30, 300, 480)}>
+        {p.name}
+      </h1>
+    </>
+  );
+}
+
+function Main({
+  p,
+  size,
+  photo,
+  drop = true,
+}: {
+  p: Parts;
+  size: "hero" | "big" | "mid" | "quiet";
+  photo: "top" | "inset" | "none";
+  drop?: boolean;
+}) {
+  const s = p.main;
+  if (!s) return null;
+  const image = photo !== "none" ? s.images[0] : undefined;
+  return (
+    <section className="m5k-main" aria-labelledby={`h-${s.slug}`}>
+      <StoryHead story={s} reading={p.reading} size={size} byline={byline(p.name, s)} />
+      {image && photo === "top" ? (
+        <Photo image={image} className="m5k-photo--top" sizes="(max-width: 760px) 100vw, 640px" />
+      ) : null}
+      {image && photo === "inset" ? (
+        <div className="m5-body m5-read m5-read--2 m5k-inset-flow">
+          <Photo
+            image={image}
+            className="m5k-photo--inset"
+            sizes="(max-width: 760px) 100vw, 320px"
+            pasted
+          />
+          {s.body.map((para, i) => (
+            <p key={i} className={drop && i === 0 ? "m5-drop" : undefined}>
+              {para}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <Body story={s} drop={drop} />
+      )}
+    </section>
+  );
+}
+
+function MainText({ p }: { p: Parts }) {
+  const s = p.main;
+  if (!s) return null;
+  return (
+    <section className="m5k-main" aria-label={s.headline}>
+      <p className="m5-byline m5k-by m5k-by--rule">{byline(p.name, s)}</p>
+      <Body story={s} drop />
+    </section>
+  );
+}
+
+function Second({
+  p,
+  variant,
+  photo,
+}: {
+  p: Parts;
+  variant: "ruled" | "boxed" | "column";
+  photo: "top" | "inset" | "none";
+}) {
+  const s = p.second;
+  if (!s) return null;
+  const image = photo !== "none" ? s.images[0] : undefined;
+  const column = variant === "column";
+  return (
+    <section className={`m5k-second m5k-second--${variant}`} aria-labelledby={`h-${s.slug}`}>
+      {image && photo === "top" ? (
+        <Photo
+          image={image}
+          className="m5k-photo--second"
+          sizes="(max-width: 760px) 100vw, 400px"
+        />
+      ) : null}
+      <StoryHead story={s} reading={p.reading} size="mid" level={2} />
+      {image && photo === "inset" ? (
+        <div className="m5-body m5-read m5-read--2 m5k-inset-flow">
+          <Photo
+            image={image}
+            className="m5k-photo--inset"
+            sizes="(max-width: 760px) 100vw, 320px"
+          />
+          {s.body.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
+        </div>
+      ) : (
+        <Body story={s} cols={column ? 1 : 2} />
+      )}
+    </section>
+  );
+}
+
+function Spread({ left, right }: { left: ReactNode; right: ReactNode }) {
+  return (
+    <div className="print-sheet-wrap">
+      <div className="print-spread">
+        {left}
+        {right}
+      </div>
+    </div>
+  );
+}
+
+function compose(c: InsideComposition, p: Parts, pages: [number, number], date: string, g: Ground) {
+  const sheet = (n: 0 | 1, children: ReactNode, ground?: boolean, cls?: string) => (
+    <Sheet
+      page={pages[n]}
+      name={p.name}
+      date={date}
+      ground={ground ? g : undefined}
+      className={cls}
+    >
+      {children}
+    </Sheet>
+  );
+  const flow = (children: ReactNode, cls?: string) => (
+    <div className={`m5-page-flow ${cls ?? ""}`}>{children}</div>
+  );
+  const band = <SectionTitle name={p.name} tagline={p.tagline} variant="band" />;
+  const huge = <SectionTitle name={p.name} tagline={p.tagline} variant="huge" />;
+  const secondPhoto = p.second?.images[0] ? "top" : "none";
+
+  switch (c) {
+    // Photograph bled off the top of the coloured page, the name across its edge, the main story
+    // below it; the second story and a strip of briefs on paper opposite.
+    case "photo-led":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            <>
+              <BleedTitle p={p} />
+              {flow(<Main p={p} size="big" photo="none" />, "m5k-under-bleed")}
+            </>,
+            true,
+            "m5k-bleed-sheet",
+          )}
+          right={sheet(
+            1,
+            flow(
+              <>
+                <Second p={p} variant="ruled" photo={p.second?.images[0] ? "inset" : "none"} />
+                <Briefs
+                  stories={p.briefs}
+                  reading={p.reading}
+                  variant="strip"
+                  className="m5k-foot"
+                />
+              </>,
+            ),
+          )}
+        />
+      );
+    // The same idea mirrored: the coloured photo page is on the right, the second story (photo on
+    // top) and a numbered briefs column share the left.
+    case "photo-led-right":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            flow(
+              <div className="m5k-two">
+                <Second p={p} variant="column" photo={secondPhoto} />
+                <Briefs stories={p.briefs} reading={p.reading} variant="numbered" />
+              </div>,
+            ),
+          )}
+          right={sheet(
+            1,
+            <>
+              <BleedTitle p={p} />
+              {flow(<Main p={p} size="big" photo="none" />, "m5k-under-bleed")}
+            </>,
+            true,
+            "m5k-bleed-sheet",
+          )}
+        />
+      );
+    // A picture page: the main photograph large, the headline and standfirst under it and the briefs
+    // at its foot; the story's text and the second story run on paper opposite.
+    case "picture-story":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            <>
+              <BleedTitle p={p} tall />
+              {flow(
+                <>
+                  {p.main ? <StoryHead story={p.main} reading={p.reading} size="hero" /> : null}
+                  <Briefs
+                    stories={p.briefs}
+                    reading={p.reading}
+                    variant="strip"
+                    className="m5k-foot"
+                  />
+                </>,
+                "m5k-under-bleed",
+              )}
+            </>,
+            true,
+            "m5k-bleed-sheet",
+          )}
+          right={sheet(
+            1,
+            flow(
+              <>
+                <MainText p={p} />
+                <Second p={p} variant="ruled" photo={p.second?.images[0] ? "inset" : "none"} />
+              </>,
+            ),
+          )}
+        />
+      );
+    // The headline set big across the top of a paper page, photograph under it; the coloured page
+    // opposite splits into the second story and a numbered briefs column.
+    case "headline-across":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            flow(
+              <>
+                {band}
+                <Main p={p} size="hero" photo="top" />
+              </>,
+            ),
+          )}
+          right={sheet(
+            1,
+            flow(
+              <div className="m5k-two">
+                <Second p={p} variant="column" photo={secondPhoto} />
+                <Briefs stories={p.briefs} reading={p.reading} variant="numbered" />
+              </div>,
+            ),
+            true,
+          )}
+        />
+      );
+    case "headline-across-right":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            flow(
+              <>
+                {band}
+                <div className="m5k-two">
+                  <Briefs stories={p.briefs} reading={p.reading} variant="numbered" />
+                  <Second p={p} variant="column" photo={secondPhoto} />
+                </div>
+              </>,
+            ),
+            true,
+          )}
+          right={sheet(1, flow(<Main p={p} size="hero" photo="top" />))}
+        />
+      );
+    // The name huge on the coloured page, the second story boxed on paper stock pasted onto it and
+    // the briefs as a strip; the main story opposite with its photograph across the top.
+    case "boxed-feature":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            flow(
+              <>
+                {huge}
+                <Second p={p} variant="boxed" photo={p.second?.images[0] ? "inset" : "none"} />
+                <Briefs
+                  stories={p.briefs}
+                  reading={p.reading}
+                  variant="strip"
+                  className="m5k-foot"
+                />
+              </>,
+            ),
+            true,
+          )}
+          right={sheet(1, flow(<Main p={p} size="big" photo="top" />))}
+        />
+      );
+    case "boxed-feature-right":
+      return (
+        <Spread
+          left={sheet(0, flow(<Main p={p} size="hero" photo="top" />))}
+          right={sheet(
+            1,
+            flow(
+              <>
+                {huge}
+                <Briefs stories={p.briefs} reading={p.reading} variant="strip" />
+                <Second p={p} variant="boxed" photo={p.second?.images[0] ? "inset" : "none"} />
+              </>,
+            ),
+            true,
+          )}
+        />
+      );
+    // A quiet page: italic headline, the photograph pasted into the first column; the coloured page
+    // opposite runs the second story under its photograph and the briefs along the foot.
+    case "quiet-inset":
+      return (
+        <Spread
+          left={sheet(
+            0,
+            flow(
+              <>
+                {band}
+                <Main p={p} size="quiet" photo="inset" />
+              </>,
+            ),
+          )}
+          right={sheet(
+            1,
+            flow(
+              <>
+                <Second p={p} variant="ruled" photo={secondPhoto} />
+                <Briefs
+                  stories={p.briefs}
+                  reading={p.reading}
+                  variant="strip"
+                  className="m5k-foot"
+                />
+              </>,
+            ),
+            true,
+          )}
+        />
+      );
+  }
 }
 
 /** A core section's inside page. */
 export function Section({ edition, page, reading }: PageProps) {
   const name = page.section?.name ?? reading.current.label;
   const slug = page.section?.slug ?? reading.current.slug;
-  const tagline = page.section?.tagline ?? "";
-  const [left, right] = spreadNumbers(reading);
-  const stories = ranked(page.stories);
-  const ground = groundFor(slug);
-  const photo = stories[0]?.images[0];
-  // Screen & Sound pastes up its briefs' photographs (or, if they have none, the feature's).
-  const briefPhotos = stories.slice(1).flatMap((s) => s.images.slice(0, 1));
-  const collagePhotos = (briefPhotos.length ? briefPhotos : photo ? [photo] : []).slice(0, 3);
-  const collage = slug === "screen-and-sound" && collagePhotos.length > 0;
-  const common = { name, tagline, stories, reading, page: left, date: edition.date, ground };
-
+  const parts: Parts = {
+    name,
+    tagline: page.section?.tagline ?? "",
+    reading,
+    ...split(page.stories),
+  };
+  const composition = insideCompositions(edition).get(page.order) ?? "headline-across";
   return (
-    <div className="print-sheet-wrap">
-      <div className="print-spread">
-        {collage ? (
-          <Collage {...common} photos={collagePhotos} />
-        ) : photo ? (
-          <PhotoOpener {...common} slug={slug} image={photo} />
-        ) : (
-          <TypeOpener {...common} slug={slug} />
-        )}
-        <StoryPage
-          edition={edition}
-          name={name}
-          stories={stories}
-          reading={reading}
-          page={right}
-          date={edition.date}
-          photosUsed={collage}
-          mainPhotoUsed={collage && !briefPhotos.length}
-        />
-      </div>
+    <div className="m5k" data-composition={composition} data-ground={groundFor(slug)}>
+      {compose(composition, parts, spreadNumbers(reading), edition.date, groundFor(slug))}
     </div>
   );
 }
 
 /**
- * The guest section: a visiting page, so it is set differently from the core sections. The
- * left-hand page is a centred title page on butter, stamped "Guest section", with the first
- * story's headline and standfirst; the right-hand page pastes in its photograph, runs its text in
- * two columns with a drop cap and its pull quote, and any other stories as torn clippings.
+ * The guest section, a visiting page, set apart from the core sections: a butter title page stamped
+ * "Guest section". Two compositions: the title page carries the main story's headline and text with
+ * the second story and brief opposite, or the main story runs on paper with its photograph and the
+ * title page opposite carries the second story boxed and the brief.
  */
 export function Guest({ edition, page, reading }: PageProps) {
   const name = page.section?.name ?? reading.current.label;
-  const tagline = page.section?.tagline ?? "";
+  const parts: Parts = {
+    name,
+    tagline: page.section?.tagline ?? "",
+    reading,
+    ...split(page.stories),
+  };
   const [left, right] = spreadNumbers(reading);
-  const [main, ...more] = ranked(page.stories);
-  const said = main ? pullQuote(main.body) : null;
-  const image = main?.images[0];
-
+  const composition = guestComposition(edition, page);
+  const label = `Guest section · ${name}`;
+  const title = (
+    <header className="m5q-head">
+      <p className="m5f-stamp m5q-stamp print-worn">Guest section</p>
+      <h1 className="m5-display m5q-title" style={fitted(name, 22, 190, 560)}>
+        {name}
+      </h1>
+      {parts.tagline ? <p className="m5q-tagline">{parts.tagline}</p> : null}
+      <div className="m5q-rules" aria-hidden />
+    </header>
+  );
+  const flow = (children: ReactNode) => <div className="m5-page-flow">{children}</div>;
+  const sheet = (n: number, children: ReactNode, butter?: boolean) => (
+    <article
+      className={`print-sheet print-sheet--bright m5-sheet-flow ${butter ? "m5q-butter" : ""}`}
+      aria-label={`Page ${n}`}
+    >
+      <Folio page={n} section={label} date={edition.date} />
+      {children}
+    </article>
+  );
+  const s = parts.second;
   return (
-    <div className="print-sheet-wrap">
-      <div className="print-spread">
-        <article
-          className="print-sheet print-sheet--bright m5-sheet-flow m5q-left"
-          aria-label={`Page ${left}`}
-        >
-          <Folio page={left} section={`Guest section · ${name}`} date={edition.date} />
-          <div className="m5-page-flow m5q-title-page">
-            <p className="m5f-stamp m5q-stamp print-worn">Guest section</p>
-            <h1 className="m5-display m5q-title" style={fitted(name, 30, 190, 560)}>
-              {name}
-            </h1>
-            <p className="m5q-tagline">{tagline}</p>
-            <div className="m5q-rules" aria-hidden />
-            {main ? (
-              <header className="m5q-story">
-                <p className="m5-kicker">{main.kicker}</p>
-                <h2 className={`m5-display m5q-head ${lengthClass(main.headline, [50, 76, 100])}`}>
-                  <Link href={reading.storyHref(main.slug)}>{main.headline}</Link>
-                </h2>
-                <p className="m5q-dek">{main.dek}</p>
-                <p className="m5-byline">
-                  For the Yay News <i>· {minutes(main.readMinutes)} to read, over the page</i>
-                </p>
-                <Mark name="stars-06" className="m5-hm m5q-stars" />
-              </header>
-            ) : null}
-            {more.length ? (
-              <section className="m5q-also" aria-label={`Also from ${name}`}>
-                <p className="m5o-label">Also in this section</p>
-                <Contents stories={more} reading={reading} />
-              </section>
-            ) : null}
-          </div>
-        </article>
-
-        <article
-          className="print-sheet print-sheet--bright m5-sheet-flow m5q-right"
-          aria-label={`Page ${right}`}
-        >
-          <Folio page={right} section={`Guest section · ${name}`} date={edition.date} />
-          <div className="m5-page-flow m5q-page" data-stories={Math.min(1 + more.length, 3)}>
-            {main ? (
-              <section className="m5q-main" aria-label={main.headline}>
-                <p className="m5q-cont">
-                  Continued from page {left} · {main.kicker}
-                </p>
-                {image ? (
-                  <Pasted
-                    image={image}
-                    className="m5q-print"
-                    sizes="(max-width: 760px) 90vw, 520px"
-                  />
-                ) : null}
-                <div className={`m5-body m5q-cols ${more.length ? "" : "m5q-cols--solo"}`}>
-                  {main.body.map((p, i) => (
-                    <p key={i} className={i === 0 ? "m5r-first" : undefined}>
-                      {p}
-                    </p>
-                  ))}
-                </div>
-                <p className="m5-more">
-                  <Link href={reading.storyHref(main.slug)}>
-                    The whole story, with its source <span aria-hidden>→</span>
-                  </Link>
-                </p>
-                {/* The quote (or, failing one, the standfirst) as the page's pull quote. */}
-                <blockquote className="m5-display m5q-pull">
-                  “{said ?? main.dek}”
-                  <Mark name="brush-03" ink="var(--butter-deep)" className="m5r-centre-mark" />
-                </blockquote>
-              </section>
-            ) : null}
-            {more.length ? (
-              <section className="m5q-clips" aria-labelledby="m5q-clips">
-                <h2 id="m5q-clips" className="m5-display m5r-briefs-head">
-                  Also from {name}
-                </h2>
-                <div className="m5q-clip-row" data-count={more.length}>
-                  {more.map((b, i) => (
-                    <article
-                      key={b.slug}
-                      className={`m5q-clip ${i % 2 ? "m5q-clip--b" : "m5q-clip--a"}`}
-                    >
-                      <div className="m5q-clip-paper print-torn" aria-hidden />
-                      {b.images[0] ? (
-                        <div className="m5r-brief-photo">
-                          <PrintPhoto image={b.images[0]} sizes="(max-width: 760px) 90vw, 300px" />
-                          <p className="m5-credit">{credit(b.images[0])}</p>
-                        </div>
-                      ) : null}
-                      <p className="m5-kicker">{b.kicker}</p>
-                      <h3 className="m5-display m5q-clip-head">
-                        <Link href={reading.storyHref(b.slug)}>{b.headline}</Link>
-                      </h3>
-                      <p className="m5q-clip-dek">{b.dek}</p>
-                      <div className="m5-body m5q-clip-body">
-                        {b.body.map((p, k) => (
-                          <p key={k}>{p}</p>
-                        ))}
-                      </div>
-                      <p className="m5-more">
-                        <Link href={reading.storyHref(b.slug)}>
-                          Read on <span aria-hidden>→</span>
-                        </Link>
-                      </p>
-                    </article>
-                  ))}
-                </div>
-              </section>
-            ) : null}
-            <div className="m5q-foot">
-              <OverThePage edition={edition} reading={reading} big />
-            </div>
-          </div>
-        </article>
-      </div>
+    <div className="m5k" data-composition={composition} data-ground="butter">
+      <Spread
+        left={
+          composition === "guest-title"
+            ? sheet(
+                left,
+                flow(
+                  <>
+                    {title}
+                    <Main p={parts} size="big" photo="inset" />
+                  </>,
+                ),
+                true,
+              )
+            : sheet(left, flow(<Main p={parts} size="hero" photo="top" />))
+        }
+        right={
+          composition === "guest-title"
+            ? sheet(
+                right,
+                flow(
+                  <>
+                    <Second p={parts} variant="ruled" photo={s?.images[0] ? "inset" : "none"} />
+                    <Briefs
+                      stories={parts.briefs}
+                      reading={reading}
+                      variant="strip"
+                      className="m5k-foot"
+                    />
+                  </>,
+                ),
+              )
+            : sheet(
+                right,
+                flow(
+                  <>
+                    {title}
+                    <Second p={parts} variant="boxed" photo={s?.images[0] ? "inset" : "none"} />
+                    <Briefs
+                      stories={parts.briefs}
+                      reading={reading}
+                      variant="numbered"
+                      className="m5k-foot"
+                    />
+                  </>,
+                ),
+                true,
+              )
+        }
+      />
     </div>
   );
 }

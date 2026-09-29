@@ -1,6 +1,8 @@
 // Seeds the sections and the hand-made sample editions (PLAN §11, Phase 2). Idempotent: it wipes
 // every edition and section, then recreates them. Everything is validated against the shared
 // contracts before anything is written, so a bad edit fails without touching the database.
+import { existsSync } from "node:fs";
+import path from "node:path";
 import {
   editionDesignProblems,
   featureSchema,
@@ -36,6 +38,8 @@ const UNSPLASH_LICENCE = {
   licence: "Unsplash License",
   licenceUrl: "https://unsplash.com/license",
 };
+/** Where fetched story images live (see apps/frontend/scripts/fetch_image.py). */
+const FRONTEND_PUBLIC = path.resolve(import.meta.dirname, "../../../apps/frontend/public");
 const sectionKind = new Map(sections.map((s) => [s.slug as string, s.kind]));
 
 type PlannedPage = {
@@ -84,6 +88,7 @@ function validate(e: SeedEdition) {
   const guests = e.inside.filter((p) => sectionKind.get(p.section) === "guest");
   if (guests.length > 1) problems.push("more than one guest section");
 
+  const pictures = new Set<string>();
   for (const page of pages) {
     page.stories.forEach((s, i) => {
       if (!slugSchema.safeParse(s.slug).success) problems.push(`bad slug "${s.slug}"`);
@@ -92,6 +97,13 @@ function validate(e: SeedEdition) {
       if (!storySlotSchema.safeParse(slotFor(page, i, s)).success) problems.push(`bad slot`);
       if (!s.section && !page.section) problems.push(`story "${s.slug}" has no section`);
       photoFor(s);
+      if (s.image && s.photo) problems.push(`story "${s.slug}" has both a photo and an image`);
+      if (s.image && !existsSync(path.join(FRONTEND_PUBLIC, s.image.file))) {
+        problems.push(`story "${s.slug}": image ${s.image.file} not found (run fetch_image.py)`);
+      }
+      const picture = s.image?.file ?? (s.photo ? JSON.stringify(s.photo) : null);
+      if (picture && pictures.has(picture)) problems.push(`picture ${picture} used twice`);
+      if (picture) pictures.add(picture);
     });
   }
   if (!pages[0]?.stories.some((s, i) => slotFor(pages[0] as PlannedPage, i, s) === "lead")) {
@@ -167,22 +179,34 @@ async function createEdition(e: SeedEdition, sectionIds: Map<string, string>) {
                 body: s.body,
                 readMinutes: readMinutes(s),
                 sticker: s.sticker ?? null,
-                sourceUrl: `https://example.com/sample/${e.issueNumber}/${s.slug}`,
+                sourceUrl: s.sourceUrl ?? `https://example.com/sample/${e.issueNumber}/${s.slug}`,
                 sourceName: s.source,
                 embedUrl: s.embedUrl ?? null,
                 isReserve: s.reserve ?? false,
-                images: photo
+                images: s.image
                   ? {
                       create: {
                         order: 0,
-                        url: `https://images.unsplash.com/${photo.id}`,
-                        alt: photo.alt,
-                        credit: photo.credit,
+                        url: s.image.file,
+                        alt: s.image.alt,
+                        credit: s.image.credit,
                         kind: "photo" as const,
-                        ...UNSPLASH_LICENCE,
+                        licence: "Credited to its source",
+                        licenceUrl: s.image.from,
                       },
                     }
-                  : undefined,
+                  : photo
+                    ? {
+                        create: {
+                          order: 0,
+                          url: `https://images.unsplash.com/${photo.id}`,
+                          alt: photo.alt,
+                          credit: photo.credit,
+                          kind: "photo" as const,
+                          ...UNSPLASH_LICENCE,
+                        },
+                      }
+                    : undefined,
               };
             }),
           },

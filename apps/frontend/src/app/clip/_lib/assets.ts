@@ -36,6 +36,8 @@ const UNSPLASH = /^https:\/\/images\.unsplash\.com\/(photo-[\w-]+)/;
  * Any other URL is used as it is; Satori fetches it.
  */
 export function photoSrc(url: string, width = 1600): string {
+  // A story image fetched into public/ (e.g. /editions/42/octopus.jpg), already pressed.
+  if (url.startsWith("/")) return asset(url.slice(1)) ?? url;
   const id = UNSPLASH.exec(url)?.[1] ?? (/^photo-[\w-]+$/.test(url) ? url : null);
   if (!id) return url;
   return (

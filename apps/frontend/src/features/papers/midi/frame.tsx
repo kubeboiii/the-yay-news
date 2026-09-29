@@ -1,8 +1,8 @@
 import { Bodoni_Moda, Crimson_Pro, IBM_Plex_Sans_Condensed } from "next/font/google";
 import type { ReactNode } from "react";
 import "./midi.css";
-import "./front.css";
-import "./section.css";
+import "./layout.css";
+import "./cover.css";
 import "./back.css";
 import "./story.css";
 

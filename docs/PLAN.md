@@ -10,7 +10,7 @@ Status: **planning** · Last updated: 2026-09-29
 ## 1. The idea in one paragraph
 
 Every morning a new edition of _The Yay News_ lands, at 7am in each reader's own timezone. It is about
-15 items and 10 minutes long, laid out as real newspaper pages rather than a feed, and it **ends**: the
+30 items and 15 minutes long, laid out as real newspaper pages rather than a feed, and it **ends**: the
 back page says you're done for today. Everything in it is enjoyable — releases, discoveries, great
 sport moments, clever tech, delightful internet — and nothing in it is grim. A fully automated pipeline
 finds, filters, writes and lays out each edition; people share stories as designed newspaper clippings.
@@ -41,7 +41,7 @@ These settle arguments later. When a feature conflicts with one, the principle w
 | AI provider        | Decide later — behind one provider-neutral interface                               |
 | Reading format     | Newspaper pages: front page → inside pages → back page, stacked on mobile          |
 | Release time       | 07:00 in each reader's local timezone; same edition for everyone                   |
-| Edition size       | Compact: ~15 items, ~10 minutes                                                    |
+| Edition size       | A full paper: ~30 items, ~15 minutes (revised 2026-09-30; ~15 read too thin)       |
 | Voice              | Mix, varying by section (see §5)                                                   |
 | Content edges      | None allowed: no serious topics at all, including "constructive" ones              |
 | Images             | Openly licensed photos first, generated illustrations as fallback                  |
@@ -105,7 +105,9 @@ believe"), headline patterns, brief length (60–120 words), and examples of eac
 
 ## 6. Edition structure
 
-About 15 items, arranged as pages:
+About 30 items and 4,000 words, arranged as pages. Each inside page carries a main story, a second
+story and a column of short briefs; every story appears once, and the only page-to-page index is the
+front page's "Inside today".
 
 | Page                  | Contents                                                                                                   |
 | --------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -219,7 +221,7 @@ edition can be explained afterwards.
    against a written rubric. It returns allow or reject **with a reason**. Anything uncertain is
    rejected; a false reject costs nothing, a false allow costs trust.
 3. **Dedup** against recent editions and against each other (the same story from three outlets).
-4. **Select** ~15 items plus **reserves**, under balance rules: section quotas, no single topic
+4. **Select** ~30 items plus **reserves**, under balance rules: section quotas, no single topic
    dominating (the "not 12 AI stories" rule), variety of sources, a strong candidate for the lead.
 5. **Write** each brief from the fetched source text only, in the section's voice. A deterministic
    check then verifies that every number and proper noun in the brief appears in the source; a brief

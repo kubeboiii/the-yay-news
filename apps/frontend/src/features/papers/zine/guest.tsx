@@ -1,60 +1,49 @@
-import type { StoryItem } from "@repo/shared";
-import Link from "next/link";
-import { Mark } from "@/features/print/mark";
-import type { PageProps, Reading } from "../types";
-import {
-  AlsoInside,
-  Body,
-  Byline,
-  Credit,
-  Doodle,
-  Folio,
-  Head,
-  Page,
-  Photo,
-  Print,
-  printNote,
-  Pull,
-  ReadOn,
-  Ringed,
-  RunningHead,
-  Spread,
-  Tape,
-  TurnOver,
-} from "./parts";
-import { byOrder, fitSize, folios, groundsFor, headSize, pullQuote, shortDate } from "./text";
+import type { PageProps } from "../types";
+import { Briefs, StoryBlock } from "./blocks";
+import { balance, briefMM, guestComposition, storyMM } from "./compose";
+import { doodleFor, Folio, Head, Page, RunningHead, Spread } from "./parts";
+import { byOrder, fitSize, folios, groundsFor, shortDate } from "./text";
 
 /*
- * The rotating guest section is a visitor, so it is printed as one: its stories are clippings on
- * white stock, torn out and taped onto the spread, under a stamped "guest section" head. The first
- * clipping sits on the left page; any others go on the right with the pull quote and the turn-over.
+ * The rotating guest section is a visitor, so it prints as one: a stamped "Guest section" head and
+ * its stories as clippings of white stock taped onto the spread. Two compositions (compose.ts):
+ *
+ *   clippings — both stories as torn clippings; the brief in a ruled column
+ *   split     — the first story printed straight onto the page under its print; the second as a
+ *               clipping; the brief in a taped box
+ *
+ * The brief goes to whichever page is shorter.
  */
 export function Guest({ edition, page, reading }: PageProps) {
   const name = page.section?.name ?? reading.current.label;
   const tagline = page.section?.tagline ?? "";
   const slug = page.section?.slug ?? reading.current.slug;
-  const [gl, gr] = groundsFor(slug, page.order, true);
+  const [gl, gr] = groundsFor(edition.issueNumber, page.order);
   const [lf, rf] = folios(reading, page.order);
   const date = shortDate(edition.date);
   const stories = byOrder(page.stories);
-  const [first, ...rest] = stories;
-  const pull =
-    rest.length === 0 && stories.reduce((n, s) => n + s.body.join("").length, 0) >= 260
-      ? null
-      : pullQuote(stories);
-  // A guest with a single story spreads it: its picture (or standfirst) left, the clipping right.
-  const alone = rest.length === 0;
+  const mains = stories.filter((s) => s.slot !== "brief");
+  const briefs = stories.filter((s) => s.slot === "brief");
+  const [first, ...rest] = mains;
+  const comp = guestComposition(edition, page);
+  const next = reading.next ? { ...reading.next, n: folios(reading, reading.next.order)[0] } : null;
+  const href = reading.storyHref;
+  const firstVariant = comp === "clippings" ? "clip" : "top";
+  const place = balance(
+    first ? storyMM(first, firstVariant) + 30 : 0,
+    rest.reduce((n, s) => n + storyMM(s, "clip", "m") + 8, 0),
+    briefs.map(briefMM),
+  );
+  const briefsVariant = comp === "split" ? "box" : "ruled";
+  const leftBriefs = briefs.slice(0, place.briefsLeft);
+  const rightBriefs = briefs.slice(place.briefsLeft);
 
   return (
     <Spread label={`${name} spread`}>
-      <Page ground={gl} side="left" className="zg-page">
+      <Page ground={gl} side="left" className="zg-page zc-page" composition={comp}>
         <RunningHead>The Yay Zine · Guest section</RunningHead>
         <div className="zg-mast">
-          <p className="z-stamp print-worn zg-stamp">
-            Guest section
-            <small>visiting today, gone tomorrow</small>
-          </p>
-          <Mark name="sketch-40" ink="var(--ink)" className="zg-mast__doodle" />
+          <p className="z-stamp print-worn zg-stamp">Guest section</p>
         </div>
         <Head
           as="h1"
@@ -63,116 +52,48 @@ export function Guest({ edition, page, reading }: PageProps) {
           size={fitSize(name, 146, 16, 8.6)}
           wrap
         />
-        {!first ? (
-          <p className="zs-empty">Our guest is running late. Back next time.</p>
-        ) : alone ? (
-          <Poster story={first} />
-        ) : (
-          <Clipping story={first} reading={reading} i={0} />
-        )}
-        {first && !alone && first.images.length === 0 ? (
-          <Doodle slug={slug} next={reading.next?.label ?? null} />
+        {first ? (
+          <StoryBlock
+            story={first}
+            href={href(first.slug)}
+            variant={firstVariant}
+            size="l"
+            side="left"
+            priority
+            className="zc-main"
+          />
         ) : null}
+        <Briefs
+          stories={leftBriefs}
+          storyHref={href}
+          variant={briefsVariant}
+          mark={doodleFor(slug)}
+        />
         <Folio n={lf} date={date} />
       </Page>
 
-      <Page ground={gr} side="right" className="zg-page">
+      <Page ground={gr} side="right" className="zg-page zc-page">
         <RunningHead>The Yay Zine · {name}</RunningHead>
-        <p className="zg-note">
-          Every other day a guest section takes a spread of the zine. No. {edition.issueNumber}’s
-          visitor: <b>{name}</b>.
-        </p>
-        {alone && first ? <Clipping story={first} reading={reading} i={1} alone /> : null}
         {rest.map((s, i) => (
-          <Clipping key={s.slug} story={s} reading={reading} i={i + 1} />
+          <StoryBlock
+            key={s.slug}
+            story={s}
+            href={href(s.slug)}
+            variant="clip"
+            size="m"
+            side={i % 2 ? "left" : "right"}
+            className="zc-second"
+          />
         ))}
-        {pull ? <Pull text={pull} className="zs-pull" /> : null}
-        {rest.length <= 1 ? (
-          <AlsoInside edition={edition} reading={reading} count={2} big={rest.length === 0} />
-        ) : null}
-        <TurnOver edition={edition} reading={reading} />
-        <Folio n={rf} date={date} />
+        <Briefs
+          stories={rightBriefs}
+          storyHref={href}
+          variant={briefsVariant}
+          mark={doodleFor(slug)}
+          from={leftBriefs.length}
+        />
+        <Folio n={rf} date={date} next={next} />
       </Page>
     </Spread>
-  );
-}
-
-/** The left page of a one-story guest spread: the story's picture pasted up large, or its standfirst. */
-function Poster({ story }: { story: StoryItem }) {
-  const image = story.images[0] ?? null;
-  if (!image) {
-    return (
-      <div className="zs-bare zg-poster">
-        <p className="zs-bare__dek">{story.dek}</p>
-        <Mark name="sketch-52" ink="var(--ink)" className="zs-bare__doodle" />
-      </div>
-    );
-  }
-  return (
-    <div className="zg-poster">
-      <div className="zs-lead__photo z-offset-block">
-        <Print
-          photo={image}
-          ratio="4 / 3"
-          sizes="(max-width: 900px) 100vw, 600px"
-          rotate={2}
-          tape={["tl", "tr"]}
-          note={printNote(image.alt, 44)}
-          priority
-        />
-      </div>
-      <div className="zf-credit">
-        <Credit photos={[image]} />
-      </div>
-    </div>
-  );
-}
-
-function Clipping({
-  story,
-  reading,
-  i,
-  alone,
-}: {
-  story: StoryItem;
-  reading: Reading;
-  i: number;
-  alone?: boolean;
-}) {
-  const href = reading.storyHref(story.slug);
-  // On a one-story spread the picture (or the standfirst, when there is none) is on the left page.
-  const image = alone ? null : (story.images[0] ?? null);
-  const showDek = !alone || story.images.length > 0;
-  return (
-    <article
-      className="zg-clip"
-      style={{ ["--r" as string]: `${i % 2 ? 1.2 : -0.9}deg` }}
-      aria-labelledby={`h-${story.slug}`}
-    >
-      <div className="zg-clip__paper">
-        <p className="z-kicker">{story.kicker}</p>
-        <h2
-          className="z-h2 zs-brief__head"
-          id={`h-${story.slug}`}
-          style={{ ["--zh" as string]: headSize(story.headline, [8.4, 7.2, 6.4, 5.8]) }}
-        >
-          <Link href={href} className="z-link-head">
-            <Ringed text={story.headline} />
-          </Link>
-        </h2>
-        {image ? (
-          <div className="zg-clip__photo">
-            <Photo photo={image} ratio="2 / 1" sizes="(max-width: 900px) 100vw, 560px" />
-            <Credit photos={[image]} />
-          </div>
-        ) : null}
-        {showDek ? <p className="z-dek">{story.dek}</p> : null}
-        <Byline story={story} />
-        <Body story={story} drop className="zs-body zg-clip__body">
-          <ReadOn href={href} />
-        </Body>
-      </div>
-      <Tape at={i % 2 ? "tr" : "tl"} />
-    </article>
   );
 }

@@ -74,7 +74,7 @@ export function RunningHead({
   );
 }
 
-/** The folio line at the foot of every inside page. */
+/** The folio line at the foot of every inside page, with the one "next page" line. */
 export function Folio({
   edition,
   reading,
@@ -94,10 +94,10 @@ export function Folio({
       <span>
         {reading.next ? (
           <Link href={reading.next.href} className="bs-link">
-            Turn to page {n + 1}: {reading.next.label} →
+            Next: {reading.next.slug === "back" ? "the back page" : reading.next.label}, p.{n + 1} →
           </Link>
         ) : (
-          "The end · see you tomorrow"
+          "The end"
         )}
       </span>
     </footer>
@@ -110,7 +110,6 @@ export function Photo({
   sizes,
   position,
   className,
-  tag = true,
   priority,
   width = 1600,
 }: {
@@ -118,7 +117,6 @@ export function Photo({
   sizes: string;
   position?: string;
   className?: string;
-  tag?: boolean;
   priority?: boolean;
   width?: number;
 }) {
@@ -133,7 +131,6 @@ export function Photo({
         className="object-cover"
         style={position ? { objectPosition: position } : undefined}
       />
-      {tag ? <span className="yn-photo-tag">@theyaynews via {image.credit}</span> : null}
     </div>
   );
 }
@@ -311,6 +308,5 @@ export function Body({
   );
 }
 
-/** The byline a story carries in this paper: where it came from, and how long it takes. */
-export const byline = (s: { sourceName: string; readMinutes: number }) =>
-  `From ${s.sourceName} · ${s.readMinutes} min read`;
+/** The line a story carries in this paper: where it came from. */
+export const byline = (s: { sourceName: string }) => `From ${s.sourceName}`;

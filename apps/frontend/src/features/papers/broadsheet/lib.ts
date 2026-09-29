@@ -94,15 +94,88 @@ export const themeFor = (page: Pick<EditionPage, "layout" | "section">): Theme =
       ? "back"
       : (THEMES[page.section?.slug ?? ""] ?? "screen");
 
-/** The small word lettered into each page's zigzag rules, top to bottom. */
-export const RULE_WORDS: Record<Theme, [string, string, string]> = {
-  screen: ["now showing", "on repeat", "worth a look"],
-  gaming: ["press start", "next level", "save point"],
-  sports: ["kick-off", "half time", "full time"],
-  tech: ["switched on", "in beta", "shipped"],
-  discoveries: ["field notes", "under the lens", "eureka"],
-  money: ["good returns", "small change", "paid in full"],
-  internet: ["trending", "scroll on", "logged off"],
-  guest: ["today only", "a little extra", "that's all"],
-  back: ["the funnies", "puzzles", "small print"],
+// ——— Compositions ———
+// A real paper keeps its grid, type and inks and composes each page afresh around the day's
+// stories. Every page type has several compositions; which one a page gets is worked out from the
+// issue number, the page's place and section, and the shape of its stories, so consecutive days
+// differ, no two inside pages of one edition match, and an edition always prints the same way.
+
+const SLOT_RANK = { lead: 0, feature: 1, brief: 2 } as const;
+
+/** A page's stories as the paper sets them: the main story, the second, and the briefs. */
+export function storiesOf(stories: StoryItem[]) {
+  const sorted = [...stories].sort(
+    (a, b) => SLOT_RANK[a.slot] - SLOT_RANK[b.slot] || a.order - b.order,
+  );
+  const long = sorted.filter((s) => s.slot !== "brief");
+  const briefs = sorted.filter((s) => s.slot === "brief");
+  return { main: long[0] ?? null, second: long[1] ?? null, extra: long.slice(2), briefs };
+}
+
+const hash = (s: string) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+
+export const FRONT_COMPS = ["classic", "headline", "rail", "split", "poster"] as const;
+export type FrontComp = (typeof FRONT_COMPS)[number];
+
+/** The front page's composition: a different one each day, among those the lead suits. */
+export function frontComp(edition: Edition, page: EditionPage): FrontComp {
+  const { main } = storiesOf(page.stories);
+  const photo = Boolean(main?.images[0]);
+  const needsPhoto: FrontComp[] = ["classic", "split"];
+  for (let k = 0; k < FRONT_COMPS.length; k++) {
+    const c = FRONT_COMPS[(edition.issueNumber + k) % FRONT_COMPS.length]!;
+    if (photo || !needsPhoto.includes(c)) return c;
+  }
+  return "poster";
+}
+
+export const SECTION_COMPS = [
+  "rail",
+  "boxed",
+  "inset",
+  "side",
+  "picture",
+  "ticker",
+  "poster",
+] as const;
+export type SectionComp = (typeof SECTION_COMPS)[number];
+
+function fitsSection(c: SectionComp, page: EditionPage) {
+  const { main, second, briefs } = storiesOf(page.stories);
+  const photo = Boolean(main?.images[0]);
+  if (c === "picture" || c === "side") return photo;
+  if (c === "ticker") return briefs.length >= 2;
+  if (c === "boxed") return Boolean(second);
+  return true;
+}
+
+/** Compositions for every core inside page of an edition, keyed by page order. */
+export function sectionComps(edition: Edition): Map<number, SectionComp> {
+  const inside = [...edition.pages]
+    .filter((p) => p.layout === "section")
+    .sort((a, b) => a.order - b.order);
+  const used = new Set<SectionComp>();
+  const out = new Map<number, SectionComp>();
+  const n = SECTION_COMPS.length;
+  inside.forEach((p, i) => {
+    const start = (edition.issueNumber * 3 + i * 2 + hash(p.section?.slug ?? "")) % n;
+    const order = SECTION_COMPS.map((_, k) => SECTION_COMPS[(start + k) % n]!);
+    const pick =
+      order.find((c) => !used.has(c) && fitsSection(c, p)) ??
+      order.find((c) => !used.has(c)) ??
+      order[0]!;
+    used.add(pick);
+    out.set(p.order, pick);
+  });
+  return out;
+}
+
+/** The back page and the guest page each have two compositions, alternating day by day. */
+export const backComp = (edition: Edition): "strip-first" | "puzzles-first" =>
+  edition.issueNumber % 2 === 0 ? "strip-first" : "puzzles-first";
+
+export const guestComp = (edition: Edition, page: EditionPage): "cover" | "columns" => {
+  const { main } = storiesOf(page.stories);
+  // Guest sections come every other day, so alternate on every other issue.
+  return main?.images[0] && Math.floor(edition.issueNumber / 2) % 2 === 1 ? "cover" : "columns";
 };

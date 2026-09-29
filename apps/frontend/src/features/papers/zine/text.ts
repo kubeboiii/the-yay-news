@@ -1,4 +1,4 @@
-import type { Edition, Feature, StoryItem } from "@repo/shared";
+import type { Edition, Feature } from "@repo/shared";
 import type { EditionPage, Reading } from "../types";
 
 // Small, pure helpers the zine templates share: dates, folios, grounds, and the sizes of type that
@@ -46,31 +46,15 @@ export const pad2 = (n: number) => String(n).padStart(2, "0");
 
 export type Ground = "mint" | "pink" | "lilac" | "blue" | "butter" | "peach";
 
-// Each spread sits on its own pair of grounds. The mockup's sections keep theirs; the rest are
-// chosen so no spread repeats a neighbour's pair.
-const PAIRS: Record<string, [Ground, Ground]> = {
-  front: ["mint", "pink"],
-  back: ["butter", "peach"],
-  "screen-and-sound": ["pink", "lilac"],
-  gaming: ["blue", "butter"],
-  sports: ["mint", "peach"],
-  discoveries: ["butter", "mint"],
-  tech: ["lilac", "blue"],
-  money: ["peach", "lilac"],
-  "internet-and-culture": ["blue", "pink"],
-};
-const CYCLE: [Ground, Ground][] = [
-  ["lilac", "peach"],
-  ["peach", "blue"],
-  ["mint", "lilac"],
-  ["pink", "butter"],
-  ["blue", "mint"],
-  ["butter", "pink"],
-];
+// Each spread sits on its own pair of grounds. Which inks lead changes day to day: the pair is
+// picked from the six grounds by (issue, page order), stepping so neighbouring spreads never share
+// a pair and the same edition always prints the same way.
+const ORDER: Ground[] = ["mint", "pink", "lilac", "blue", "butter", "peach"];
 
-export function groundsFor(slug: string, order: number, guest = false): [Ground, Ground] {
-  if (guest) return ["lilac", "peach"];
-  return PAIRS[slug] ?? CYCLE[order % CYCLE.length]!;
+export function groundsFor(issue: number, order: number): [Ground, Ground] {
+  const i = (issue * 5 + order * 2) % 6;
+  const j = (i + 1 + ((issue + order) % 4)) % 6;
+  return [ORDER[i]!, ORDER[j === i ? (i + 1) % 6 : j]!];
 }
 
 /** The size (mm) that fits `text` on one line of `width` mm in the slab face, within bounds. */
@@ -94,17 +78,6 @@ export function ringSplit(text: string): [string, string, string] | null {
   return [text.slice(0, m.index), m[0], text.slice(m.index + m[0].length)];
 }
 
-/** A line worth pulling out of a story: the first quotation in its body that reads on its own. */
-export function pullQuote(stories: StoryItem[]): string | null {
-  for (const s of stories) {
-    for (const para of s.body) {
-      const m = /(?:^|[\s(])[“"‘]([^”"’]{18,150}?)[”"’](?=[\s.,;:!?)]|$)/.exec(para);
-      if (m?.[1]) return m[1].replace(/[,;:]$/, "");
-    }
-  }
-  return null;
-}
-
 export const features = <T extends Feature["type"]>(edition: Edition, type: T) =>
   edition.features
     .filter((f): f is Extract<Feature, { type: T }> => f.type === type)
@@ -116,7 +89,7 @@ export const feature = <T extends Feature["type"]>(edition: Edition, type: T) =>
 export const byOrder = <T extends { order: number }>(xs: T[]) =>
   [...xs].sort((a, b) => a.order - b.order);
 
-/** A teaser line for a page in the contents or on a "turn over" card. */
+/** The line the front-page index prints for a page: its main headline (the back: its puzzles). */
 export function teaseFor(edition: Edition, order: number): string {
   const page: EditionPage | undefined = edition.pages.find((p) => p.order === order);
   if (!page) return "";

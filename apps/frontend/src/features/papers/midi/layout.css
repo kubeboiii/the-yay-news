@@ -1,0 +1,616 @@
+/* =====================================================================================
+ * Midi Magazine · pages composed from real content
+ *
+ * Reading text is never smaller than 16px (17px on phones), at line-height 1.42, in columns of
+ * about 45–60 characters, in full-strength ink. Display type still scales with the sheet (--u);
+ * small furniture (kickers, bylines, folios) never drops below 11px.
+ * ===================================================================================== */
+
+/* --u is set on each sheet, so everything computed from it is set there too. */
+.m5 .print-sheet,
+.m5 .print-spread .print-sheet {
+  --read: max(16px, calc(var(--u) * 5.1));
+  --read-lh: 1.42;
+  --small: max(11px, calc(var(--u) * 3.2));
+}
+
+/* ---------- section colour: which pastel a page's ground and deeper ink come from ---------- */
+
+.m5k[data-ground="apricot"] {
+  --ground: var(--apricot);
+  --ground-deep: var(--apricot-deep);
+}
+.m5k[data-ground="lilac"] {
+  --ground: var(--lilac);
+  --ground-deep: var(--lilac-deep);
+}
+.m5k[data-ground="mint"] {
+  --ground: var(--mint);
+  --ground-deep: var(--mint-deep);
+}
+.m5k[data-ground="blush"] {
+  --ground: var(--blush);
+  --ground-deep: var(--rose);
+}
+.m5k[data-ground="butter"] {
+  --ground: var(--butter);
+  --ground-deep: var(--butter-deep);
+}
+.m5k[data-ground="powder"] {
+  --ground: var(--powder);
+  --ground-deep: var(--powder-deep);
+}
+.m5 .m5-ground {
+  background: var(--ground, var(--butter));
+}
+
+/* ---------- furniture floors ---------- */
+
+.m5 .m5-kicker,
+.m5 .m5-byline {
+  font-size: var(--small);
+}
+.m5 .m5-runhead,
+.m5 .m5-folio-line {
+  font-size: max(11px, calc(var(--u) * 2.8));
+}
+
+/* ---------- reading text ---------- */
+
+.m5 .m5-read {
+  font-size: var(--read);
+  line-height: var(--read-lh);
+  color: var(--ink);
+}
+.m5-read--2 {
+  columns: 2;
+  column-gap: calc(var(--u) * 6);
+  column-rule: calc(var(--u) * 0.25) solid var(--ink);
+}
+.m5-read p {
+  orphans: 2;
+  widows: 2;
+}
+.m5-drop::first-letter {
+  float: left;
+  font-family: var(--f-display), serif;
+  font-weight: 900;
+  font-size: calc(var(--read) * 3.3);
+  line-height: 0.8;
+  margin: 0.06em 0.08em 0 0;
+}
+
+/* A rubber stamp, inked unevenly and not quite straight. */
+.m5f-stamp {
+  flex: none;
+  width: fit-content;
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  font-size: max(12px, calc(var(--u) * 3.6));
+  line-height: 1;
+  letter-spacing: 0.04em;
+  border: calc(var(--u) * 0.55) solid var(--ink);
+  outline: calc(var(--u) * 0.25) solid var(--ink);
+  outline-offset: calc(var(--u) * 0.6);
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 2) calc(var(--u) * 1.1);
+  transform: rotate(-3deg);
+  --wear-size: 90%;
+}
+
+/* ---------- story heads ---------- */
+
+.m5k-head {
+  margin-bottom: calc(var(--u) * 4);
+}
+.m5k-headline {
+  margin: calc(var(--u) * 1.2) 0 calc(var(--u) * 2.2);
+  text-wrap: balance;
+}
+.m5k-dek {
+  font-style: italic;
+  font-size: max(15px, calc(var(--u) * 4.8));
+  line-height: 1.22;
+  margin-bottom: calc(var(--u) * 2.2);
+}
+.m5k-by {
+  margin-top: calc(var(--u) * 0.6);
+}
+.m5k-by--rule {
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 1.6);
+  margin-bottom: calc(var(--u) * 3.4);
+}
+
+.m5k-head--hero .m5k-headline {
+  font-weight: 800;
+  font-size: calc(var(--u) * 12.4);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+}
+.m5k-head--hero .m5-len-m {
+  font-size: calc(var(--u) * 11);
+}
+.m5k-head--hero .m5-len-l {
+  font-size: calc(var(--u) * 9.8);
+}
+.m5k-head--hero .m5-len-xl {
+  font-size: calc(var(--u) * 8.8);
+}
+.m5k-head--hero .m5k-dek {
+  font-size: max(16px, calc(var(--u) * 5.6));
+}
+.m5k-head--big .m5k-headline {
+  font-weight: 700;
+  font-size: calc(var(--u) * 9.6);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+.m5k-head--big .m5-len-l {
+  font-size: calc(var(--u) * 8.6);
+}
+.m5k-head--big .m5-len-xl {
+  font-size: calc(var(--u) * 7.8);
+}
+.m5k-head--mid .m5k-headline {
+  font-weight: 600;
+  font-size: calc(var(--u) * 7.2);
+  line-height: 1.04;
+}
+.m5k-head--mid .m5-len-l,
+.m5k-head--mid .m5-len-xl {
+  font-size: calc(var(--u) * 6.6);
+}
+.m5k-head--mid .m5k-dek {
+  font-size: max(15px, calc(var(--u) * 4.4));
+}
+.m5k-head--quiet .m5k-headline {
+  font-weight: 500;
+  font-style: italic;
+  font-size: calc(var(--u) * 10);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+.m5k-head--quiet .m5-len-l {
+  font-size: calc(var(--u) * 9);
+}
+.m5k-head--quiet .m5-len-xl {
+  font-size: calc(var(--u) * 8.2);
+}
+.m5k-head--quiet .m5k-dek {
+  font-style: normal;
+}
+
+/* ---------- photographs ---------- */
+
+.m5 .m5k-photo {
+  position: relative;
+  margin: 0;
+}
+.m5k-photo .m5-photo {
+  width: 100%;
+  aspect-ratio: var(--ar, 3 / 2);
+}
+.m5 .m5k-photo.m5-pasted {
+  position: relative;
+  inset: auto;
+  z-index: 2;
+}
+.m5k-photo--top {
+  --ar: 2 / 1;
+  margin-bottom: calc(var(--u) * 4.4) !important;
+}
+.m5k-photo--second {
+  --ar: 3 / 2;
+  margin-bottom: calc(var(--u) * 3.4) !important;
+}
+.m5k-photo--inset {
+  --ar: 4 / 3;
+  break-inside: avoid;
+  margin-bottom: calc(var(--u) * 3.4) !important;
+}
+.m5k-photo--inset.m5-pasted {
+  transform: rotate(-1.4deg);
+}
+.m5-pasted-tape {
+  top: calc(var(--u) * -3);
+  left: calc(var(--u) * 12);
+  transform: rotate(-6deg);
+}
+.m5k-inset-flow {
+  margin-top: calc(var(--u) * 0.5);
+}
+
+/* The main photograph bled off the top of the page, the section's name set over its lower edge. */
+.m5k-bleed {
+  position: relative;
+  flex: none;
+  height: calc(var(--u) * 96);
+}
+.m5k-bleed--tall {
+  height: calc(var(--u) * 150);
+}
+.m5k-bleed .m5-photo {
+  position: absolute;
+  inset: 0;
+}
+.m5k-bleed-sheet .m5-runhead {
+  display: none;
+}
+.m5k-edge {
+  --misreg: var(--ground-deep);
+  position: relative;
+  z-index: 4;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * var(--fs, 30));
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: calc(var(--u) * var(--fs, 30) * -0.62) calc(var(--u) * 10) 0;
+  text-wrap: balance;
+}
+.m5 .m5k-under-bleed {
+  padding-top: calc(var(--u) * 6);
+}
+
+/* ---------- section titles ---------- */
+
+.m5k-title--band {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 5);
+  flex-wrap: wrap;
+  background: var(--ground);
+  margin: calc(var(--u) * -3.4) calc(var(--u) * -12) calc(var(--u) * 6);
+  padding: calc(var(--u) * 3) calc(var(--u) * 12) calc(var(--u) * 2.4);
+  border-bottom: calc(var(--u) * 0.9) solid var(--ink);
+}
+.m5k-title--band .m5k-title-name {
+  font-weight: 900;
+  font-size: calc(var(--u) * 11);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.m5k-title--band .m5k-title-tag {
+  font-style: italic;
+  font-size: max(13px, calc(var(--u) * 4));
+}
+.m5k-title--huge {
+  margin-bottom: calc(var(--u) * 6);
+}
+.m5k-title--huge .m5k-title-name {
+  font-weight: 900;
+  font-size: calc(var(--u) * 22);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  margin-left: calc(var(--u) * -1.6);
+  text-wrap: balance;
+}
+.m5k-title--huge .m5k-title-tag {
+  font-style: italic;
+  font-size: max(15px, calc(var(--u) * 5));
+  margin-top: calc(var(--u) * 2);
+  border-bottom: calc(var(--u) * 0.9) solid var(--ink);
+  padding-bottom: calc(var(--u) * 2.4);
+}
+
+/* ---------- the main and second stories ---------- */
+
+.m5k-second--ruled {
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 6);
+}
+.m5k-second--ruled:first-child {
+  margin-top: 0;
+}
+.m5k-second--boxed {
+  background: var(--paper);
+  border: calc(var(--u) * 0.35) solid var(--ink);
+  padding: calc(var(--u) * 4.4) calc(var(--u) * 5) calc(var(--u) * 5);
+  margin: 0 calc(var(--u) * -2) calc(var(--u) * 6);
+  transform: rotate(-0.5deg);
+  box-shadow: 0 calc(var(--u) * 0.6) calc(var(--u) * 1.6) rgb(0 0 0 / 0.12);
+}
+
+/* Two columns of one measure each: a story beside the briefs. */
+.m5k-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: calc(var(--u) * 6);
+  align-items: start;
+}
+.m5k-two > * + * {
+  border-left: calc(var(--u) * 0.25) solid var(--ink);
+  padding-left: calc(var(--u) * 6);
+  margin-left: calc(var(--u) * -0.1);
+}
+.m5k-two > .m5k-second--ruled {
+  margin-top: 0;
+}
+
+/* ---------- In brief ---------- */
+
+.m5k-briefs-h {
+  font-weight: 700;
+  font-style: italic;
+  font-size: calc(var(--u) * 6.2);
+  line-height: 1;
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.25) solid var(--ink);
+  padding: calc(var(--u) * 1.8) 0 calc(var(--u) * 1.6);
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.m5k-brief-head {
+  font-weight: 600;
+  font-size: max(17px, calc(var(--u) * 5.4));
+  line-height: 1.08;
+  margin: calc(var(--u) * 0.8) 0 calc(var(--u) * 1.2);
+  text-wrap: balance;
+}
+.m5k-brief-dek {
+  font-style: italic;
+  font-size: max(15px, calc(var(--u) * 4.4));
+  line-height: 1.24;
+  margin-bottom: calc(var(--u) * 1);
+}
+.m5k-briefs li {
+  padding: calc(var(--u) * 1.6) 0 calc(var(--u) * 2.4);
+  break-inside: avoid;
+}
+.m5k-briefs li + li {
+  border-top: calc(var(--u) * 0.25) solid var(--ink);
+}
+.m5k-briefs--numbered li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 9) 1fr;
+  align-items: baseline;
+}
+.m5k-brief-n {
+  font-weight: 900;
+  font-size: calc(var(--u) * 9);
+  line-height: 0.9;
+}
+.m5k-briefs--strip ol {
+  columns: 2;
+  column-gap: calc(var(--u) * 6);
+  column-rule: calc(var(--u) * 0.25) solid var(--ink);
+}
+.m5k-briefs--strip li + li {
+  border-top: 0;
+}
+.m5k-briefs--strip li {
+  padding-top: 0;
+}
+.m5 .m5k-foot {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 7);
+}
+
+/* ---------- guest ---------- */
+
+.m5 .m5q-butter {
+  background: var(--butter);
+}
+.m5q-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: calc(var(--u) * 8);
+}
+.m5 .m5q-stamp {
+  transform: rotate(-2deg);
+}
+.m5q-title {
+  font-weight: 700;
+  font-style: italic;
+  font-size: calc(var(--u) * var(--fs, 18));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-top: calc(var(--u) * 5);
+  text-wrap: balance;
+}
+.m5q-tagline {
+  font-style: italic;
+  font-size: max(15px, calc(var(--u) * 4.8));
+  line-height: 1.16;
+  margin-top: calc(var(--u) * 2.4);
+  max-width: calc(var(--u) * 150);
+}
+.m5q-rules {
+  width: calc(var(--u) * 60);
+  height: calc(var(--u) * 2.2);
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.25) solid var(--ink);
+  margin-top: calc(var(--u) * 5);
+}
+.m5 .m5q-photo {
+  width: 92%;
+  transform: rotate(1.4deg);
+  margin: calc(var(--u) * 2) 0 calc(var(--u) * 7) calc(var(--u) * 3);
+}
+
+/* ---------- phone ---------- */
+
+@container (max-width: 760px) {
+  .m5 .print-sheet,
+  .m5 .print-spread .print-sheet {
+    --read: 17px;
+    --small: 13px;
+  }
+  .m5 .m5-runhead,
+  .m5 .m5-folio-line {
+    font-size: 13px;
+  }
+  .m5-read--2,
+  .m5k-briefs--strip ol {
+    columns: 1;
+  }
+  .m5-drop::first-letter {
+    font-size: 58px;
+  }
+  .m5f-stamp {
+    font-size: 15px;
+    border-width: 2px;
+    outline-width: 1px;
+    outline-offset: 2px;
+    padding: 3px 8px 5px;
+  }
+  .m5k-head {
+    margin-bottom: 16px;
+  }
+  .m5k-dek,
+  .m5k-head--mid .m5k-dek {
+    font-size: 19px;
+  }
+  .m5 .m5k-head--hero .m5k-headline,
+  .m5 .m5k-head--hero .m5-len-m {
+    font-size: 36px;
+  }
+  .m5 .m5k-head--hero .m5-len-l,
+  .m5 .m5k-head--hero .m5-len-xl,
+  .m5 .m5k-head--big .m5k-headline,
+  .m5 .m5k-head--quiet .m5k-headline {
+    font-size: 30px;
+  }
+  .m5 .m5k-head--big .m5-len-l,
+  .m5 .m5k-head--big .m5-len-xl,
+  .m5 .m5k-head--quiet .m5-len-l,
+  .m5 .m5k-head--quiet .m5-len-xl {
+    font-size: 28px;
+  }
+  .m5 .m5k-head--mid .m5k-headline {
+    font-size: 25px;
+  }
+  .m5k-head--hero .m5k-dek {
+    font-size: 20px;
+  }
+  .m5k-by--rule {
+    border-top-width: 3px;
+    padding-top: 8px;
+    margin-bottom: 14px;
+  }
+  .m5k-photo--top,
+  .m5k-photo--inset,
+  .m5k-photo--second {
+    --ar: 3 / 2;
+    margin-bottom: 18px !important;
+  }
+  .m5k-bleed,
+  .m5k-bleed--tall {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin: -40px -18px 0;
+  }
+  .m5 .m5k-edge {
+    font-size: calc(100cqw * 0.13);
+    margin: -0.55em 0 0;
+  }
+  .m5 .m5k-under-bleed {
+    padding-top: 20px;
+  }
+  .m5k-title--band {
+    margin: -8px -18px 20px;
+    padding: 12px 18px 10px;
+    border-bottom-width: 3px;
+  }
+  .m5 .m5k-title--band .m5k-title-name {
+    font-size: 36px;
+  }
+  .m5k-title--band .m5k-title-tag {
+    font-size: 16px;
+  }
+  .m5 .m5k-title--huge .m5k-title-name {
+    font-size: calc(100cqw * 0.15);
+  }
+  .m5k-title--huge .m5k-title-tag {
+    font-size: 18px;
+    border-bottom-width: 3px;
+    padding-bottom: 10px;
+  }
+  .m5k-second--ruled {
+    border-top-width: 3px;
+    padding-top: 12px;
+    margin-top: 30px;
+  }
+  .m5k-second--boxed {
+    padding: 18px 16px 20px;
+    margin: 0 0 30px;
+  }
+  .m5k-two {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .m5k-two > * + * {
+    border-left: 0;
+    padding-left: 0;
+    margin-left: 0;
+    border-top: 3px solid var(--ink);
+    padding-top: 12px;
+  }
+  .m5k-two > .m5k-briefs {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .m5k-briefs-h {
+    font-size: 24px;
+    border-top-width: 3px;
+    padding: 8px 0 6px;
+    margin-bottom: 10px;
+  }
+  .m5k-brief-head {
+    font-size: 21px;
+  }
+  .m5k-brief-dek {
+    font-size: 17px;
+  }
+  .m5k-briefs li {
+    padding: 10px 0 14px;
+  }
+  .m5k-briefs--strip li + li {
+    border-top: 1px solid var(--ink);
+  }
+  .m5k-briefs--numbered li {
+    grid-template-columns: 34px 1fr;
+  }
+  .m5k-brief-n {
+    font-size: 30px;
+  }
+  .m5 .m5k-foot {
+    padding-top: 30px;
+  }
+  .m5 .m5q-title {
+    font-size: calc(100cqw * 0.11);
+    margin-top: 18px;
+  }
+  .m5q-tagline {
+    font-size: 18px;
+  }
+  .m5q-rules {
+    width: 120px;
+    height: 8px;
+    border-top-width: 2px;
+    border-bottom-width: 1px;
+    margin-top: 18px;
+  }
+  .m5q-head {
+    margin-bottom: 26px;
+  }
+  .m5 .m5q-photo {
+    width: 100%;
+    margin: 0 0 24px;
+  }
+}
+
+/* A quiet page's photograph stands taller in its column. */
+.m5k-head--quiet + .m5k-inset-flow .m5k-photo--inset {
+  --ar: 4 / 5;
+}
+
+/* One brief in a strip runs on across both columns. */
+.m5k-briefs--strip[data-count="1"] li {
+  break-inside: auto;
+}

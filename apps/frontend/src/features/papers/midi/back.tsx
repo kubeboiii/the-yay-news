@@ -1,10 +1,9 @@
 import type { Edition, Puzzle, SolvedPuzzle } from "@repo/shared";
-import Link from "next/link";
 import type { CSSProperties } from "react";
-import { Burst } from "@/features/print/burst";
 import { Mark } from "@/features/print/mark";
 import type { PageProps } from "../types";
-import { feature, features, Folio, spreadNumbers, splitSignOff } from "./print";
+import { backComposition } from "./compose";
+import { feature, features, Folio, longDate, spreadNumbers, splitSignOff } from "./print";
 
 // The back page prints as the closing spread: puzzles on lilac (left) and the back page on paper
 // (right) — comic, corrections, letters, classifieds, word of the day — with the sign-off set once
@@ -160,7 +159,6 @@ function Comic({ comic }: { comic: { title: string; panels: string[] } }) {
         <h2 id="m5b-comic" className="m5-display m5b-h">
           {comic.title}
         </h2>
-        <p className="m5-credit">A strip in {panels.length} panels, drawn in words</p>
       </div>
       <ol className="m5b-panels" style={{ "--panels": panels.length } as CSSProperties}>
         {panels.map((p, i) => (
@@ -203,142 +201,147 @@ export function Back({ edition, reading }: PageProps) {
   const boxed = classifieds.length > 2 ? classifieds[classifieds.length - 1] : null;
   const ads = boxed ? classifieds.slice(0, -1) : classifieds;
 
+  const composition = backComposition(edition);
+  const puzzlesFirst = composition === "puzzles-left";
+  const [pz, bk] = puzzlesFirst ? [left, right] : [right, left];
+  const bye1 = (
+    <p className="m5-display m5-cross m5b-bye" style={byeStyle}>
+      {bye}
+    </p>
+  );
+  const bye2 = (
+    <p className="m5-display m5-cross m5-cross--r m5b-bye" style={byeStyle} aria-hidden>
+      {bye}
+    </p>
+  );
+
+  const puzzles = (
+    <article
+      className="print-sheet print-sheet--bright m5-sheet-flow m5b-left"
+      aria-label={`Page ${pz}`}
+      key="puzzles"
+    >
+      <Folio page={pz} section="Puzzles" date={edition.date} />
+      {puzzlesFirst ? null : bye2}
+      <div className="m5-page-flow m5b-page">
+        <h1 className="m5-display m5b-title">Puzzles</h1>
+        {crossword ? <Crossword data={crossword} /> : null}
+        <div className="m5b-row">
+          {ladder ? <Ladder data={ladder} /> : null}
+          <div className="m5b-row-r">
+            {riddle ? (
+              <section className="m5b-riddle" aria-labelledby="m5b-riddle">
+                <h2 id="m5b-riddle" className="m5-display m5b-h">
+                  {riddle.title}
+                </h2>
+                <p className="m5-display m5b-riddle-q">{riddle.question}</p>
+                <p className="m5b-answer">The answer is in tomorrow’s paper.</p>
+              </section>
+            ) : null}
+            <Yesterday edition={edition} />
+          </div>
+        </div>
+      </div>
+      {puzzlesFirst ? bye1 : <SignOff after={after} edition={edition} />}
+    </article>
+  );
+
+  const backPage = (
+    <article
+      className="print-sheet print-sheet--bright m5-sheet-flow m5b-right"
+      aria-label={`Page ${bk}`}
+      key="back"
+    >
+      <Folio page={bk} section="The back page" date={edition.date} />
+      {puzzlesFirst ? bye2 : null}
+      <div className="m5-page-flow m5b-page">
+        {comic ? <Comic comic={comic} /> : null}
+        <div className="m5b-lower">
+          <div className="m5b-col">
+            {corrections.length ? (
+              <section className="m5b-corrections" aria-labelledby="m5b-corrections">
+                <h2 id="m5b-corrections" className="m5-display m5b-h">
+                  Corrections
+                </h2>
+                <div className="m5-body m5-read m5-read--1">
+                  {corrections.map((c, i) => (
+                    <p key={i}>{c.text}</p>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+            {letters.length ? (
+              <section className="m5b-letters" aria-labelledby="m5b-letters">
+                <h2 id="m5b-letters" className="m5-display m5b-h">
+                  Letters
+                </h2>
+                {letters.map((l, i) => (
+                  <blockquote key={i} className="m5b-letter">
+                    <p>{l.text}</p>
+                    <cite className="m5-byline">{l.from}</cite>
+                  </blockquote>
+                ))}
+              </section>
+            ) : null}
+            {word ? (
+              <section className="m5b-word" aria-labelledby="m5b-word">
+                <h2 id="m5b-word" className="m5b-word-label">
+                  Word of the day
+                </h2>
+                <p className="m5-display m5b-word-word">{word.word}</p>
+                <p className="m5b-word-say">{word.pronunciation}</p>
+                <p className="m5b-word-means">{word.meaning}</p>
+                <p className="m5b-word-eg">“{word.example}”</p>
+              </section>
+            ) : null}
+          </div>
+          {classifieds.length ? (
+            <section
+              className="m5b-col m5b-col--wide m5b-classifieds"
+              aria-labelledby="m5b-classifieds"
+            >
+              <h2 id="m5b-classifieds" className="m5-display m5b-h">
+                Classifieds
+              </h2>
+              <div className="m5b-ads">
+                {ads.map((ad, i) => (
+                  <p key={i}>
+                    <b>{ad.heading.toLowerCase()}.</b> {ad.text}
+                  </p>
+                ))}
+                {boxed ? (
+                  <p className="m5b-ad-boxed print-worn">
+                    <b>{boxed.heading.toLowerCase()}.</b> {boxed.text}
+                  </p>
+                ) : null}
+              </div>
+            </section>
+          ) : null}
+        </div>
+      </div>
+      {puzzlesFirst ? <SignOff after={after} edition={edition} /> : bye1}
+    </article>
+  );
+
   return (
     <div className="print-sheet-wrap">
-      <div className="print-spread">
-        {/* ---------------- The puzzles, on lilac ---------------- */}
-        <article
-          className="print-sheet print-sheet--bright m5-sheet-flow m5b-left"
-          aria-label={`Page ${left}`}
-        >
-          <Folio page={left} section="Puzzles" date={edition.date} />
-          <p className="m5b-stand">Pencils out. Ten minutes, tops, and nobody is timing you.</p>
-          <div className="m5-page-flow m5b-page">
-            <h1 className="m5-display m5b-title">Puzzles</h1>
-            {crossword ? <Crossword data={crossword} /> : null}
-            <div className="m5b-row">
-              {ladder ? <Ladder data={ladder} /> : null}
-              <div className="m5b-row-r">
-                {riddle ? (
-                  <section className="m5b-riddle" aria-labelledby="m5b-riddle">
-                    <h2 id="m5b-riddle" className="m5-display m5b-h">
-                      {riddle.title}
-                    </h2>
-                    <p className="m5-display m5b-riddle-q">{riddle.question}</p>
-                    <p className="m5b-answer">Answer in tomorrow’s paper, printed upside down.</p>
-                  </section>
-                ) : null}
-                <Yesterday edition={edition} />
-              </div>
-            </div>
-          </div>
-          <p className="m5-display m5-cross m5b-bye" style={byeStyle}>
-            {bye}
-          </p>
-        </article>
-
-        {/* ---------------- The back page ---------------- */}
-        <article
-          className="print-sheet print-sheet--bright m5-sheet-flow m5b-right"
-          aria-label={`Page ${right}`}
-        >
-          <Folio page={right} section="The back page" date={edition.date} />
-          <p className="m5-display m5-cross m5-cross--r m5b-bye" style={byeStyle} aria-hidden>
-            {bye}
-          </p>
-          <div className="m5-page-flow m5b-page">
-            {comic ? <Comic comic={comic} /> : null}
-
-            <div className="m5b-lower">
-              <div className="m5b-col">
-                {corrections.length ? (
-                  <section className="m5b-corrections" aria-labelledby="m5b-corrections">
-                    <h2 id="m5b-corrections" className="m5-display m5b-h">
-                      Corrections
-                    </h2>
-                    <div className="m5-body">
-                      {corrections.map((c, i) => (
-                        <p key={i}>{c.text}</p>
-                      ))}
-                    </div>
-                  </section>
-                ) : null}
-                {letters.length ? (
-                  <section className="m5b-letters" aria-labelledby="m5b-letters">
-                    <h2 id="m5b-letters" className="m5-display m5b-h">
-                      Letters
-                    </h2>
-                    {letters.map((l, i) => (
-                      <blockquote key={i} className="m5b-letter">
-                        <p>{l.text}</p>
-                        <cite className="m5-byline">{l.from}</cite>
-                      </blockquote>
-                    ))}
-                  </section>
-                ) : null}
-              </div>
-
-              <div className="m5b-col m5b-col--wide">
-                {classifieds.length ? (
-                  <section className="m5b-classifieds" aria-labelledby="m5b-classifieds">
-                    <h2 id="m5b-classifieds" className="m5-display m5b-h">
-                      Classifieds
-                    </h2>
-                    <p className="m5b-small m5b-class-sub">
-                      Small ads, free to place and kind to read.
-                    </p>
-                    <div className="m5b-ads">
-                      {ads.map((ad, i) => (
-                        <p key={i}>
-                          <b>{ad.heading.toLowerCase()}.</b> {ad.text}
-                        </p>
-                      ))}
-                      {boxed ? (
-                        <p className="m5b-ad-boxed print-worn">
-                          <b>{boxed.heading.toLowerCase()}.</b> {boxed.text}
-                        </p>
-                      ) : null}
-                    </div>
-                  </section>
-                ) : null}
-                {word ? (
-                  <section className="m5b-word" aria-labelledby="m5b-word">
-                    <h2 id="m5b-word" className="m5b-word-label">
-                      Word of the day
-                    </h2>
-                    <p className="m5-display m5b-word-word">{word.word}</p>
-                    <p className="m5b-word-say">{word.pronunciation}</p>
-                    <p className="m5b-word-means">{word.meaning}</p>
-                    <p className="m5b-word-eg">“{word.example}”</p>
-                  </section>
-                ) : null}
-              </div>
-            </div>
-          </div>
-
-          <div className="m5b-signoff">
-            <p className="m5b-tomorrow">{after || "See you tomorrow."}</p>
-            <p className="m5b-colophon">
-              The Yay News, Vol. {edition.volume}, No. {edition.issueNumber}. Every story is from a
-              real source, credited on its own page; every photograph is credited where it sits.{" "}
-              <Link href={reading.pages[0]?.href ?? "/"}>Back to the front page</Link>.
-            </p>
-          </div>
-          <Burst
-            fill="var(--rose)"
-            points={12}
-            depth={0.14}
-            wobble={1}
-            className="m5b-sticker print-worn"
-          >
-            <p className="m5-display m5b-sticker-text">
-              All good
-              <br />
-              news
-            </p>
-          </Burst>
-        </article>
+      <div
+        className={`print-spread m5b-spread m5b-spread--${composition}`}
+        data-composition={composition}
+      >
+        {puzzlesFirst ? [puzzles, backPage] : [backPage, puzzles]}
       </div>
+    </div>
+  );
+}
+
+function SignOff({ after, edition }: { after: string; edition: Edition }) {
+  return (
+    <div className="m5b-signoff">
+      <p className="m5b-tomorrow">{after || "See you tomorrow."}</p>
+      <p className="m5b-colophon">
+        The Yay News · Vol. {edition.volume}, No. {edition.issueNumber} · {longDate(edition.date)}
+      </p>
     </div>
   );
 }

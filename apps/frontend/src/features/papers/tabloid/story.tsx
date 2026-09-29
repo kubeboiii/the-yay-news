@@ -3,7 +3,17 @@ import { Mark } from "@/features/print/mark";
 import { pageHref } from "../reading";
 import type { StoryProps } from "../types";
 import { folioDate, issueLine, longDate } from "./edition-data";
-import { Body, Folio, MiniMark, Photo, Sheet, Sticker, fit, themeFor } from "./parts";
+import {
+  Body,
+  Folio,
+  MiniMark,
+  Photo,
+  Sheet,
+  Sticker,
+  fit,
+  printedCredit,
+  themeFor,
+} from "./parts";
 import { PlateWord, Source, fs } from "./story-bits";
 
 // A story's own page: the story cut out of the tabloid and laid on the desk by itself — the same
@@ -12,6 +22,7 @@ import { PlateWord, Source, fs } from "./story-bits";
 export function Story({ data, links }: StoryProps) {
   const { story, edition, page } = data;
   const image = story.images[0];
+  const credit = image ? printedCredit(image) : null;
   const section = page.section?.name ?? (page.layout === "front" ? "Front page" : "The back page");
   const date = folioDate(edition.date);
 
@@ -70,17 +81,11 @@ export function Story({ data, links }: StoryProps) {
       <section className="tb-band tb-cut-band" aria-label="The story">
         <div className="tb-col">
           <div
-            className={`tb-body ${story.body.join(" ").length > 500 ? "tb-story-cols" : "tb-cut-narrow"}`}
+            className={`tb-body ${story.body.join(" ").length > 900 ? "tb-flow" : "tb-cut-narrow"}`}
           >
             <Body paragraphs={story.body} dropcap />
-            <Source
-              story={story}
-              extra={
-                image
-                  ? `${image.kind === "illustration" ? "Illustration" : "Photo"}: ${image.credit} · ${image.licence}`
-                  : undefined
-              }
-            />
+            <Source story={story} />
+            {credit ? <p className="tb-image-credit">{credit}</p> : null}
           </div>
         </div>
       </section>
@@ -110,7 +115,7 @@ export function Story({ data, links }: StoryProps) {
         )}
       </nav>
 
-      <Folio page={page.order} section={section} date={date} issue={issueLine(edition)} />
+      <Folio page={page.order} section={section} date={date} />
     </Sheet>
   );
 }

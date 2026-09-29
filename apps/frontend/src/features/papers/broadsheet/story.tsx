@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Mark } from "@/features/print/mark";
 import type { StoryProps } from "../types";
 import { isLong, longDate, shortDate, themeFor, weekday } from "./lib";
 import { Body, Photo, Ringed, Sticker, Zigzag } from "./parts";
@@ -53,7 +52,7 @@ export function Story({ data, links }: StoryProps) {
           </div>
         </header>
 
-        <Zigzag word="the whole story" />
+        <Zigzag />
 
         <section className={`bs-story-top ${image ? "" : "bs-story-top--type"}`}>
           <div className="bs-story-head">
@@ -81,18 +80,15 @@ export function Story({ data, links }: StoryProps) {
               width={2000}
             />
             <figcaption className="yn-caption">
-              {image.alt}.{" "}
-              <span className="yn-credit">
-                Photo: {image.credit} ·{" "}
-                <a href={image.licenceUrl} className="bs-link bs-link-under" rel="license">
-                  {image.licence}
-                </a>
-              </span>
+              {image.alt}
+              {image.licence === "Credited to its source" ? (
+                <span className="bs-credit">Image: {image.credit}</span>
+              ) : null}
             </figcaption>
           </figure>
         ) : null}
 
-        <Zigzag word="read on" />
+        <Zigzag />
 
         <section className="bs-story-main">
           <Body
@@ -147,11 +143,10 @@ export function Story({ data, links }: StoryProps) {
                 </Link>
               </p>
             </div>
-            <Mark name="stars-06" className="bs-story-stars" />
           </aside>
         </section>
 
-        <Zigzag word="turn the page" />
+        <Zigzag word="more stories" />
 
         <nav className="bs-story-nav" aria-label="More stories">
           {links.prev ? (
@@ -178,8 +173,8 @@ export function Story({ data, links }: StoryProps) {
             </Link>
           ) : (
             <Link href={links.edition} className="bs-story-turn bs-story-turn--next bs-link">
-              <span className="yn-label">That was the last one</span>
-              <span className="yn-chunk yn-hed-sm">You&rsquo;re done. See you tomorrow</span>
+              <span className="yn-label">The last story</span>
+              <span className="yn-chunk yn-hed-sm">Back to the front page</span>
             </Link>
           )}
         </nav>
@@ -189,7 +184,7 @@ export function Story({ data, links }: StoryProps) {
             Page {page.order} · The Yay News · {shortDate(edition.date)}
           </span>
           <span className="yn-hand">{from}</span>
-          <span>Cut out and keep</span>
+          <span>No. {edition.issueNumber}</span>
         </footer>
       </article>
     </div>

@@ -189,10 +189,14 @@ export function MiniMark({
   );
 }
 
-export const creditLine = (image: ImageData) =>
-  `${image.kind === "illustration" ? "Illustration" : "Photo"}: ${image.credit}`;
+/**
+ * The one credit the paper prints: on a story's own page, for a picture taken from a real
+ * article. Pool and sample pictures carry their credit in their metadata only.
+ */
+export const printedCredit = (image: ImageData) =>
+  image.licence === "Credited to its source" ? `Image: ${image.credit}` : null;
 
-/** A photograph printed onto the stock, with its credit set in the corner. */
+/** A photograph printed onto the stock. */
 export function Photo({
   image,
   sizes,
@@ -200,7 +204,6 @@ export function Photo({
   className,
   position,
   priority,
-  creditSide = "right",
   children,
 }: {
   image: ImageData;
@@ -209,7 +212,6 @@ export function Photo({
   className?: string;
   position?: string;
   priority?: boolean;
-  creditSide?: "left" | "right";
   children?: ReactNode;
 }) {
   return (
@@ -224,7 +226,6 @@ export function Photo({
         style={position ? { objectPosition: position } : undefined}
       />
       {children}
-      <figcaption className={`tb-credit tb-credit-${creditSide}`}>{creditLine(image)}</figcaption>
     </figure>
   );
 }
@@ -274,16 +275,17 @@ export function Sticker({
   );
 }
 
+/** The folio: page, paper and date; the section; and, at most, one line to the next page. */
 export function Folio({
   page,
   section,
   date,
-  issue,
+  next,
 }: {
   page: number;
   section: string;
   date: string;
-  issue: string;
+  next?: { href: string; label: string; order: number } | null;
 }) {
   return (
     <footer className="tb-folio">
@@ -291,7 +293,13 @@ export function Folio({
         Page {page} · The Yay News · {date}
       </span>
       <span className="tb-folio-mid">{section}</span>
-      <span>{issue} · printed on bright white · good news only</span>
+      {next ? (
+        <Link href={next.href} className="tb-folio-next">
+          Next: {next.label}, p.{next.order} →
+        </Link>
+      ) : (
+        <span />
+      )}
     </footer>
   );
 }

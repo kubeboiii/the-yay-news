@@ -6,7 +6,8 @@ import { sectionSchema } from "./section.ts";
 // ——— Stories and images ———
 
 export const imageSchema = z.object({
-  url: z.url(),
+  /** An absolute URL, or a path on the site itself (e.g. "/editions/42/octopus.jpg"). */
+  url: z.union([z.url(), z.string().regex(/^\/[^\s]+$/)]),
   alt: z.string(),
   credit: z.string(),
   licence: z.string(),

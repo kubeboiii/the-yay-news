@@ -21,9 +21,18 @@ export type SeedStory = {
   /** Defaults to one minute per 200 words, at least one. */
   readMinutes?: number;
   sticker?: string;
-  /** Name of the (fictional) source. Its URL is generated under example.com. */
+  /** Name of the source. */
   source: string;
+  /** The real article this story is based on; without one, a sample URL under example.com. */
+  sourceUrl?: string;
+  /** A photo from the shared Unsplash pool (photos.ts)… */
   photo?: PhotoKey | [PhotoKey, number];
+  /**
+   * …or an image fetched for this story with apps/frontend/scripts/fetch_image.py, which saves a
+   * pressed copy under apps/frontend/public/editions/. `file` is its site path; `from` is the page
+   * the image came from.
+   */
+  image?: { file: string; alt: string; credit: string; from: string };
   embedUrl?: string;
   reserve?: boolean;
 };

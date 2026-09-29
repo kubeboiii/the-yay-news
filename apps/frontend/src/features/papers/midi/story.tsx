@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { Mark } from "@/features/print/mark";
-import { pageHref } from "../reading";
 import type { StoryProps } from "../types";
 import {
-  credit,
+  articleCredit,
   Folio,
   groundFor,
   lengthClass,
@@ -11,18 +9,16 @@ import {
   minutes,
   pageNumber,
   PrintPhoto,
-  pullQuote,
 } from "./print";
 
 /**
  * A story's own page: the story cut out of the magazine and printed on a single sheet — kicker,
- * headline, standfirst, byline, photograph with credit, the full text with a drop cap, a pull
- * quote, the source, and the way back into the edition.
+ * headline, standfirst, byline, photograph, the full text with a drop cap, the source (with the
+ * one tiny image credit, for pictures taken from a real article) and the way back into the edition.
  */
 export function Story({ data, links }: StoryProps) {
   const { story, edition, page } = data;
   const [image, ...more] = story.images;
-  const said = pullQuote(story.body);
   const [first, ...rest] = story.body;
   const section = story.section.name;
   // The page the story sits on (see pageNumber): the front's stories are on page 2, an inside
@@ -46,7 +42,6 @@ export function Story({ data, links }: StoryProps) {
             <span className="m5-kicker">
               {section} · {story.kicker}
             </span>
-            {story.sticker ? <span className="m5t-sticker">{story.sticker}</span> : null}
           </p>
 
           <h1 className={`m5-display m5t-head ${lengthClass(story.headline, [44, 72, 100])}`}>
@@ -68,9 +63,9 @@ export function Story({ data, links }: StoryProps) {
                 className="m5t-photo"
                 sizes="(max-width: 760px) 100vw, 800px"
               />
-              <figcaption className="m5-caption">
-                {image.alt}. <span className="m5-credit">{credit(image)}</span>
-              </figcaption>
+              {articleCredit(image) ? (
+                <figcaption className="m5t-credit">{articleCredit(image)}</figcaption>
+              ) : null}
             </figure>
           ) : (
             <div className="m5t-rule" aria-hidden />
@@ -78,23 +73,19 @@ export function Story({ data, links }: StoryProps) {
 
           <div className="m5t-text">
             <div className="m5-body m5t-body">
-              {first ? <p className="m5f-drop">{first}</p> : null}
+              {first ? <p className="m5-drop">{first}</p> : null}
               {rest.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </div>
             <aside className="m5t-side">
-              {said ? (
-                <blockquote className="m5-display m5t-pull">
-                  “{said}”
-                  <Mark name="brush-03" ink="var(--apricot-deep)" className="m5t-pull-mark" />
-                </blockquote>
-              ) : null}
               {more.map((img) => (
                 <figure key={img.url} className="m5-pasted print-print m5t-more">
                   <PrintPhoto image={img} sizes="(max-width: 760px) 90vw, 260px" />
                   <span className="print-tape m5-pasted-tape" aria-hidden />
-                  <figcaption className="m5-credit">{credit(img)}</figcaption>
+                  {articleCredit(img) ? (
+                    <figcaption className="m5t-credit">{articleCredit(img)}</figcaption>
+                  ) : null}
                 </figure>
               ))}
               <div className="m5t-source">
@@ -133,17 +124,7 @@ export function Story({ data, links }: StoryProps) {
                   </span>
                   <span className="m5-display m5t-turn-head">{links.next.headline}</span>
                 </Link>
-              ) : (
-                <Link
-                  href={pageHref(edition.issueNumber, "back")}
-                  className="m5t-turn m5t-turn--next"
-                >
-                  <span className="m5t-turn-label">
-                    That was the last story <span aria-hidden>→</span>
-                  </span>
-                  <span className="m5-display m5t-turn-head">On to the puzzles</span>
-                </Link>
-              )}
+              ) : null}
             </div>
           </nav>
         </div>

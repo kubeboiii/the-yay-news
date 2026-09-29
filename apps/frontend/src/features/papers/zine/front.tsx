@@ -1,313 +1,324 @@
+import type { Edition, StoryItem } from "@repo/shared";
 import Link from "next/link";
-import { Burst } from "@/features/print/burst";
-import type { PageProps } from "../types";
-import {
-  Anno,
-  Body,
-  Byline,
-  Credit,
-  Folio,
-  Head,
-  OnFold,
-  Page,
-  Print,
-  printNote,
-  ReadOn,
-  Ringed,
-  RunningHead,
-  Spread,
-  Zig,
-} from "./parts";
+import { Fragment, type ReactNode } from "react";
+import type { PageProps, Reading } from "../types";
+import { StoryBlock, type HeadSize, type StoryVariant } from "./blocks";
+import { frontComposition, storyMM, type FrontComposition } from "./compose";
+import { Folio, Page, RunningHead, Spread, Zig } from "./parts";
 import {
   byOrder,
   feature,
   fitSize,
   folios,
-  headSize,
   longDate,
   pad2,
   shortDate,
   teaseFor,
   weekday,
+  type Ground,
 } from "./text";
 
-/** The front prints the lead's opening paragraphs and jumps to its own page for the rest. */
-function frontCut(body: string[], budget = 500): string[] {
-  const out: string[] = [];
-  let used = 0;
-  for (const para of body) {
-    if (out.length && used + para.length > budget) break;
-    out.push(para);
-    used += para.length;
-  }
-  return out;
-}
-
-/**
- * The front route prints the first spread: the cover (masthead, spec table, number of the day and
- * weather, and a teaser print from inside) on the left, and page 2 (the lead story and "Inside
- * today") on the right.
+/*
+ * The front route prints the first spread (mini pages 1 and 2): the masthead, the edition's facts
+ * (Vol. · No., date, weather, number of the day), the lead and the two other front stories — each in
+ * full — and the one "Inside today" index. Three compositions rotate by issue (compose.ts), so
+ * consecutive days never share a front:
+ *
+ *   cover  — the tall stacked wood-type masthead on page 1; the lead under a taped print on page 2
+ *   banner — a one-line masthead with the lead beneath it (picture after its opening paragraph)
+ *            on page 1; a boxed story, a floated one and a stepped index on page 2
+ *   poster — a one-line masthead with the stepped index on page 1; the lead on page 2 under a
+ *            big two-line head, its print floated into the text
+ *
+ * Every story prints in full; the other stories and the index go to whichever page is shorter.
  */
+
+type Block = { key: string; mm: number; node: ReactNode };
+
 export function Front({ edition, page, reading }: PageProps) {
-  const [lead, ...others] = byOrder(page.stories);
-  const number = feature(edition, "number_of_day");
-  const weather = feature(edition, "weather");
+  const [lead, a, b, ...more] = byOrder(page.stories);
+  const comp = frontComposition(edition);
   const date = shortDate(edition.date);
-  const [, right] = folios(reading, page.order);
-  const day = weekday(edition.date);
-  const weekend = day === "Saturday" || day === "Sunday";
+  const [lf, rf] = folios(reading, page.order);
+  const next = reading.next ? { ...reading.next, n: folios(reading, reading.next.order)[0] } : null;
+  const href = reading.storyHref;
+  const indexRows = Math.ceil(reading.pages.filter((p) => p.slug !== "").length / 2);
 
-  // The cover's teaser: the first inside story with a picture, else the first inside story.
-  const inside = byOrder(edition.pages).filter((p) => p.layout !== "front" && p.layout !== "back");
-  const insideStories = inside.flatMap((p) => byOrder(p.stories).map((s) => ({ s, p })));
-  const teaser = insideStories.find(({ s }) => s.images.length > 0) ?? insideStories[0] ?? null;
-  const teaserFolio = teaser ? folios(reading, teaser.p.order)[0] : null;
-  const teaserImage = teaser?.s.images[0] ?? null;
+  const story = (
+    s: StoryItem | undefined,
+    variant: StoryVariant,
+    size: HeadSize,
+    extra: Partial<Parameters<typeof StoryBlock>[0]> = {},
+  ): Block[] =>
+    s
+      ? [
+          {
+            key: s.slug,
+            mm:
+              storyMM(
+                { ...s, body: extra.cut ? s.body.slice(0, extra.cut) : s.body },
+                variant,
+                size,
+              ) + 10,
+            node: (
+              <StoryBlock
+                key={s.slug}
+                story={s}
+                href={href(s.slug)}
+                variant={variant}
+                size={size}
+                className="zc-second"
+                {...extra}
+              />
+            ),
+          },
+        ]
+      : [];
+  const index = (variant: "stair" | "list"): Block[] => [
+    {
+      key: "index",
+      mm: variant === "list" ? 16 + indexRows * 15 : 16 + Math.ceil(indexRows / 2) * 40,
+      node: <Index key="index" edition={edition} reading={reading} variant={variant} />,
+    },
+  ];
+  const fixed = (key: string, mm: number, node: ReactNode): Block[] => [{ key, mm, node }];
+  const others = more.flatMap((s) => story(s, "float", "s"));
 
-  const contents = reading.pages.filter((p) => p.slug !== "");
-  // A long contents list takes room from the lead: a shallower print and a shorter opening.
-  const crowded = contents.length > 6;
-  const opening = lead ? frontCut(lead.body, crowded ? 320 : 500) : [];
-  const leadImage = lead?.images[0] ?? null;
+  // Each composition fixes the masthead and the lead; the rest go to whichever page is shorter.
+  const plan: Record<
+    FrontComposition,
+    { grounds: [Ground, Ground]; left: Block[]; right: Block[]; movable: Block[]; cover?: boolean }
+  > = {
+    cover: {
+      grounds: ["mint", "pink"],
+      cover: true,
+      left: fixed(
+        "mast",
+        170,
+        <Fragment key="mast">
+          <div className="z-cover__top">
+            <Stamp edition={edition} />
+            <Spec edition={edition} />
+          </div>
+          <Masthead stack />
+        </Fragment>,
+      ),
+      right: story(lead, "top", "l", { dots: true, priority: true, className: "zc-lead" }),
+      movable: [
+        ...story(b, "float", "s", { side: "left" }),
+        ...story(a, "float", "s"),
+        ...others,
+        ...index("list"),
+      ],
+    },
+    banner: {
+      grounds: ["peach", "lilac"],
+      left: [
+        ...fixed(
+          "mast",
+          90,
+          <Fragment key="mast">
+            <Masthead />
+            <Spec edition={edition} strip />
+          </Fragment>,
+        ),
+        ...story(lead, "after1", "xl", { priority: true, className: "zc-lead" }),
+      ],
+      right: [],
+      movable: [
+        ...story(a, "boxed", "m", { side: "right" }),
+        ...story(b, "float", "m", { side: "left" }),
+        ...others,
+        ...index("stair"),
+      ],
+    },
+    poster: {
+      grounds: ["butter", "blue"],
+      left: fixed(
+        "mast",
+        90,
+        <Fragment key="mast">
+          <Masthead />
+          <Spec edition={edition} strip />
+        </Fragment>,
+      ),
+      right: story(lead, "float", "xl", {
+        side: "left",
+        dots: true,
+        priority: true,
+        className: "zc-lead",
+      }),
+      movable: [
+        ...index("stair"),
+        ...story(a, "top", "m", { side: "left" }),
+        ...story(b, "float", "s"),
+        ...others,
+      ],
+    },
+  };
+  const p = plan[comp];
+  const left = [...p.left];
+  const right = [...p.right];
+  const load = (xs: Block[]) => xs.reduce((n, x) => n + x.mm, 0);
+  for (const blk of p.movable) (load(left) <= load(right) ? left : right).push(blk);
 
   return (
     <Spread label="Front page spread">
-      <Page ground="mint" side="left" className="z-cover">
-        <div className="z-cover__top">
-          <p className="z-stamp print-worn z-cover__stamp">
-            {edition.kind === "slow_news_day"
-              ? "Slow news day"
-              : weekend
-                ? "Weekend edition"
-                : `${day} edition`}
-            <small>Only good news · free, forever</small>
-          </p>
+      <Page
+        ground={p.grounds[0]}
+        side="left"
+        className={`zc-page ${p.cover ? "z-cover" : ""}`}
+        composition={comp}
+      >
+        {left.map((x) => x.node)}
+        <Folio n={lf} date={date} />
+      </Page>
+      <Page ground={p.grounds[1]} side="right" className="zc-page">
+        <RunningHead>The Yay Zine · No. {edition.issueNumber}</RunningHead>
+        {right.map((x) => x.node)}
+        <Folio n={rf} date={date} next={next} />
+      </Page>
+    </Spread>
+  );
+}
 
-          <div className="z-spec">
-            <div>
-              <p className="z-spec__name">
-                <b>ZINE</b>
-                <span>
-                  170mm ×<br />
-                  250mm
-                </span>
-              </p>
-              <dl>
-                <dt>Vol. · No.</dt>
-                <dd>
-                  Vol. {edition.volume} · No. {edition.issueNumber}
-                </dd>
-                <dt>Date</dt>
-                <dd>
-                  <time dateTime={edition.date}>{longDate(edition.date)}</time>
-                </dd>
-                <dt>Price</dt>
-                <dd>Free, forever</dd>
-                {weather ? (
-                  <>
-                    <dt>Weather</dt>
-                    <dd>{weather.content.headline}</dd>
-                  </>
-                ) : null}
-              </dl>
-              {weather ? <p className="zf-weather">{weather.content.detail}</p> : null}
-            </div>
-            {number ? (
-              <div className="z-spec__num">
-                <b
-                  className="print-misreg"
-                  style={{
-                    ["--misreg" as string]: "var(--rose)",
-                    ["--nb" as string]: fitSize(number.content.value, 32, 7.6, 4.2),
-                  }}
-                >
-                  {number.content.value}
-                </b>
-                <span>Number of the day: {number.content.caption}</span>
-              </div>
-            ) : null}
-          </div>
-        </div>
+function Stamp({ edition }: { edition: Edition }) {
+  const day = weekday(edition.date);
+  return (
+    <p className="z-stamp print-worn z-cover__stamp">
+      {edition.kind === "slow_news_day"
+        ? "Slow news day"
+        : day === "Saturday" || day === "Sunday"
+          ? "Weekend edition"
+          : `${day} edition`}
+    </p>
+  );
+}
 
-        <div className="z-cover__stack">
-          {/* The extrusion is a second impression under the letters, and it is the one that wore. */}
-          <p className="z-cover__title z-cover__title--shade print-worn" aria-hidden>
-            <span className="z-cover__the">The</span>
-            <span className="z-cover__yay">Yay</span>
-            <span className="z-cover__news">News</span>
+/** The masthead: the tall stacked wood type (the cover) or one line across the page. */
+function Masthead({ stack }: { stack?: boolean }) {
+  if (stack) {
+    return (
+      <div className="z-cover__stack">
+        {/* The extrusion is a second impression under the letters, and it is the one that wore. */}
+        <p className="z-cover__title z-cover__title--shade print-worn" aria-hidden>
+          <span className="z-cover__the">The</span>
+          <span className="z-cover__yay">Yay</span>
+          <span className="z-cover__news">News</span>
+        </p>
+        <h1 className="z-cover__title z-cover__title--ink">
+          <span className="z-cover__the">The</span>
+          <span className="z-cover__yay">Yay</span>
+          <span className="z-cover__news">News</span>
+        </h1>
+        <p className="z-cover__tag zf-tag">Only good news. Mostly fun. Occasionally weird.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="zf-mast">
+      <p className="zf-mast__line zf-mast__line--shade print-worn" aria-hidden>
+        The Yay News
+      </p>
+      <h1 className="zf-mast__line">The Yay News</h1>
+      <p className="zf-mast__meta">Only good news. Mostly fun. Occasionally weird.</p>
+    </div>
+  );
+}
+
+/** The edition's facts: the mockup's spec table, or the same facts as a strip under a banner. */
+function Spec({ edition, strip }: { edition: Edition; strip?: boolean }) {
+  const number = feature(edition, "number_of_day");
+  const weather = feature(edition, "weather");
+  return (
+    <div className={`z-spec ${strip ? "zf-spec--strip" : ""}`}>
+      <div>
+        {strip ? null : (
+          <p className="z-spec__name">
+            <b>ZINE</b>
+            <span>
+              170mm ×<br />
+              250mm
+            </span>
           </p>
-          <h1 className="z-cover__title z-cover__title--ink">
-            <span className="z-cover__the">The</span>
-            <span className="z-cover__yay">Yay</span>
-            <span className="z-cover__news">News</span>
-          </h1>
-          {teaser && teaserImage ? (
+        )}
+        <dl>
+          <dt>Vol. · No.</dt>
+          <dd>
+            Vol. {edition.volume} · No. {edition.issueNumber}
+          </dd>
+          <dt>Date</dt>
+          <dd>
+            <time dateTime={edition.date}>{longDate(edition.date)}</time>
+          </dd>
+          {weather ? (
             <>
-              <Print
-                photo={teaserImage}
-                ratio="4 / 5"
-                sizes="(max-width: 900px) 50vw, 200px"
-                rotate={5}
-                tape={["t"]}
-                note={printNote(teaser.s.kicker, 16)}
-                className="z-cover__print"
-              />
-              <Anno
-                arrow="arrows-10"
-                arrowFirst={false}
-                arrowSize={[12, 7]}
-                className="zf-cover__anno"
-                style={{ ["--r" as string]: "-5deg" }}
-                arrowStyle={{ rotate: "170deg" }}
-              >
-                more on page {teaserFolio}
-              </Anno>
+              <dt>Weather</dt>
+              <dd>{weather.content.headline}</dd>
             </>
           ) : null}
+        </dl>
+        {weather ? <p className="zf-weather">{weather.content.detail}</p> : null}
+      </div>
+      {number ? (
+        <div className="z-spec__num">
+          <b
+            className="print-misreg"
+            style={{
+              ["--misreg" as string]: "var(--rose)",
+              ["--nb" as string]: fitSize(number.content.value, 32, strip ? 9 : 7.6, 4.2),
+            }}
+          >
+            {number.content.value}
+          </b>
+          <span>Number of the day: {number.content.caption}</span>
         </div>
+      ) : null}
+    </div>
+  );
+}
 
-        <div className="z-cover__foot">
-          <p className="z-cover__tag">Only good news. Mostly fun. Occasionally weird.</p>
-          {teaser ? (
-            <p className="z-cover__also">
-              <Link href={reading.storyHref(teaser.s.slug)} className="z-link-block">
-                <b>{teaser.s.headline}</b>
-                {teaser.s.dek}
+/** The one "Inside today" index: every page, its number and its main headline. */
+function Index({
+  edition,
+  reading,
+  variant,
+}: {
+  edition: Edition;
+  reading: Reading;
+  variant: "stair" | "list";
+}) {
+  const contents = reading.pages.filter((p) => p.slug !== "");
+  return (
+    <nav
+      className={`z-contents zf-contents zf-contents--${variant} ${variant === "stair" && contents.length > 8 ? "zf-contents--5" : ""}`}
+      aria-labelledby="inside-today"
+    >
+      <div className="z-contents__title">
+        <h2 className="z-label" id="inside-today">
+          Inside today
+        </h2>
+        <Zig />
+      </div>
+      <ol>
+        {contents.map((c) => {
+          const [n] = folios(reading, c.order);
+          return (
+            <li key={c.order}>
+              <Link href={c.href} className="z-link-block">
+                <span className="z-contents__n" aria-hidden>
+                  {pad2(n)}
+                </span>
+                <span className="z-contents__sec z-h3">
+                  <span className="z-sr">Page {n}: </span>
+                  {c.label}
+                </span>
+                <span className="z-contents__tease">{teaseFor(edition, c.order)}</span>
               </Link>
-            </p>
-          ) : null}
-        </div>
-      </Page>
-
-      <Page ground="pink" side="right">
-        <RunningHead>The Yay Zine · Only good newsprint</RunningHead>
-
-        {lead ? (
-          <>
-            <h2 className="z-head">
-              <span className="z-head__top">
-                <span aria-hidden className="z-dots" />
-                <span className="z-head__cond">{lead.kicker}</span>
-                <span aria-hidden className="z-dots" />
-              </span>
-              <Link
-                href={reading.storyHref(lead.slug)}
-                className="z-head__heavy z-head__heavy--wrap z-link-head"
-                style={{ ["--hb" as string]: headSize(lead.headline, [10.4, 8.4, 7.2, 6.6]) }}
-              >
-                <Ringed text={lead.headline} />
-              </Link>
-            </h2>
-
-            {leadImage ? (
-              <>
-                <div className="z-lead__photo z-offset-block">
-                  <Print
-                    photo={leadImage}
-                    ratio={crowded ? "3 / 1" : lead.headline.length > 56 ? "12 / 5" : "2 / 1"}
-                    sizes="(max-width: 900px) 100vw, 600px"
-                    rotate={-2.2}
-                    tape={["tl", "br"]}
-                    note={printNote(leadImage.alt, 46)}
-                    priority
-                  />
-                  {lead.sticker ? (
-                    <Burst fill="var(--butter)" points={18} depth={0.16} className="z-lead__burst">
-                      <p>{lead.sticker}</p>
-                    </Burst>
-                  ) : null}
-                </div>
-                <div className="zf-credit">
-                  <Credit photos={[leadImage]} />
-                </div>
-              </>
-            ) : lead.sticker ? (
-              <div className="zf-sticker-row">
-                <Burst fill="var(--butter)" points={18} depth={0.16} className="z-lead__burst">
-                  <p>{lead.sticker}</p>
-                </Burst>
-              </div>
-            ) : null}
-
-            <div className="z-lead__text">
-              <div>
-                <p className="z-kicker">
-                  {lead.section.name} — a {lead.readMinutes}-minute read
-                </p>
-                <p className="z-dek">{lead.dek}</p>
-                <Byline story={lead} />
-              </div>
-              <Body story={{ ...lead, body: opening }} drop className="z-lead__body z-cols-2">
-                <ReadOn href={reading.storyHref(lead.slug)}>
-                  {opening.length < lead.body.length
-                    ? "Continued on its own page"
-                    : "Read it on its own page"}
-                </ReadOn>
-              </Body>
-            </div>
-          </>
-        ) : (
-          <Head top="Today" bottom="Good morning" />
-        )}
-
-        {others.length ? (
-          <ul className="zf-others">
-            {others.map((s) => (
-              <li key={s.slug}>
-                <p className="z-kicker">{s.kicker}</p>
-                <h3 className="z-h3">
-                  <Link href={reading.storyHref(s.slug)} className="z-link-head">
-                    {s.headline}
-                  </Link>
-                </h3>
-                <p className="zf-others__dek">{s.dek}</p>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        <nav
-          className={`z-contents zf-contents ${contents.length > 8 ? "zf-contents--5" : ""}`}
-          aria-labelledby="inside-today"
-        >
-          <div className="z-contents__title">
-            <h2 className="z-label" id="inside-today">
-              Inside today
-            </h2>
-            <Zig />
-          </div>
-          <ol>
-            {contents.map((c) => {
-              const [n] = folios(reading, c.order);
-              return (
-                <li key={c.order}>
-                  <Link href={c.href} className="z-link-block">
-                    <span className="z-contents__n" aria-hidden>
-                      {pad2(n)}
-                    </span>
-                    <span className="z-contents__sec z-h3">
-                      <span className="z-sr">Page {n}: </span>
-                      {c.label}
-                    </span>
-                    <span className="z-contents__tease">{teaseFor(edition, c.order)}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ol>
-        </nav>
-
-        <Folio n={right} date={date} />
-      </Page>
-
-      <OnFold gx={-1} gy={52} rotate={-8}>
-        <Burst fill="var(--blue)" points={13} depth={0.16} wobble={1} className="z-fold-sticker">
-          <p>
-            Only good news
-            <span>inside!</span>
-          </p>
-        </Burst>
-      </OnFold>
-    </Spread>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
   );
 }
