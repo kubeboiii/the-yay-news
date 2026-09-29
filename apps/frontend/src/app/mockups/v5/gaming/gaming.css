@@ -1,0 +1,429 @@
+/* =====================================================================================
+ * GAMING · a photograph and "Press play" across the spread (p6 mint, p7 paper)
+ * ===================================================================================== */
+
+.m5 .m5g-left {
+  background: var(--mint);
+}
+.m5g-left .m5-runhead {
+  display: none;
+}
+
+.m5g-bleed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--u) * 186);
+}
+.m5g-bleed .m5-photo {
+  position: absolute;
+  inset: 0;
+}
+.m5g-bleed-credit {
+  position: absolute;
+  top: calc(var(--u) * 60);
+  left: calc(var(--u) * 4);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  z-index: 2;
+  color: var(--paper);
+}
+
+/* A scrap of paper taped over the photograph, pointing at the hat. */
+.m5g-slip {
+  position: absolute;
+  top: calc(var(--u) * 22);
+  left: calc(var(--u) * 12);
+  z-index: 5;
+  background: var(--butter);
+  font-style: italic;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.08;
+  padding: calc(var(--u) * 4) calc(var(--u) * 4) calc(var(--u) * 4.5);
+  transform: rotate(-4deg);
+}
+.m5g-slip-tape {
+  top: calc(var(--u) * 19);
+  left: calc(var(--u) * 20);
+  transform: rotate(-8deg);
+  z-index: 6;
+}
+.m5g-slip-arrow {
+  top: calc(var(--u) * 30);
+  left: calc(var(--u) * 48);
+  width: calc(var(--u) * 30);
+  height: calc(var(--u) * 10);
+  transform: rotate(10deg);
+}
+
+/* One word set across both pages. */
+.m5g-word {
+  --x: calc(var(--u) * 9);
+  --y: calc(var(--u) * 166);
+  --misreg: var(--mint-deep);
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 57);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: nowrap;
+}
+
+.m5g-under {
+  position: absolute;
+  left: calc(var(--u) * 12);
+  right: calc(var(--u) * 12);
+  top: calc(var(--u) * 240);
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 70);
+  gap: calc(var(--u) * 10);
+}
+.m5g-stand {
+  font-style: italic;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.18;
+}
+.m5g-score {
+  border-top: calc(var(--u) * 0.4) solid var(--ink);
+  padding-top: calc(var(--u) * 1.4);
+}
+.m5g-score-label {
+  font-weight: 400;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.5);
+}
+.m5g-score-num {
+  font-weight: 900;
+  font-size: calc(var(--u) * 11);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: calc(var(--u) * 0.6) 0 calc(var(--u) * 1);
+}
+.m5g-score-cap {
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.25;
+}
+
+/* ---------- page 7 ---------- */
+
+.m5g-review > *:not(.m5g-stamp) {
+  position: absolute;
+}
+.m5g-kick {
+  top: calc(var(--u) * 16);
+  left: calc(var(--u) * 12);
+}
+.m5g-title {
+  top: calc(var(--u) * 20);
+  left: calc(var(--u) * 11);
+  font-weight: 900;
+  font-size: calc(var(--u) * 15);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.m5g-dek {
+  top: calc(var(--u) * 40);
+  left: calc(var(--u) * 12);
+  right: calc(var(--u) * 12);
+  font-style: italic;
+  font-size: calc(var(--u) * 4.8);
+  line-height: 1.16;
+}
+.m5g-by {
+  top: calc(var(--u) * 53);
+  left: calc(var(--u) * 12);
+}
+
+.m5g-print {
+  top: calc(var(--u) * 64);
+  left: calc(var(--u) * 9);
+  width: calc(var(--u) * 86);
+  height: calc(var(--u) * 108);
+  transform: rotate(-3deg);
+}
+.m5g-print-tape {
+  top: calc(var(--u) * -3);
+  right: calc(var(--u) * 8);
+  transform: rotate(10deg);
+}
+.m5 .m5g-stamp {
+  position: absolute;
+  top: calc(var(--u) * 150);
+  left: calc(var(--u) * 76);
+  width: calc(var(--u) * 32);
+  transform: rotate(-10deg);
+  z-index: 6;
+  --wear-size: 110%;
+}
+.m5g-stamp-text {
+  text-align: center;
+  line-height: 1;
+}
+.m5g-stamp-text b {
+  display: block;
+  font-weight: 900;
+  font-size: calc(var(--u) * 12);
+  line-height: 0.9;
+}
+.m5g-stamp-text span {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.2);
+}
+
+.m5g-right-col {
+  top: calc(var(--u) * 64);
+  left: calc(var(--u) * 104);
+  right: calc(var(--u) * 12);
+}
+.m5g-scores div {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1.5);
+  padding: calc(var(--u) * 0.3) 0;
+}
+.m5g-scores dt {
+  font-size: calc(var(--u) * 3.7);
+  font-style: italic;
+  flex: none;
+}
+/* Dotted leaders between the thing scored and its score, as a contents page would set them. */
+.m5g-scores div::after {
+  content: "";
+  flex: 1;
+  order: 1;
+  border-bottom: calc(var(--u) * 0.35) dotted var(--ink);
+  transform: translateY(calc(var(--u) * -0.8));
+}
+.m5g-scores dd {
+  order: 2;
+  font-weight: 900;
+  font-size: calc(var(--u) * 5.6);
+  line-height: 1;
+}
+.m5g-body {
+  margin-top: calc(var(--u) * 3.5);
+  font-size: calc(var(--u) * 3.9);
+}
+.m5g-info {
+  margin-top: calc(var(--u) * 3);
+  border-top: calc(var(--u) * 0.3) solid var(--ink);
+  padding-top: calc(var(--u) * 1.4);
+  font-family: var(--f-sans), sans-serif;
+  font-variant-caps: all-small-caps;
+  font-variant-numeric: lining-nums;
+  font-size: calc(var(--u) * 3);
+  line-height: 1.3;
+}
+
+.m5g-pull {
+  position: absolute;
+  top: calc(var(--u) * 176);
+  left: calc(var(--u) * 80);
+  right: calc(var(--u) * 12);
+  font-style: italic;
+  font-weight: 500;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1.08;
+  text-align: right;
+}
+.m5g-pull cite {
+  display: block;
+  font-family: var(--f-text), serif;
+  font-style: normal;
+  font-weight: 400;
+  margin-top: calc(var(--u) * 1.6);
+}
+
+.m5g-bottom {
+  position: absolute;
+  top: calc(var(--u) * 240);
+  left: calc(var(--u) * 12);
+  right: calc(var(--u) * 12);
+  display: grid;
+  grid-template-columns: calc(var(--u) * 110) 1fr;
+  gap: calc(var(--u) * 8);
+}
+.m5g-patch {
+  background: var(--mint);
+  padding: calc(var(--u) * 7) calc(var(--u) * 4) calc(var(--u) * 6.5);
+  transform: rotate(-1.4deg);
+  margin: calc(var(--u) * -4) 0 0 calc(var(--u) * -3);
+}
+.m5g-patch-head {
+  font-weight: 600;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.05;
+  margin: calc(var(--u) * 1) 0 calc(var(--u) * 1);
+}
+.m5g-patch-dek {
+  font-style: italic;
+  font-size: calc(var(--u) * 3.5);
+  margin-bottom: calc(var(--u) * 1.4);
+}
+.m5g-patch-list li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 4) 1fr;
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.26;
+  padding: calc(var(--u) * 0.6) 0;
+}
+.m5g-patch-list b {
+  font-family: var(--f-sans), sans-serif;
+  font-weight: 600;
+}
+.m5g-also-head {
+  font-weight: 600;
+  font-style: italic;
+  font-size: calc(var(--u) * 5);
+  line-height: 1;
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 1.6);
+  margin-bottom: calc(var(--u) * 1);
+}
+.m5g-also p {
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.3;
+  padding: calc(var(--u) * 0.8) 0;
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+}
+.m5g-also b {
+  font-variant-caps: all-small-caps;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- phone ---------- */
+
+@container (max-width: 760px) {
+  .m5 .m5g-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .m5g-bleed {
+    position: relative;
+    height: auto;
+    aspect-ratio: 1;
+    margin: -40px -18px 0;
+  }
+  .m5g-bleed-credit {
+    position: static;
+    writing-mode: horizontal-tb;
+    transform: none;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+  .m5g-info {
+    font-size: 15px;
+  }
+  .m5g-slip,
+  .m5g-slip-tape,
+  .m5g-slip-arrow {
+    display: none;
+  }
+  .m5g-word {
+    font-size: calc(100cqw * 0.22);
+    margin: 4px 0 12px;
+    text-wrap: balance;
+  }
+  .m5g-under {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .m5g-stand {
+    font-size: 22px;
+  }
+  .m5g-score-label {
+    font-size: 17px;
+  }
+  .m5g-score-num {
+    font-size: 46px;
+  }
+  .m5g-score-cap {
+    font-size: 16px;
+  }
+
+  .m5g-review {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .m5g-review > *:not(.m5g-stamp) {
+    position: relative;
+    inset: auto;
+  }
+  .m5g-title {
+    font-size: calc(100cqw * 0.13);
+    white-space: normal;
+  }
+  .m5g-dek {
+    font-size: 21px;
+  }
+  .m5g-print {
+    width: 88%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    margin: 10px 0;
+  }
+  .m5 .m5g-stamp {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 120px;
+    margin: -100px 0 0 auto;
+  }
+  .m5g-stamp-text b {
+    font-size: 44px;
+  }
+  .m5g-stamp-text span {
+    font-size: 14px;
+  }
+  .m5g-scores dt {
+    font-size: 17px;
+  }
+  .m5g-scores dd {
+    font-size: 24px;
+  }
+  .m5g-body {
+    font-size: 16px;
+  }
+  .m5g-pull {
+    position: static;
+    font-size: 30px;
+    text-align: center;
+    margin: 30px 0;
+  }
+  .m5g-bottom {
+    position: static;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .m5g-patch {
+    margin: 0;
+    padding: 22px 16px 26px;
+  }
+  .m5g-patch-head {
+    font-size: 24px;
+  }
+  .m5g-patch-dek,
+  .m5g-patch-list li,
+  .m5g-also p {
+    font-size: 16px;
+  }
+  .m5g-patch-list li {
+    grid-template-columns: 18px 1fr;
+  }
+  .m5g-also-head {
+    font-size: 24px;
+  }
+}
+
+.m5g-ring .m5-ring-mark {
+  left: -45%;
+  right: -45%;
+  top: -18%;
+  bottom: -22%;
+}

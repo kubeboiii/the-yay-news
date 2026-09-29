@@ -1,0 +1,620 @@
+/*
+ * The back-issue newsstand: a shop card taped up, this week's papers standing folded in a wire
+ * rack, and everything older lying in piles on a shelf, edge-on, so all you see is each paper's
+ * fold with its number and date. Every copy is aged by how long it has been lying there.
+ */
+
+.ar-desk {
+  --ar-ink: #1d1a16;
+  min-height: 100vh;
+  padding: 44px clamp(16px, 4vw, 56px) 120px;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 30%, rgb(255 255 255 / 0.28), transparent 70%),
+    #e4ded3;
+  color: var(--ar-ink);
+  font-family: var(--ar-caslon), Georgia, serif;
+  overflow-x: hidden;
+}
+
+/* Shared: real newsprint grain printed under the ink of every paper object on this page. */
+.ar-sign::before,
+.ar-front__sheet::before,
+.ar-spine::before,
+.ar-ticket::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / cover;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ——— The shop card ——— */
+.ar-sign {
+  position: relative;
+  isolation: isolate;
+  width: min(640px, 100%);
+  margin: 0 auto 56px;
+  padding: 26px 30px 22px;
+  background: #f4efe3;
+  text-align: center;
+  rotate: -0.7deg;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.1),
+    0 12px 26px -14px rgb(40 30 20 / 0.45);
+}
+
+.ar-tape {
+  position: absolute;
+  top: -12px;
+  width: 92px;
+  height: 26px;
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  opacity: 0.92;
+  z-index: 4;
+}
+
+.ar-tape--l {
+  left: -18px;
+  rotate: -32deg;
+}
+
+.ar-tape--r {
+  right: -18px;
+  rotate: 28deg;
+}
+
+.ar-sign__kicker {
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.ar-sign__title {
+  margin: 6px 0 2px;
+  font-family: var(--ar-gothic), Impact, sans-serif;
+  font-size: clamp(64px, 12vw, 120px);
+  line-height: 0.86;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  border-block: 3px double var(--ar-ink);
+  padding-block: 8px 2px;
+}
+
+.ar-sign__sub {
+  margin-top: 10px;
+  font-style: italic;
+  font-size: 17px;
+}
+
+.ar-sign__sub b {
+  font-style: normal;
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: #e9ff1f;
+  padding: 1px 5px;
+  mix-blend-mode: multiply;
+}
+
+.ar-sign__note {
+  margin-top: 8px;
+  font-family: var(--ar-type), monospace;
+  font-size: 12.5px;
+}
+
+/* ——— Shelf-edge tickets ——— */
+.ar-ticket {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 3px 10px 2px;
+  background: #fbf8f0;
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+/* ——— The wire rack: this week's papers, folded, masthead up ——— */
+.ar-rack {
+  position: relative;
+  width: min(1240px, 100%);
+  margin: 0 auto 90px;
+}
+
+.ar-rack > .ar-ticket {
+  rotate: -1deg;
+  margin: 0 0 14px 6px;
+}
+
+.ar-rack__row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-inline: 20px;
+}
+
+.ar-front {
+  --w: clamp(132px, 13vw, 184px);
+  position: relative;
+  flex: none;
+  width: var(--w);
+  margin-inline: calc(var(--w) * -0.06);
+  translate: 0 var(--ar-drop, 0px);
+  rotate: var(--ar-tilt, 0deg);
+  transition:
+    translate 0.25s ease,
+    rotate 0.25s ease;
+  text-decoration: none;
+  color: var(--ar-ink);
+}
+
+.ar-front:hover,
+.ar-front:focus-visible {
+  translate: 0 -14px;
+  rotate: 0deg;
+  z-index: 20 !important;
+}
+
+.ar-front:focus-visible {
+  outline: none;
+}
+
+.ar-front:focus-visible .ar-front__sheet {
+  outline: 2px solid var(--ar-ink);
+  outline-offset: 3px;
+}
+
+.ar-front__sheet {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 380 / 300;
+  padding: 7% 7% 0;
+  background: var(--ar-paper, #f0ebe0);
+  overflow: hidden;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.12),
+    0 14px 20px -12px rgb(40 30 20 / 0.5),
+    /* The fold at the bottom rounds away from the light. */ inset 0 -14px 14px -12px rgb(40 30 20 / 0.35);
+}
+
+.ar-front__age,
+.ar-spine__age {
+  position: absolute;
+  inset: 0;
+  background: var(--ar-age, none);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.ar-front__ear {
+  align-self: flex-end;
+  font-family: var(--ar-type), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  background: rgb(255 255 255 / 0.55);
+  mix-blend-mode: multiply;
+}
+
+.ar-front__mast {
+  display: block;
+  margin-top: 4px;
+  line-height: 0.9;
+  text-align: center;
+}
+
+.ar-front__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 6px;
+  padding-block: 2px;
+  border-block: 1px solid currentColor;
+  font-family: var(--ar-franklin), sans-serif;
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* The first lines of the page, set very small, running into the fold. */
+.ar-front__type {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 5px;
+  font-size: calc(var(--w) * 0.045);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.ar-front__type em {
+  font-style: italic;
+}
+
+.ar-front__type span {
+  font-family: var(--ar-franklin), sans-serif;
+  font-size: 0.8em;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Then the first lines of the columns, set very small, running into the fold. */
+.ar-front__type::after {
+  content: "";
+  flex: 1;
+  margin-top: 3px;
+  background:
+    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) left top / 31% 100% no-repeat,
+    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) center top / 31% 100% no-repeat,
+    repeating-linear-gradient(to bottom, rgb(29 26 22 / 0.5) 0 1px, transparent 1px 3.5px) right top / 31% 100% no-repeat;
+  opacity: 0.5;
+  mask: url("/mockup/fx/ink-wear.png") center / 160% repeat;
+  -webkit-mask: url("/mockup/fx/ink-wear.png") center / 160% repeat;
+}
+
+.ar-front__tag {
+  position: absolute;
+  top: -9px;
+  left: 10%;
+  z-index: 6;
+  padding: 1px 6px;
+  background: #fbf8f0;
+  font-family: var(--ar-type), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  rotate: -3deg;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+}
+
+/* The rack's rail runs in front of the papers, low across their folds. */
+.ar-rack__rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9%;
+  height: 7px;
+  border-block: 2px solid #3a342c;
+  z-index: 15;
+  box-shadow: 0 5px 6px -3px rgb(20 14 8 / 0.35);
+  pointer-events: none;
+}
+
+.ar-rack__rail::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgb(255 255 255 / 0.35);
+}
+
+/* Each paper's masthead, in its own face and inks. */
+.ar-front--v1 .ar-front__mast {
+  padding: 4px 3px 2px;
+  background: #e9ff1f;
+  mix-blend-mode: multiply;
+  font-family: var(--ar-gothic), Impact, sans-serif;
+  font-size: calc(var(--w) * 0.2);
+  text-transform: uppercase;
+  text-shadow: 1px 0.5px 0 #ff3d9a;
+}
+
+.ar-front--v2 .ar-front__mast {
+  padding-block: 4px 3px;
+  border-block: 3px double currentColor;
+  font-family: var(--ar-blackletter), serif;
+  font-size: calc(var(--w) * 0.155);
+}
+
+.ar-front--v2 .ar-front__ear {
+  background: #bcd9ee;
+}
+
+.ar-front--v3 .ar-front__mast {
+  margin-inline: -8%;
+  padding: 3px 0 2px;
+  background: #ff5a1f;
+  mix-blend-mode: multiply;
+  color: #fff;
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--w) * 0.24);
+  letter-spacing: -0.03em;
+  text-shadow: 2px 1px 0 #0078bf;
+}
+
+.ar-front--v4 .ar-front__sheet {
+  background: color-mix(in srgb, #9fe8bf 72%, var(--ar-paper, #f0ebe0));
+}
+
+.ar-front--v4 .ar-front__mast {
+  font-family: var(--ar-slab), serif;
+  font-size: calc(var(--w) * 0.12);
+  text-transform: uppercase;
+  line-height: 0.95;
+  text-shadow: 1.5px 1.5px 0 #f6e27a;
+}
+
+.ar-front--v5 .ar-front__mast {
+  margin-inline: -8%;
+  padding: 6px 0 4px;
+  background: #ffc9a8;
+  mix-blend-mode: multiply;
+  font-family: var(--ar-bodoni), serif;
+  font-size: calc(var(--w) * 0.11);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ——— The shelf: older issues in piles, seen edge-on ——— */
+.ar-shelf {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.ar-shelf__piles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 28px clamp(14px, 2vw, 30px);
+  align-items: end;
+  padding-inline: 10px;
+}
+
+.ar-pile {
+  position: relative;
+}
+
+.ar-pile__stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ar-spine-slot {
+  display: flex;
+  justify-content: center;
+}
+
+.ar-spine {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: var(--ar-width, 96%);
+  height: 26px;
+  margin-top: -1px;
+  padding: 0 22px 0 8px;
+  translate: var(--ar-shift, 0px) 0;
+  rotate: var(--ar-tilt, 0deg);
+  /* The fold is the rounded end; the open edge shows every page inside. */
+  border-radius: 13px 2px 2px 13px / 13px 3px 3px 13px;
+  background:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.45), transparent 35%, transparent 60%, rgb(50 36 20 / 0.2)),
+    var(--ar-paper, #f0ebe0);
+  box-shadow:
+    0 1px 0 rgb(40 30 20 / 0.28),
+    0 2px 3px -1px rgb(40 30 20 / 0.3);
+  text-decoration: none;
+  color: var(--ar-ink);
+  transition: translate 0.2s ease;
+  overflow: hidden;
+}
+
+.ar-spine::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  right: 0;
+  width: 18px;
+  background: repeating-linear-gradient(to bottom, rgb(60 44 26 / 0.3) 0 1px, transparent 1px 3px);
+  z-index: 5;
+}
+
+.ar-spine:hover,
+.ar-spine:focus-visible {
+  translate: calc(var(--ar-shift, 0px) + 14px) 0;
+}
+
+.ar-spine:focus-visible {
+  outline: 2px solid var(--ar-ink);
+  outline-offset: 2px;
+}
+
+/* A sliver of the masthead ink, showing on the fold. */
+.ar-spine__flash {
+  flex: none;
+  width: 16px;
+  height: 100%;
+  margin-left: -8px;
+  background: var(--flash, #1d1a16);
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+}
+
+.ar-spine__no {
+  flex: none;
+  min-width: 3.4em;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.ar-spine__date {
+  flex: 1;
+  font-family: var(--ar-type), monospace;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.ar-spine__paper {
+  font-family: var(--ar-franklin), sans-serif;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+
+.ar-spine--v1 {
+  --flash: #e9ff1f;
+}
+
+.ar-spine--v1 .ar-spine__no {
+  font-family: var(--ar-gothic), Impact, sans-serif;
+  font-size: 19px;
+  text-transform: uppercase;
+}
+
+.ar-spine--v2 {
+  --flash: #bcd9ee;
+}
+
+.ar-spine--v2 .ar-spine__no {
+  font-family: var(--ar-blackletter), serif;
+  font-size: 16px;
+}
+
+.ar-spine--v3 {
+  --flash: #ff5a1f;
+}
+
+.ar-spine--v3 .ar-spine__no {
+  font-family: var(--ar-franklin), sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 15px;
+}
+
+.ar-spine--v4 {
+  --flash: #9fe8bf;
+}
+
+.ar-spine--v4 .ar-spine__no {
+  font-family: var(--ar-slab), serif;
+  font-size: 13px;
+}
+
+.ar-spine--v5 {
+  --flash: #ffc9a8;
+}
+
+.ar-spine--v5 .ar-spine__no {
+  font-family: var(--ar-bodoni), serif;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+
+/* The shelf's front edge, and a ticket under each pile. */
+.ar-shelf__edge {
+  height: 14px;
+  margin-top: 2px;
+  background: linear-gradient(to bottom, #5a4c3c, #3a3026 40%, #2a221a);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    0 16px 22px -12px rgb(40 30 20 / 0.55);
+}
+
+.ar-ticket--pile {
+  position: absolute;
+  left: 50%;
+  bottom: -32px;
+  translate: -50% 0;
+  z-index: 2;
+  white-space: nowrap;
+  font-size: 10.5px;
+  rotate: 0.6deg;
+}
+
+.ar-pile:nth-child(even) .ar-ticket--pile {
+  rotate: -0.8deg;
+}
+
+/* ——— Phones: the rack stands in rows, the piles stack down the shelf ——— */
+@media (max-width: 900px) {
+  .ar-shelf__piles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 56px 18px;
+  }
+
+  .ar-shelf__piles .ar-pile:last-child {
+    grid-column: 1 / -1;
+    width: min(100%, 320px);
+    justify-self: center;
+  }
+
+  .ar-rack__row {
+    flex-wrap: wrap;
+    row-gap: 26px;
+    padding-inline: 0;
+  }
+
+  .ar-rack__rail {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .ar-desk {
+    padding-top: 28px;
+  }
+
+  .ar-front {
+    --w: calc((100vw - 56px) / 3);
+    margin-inline: 3px;
+  }
+
+  .ar-front__line span:first-child {
+    display: none;
+  }
+
+  .ar-shelf__piles {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 54px;
+  }
+
+  .ar-shelf__piles .ar-pile:last-child {
+    width: 100%;
+  }
+
+  /* On one column every pile needs its own shelf. */
+  .ar-pile {
+    padding-bottom: 12px;
+    border-bottom: 12px solid #33291f;
+  }
+
+  .ar-shelf__edge {
+    display: none;
+  }
+
+  .ar-ticket--pile {
+    bottom: -26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-front,
+  .ar-spine {
+    transition: none;
+  }
+}

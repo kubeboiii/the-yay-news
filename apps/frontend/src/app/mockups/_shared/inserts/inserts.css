@@ -1,0 +1,1725 @@
+/*
+ * Edition inserts: printed ephemera that fall out of the paper. Each is its own stock — heavier
+ * rag for the art print, glossy backing for stickers, tinted card for the coupon — so each gets
+ * its own paper colour and a real scanned texture multiplied into it, never a flat fill.
+ * Type and inks come from the viewing version through the --yi-* custom properties.
+ */
+
+.yi-slip,
+.yi-desk,
+.yi-stuck {
+  --yi-graphite: #6f6b66;
+  --yi-rag: #fcfbf7;
+  color: var(--yi-ink);
+}
+
+/* ——————————————— The slip peeking out of the paper ——————————————— */
+
+.yi-slip {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.yi-slip__stock,
+.yi-slip__tab {
+  position: absolute;
+  display: block;
+}
+
+/* On a wide screen it is tucked under the sheet and sticks out of the right-hand edge. */
+.yi-slip--edge {
+  z-index: -1;
+  width: calc(60px + var(--peek));
+  height: 250px;
+  transform: translateX(-60px);
+  transition:
+    transform 0.35s cubic-bezier(0.3, 0.7, 0.2, 1),
+    opacity 0.3s;
+}
+
+.yi-slip--edge:hover,
+.yi-slip--edge:focus-visible {
+  transform: translateX(-53px);
+}
+
+.yi-slip--edge.is-out {
+  transform: translateX(calc(-62px - var(--peek)));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.yi-slip--edge .yi-slip__stock {
+  left: 0;
+  top: 0;
+  width: 67px;
+  height: 100%;
+  box-shadow: 1px 0 1px rgb(0 0 0 / 0.12);
+}
+
+.yi-slip--edge .yi-slip__tab {
+  container-type: inline-size;
+  left: 60px;
+  top: 46px;
+  width: var(--peek);
+  height: 158px;
+  border-radius: 0 7px 7px 0;
+  box-shadow:
+    1px 1px 1px rgb(0 0 0 / 0.14),
+    2px 3px 6px -2px rgb(40 30 20 / 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  writing-mode: vertical-rl;
+}
+
+/* The sheet's own shadow falls across the slip where it comes out from under the paper. */
+.yi-slip--edge .yi-slip__stock::after,
+.yi-slip--edge .yi-slip__tab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgb(30 20 10 / 0.24), rgb(30 20 10 / 0.06) 7px, transparent 14px);
+  pointer-events: none;
+}
+
+.yi-slip--edge .yi-slip__tab::after {
+  background: linear-gradient(90deg, rgb(30 20 10 / 0.2), transparent 9px);
+}
+
+/* On a phone it hangs from the foot of the page. */
+.yi-slip--foot {
+  z-index: 2;
+  width: 268px;
+  height: 36px;
+  transform: translateX(-50%);
+  transition:
+    transform 0.35s cubic-bezier(0.3, 0.7, 0.2, 1),
+    opacity 0.3s;
+}
+
+.yi-slip--foot.is-out {
+  transform: translate(-50%, -34px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.yi-slip--foot .yi-slip__stock {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 6px;
+}
+
+.yi-slip--foot .yi-slip__tab {
+  left: 14px;
+  right: 14px;
+  top: 0;
+  height: 30px;
+  border-radius: 0 0 7px 7px;
+  box-shadow:
+    1px 1px 1px rgb(0 0 0 / 0.14),
+    0 3px 6px -2px rgb(40 30 20 / 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.yi-slip--foot .yi-slip__stock::after,
+.yi-slip--foot .yi-slip__tab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(30 20 10 / 0.22), transparent 7px);
+  pointer-events: none;
+}
+
+.yi-slip:focus-visible {
+  outline: none;
+}
+
+.yi-slip:focus-visible .yi-slip__tab {
+  outline: 2px dashed var(--yi-ink);
+  outline-offset: 3px;
+}
+
+.yi-slip__inside {
+  font-family: var(--yi-small);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.yi-slip__what {
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: var(--yi-display-case);
+  letter-spacing: var(--yi-display-tracking);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.yi-slip--foot .yi-slip__what {
+  font-size: 12.5px;
+}
+
+.yi-v1 .yi-slip--foot .yi-slip__what {
+  font-size: 16px;
+}
+
+@container (max-width: 31px) {
+  .yi-slip__inside {
+    display: none;
+  }
+
+  .yi-slip__what {
+    font-size: 12px;
+  }
+}
+
+/* v1's gothic is condensed and wants to be bigger to read at the same size. */
+.yi-v1 .yi-slip__what {
+  font-size: 17px;
+}
+
+/* Each slip is the edge of its own insert, in that insert's stock. */
+.yi-slip--print :is(.yi-slip__stock, .yi-slip__tab),
+.yi-slip--colouring :is(.yi-slip__stock, .yi-slip__tab) {
+  background: var(--yi-rag) url("/mockup/inserts/tex-wc.jpg") center / 420px;
+  background-blend-mode: multiply;
+}
+
+.yi-slip--stickers :is(.yi-slip__stock, .yi-slip__tab) {
+  background:
+    linear-gradient(160deg, transparent 35%, rgb(255 255 255 / 0.7) 48%, transparent 60%),
+    var(--yi-backing) url("/mockup/inserts/tex-grain.jpg") center / 300px;
+  background-blend-mode: normal, multiply;
+}
+
+.yi-slip--coupon :is(.yi-slip__stock, .yi-slip__tab) {
+  background: var(--yi-coupon) url("/mockup/inserts/tex-card.jpg") center / 380px;
+  background-blend-mode: multiply;
+}
+
+.yi-slip--postcard :is(.yi-slip__stock, .yi-slip__tab) {
+  background: var(--yi-post) url("/mockup/inserts/tex-card.jpg") center / 380px;
+  background-blend-mode: multiply;
+}
+
+.yi-slip--poster .yi-slip__stock {
+  background: var(--poster-photo) 85% 50% / cover;
+}
+
+.yi-slip--poster .yi-slip__tab {
+  background: var(--yi-a) url("/mockup/inserts/tex-grain.jpg") center / 300px;
+  background-blend-mode: multiply;
+}
+
+/* ——————————————— Stickers stuck on the page ——————————————— */
+
+.yi-stuck {
+  position: absolute;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+}
+
+.yi-stuck__one {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  container-type: inline-size;
+  transform: translate(-50%, -50%) rotate(var(--st-rot));
+  /* Vinyl on newsprint: sits almost flat, with the faintest lift at its edge. */
+  filter: drop-shadow(0 1px 0.6px rgb(0 0 0 / 0.28)) drop-shadow(0 3px 4px rgb(40 30 20 / 0.16));
+  transition: transform 0.2s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.yi-stuck__one.is-moving {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) rotate(var(--st-rot)) scale(1.05);
+  filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.3));
+  transition: none;
+}
+
+.yi-stuck__one.is-peeling {
+  pointer-events: none;
+  animation: yi-peel 0.42s cubic-bezier(0.5, 0, 0.8, 0.4) forwards;
+}
+
+.yi-stuck__one:focus-visible {
+  outline: 2px dashed var(--yi-ink);
+  outline-offset: 4px;
+}
+
+@keyframes yi-peel {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--st-rot));
+  }
+  35% {
+    transform: translate(-50%, -58%) rotate(calc(var(--st-rot) - 8deg)) scale(1.08) skewX(-6deg);
+    filter: drop-shadow(0 10px 10px rgb(0 0 0 / 0.3));
+  }
+  100% {
+    transform: translate(-30%, -120%) rotate(calc(var(--st-rot) - 30deg)) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* ——————————————— Sticker faces (shared by the sheet, the hand and the page) ——————————————— */
+
+/* A white vinyl margin around every printed shape, and the faint line where the die cut it. */
+.yi-vinyl {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(2px 0 0 #fffefb) drop-shadow(-2px 0 0 #fffefb) drop-shadow(0 2px 0 #fffefb)
+    drop-shadow(0 -2px 0 #fffefb) drop-shadow(0 0 0.5px rgb(0 0 0 / 0.4));
+}
+
+.yi-vinyl > * {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.yi-st-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.yi-st-type {
+  display: block;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: var(--yi-display-case);
+  letter-spacing: var(--yi-display-tracking);
+  color: var(--yi-ink);
+  text-align: center;
+  line-height: 0.88;
+}
+
+.yi-st-type--good {
+  font-size: 15cqw;
+}
+
+.yi-v1 .yi-st-type--good {
+  font-size: 21cqw;
+}
+
+.yi-st-type--yay {
+  font-size: 30cqw;
+  line-height: 1;
+}
+
+.yi-v1 .yi-st-type--yay {
+  font-size: 40cqw;
+}
+
+.yi-st-type--issue {
+  font-size: 26cqw;
+}
+
+.yi-st-type--issue small {
+  display: block;
+  font-size: 0.5em;
+  letter-spacing: 0.08em;
+}
+
+.yi-st-pill {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--yi-b);
+}
+
+.yi-st-label {
+  display: flex !important;
+  align-items: center;
+  gap: 5%;
+  padding: 0 8%;
+  border-radius: 12cqw;
+  background: #fffdf8;
+  border: 0.9cqw solid var(--yi-ink);
+  box-sizing: border-box;
+}
+
+.yi-st-label__star {
+  flex: 0 0 26%;
+  aspect-ratio: 1;
+  height: auto;
+}
+
+.yi-st-type--label {
+  font-size: 11.5cqw;
+  text-align: left;
+  line-height: 0.95;
+}
+
+.yi-v1 .yi-st-type--label {
+  font-size: 16cqw;
+}
+
+.yi-st-dot {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.yi-st-dot__mark {
+  width: 74%;
+  height: 74%;
+}
+
+.yi-st-dot__mark--hi {
+  width: 62%;
+  height: 62%;
+}
+
+/* ——————————————— The desk: the insert pulled out ——————————————— */
+
+.yi-desk {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.yi-desk__scrim {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, rgb(40 30 20 / 0.1), rgb(40 30 20 / 0.34));
+  opacity: 0;
+  transition: opacity 0.45s;
+}
+
+.yi-desk:is([data-phase="open"], [data-phase="folding"]) .yi-desk__scrim {
+  opacity: 1;
+}
+
+.yi-desk__place {
+  position: relative;
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px 96px;
+  pointer-events: none;
+}
+
+.yi-object {
+  position: relative;
+  pointer-events: auto;
+  outline: none;
+  transform: translate(var(--from-x), var(--from-y)) rotate(9deg) scale(0.3);
+  opacity: 0;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.16)) drop-shadow(0 16px 22px rgb(40 30 20 / 0.28));
+  transition:
+    transform 0.62s cubic-bezier(0.2, 0.75, 0.25, 1),
+    opacity 0.25s;
+}
+
+.yi-desk:is([data-phase="open"], [data-phase="folding"]) .yi-object {
+  transform: rotate(var(--rot));
+  opacity: 1;
+}
+
+.yi-desk[data-phase="leave"] .yi-object {
+  transition:
+    transform 0.45s cubic-bezier(0.6, 0, 0.8, 0.4),
+    opacity 0.3s 0.15s;
+}
+
+.yi-desk.is-dragging .yi-desk__scrim,
+.yi-desk.is-dragging .yi-object {
+  opacity: 0.1;
+  transition: opacity 0.2s;
+}
+
+.yi-desk.is-dragging {
+  pointer-events: none;
+}
+
+/* A small paper tag on the corner of whatever is out: put it back. */
+.yi-tuck {
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  z-index: 5;
+  padding: 6px 11px 6px 12px;
+  border: 0;
+  background: var(--yi-rag) url("/mockup/inserts/tex-card.jpg") center / 300px;
+  background-blend-mode: multiply;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(3deg);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.2),
+    0 4px 8px -3px rgb(40 30 20 / 0.3);
+  cursor: pointer;
+}
+
+.yi-tuck::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: -6px;
+  width: 38px;
+  height: 14px;
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  transform: rotate(-38deg);
+  opacity: 0.9;
+}
+
+.yi-tuck span {
+  font-size: 15px;
+  margin-left: 3px;
+}
+
+.yi-tuck:hover {
+  transform: rotate(1deg) translateY(-1px);
+}
+
+.yi-tuck:focus-visible,
+.yi-object button:focus-visible {
+  outline: 2px dashed var(--yi-ink);
+  outline-offset: 3px;
+}
+
+.yi-object--poster .yi-tuck {
+  display: none;
+}
+
+.yi-ghost {
+  position: fixed;
+  z-index: 90;
+  pointer-events: none;
+  container-type: inline-size;
+  transform: translate(-50%, -50%) rotate(-7deg) scale(1.06);
+  filter: drop-shadow(0 12px 12px rgb(0 0 0 / 0.3));
+}
+
+/* ——————————————— 1. Guest artist print ——————————————— */
+
+.yi-print {
+  width: min(500px, calc(100vw - 24px));
+}
+
+.yi-print__sheet {
+  position: relative;
+  container-type: inline-size;
+  padding: 9% 9% 7%;
+  background: var(--yi-rag) url("/mockup/inserts/tex-wc.jpg") center / cover;
+  background-blend-mode: multiply;
+  mask: url("/mockup/inserts/deckle.png") center / 100% 100% no-repeat;
+  -webkit-mask: url("/mockup/inserts/deckle.png") center / 100% 100% no-repeat;
+}
+
+.yi-print__over,
+.yi-colour__over,
+.yi-stickers__head,
+.yi-coupon__over {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin: 0;
+  font-family: var(--yi-small);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.yi-print__over {
+  font-size: 2.2cqw;
+  color: #8a867e;
+  margin-bottom: 6%;
+}
+
+/* The plate mark: the press leaves a pressed-in rectangle around an intaglio print. */
+.yi-print__plate {
+  padding: 3.5%;
+  display: flex;
+  justify-content: center;
+  box-shadow:
+    inset 1.5px 1.5px 0 rgb(255 255 255 / 0.9),
+    inset -1px -1px 0 rgb(0 0 0 / 0.08),
+    0 0 0 1px rgb(0 0 0 / 0.045),
+    1px 1px 0 1px rgb(255 255 255 / 0.6);
+}
+
+.yi-print__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  filter: saturate(0.92) contrast(0.98);
+}
+
+.yi-print__pencil {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 3%;
+  margin-top: 4%;
+  font-family: var(--yi-text);
+  font-style: italic;
+  font-size: 3.2cqw;
+  color: var(--yi-graphite);
+  line-height: 1.2;
+}
+
+.yi-print__num {
+  letter-spacing: 0.04em;
+}
+
+.yi-print__title {
+  text-align: center;
+}
+
+.yi-print__sig {
+  text-align: right;
+}
+
+.yi-print__flourish {
+  display: block;
+  width: 62%;
+  height: 1.8cqw;
+  margin: 0.4cqw 0 0 auto;
+  opacity: 0.8;
+}
+
+.yi-print__colophon {
+  margin-top: 7%;
+  padding-top: 3%;
+  border-top: 1px solid rgb(0 0 0 / 0.1);
+  font-family: var(--yi-small);
+  font-size: 2.3cqw;
+  line-height: 1.5;
+  color: #7c786f;
+  text-align: center;
+}
+
+.yi-print__colophon p {
+  margin: 0;
+}
+
+.yi-print__colophon b {
+  color: var(--yi-ink);
+  font-weight: 700;
+}
+
+/* A blind stamp: pressed into the paper with no ink at all. */
+.yi-print__chop {
+  position: absolute;
+  right: 5%;
+  top: 4.2%;
+  width: 7cqw;
+  height: 7cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: var(--yi-display);
+  font-size: 2.6cqw;
+  color: transparent;
+  text-shadow:
+    -0.5px -0.5px 0 rgb(0 0 0 / 0.14),
+    0.6px 0.6px 0 rgb(255 255 255 / 0.9);
+  box-shadow:
+    inset 1px 1px 0 rgb(0 0 0 / 0.1),
+    inset -1px -1px 0 rgb(255 255 255 / 0.85);
+}
+
+/* ——————————————— 2. Sticker sheet ——————————————— */
+
+.yi-stickers__sheet {
+  position: relative;
+  width: min(440px, calc(100vw - 24px));
+  aspect-ratio: 3 / 4;
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--yi-backing) url("/mockup/inserts/tex-grain.jpg") center / 520px;
+  background-blend-mode: multiply;
+  container-type: inline-size;
+}
+
+/* Glossy release paper: a soft window-light reflection across it, and a back-slit to crack. */
+.yi-stickers__sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(118deg, transparent 22%, rgb(255 255 255 / 0.55) 33%, rgb(255 255 255 / 0.1) 41%, transparent 47%),
+    linear-gradient(118deg, transparent 56%, rgb(255 255 255 / 0.3) 60%, transparent 66%),
+    linear-gradient(180deg, rgb(255 255 255 / 0.25), transparent 30%, rgb(0 0 0 / 0.03));
+  pointer-events: none;
+  z-index: 3;
+}
+
+.yi-stickers__sheet::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9.5%;
+  height: 1px;
+  background: rgb(0 0 0 / 0.14);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.8);
+}
+
+.yi-stickers__head {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 3.3%;
+  font-size: 2.5cqw;
+  color: color-mix(in srgb, var(--yi-ink) 70%, transparent);
+}
+
+.yi-stickers__foot {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 3%;
+  margin: 0;
+  font-family: var(--yi-text);
+  font-style: italic;
+  font-size: 2.9cqw;
+  line-height: 1.3;
+  text-align: center;
+  color: color-mix(in srgb, var(--yi-ink) 70%, transparent);
+}
+
+.yi-slot {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  container-type: inline-size;
+  transform: translate(-50%, -50%) rotate(var(--st-rot));
+  cursor: grab;
+  touch-action: none;
+  z-index: 2;
+  transition: transform 0.18s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.yi-slot:not(.yi-slot--empty):hover {
+  transform: translate(-50%, -52%) rotate(calc(var(--st-rot) - 2deg));
+}
+
+/* Where a sticker was: the kiss-cut outline left in the backing. */
+.yi-slot--empty {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.yi-slot--empty .yi-vinyl {
+  filter: brightness(0) invert(0.97) drop-shadow(2px 0 0 #f6f4ef) drop-shadow(-2px 0 0 #f6f4ef)
+    drop-shadow(0 2px 0 #f6f4ef) drop-shadow(0 -2px 0 #f6f4ef) drop-shadow(0 0 0.6px rgb(0 0 0 / 0.5));
+}
+
+/* ——————————————— 3. Coupon ——————————————— */
+
+.yi-coupon {
+  position: relative;
+  display: flex;
+  width: min(640px, calc(100vw - 24px));
+  aspect-ratio: 2.3;
+  container-type: inline-size;
+}
+
+.yi-coupon__stub,
+.yi-coupon__main {
+  position: relative;
+  box-sizing: border-box;
+  background: var(--yi-coupon) url("/mockup/inserts/tex-card.jpg") center / 520px;
+  background-blend-mode: multiply;
+  color: var(--yi-ink);
+}
+
+.yi-coupon__stub {
+  flex: 0 0 26%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7% 3% 6%;
+}
+
+.yi-coupon__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5.2% 6% 4.2% 5.5%;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transform-origin: 0 100%;
+}
+
+/* A printed cut line all the way round. */
+.yi-coupon__stub::before,
+.yi-coupon__main::before {
+  content: "";
+  position: absolute;
+  inset: 6% 0 6% 0;
+  border: 1.5px dashed color-mix(in srgb, var(--yi-ink) 55%, transparent);
+  pointer-events: none;
+}
+
+.yi-coupon__stub::before {
+  left: 8%;
+  border-right: 0;
+}
+
+.yi-coupon__main::before {
+  right: 3%;
+  border-left: 0;
+}
+
+.yi-coupon__keep {
+  margin: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--yi-small);
+  font-size: 2cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.yi-coupon__serial {
+  margin: 0;
+  font-family: var(--yi-small);
+  font-size: 2cqw;
+  letter-spacing: 0.06em;
+}
+
+.yi-coupon__stubstar {
+  width: 22%;
+  aspect-ratio: 1;
+  height: auto;
+  opacity: 0.85;
+}
+
+/* The perforation: a line of punched holes, and the scissors printed at its head. */
+.yi-coupon__perf {
+  position: absolute;
+  left: 26%;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  transform: translateX(-3px);
+  background: radial-gradient(circle, rgb(40 30 20 / 0.4) 1.2px, rgb(255 255 255 / 0.4) 1.6px, transparent 2px) center 0 /
+    6px 8px repeat-y;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.yi-coupon__scissors {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  transform: translate(-50%, 0) rotate(90deg);
+  font-size: 3.4cqw;
+  line-height: 1;
+  color: var(--yi-ink);
+  background: var(--yi-coupon);
+  padding: 2px 0;
+}
+
+.yi-coupon__over {
+  font-size: 1.9cqw;
+  opacity: 0.75;
+  padding-right: 20%;
+}
+
+.yi-coupon__head {
+  display: block;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: var(--yi-display-case);
+  letter-spacing: var(--yi-display-tracking);
+  font-size: 6.4cqw;
+  line-height: 0.95;
+  max-width: 78%;
+  text-wrap: balance;
+}
+
+.yi-v1 .yi-coupon__head {
+  font-size: 9cqw;
+  line-height: 0.88;
+}
+
+.yi-coupon__small {
+  display: block;
+  max-width: 80%;
+  font-family: var(--yi-text);
+  font-style: italic;
+  font-size: 2.3cqw;
+  line-height: 1.35;
+}
+
+.yi-coupon__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  font-family: var(--yi-small);
+  font-size: 1.9cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.yi-coupon__tear {
+  font-weight: 700;
+}
+
+.yi-coupon__burst {
+  position: absolute !important;
+  right: 5%;
+  top: 14%;
+  width: 16%;
+  --wear-size: 260%;
+}
+
+.yi-coupon__free {
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: uppercase;
+  font-size: 3.4cqw;
+  transform: rotate(-12deg);
+}
+
+.yi-v1 .yi-coupon__free {
+  font-size: 4.6cqw;
+}
+
+.yi-coupon.is-torn .yi-coupon__perf {
+  display: none;
+}
+
+.yi-coupon.is-torn .yi-coupon__main {
+  transform: translate(3.8cqw, 1.8cqw) rotate(4deg);
+  cursor: default;
+}
+
+.yi-coupon.is-tearing .yi-coupon__main {
+  animation: yi-tear 0.95s cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+
+.yi-coupon.is-torn .yi-coupon__stub {
+  transform: rotate(-1deg);
+  transition: transform 0.5s;
+}
+
+@keyframes yi-tear {
+  0% {
+    transform: none;
+  }
+  25% {
+    transform: rotate(1.4deg);
+  }
+  50% {
+    transform: translate(0.6cqw, 0.2cqw) rotate(3deg);
+  }
+  100% {
+    transform: translate(3.8cqw, 1.8cqw) rotate(4deg);
+  }
+}
+
+.yi-coupon__mend {
+  position: absolute;
+  left: 1%;
+  bottom: -34px;
+  padding: 5px 16px;
+  border: 0;
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transform: rotate(-2deg);
+}
+
+/* ——————————————— 4. Postcard ——————————————— */
+
+.yi-post {
+  width: min(680px, calc(100vw - 24px));
+  aspect-ratio: 3 / 2;
+  perspective: 1900px;
+  container-type: inline-size;
+}
+
+.yi-post__card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.35, 0.65, 0.2, 1);
+}
+
+.yi-post.is-back .yi-post__card {
+  transform: rotateY(180deg);
+}
+
+.yi-post__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.yi-post__front {
+  background: #fbfaf5 url("/mockup/inserts/tex-grain.jpg") center / cover;
+  background-blend-mode: multiply;
+}
+
+.yi-post__photo {
+  position: absolute;
+  inset: 3.6% 3.6% 19.5% 3.6%;
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: multiply;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+.yi-post__caption {
+  position: absolute;
+  left: 3.6%;
+  right: 24%;
+  bottom: 8.6%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: var(--yi-display-case);
+  letter-spacing: var(--yi-display-tracking);
+  font-size: 3.4cqw;
+  line-height: 1;
+}
+
+.yi-v1 .yi-post__caption {
+  font-size: 5cqw;
+}
+
+.yi-post__credit {
+  position: absolute;
+  left: 3.6%;
+  bottom: 3.4%;
+  margin: 0;
+  font-family: var(--yi-small);
+  font-size: 1.6cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.yi-post__turn {
+  position: absolute;
+  right: 3.6%;
+  bottom: 4.2%;
+  padding: 0.6cqw 1.4cqw;
+  border: 1px solid color-mix(in srgb, var(--yi-ink) 60%, transparent);
+  border-radius: 2px;
+  background: none;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-size: 1.7cqw;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.yi-post__turn--back {
+  left: 3.6%;
+  right: auto;
+}
+
+.yi-post__back {
+  transform: rotateY(180deg);
+  background: var(--yi-post) url("/mockup/inserts/tex-card.jpg") center / cover;
+  background-blend-mode: multiply;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 9% 4.5% 9%;
+  box-sizing: border-box;
+  column-gap: 0;
+}
+
+.yi-post__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3.6%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 2.6cqw;
+}
+
+.yi-post__left {
+  display: flex;
+  flex-direction: column;
+  padding-right: 5%;
+  border-right: 1px solid color-mix(in srgb, var(--yi-ink) 55%, transparent);
+}
+
+.yi-post__note {
+  margin: 4% 0 0;
+  font-family: var(--yi-text);
+  font-style: italic;
+  font-size: 2.9cqw;
+  line-height: 1.45;
+  transform: rotate(-1.2deg);
+}
+
+.yi-post__sign {
+  margin: 4% 0 0;
+  font-family: var(--yi-text);
+  font-style: italic;
+  font-size: 2.4cqw;
+  opacity: 0.8;
+}
+
+.yi-post__fine {
+  margin: auto 0 5.4cqw;
+  font-family: var(--yi-small);
+  font-size: 1.45cqw;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.yi-post__right {
+  position: relative;
+  padding-left: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* A stamp: perforated edges punched out of the paper around a tiny printed picture. */
+.yi-post__stamp {
+  position: absolute;
+  right: 0;
+  top: -2%;
+  width: 14.5cqw;
+  aspect-ratio: 0.82;
+  box-sizing: border-box;
+  padding: 1.1cqw;
+  background: #fdfcf7;
+  mask:
+    linear-gradient(#000 0 0) center / calc(100% - 7px) calc(100% - 7px) no-repeat,
+    radial-gradient(circle, transparent 2.2px, #000 2.6px) -3.5px -3.5px / 7px 7px round;
+  -webkit-mask:
+    linear-gradient(#000 0 0) center / calc(100% - 7px) calc(100% - 7px) no-repeat,
+    radial-gradient(circle, transparent 2.2px, #000 2.6px) -3.5px -3.5px / 7px 7px round;
+  transform: rotate(2deg);
+  filter: drop-shadow(0 0.5px 0.5px rgb(0 0 0 / 0.25));
+}
+
+.yi-post__stamp-photo {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center 30%;
+  mix-blend-mode: multiply;
+  box-shadow: inset 0 0 0 1.2cqw color-mix(in srgb, var(--yi-a) 85%, transparent);
+}
+
+.yi-post__stamp-val {
+  position: absolute;
+  right: 12%;
+  top: 9%;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  font-size: 2.6cqw;
+  color: #fff;
+  text-shadow: 0 0 3px rgb(0 0 0 / 0.5);
+}
+
+.yi-post__postmark {
+  position: absolute;
+  right: 9cqw;
+  top: 4%;
+  width: 17cqw;
+  aspect-ratio: 1;
+  color: color-mix(in srgb, var(--yi-ink) 75%, transparent);
+  transform: rotate(-14deg);
+  font-family: var(--yi-small);
+  mask: url("/mockup/fx/ink-wear.png") center / 240% repeat;
+  -webkit-mask: url("/mockup/fx/ink-wear.png") center / 240% repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.yi-post__postmark-ring {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.yi-post__cancel {
+  position: absolute;
+  left: 88%;
+  width: 22cqw;
+  height: 4cqw;
+}
+
+.yi-post__cancel--1 {
+  top: 34%;
+}
+
+.yi-post__cancel--2 {
+  top: 54%;
+}
+
+.yi-post__address {
+  margin-top: 46%;
+  font-family: var(--yi-text);
+  font-style: italic;
+  font-size: 2.35cqw;
+}
+
+.yi-post__address p {
+  margin: 0;
+  height: 6.3cqw;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.5cqw;
+  box-sizing: border-box;
+  border-bottom: 1px solid color-mix(in srgb, var(--yi-ink) 45%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.yi-post__address span {
+  font-family: var(--yi-small);
+  font-style: normal;
+  font-size: 1.7cqw;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: 0.8em;
+}
+
+/* Send: a rubber-stamped panel, not a button from an app. */
+.yi-post__send {
+  margin-top: auto;
+  align-self: flex-end;
+  padding: 1cqw 1.8cqw;
+  border: 0.35cqw double var(--yi-ink);
+  background: transparent;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-weight: 700;
+  font-size: 1.8cqw;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transform: rotate(-1.5deg);
+}
+
+.yi-post__send:hover {
+  background: color-mix(in srgb, var(--yi-a) 35%, transparent);
+}
+
+.yi-post__sent {
+  position: absolute;
+  right: 12%;
+  bottom: 26%;
+  padding: 0.6cqw 2cqw;
+  border: 0.6cqw solid var(--yi-a);
+  color: var(--yi-a);
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: uppercase;
+  font-size: 5cqw;
+  line-height: 1;
+  transform: rotate(-9deg);
+  mix-blend-mode: multiply;
+  animation: yi-stamp 0.32s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  pointer-events: none;
+}
+
+.yi-v1 .yi-post__sent,
+.yi-v4 .yi-post__sent,
+.yi-v5 .yi-post__sent {
+  color: var(--yi-ink);
+  border-color: var(--yi-ink);
+}
+
+.yi-post__url {
+  position: absolute;
+  left: 4.5%;
+  right: 4.5%;
+  bottom: 1.6%;
+  margin: 0;
+  font-family: var(--yi-small);
+  font-size: 1.5cqw;
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+.yi-post__url span {
+  user-select: all;
+  -webkit-user-select: all;
+  font-weight: 700;
+}
+
+@keyframes yi-stamp {
+  from {
+    transform: rotate(-9deg) scale(1.5);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(-9deg) scale(1);
+    opacity: 0.9;
+  }
+}
+
+/* ——————————————— 5. Colouring panel ——————————————— */
+
+.yi-colour__sheet {
+  width: min(580px, calc(100vw - 24px));
+  box-sizing: border-box;
+  container-type: inline-size;
+  padding: 6% 7% 5%;
+  background: var(--yi-rag) url("/mockup/inserts/tex-wc.jpg") center / cover;
+  background-blend-mode: multiply;
+}
+
+.yi-colour__over {
+  font-size: 2.1cqw;
+  color: #8a867e;
+}
+
+.yi-colour__head {
+  margin: 3% 0 4%;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: var(--yi-display-case);
+  letter-spacing: var(--yi-display-tracking);
+  font-size: 6.6cqw;
+  line-height: 0.95;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.yi-v1 .yi-colour__head {
+  font-size: 9.4cqw;
+}
+
+.yi-colour__frame {
+  padding: 2.5%;
+  border: 0.8cqw double var(--yi-ink);
+}
+
+.yi-colour__art {
+  position: relative;
+  width: 100%;
+  max-height: 58vh;
+  margin: 0 auto;
+}
+
+.yi-colour__canvas,
+.yi-colour__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.yi-colour__canvas {
+  touch-action: none;
+  cursor: crosshair;
+}
+
+/* The drawing sits on top and multiplies, so every line stays crisp over the crayon. */
+.yi-colour__lines {
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+.yi-colour__tray {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2%;
+  margin-top: 4%;
+}
+
+.yi-crayon {
+  width: 13%;
+  aspect-ratio: 1.2;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.yi-crayon__mark {
+  width: 100%;
+  height: 100%;
+}
+
+.yi-crayon[aria-checked="true"] {
+  transform: translateY(-14%) rotate(-8deg) scale(1.12);
+}
+
+.yi-crayon[aria-checked="true"]::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin: 2px 16% 0;
+  background: var(--yi-ink);
+}
+
+.yi-colour__clear {
+  margin-left: 3%;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-size: 2.2cqw;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.yi-colour__credit {
+  margin: 4% 0 0;
+  font-family: var(--yi-small);
+  font-size: 2.1cqw;
+  text-align: center;
+  color: #7c786f;
+}
+
+.yi-colour__credit b {
+  color: var(--yi-ink);
+}
+
+/* ——————————————— 6. Fold-out poster ——————————————— */
+
+.yi-poster {
+  --pw: min(430px, calc((100vw - 64px) / 3), calc((100vh - 170px) / 1.36));
+  --ph: calc(var(--pw) * 1.36);
+}
+
+.yi-poster__scroller {
+  outline: none;
+}
+
+.yi-poster__track {
+  position: relative;
+  width: calc(var(--pw) * 3);
+  height: var(--ph);
+  perspective: 2600px;
+  transform: translateX(var(--pw));
+  transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+
+.yi-poster.is-open .yi-poster__track {
+  transform: none;
+  transition-delay: 0.45s;
+}
+
+.yi-fold {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--pw);
+  height: var(--ph);
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+
+.yi-fold--0 {
+  position: relative;
+}
+
+.yi-fold--1,
+.yi-fold--2 {
+  left: 100%;
+  transform-origin: 0 50%;
+}
+
+/* Folded: a zig-zag, the middle panel over the first and the last back over that. */
+.yi-fold--1 {
+  transform: rotateY(-179deg);
+}
+
+.yi-fold--2 {
+  transform: rotateY(178deg);
+}
+
+.yi-poster.is-open .yi-fold--1,
+.yi-poster.is-open .yi-fold--2 {
+  transform: rotateY(0deg);
+  transition-delay: 0.45s;
+}
+
+.yi-poster.is-open .yi-fold--2 {
+  transition-delay: 0.6s;
+}
+
+.yi-fold__face,
+.yi-fold__back,
+.yi-fold__shade {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.yi-fold__face {
+  overflow: hidden;
+  background: #f7f5ef;
+}
+
+.yi-fold__back {
+  transform: rotateY(180deg);
+  background: #f3f0e8 url("/mockup/press/newsprint-bright.jpg") center / cover;
+}
+
+/* Crease shading: a valley and a mountain on the two folds, stronger while it is folded up. */
+.yi-fold__shade {
+  pointer-events: none;
+  transition: background-color 0.9s;
+}
+
+.yi-fold--0 > .yi-fold__shade {
+  background-image: linear-gradient(90deg, transparent 86%, rgb(0 0 0 / 0.05) 96%, rgb(0 0 0 / 0.16) 100%);
+}
+
+.yi-fold--1 > .yi-fold__shade {
+  background-color: rgb(30 20 10 / 0.3);
+  background-image: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.1) 0%,
+    rgb(255 255 255 / 0.12) 3%,
+    transparent 14%,
+    transparent 86%,
+    rgb(255 255 255 / 0.16) 98%,
+    rgb(255 255 255 / 0.3) 100%
+  );
+}
+
+.yi-fold--2 > .yi-fold__shade {
+  background-image: linear-gradient(90deg, rgb(0 0 0 / 0.08) 0%, rgb(0 0 0 / 0.03) 5%, transparent 14%);
+}
+
+.yi-poster.is-open .yi-fold--1 > .yi-fold__shade {
+  background-color: transparent;
+  transition-delay: 0.45s;
+}
+
+.yi-fold--1,
+.yi-fold--2 {
+  box-shadow: inset 1px 0 0 rgb(0 0 0 / 0.1);
+}
+
+.yi-poster__art {
+  position: absolute;
+  top: 0;
+  width: 300%;
+  height: 100%;
+}
+
+.yi-poster__photo {
+  position: absolute;
+  inset: 2.2% 1% 12% 1%;
+  background-size: cover;
+  background-position: center;
+}
+
+.yi-poster__head {
+  position: absolute;
+  left: 4%;
+  top: 7%;
+  width: 72%;
+  margin: 0;
+  font-family: var(--yi-display);
+  font-weight: var(--yi-display-weight);
+  text-transform: var(--yi-display-case);
+  letter-spacing: var(--yi-display-tracking);
+  font-size: calc(var(--pw) * 0.24);
+  line-height: 0.9;
+  color: #fffdf6;
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.25),
+    0 6px 30px rgb(0 0 0 / 0.35);
+  text-wrap: balance;
+}
+
+.yi-v1 .yi-poster__head {
+  font-size: calc(var(--pw) * 0.34);
+}
+
+.yi-poster__band {
+  position: absolute;
+  left: 1%;
+  right: 1%;
+  bottom: 2.2%;
+  height: 8.2%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2%;
+  box-sizing: border-box;
+  background: var(--yi-a) url("/mockup/inserts/tex-grain.jpg") center / 600px;
+  background-blend-mode: multiply;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-size: calc(var(--pw) * 0.032);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.yi-v3 .yi-poster__band {
+  color: var(--yi-ink);
+}
+
+.yi-poster__away {
+  position: absolute;
+  right: 5%;
+  bottom: 13.5%;
+  padding: 6px 12px;
+  border: 0;
+  background: #fbfaf5;
+  color: var(--yi-ink);
+  font-family: var(--yi-small);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  transform: rotate(-2deg);
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+
+/* ——————————————— Phones ——————————————— */
+
+@media (max-width: 760px) {
+  .yi-desk__place {
+    align-items: flex-start;
+    padding: 34px 10px 110px;
+  }
+
+  .yi-tuck {
+    right: 2px;
+  }
+
+  .yi-poster {
+    --pw: 84vw;
+    --ph: calc(var(--pw) * 1.36);
+    width: calc(100vw - 20px);
+  }
+
+  .yi-poster__scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 12px;
+  }
+
+  .yi-poster__track,
+  .yi-poster.is-open .yi-poster__track {
+    transform: none;
+  }
+
+  .yi-coupon {
+    aspect-ratio: auto;
+    min-height: 52vw;
+  }
+
+  .yi-coupon__main {
+    gap: 10px;
+    padding-top: 7%;
+    padding-bottom: 7%;
+  }
+
+  .yi-coupon__head {
+    font-size: 6.8cqw;
+    max-width: 74%;
+  }
+
+  .yi-v1 .yi-coupon__head {
+    font-size: 8.6cqw;
+  }
+
+  .yi-coupon__small {
+    font-size: 2.9cqw;
+  }
+
+  .yi-post__note {
+    font-size: 3.1cqw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yi-slip,
+  .yi-object,
+  .yi-desk__scrim,
+  .yi-post__card,
+  .yi-poster__track,
+  .yi-fold,
+  .yi-fold__shade,
+  .yi-stuck__one,
+  .yi-slot {
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+
+  .yi-coupon.is-tearing .yi-coupon__main,
+  .yi-stuck__one.is-peeling,
+  .yi-post__sent {
+    animation: none;
+  }
+
+  .yi-object {
+    transform: rotate(var(--rot));
+  }
+}

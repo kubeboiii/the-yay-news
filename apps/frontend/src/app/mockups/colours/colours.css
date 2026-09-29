@@ -1,0 +1,245 @@
+/* Colour proof sheets: set like a printer's proof, not a web palette. */
+
+.cp-desk {
+  min-height: 100vh;
+  background: #e4ded3;
+  padding: 48px 24px 96px;
+  color: #17140f;
+  font-family: var(--cp-sans), system-ui, sans-serif;
+}
+
+.cp-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.cp-mono {
+  font-family: var(--cp-mono), ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.cp-kicker {
+  color: #5b5a57;
+}
+
+.cp-wrap h1 {
+  margin-top: 6px;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.cp-intro {
+  max-width: 62ch;
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.cp-family {
+  margin: 40px 0 14px;
+  padding-top: 10px;
+  border-top: 2px solid #17140f;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.cp-proof {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 20px 18px;
+  background: #fbf8f1 url("/mockup/press/newsprint.jpg") center / cover;
+  background-blend-mode: multiply;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.08),
+    0 10px 24px -12px rgb(0 0 0 / 0.35);
+}
+
+/* A strip of both inks along the top edge, like a colour bar on a press sheet. */
+.cp-proof::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 8px;
+  background: linear-gradient(90deg, var(--a) 0 42%, var(--b) 42% 84%, #17140f 84%);
+}
+
+.cp-no {
+  margin-top: 4px;
+  font-family: var(--cp-mono), monospace;
+  font-size: 12px;
+  color: #5b5a57;
+}
+
+.cp-head h2 {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.cp-story {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.cp-inks {
+  display: grid;
+  gap: 10px;
+}
+
+.cp-ink {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.cp-chip {
+  width: 54px;
+  height: 54px;
+  mix-blend-mode: multiply;
+}
+
+.cp-over {
+  position: relative;
+  isolation: isolate;
+}
+
+.cp-over span {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  mix-blend-mode: multiply;
+}
+
+.cp-over span:first-child {
+  left: 0;
+  top: 0;
+}
+
+.cp-over span:last-child {
+  right: 0;
+  bottom: 0;
+}
+
+.cp-ink-name {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.cp-role {
+  font-size: 13px;
+  color: #3f3a33;
+}
+
+.cp-ramps {
+  display: grid;
+  gap: 4px;
+}
+
+.cp-ramp {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+.cp-ramp span {
+  padding: 5px 6px;
+  font-family: var(--cp-mono), monospace;
+  font-size: 11px;
+  mix-blend-mode: multiply;
+}
+
+.cp-deep {
+  grid-template-columns: 1fr 1fr 1.6fr;
+  align-items: center;
+}
+
+.cp-deep span {
+  color: #fff;
+}
+
+.cp-deep em {
+  font-size: 12px;
+  color: #5b5a57;
+  padding-left: 4px;
+}
+
+.cp-previews {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.cp-preview {
+  position: relative;
+  aspect-ratio: 900 / 1379;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
+}
+
+.cp-foot {
+  display: grid;
+  gap: 6px;
+  margin-top: auto;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.cp-open {
+  margin-top: 4px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cp-kept {
+  outline: 3px solid #17140f;
+  outline-offset: 4px;
+}
+
+.cp-kept-tag {
+  font-weight: 700;
+  color: #17140f;
+}
+
+/* ---------- Pastel proofs ---------- */
+
+.cp-ink--pz {
+  grid-template-columns: 54px 22px 1fr;
+}
+
+.cp-chip--deep {
+  width: 22px;
+}
+
+.cp-pz-previews {
+  display: grid;
+  grid-template-columns: 0.72fr 1fr;
+  gap: 8px;
+  align-items: start;
+}
+
+.cp-pz-previews a {
+  display: grid;
+  gap: 3px;
+}
+
+.cp-pz-v3 {
+  grid-row: span 2;
+}
+
+.cp-pz-img {
+  width: 100%;
+  height: auto;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
+}

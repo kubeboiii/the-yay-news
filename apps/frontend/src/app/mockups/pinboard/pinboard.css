@@ -1,0 +1,343 @@
+/*
+ * The reader's board: a wall papered in plain newsprint stock, lit from above, with every clipping
+ * re-printed on paper — grain through the ink, a scissor-cut or torn edge, masking tape — and hung
+ * at a slight angle, overlapping, the way things end up on a fridge.
+ */
+
+.pb-room {
+  min-height: 100vh;
+  background: #cfc2a8;
+  overflow-x: hidden;
+}
+
+.pb-wall {
+  position: relative;
+  min-height: 100vh;
+  /* Unprinted newsprint, pasted up edge to edge: the scan tiled large, multiplied into a warm
+     wall colour so the fibres read as the wall's own surface. */
+  background-color: #d8ccb2;
+  background-image:
+    radial-gradient(ellipse 120% 70% at 50% 0%, rgb(255 250 235 / 0.35), transparent 60%),
+    radial-gradient(ellipse 140% 110% at 50% 45%, transparent 55%, rgb(60 42 22 / 0.28)),
+    url("/mockup/press/newsprint.jpg");
+  background-size:
+    100% 100%,
+    100% 100%,
+    1100px auto;
+  background-blend-mode: normal, multiply, multiply;
+}
+
+.pb-room[data-paper="white"] .pb-wall {
+  background-color: #dcdad3;
+  background-image:
+    radial-gradient(ellipse 120% 70% at 50% 0%, rgb(255 255 255 / 0.35), transparent 60%),
+    radial-gradient(ellipse 140% 110% at 50% 45%, transparent 55%, rgb(40 40 40 / 0.22)),
+    url("/mockup/press/newsprint-white.jpg");
+}
+
+/* ——— A clipping ——— */
+.pb-clip {
+  position: absolute;
+  touch-action: auto;
+  cursor: grab;
+  transform-origin: 50% 12%;
+  transition:
+    rotate 0.25s ease,
+    scale 0.25s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.pb-clip[data-selected] {
+  touch-action: none;
+}
+
+.pb-clip[data-dragging] {
+  cursor: grabbing;
+  scale: 1.025;
+  transition: none;
+}
+
+.pb-piece {
+  position: relative;
+  /* The shadow of paper hanging a millimetre off a wall: close and warm, deeper when lifted. */
+  filter: drop-shadow(0 1px 1px rgb(40 28 14 / 0.3)) drop-shadow(2px 7px 9px rgb(40 28 14 / 0.22));
+  transition: filter 0.2s ease;
+}
+
+.pb-clip[data-dragging] .pb-piece {
+  filter: drop-shadow(0 2px 2px rgb(40 28 14 / 0.25)) drop-shadow(8px 22px 22px rgb(40 28 14 / 0.3));
+}
+
+.pb-paper {
+  position: relative;
+  overflow: hidden;
+}
+
+.pb-paper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: url(#press) saturate(0.92) contrast(0.98);
+}
+
+/* The stock itself, printed "under" the ink again now it is off the page. */
+.pb-grain {
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / 900px auto;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.pb-room[data-paper="white"] .pb-grain {
+  background-image: url("/mockup/press/newsprint-white.jpg");
+}
+
+.pb-tape {
+  position: absolute;
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+/* A typed tag under each clipping: where it came from, and what can be done with it. Shown on
+   hover, or once a clipping has been picked up with a tap. */
+.pb-tag {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: min(320px, 90vw);
+  padding: 7px 12px 8px;
+  background: #f5f0e3 url("/mockup/press/newsprint-bright.jpg") center / 600px auto;
+  background-blend-mode: multiply;
+  color: #1f1c17;
+  font: 400 12px/1.25 var(--pb-type), "Courier New", ui-monospace, monospace;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.15),
+    1px 5px 8px -3px rgb(40 28 14 / 0.35);
+  clip-path: polygon(0 4%, 20% 0, 48% 3%, 76% 0, 100% 3%, 99% 55%, 100% 97%, 64% 100%, 36% 97%, 9% 100%, 0 96%, 1% 45%);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.15s ease,
+    visibility 0s linear 0.15s;
+  z-index: 2;
+}
+
+@media (hover: hover) {
+  .pb-clip:hover .pb-tag {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.15s ease;
+  }
+}
+
+.pb-clip[data-selected] .pb-tag,
+.pb-clip:focus-within .pb-tag {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.15s ease;
+}
+
+.pb-clip[data-dragging] .pb-tag {
+  opacity: 0;
+}
+
+.pb-tag__from {
+  color: #5b5346;
+  font-size: 11px;
+}
+
+.pb-tag__acts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px 12px;
+}
+
+.pb-tag__acts :is(button, a) {
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pb-tag__acts :is(button, a):hover {
+  color: #b3262d;
+}
+
+.pb-tag__acts button:last-child {
+  color: #8b2a22;
+}
+
+/* ——— The note on an empty board ——— */
+.pb-note {
+  position: relative;
+  top: 150px;
+  width: min(440px, calc(100% - 48px));
+  margin: 0 auto;
+  rotate: -1.8deg;
+  filter: drop-shadow(0 1px 1px rgb(40 28 14 / 0.3)) drop-shadow(3px 10px 12px rgb(40 28 14 / 0.25));
+}
+
+.pb-note__paper {
+  padding: 42px 36px 34px;
+  background: #fbf7ea url("/mockup/press/newsprint-bright.jpg") center / 700px auto;
+  background-blend-mode: multiply;
+  color: #23201b;
+  font: 500 24px/1.18 var(--pb-hand), "Bradley Hand", cursive;
+  /* Lined notepaper, the blue rules printed faintly under the hand. */
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 27px, rgb(70 110 190 / 0.22) 27px 28px),
+    url("/mockup/press/newsprint-bright.jpg");
+  background-size:
+    100% 28px,
+    700px auto;
+  background-position:
+    0 38px,
+    center;
+  mask:
+    url("/mockup/fx/torn-edge.png") 30% 0 / 180% 56px no-repeat,
+    linear-gradient(#000, #000) 0 100% / 100% calc(100% - 26px) no-repeat;
+  -webkit-mask:
+    url("/mockup/fx/torn-edge.png") 30% 0 / 180% 56px no-repeat,
+    linear-gradient(#000, #000) 0 100% / 100% calc(100% - 26px) no-repeat;
+}
+
+.pb-note__paper p {
+  margin: 0 0 0.45em;
+}
+
+.pb-note__head {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  color: #1c3f8c;
+}
+
+.pb-note__swash {
+  display: block;
+  width: 250px;
+  height: 22px;
+  margin: -6px 0 10px -10px;
+  mask-size: 100% 100% !important;
+  -webkit-mask-size: 100% 100% !important;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+}
+
+.pb-note__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #b3262d;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pb-note__arrow {
+  width: 54px;
+  height: 18px;
+}
+
+.pb-note__tape {
+  left: 50%;
+  top: -10px;
+  width: 130px;
+  height: 34px;
+  margin-left: -65px;
+  rotate: 3deg;
+  z-index: 1;
+}
+
+/* ——— A slip taped at the foot of the screen, confirming what just happened ——— */
+.pb-slip {
+  position: fixed;
+  left: 50%;
+  bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0.7em 1.3em 0.65em;
+  max-width: calc(100vw - 2.5rem);
+  overflow-wrap: anywhere;
+  background: #f3eee1 url("/mockup/press/newsprint.jpg") center / 700px auto;
+  background-blend-mode: multiply;
+  color: #1f1c17;
+  font: 400 14px/1.3 var(--pb-type), "Courier New", ui-monospace, monospace;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.12),
+    2px 8px 14px -6px rgb(40 30 20 / 0.45);
+  clip-path: polygon(0 3%, 12% 0, 31% 2%, 55% 0, 78% 3%, 100% 0, 99% 50%, 100% 97%, 71% 100%, 44% 97%, 19% 100%, 0 97%, 1% 48%);
+  transform: translateX(-50%) rotate(-1.4deg);
+  animation: pb-slip 0.35s ease-out;
+}
+
+.pb-slip button {
+  border: 0;
+  background: none;
+  color: #b3262d;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pb-slip__tape {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 64px;
+  height: 16px;
+  margin-left: -32px;
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  opacity: 0.9;
+  transform: rotate(3deg);
+}
+
+@keyframes pb-slip {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px) rotate(2deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .pb-note {
+    top: 110px;
+  }
+
+  .pb-note__paper {
+    padding: 38px 24px 28px;
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-clip,
+  .pb-piece {
+    transition: none;
+  }
+
+  .pb-slip {
+    animation: none;
+  }
+}

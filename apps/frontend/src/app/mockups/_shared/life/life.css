@@ -1,0 +1,164 @@
+/*
+ * Paper life: the layer that makes each sheet behave like the same physical object from one
+ * morning to the next — it arrives folded, its pages turn, the room light changes with the hour,
+ * every edition prints a little differently, and old issues yellow. Everything here is driven by
+ * custom properties and data attributes that the client sets on <html>; the versions' own CSS is
+ * never touched.
+ */
+
+/* ——— Room light: a tint multiplied over the desk, coming from the side the light comes from ——— */
+.life-room {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+  background: var(--light-tint, none);
+  opacity: var(--light-opacity, 0);
+  mix-blend-mode: multiply;
+}
+
+/* The contact shadow falls away from the light: long and off to one side in the low sun. */
+html[data-life] .print-sheet-wrap::before {
+  translate: var(--light-sx, 0px) var(--light-sy, 0px);
+  /* Longer, never wider: a shadow stretched sideways would push past the desk and make the page
+     scroll horizontally. The offset stays inside the desk's own margin. */
+  scale: 1 var(--light-stretch, 1);
+  opacity: var(--light-strength, 1);
+}
+
+@media (max-width: 760px) {
+  html[data-life] .print-sheet-wrap::before {
+    translate: none;
+  }
+}
+
+/* v1 carries its contact shadow on the sheet itself. */
+html[data-life] .yn-sheet {
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.08),
+    var(--light-sx, 0px) calc(10px + var(--light-sy, 0px)) calc(30px * var(--light-stretch, 1)) -10px
+      rgb(0 0 0 / calc(0.3 * var(--light-strength, 1))),
+    calc(var(--light-sx, 0px) * 1.6) calc(30px + var(--light-sy, 0px)) calc(60px * var(--light-stretch, 1)) -30px
+      rgb(0 0 0 / calc(0.25 * var(--light-strength, 1)));
+}
+
+/* ——— Seeded paper: the stock is cut from a different part of the roll each edition ——— */
+html[data-life] .print-sheet::before,
+html[data-life] .yn-sheet::before {
+  background-size: var(--paper-zoom, 100%) var(--paper-zoom, 100%);
+  background-position: var(--paper-x, 50%) var(--paper-y, 50%);
+  transform: scaleX(var(--paper-flip, 1));
+}
+
+/* ——— The edition's own press run, aged by how long the paper has been lying around ——— */
+html[data-life] .print-sheet,
+html[data-life] .yn-sheet {
+  filter: url(#press-edition) saturate(calc(0.9 * var(--age-saturate, 1))) contrast(calc(0.97 * var(--age-contrast, 1)))
+    sepia(var(--age-sepia, 0)) brightness(var(--age-brightness, 1));
+}
+
+html[data-life][data-paper="white"] .print-sheet,
+html[data-life][data-paper="white"] .yn-sheet {
+  filter: url(#press-edition) saturate(calc(0.97 * var(--age-saturate, 1)))
+    contrast(calc(0.99 * var(--age-contrast, 1))) sepia(var(--age-sepia, 0)) brightness(var(--age-brightness, 1));
+}
+
+/* Toned, sun-faded edges and foxing, laid into the paper under nothing but the grain. */
+.life-age {
+  position: absolute;
+  inset: 0;
+  z-index: 49;
+  pointer-events: none;
+  background: var(--age-layers, none);
+  mix-blend-mode: multiply;
+  opacity: var(--age-edge-on, 0);
+}
+
+.yn-sheet > .life-age {
+  z-index: 4;
+}
+
+/* A marker at the very foot of the back page, to know when the reader has finished. */
+.life-end {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+}
+
+/* ——— Arrival: until the paper has been dropped on the desk, it isn't there ——— */
+html[data-arriving] :is(.print-sheet-wrap, .yn-sheet-wrap) {
+  opacity: 0;
+  /* If the script never runs, the paper is simply there after a moment. */
+  animation: life-failsafe 0s linear 3s forwards;
+}
+
+@keyframes life-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+.life-fold-shade,
+.life-fold-edge,
+.life-curl {
+  position: absolute;
+  pointer-events: none;
+  z-index: 70;
+}
+
+/* The lower half, still angled away from the light as it opens. */
+.life-fold-shade {
+  left: 0;
+  right: 0;
+  top: 50%;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgb(40 28 14 / 0.18), rgb(40 28 14 / 0.34));
+}
+
+/* The leading edge of the flap as it comes down: the darkest, travelling shadow. */
+.life-fold-edge {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 14%;
+  translate: 0 -100%;
+  background: linear-gradient(to bottom, transparent, rgb(30 20 10 / 0.32) 85%, rgb(30 20 10 / 0.12));
+}
+
+/* The curl shadow sweeping across a page as it turns. */
+.life-curl {
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgb(30 20 10 / 0.22) 45%,
+    rgb(255 250 240 / 0.28) 58%,
+    transparent
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ——— Reading mode: the same paper, flat on the table, in one comfortable column ——— */
+html[data-reading="on"] :is(.print-sheet-wrap, .yn-sheet-wrap) {
+  transform: none;
+  width: min(700px, 100%) !important;
+}
+
+html[data-reading="on"] :is(.print-sheet-wrap, .yn-sheet-wrap)::after {
+  display: none;
+}
+
+html[data-reading="on"] .print-sheet,
+html[data-reading="on"] .yn-sheet {
+  --text: 18px !important;
+  filter: none !important;
+}
+
+html[data-reading="on"] .life-room {
+  opacity: calc(var(--light-opacity, 0) * 0.5);
+}

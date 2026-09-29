@@ -42,3 +42,9 @@ packages/db/src/generated
 
 # Design reference PDFs (large, third-party)
 references/
+
+# Pressed photos are rebuilt by apps/frontend/scripts/press_photos.py (and fall back to the CDN);
+# the paper sheets, light maps and colour previews can't be rebuilt, so they are committed.
+apps/frontend/public/mockup/press/raw/
+apps/frontend/public/mockup/press/photo-*.jpg
+__pycache__/

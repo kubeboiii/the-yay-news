@@ -1,0 +1,1546 @@
+/*
+ * Inside pages of the broadsheet. They share the front page's sheet, rules and type, and swap the
+ * full masthead for a running head. Each section is printed in its own pair of fluoro inks, set
+ * once on the sheet as --pop (the loud one, always under black text) and --pop2 (its partner),
+ * so a page reads as one section of one paper.
+ */
+
+.yn-theme-screen {
+  --pop: var(--neon-pink);
+  --pop2: var(--neon-blue);
+  --pop2-ink: var(--paper);
+}
+
+.yn-theme-gaming {
+  --pop: var(--neon-green);
+  --pop2: var(--neon-violet);
+  --pop2-ink: var(--ink);
+}
+
+.yn-theme-back {
+  --pop: var(--neon-orange);
+  --pop2: var(--neon-yellow);
+  --pop2-ink: var(--ink);
+}
+
+.yn-inside {
+  gap: 0;
+}
+
+.yn-note-foot {
+  margin: 16px auto 0;
+  max-width: 1180px;
+  text-align: center;
+  font-size: 11px;
+  color: rgb(0 0 0 / 0.55);
+}
+
+/* ——— Running head ——— */
+
+.yn-run {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 62) 1px 1fr 1px calc(var(--u) * 84);
+  gap: calc(var(--u) * 5);
+  align-items: center;
+}
+
+.yn-run-page {
+  background: var(--pop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 2.5);
+  padding: calc(var(--u) * 3) calc(var(--u) * 3);
+  rotate: -1.5deg;
+}
+
+.yn-run-page .yn-hand {
+  font-size: calc(var(--u) * 8);
+}
+
+.yn-run-page .yn-fat {
+  font-size: calc(var(--u) * 22);
+}
+
+.yn-run-title {
+  text-align: center;
+}
+
+.yn-run-mark {
+  font-size: calc(var(--u) * 7);
+}
+
+.yn-run-mark .y1 {
+  color: var(--neon-pink);
+}
+
+.yn-run-mark .y2 {
+  color: var(--neon-orange);
+}
+
+.yn-run-mark .y3 {
+  color: var(--neon-blue);
+}
+
+.yn-run-title h1 {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 21);
+  white-space: nowrap;
+}
+
+.yn-run-tag {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 5.2);
+}
+
+.yn-run-spec dl {
+  margin-top: 0;
+}
+
+/* ——— Folio ——— */
+
+.yn-folio {
+  margin-top: auto;
+  padding-top: calc(var(--u) * 2);
+  border-top: 1px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(var(--u) * 4);
+  font-size: calc(var(--u) * 2.5);
+  font-weight: 600;
+}
+
+.yn-folio .yn-hand {
+  font-size: calc(var(--u) * 4.6);
+  font-weight: 400;
+}
+
+/* ——— Shared inside-page parts ——— */
+
+.yn-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.yn-photo img {
+  mix-blend-mode: multiply;
+  filter: saturate(0.95) contrast(1.03);
+}
+
+/* Multiply only makes sense over paper. Over black film stock or a block of fluoro it would sink
+ * the picture into the ink, so a photo mounted on colour is printed as it is. */
+.yn-filmstrip .yn-photo img,
+.yn-tile .yn-photo img,
+.yn-ticket .yn-photo img,
+.bk-panel .yn-photo img {
+  mix-blend-mode: normal;
+}
+
+/* A photographer's tag, stamped in the corner the way the sample packs credit an image. */
+.yn-photo-tag {
+  position: absolute;
+  left: calc(var(--u) * 2);
+  top: calc(var(--u) * 2);
+  z-index: 1;
+  background: var(--paper);
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 1.4);
+  font-size: calc(var(--u) * 2.1);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.yn-kicker {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: calc(var(--u) * 2.5);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 1.6);
+}
+
+.yn-hed {
+  font-size: calc(var(--u) * 14);
+  line-height: 0.95;
+}
+
+.yn-hed .yn-hand {
+  text-transform: none;
+  font-size: 0.95em;
+}
+
+.yn-hed-sm {
+  font-size: calc(var(--u) * 8.4);
+  line-height: 0.96;
+}
+
+.yn-hed-sm .yn-hand {
+  text-transform: none;
+  font-size: 0.98em;
+}
+
+.yn-dek {
+  font-size: calc(var(--u) * 4.4);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.yn-mark-pop {
+  background: var(--pop);
+}
+
+.yn-nowrap {
+  white-space: nowrap;
+}
+
+.ss-choir h2 {
+  font-size: calc(var(--u) * 11.5);
+}
+
+.yn-mark-pop2 {
+  background: var(--pop2);
+  color: var(--pop2-ink);
+}
+
+.yn-label,
+.yn-balloon .said,
+.bk-riddle .answer {
+  word-spacing: 0.14em;
+}
+
+.yn-label {
+  font-family: var(--font-hand);
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1;
+}
+
+.yn-rule-top {
+  border-top: calc(var(--u) * 1.2) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+
+.yn-stars {
+  font-size: calc(var(--u) * 5.4);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* ================================================================
+   Screen & Sound — neon pink with electric blue
+   ================================================================ */
+
+.ss-top {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 100);
+  gap: calc(var(--u) * 6);
+}
+
+.ss-lead {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 5);
+}
+
+/* A strip of film: black stock, sprocket holes punched along both edges, and the maker's edge
+ * markings printed small in orange the way real negatives carry them. */
+.yn-filmstrip {
+  position: relative;
+  background: var(--ink);
+  padding: calc(var(--u) * 8) calc(var(--u) * 5);
+}
+
+.yn-filmstrip::before,
+.yn-filmstrip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--u) * 3);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Crect x='2' y='0.5' width='4' height='5' rx='0.8' fill='%23fbf8f1'/%3E%3C/svg%3E");
+  background-size: calc(var(--u) * 5.2) calc(var(--u) * 3);
+  background-repeat: repeat-x;
+}
+
+.yn-filmstrip::before {
+  top: calc(var(--u) * 2.5);
+}
+
+.yn-filmstrip::after {
+  bottom: calc(var(--u) * 2.5);
+}
+
+.yn-film-edge {
+  position: absolute;
+  left: calc(var(--u) * 6);
+  right: calc(var(--u) * 6);
+  bottom: calc(var(--u) * 6.8);
+  display: flex;
+  justify-content: space-between;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(var(--u) * 1.9);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--neon-orange);
+  line-height: 1;
+  translate: 0 50%;
+}
+
+.ss-frame {
+  height: calc(var(--u) * 172);
+}
+
+.ss-sticker {
+  position: absolute;
+  right: calc(var(--u) * -5);
+  top: calc(var(--u) * 12);
+  width: calc(var(--u) * 42);
+  rotate: 10deg;
+  z-index: 3;
+}
+
+.ss-lead-text {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: calc(var(--u) * 6);
+}
+
+.ss-lead-text h2 {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.ss-lead-text .yn-dek {
+  margin-bottom: calc(var(--u) * 2.5);
+}
+
+.ss-rating {
+  margin-top: calc(var(--u) * 3.5);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2.5);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: calc(var(--u) * 2) 0;
+}
+
+.ss-rating .yn-hand {
+  font-size: calc(var(--u) * 4.8);
+}
+
+/* The listings column: a cinema letterboard up top, then the evening in electric blue. */
+.ss-listings {
+  background: var(--pop2);
+  color: var(--pop2-ink);
+  padding: calc(var(--u) * 4) calc(var(--u) * 5) calc(var(--u) * 5);
+  display: flex;
+  flex-direction: column;
+}
+
+.yn-letterboard {
+  background: var(--ink);
+  color: var(--paper);
+  padding: calc(var(--u) * 2.5) calc(var(--u) * 3);
+  border: calc(var(--u) * 1.2) solid var(--paper);
+  outline: 1px solid var(--ink);
+  text-align: center;
+}
+
+.yn-letterboard p {
+  font-family: var(--font-chunk);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: calc(var(--u) * 8.4);
+  line-height: 1.12;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
+}
+
+.yn-letterboard p:last-child {
+  border-bottom: 0;
+}
+
+.yn-letterboard .small {
+  font-size: calc(var(--u) * 3.6);
+  letter-spacing: 0.3em;
+}
+
+.ss-listings h3 {
+  margin-top: calc(var(--u) * 5);
+}
+
+.ss-list {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 3.1);
+  line-height: 1.3;
+}
+
+.ss-list li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 12) 1fr;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2.2) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+.ss-list time {
+  font-weight: 800;
+}
+
+.ss-list b {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* The "why print?" column, borrowed: a big numeral, a two-line label beside it, a line under. */
+.yn-numbered li {
+  padding: calc(var(--u) * 2.4) 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.yn-numbered li:last-child {
+  border-bottom: 0;
+}
+
+.yn-numbered .n {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+}
+
+.yn-numbered .n .yn-chunk {
+  font-size: calc(var(--u) * 9);
+}
+
+.yn-numbered .n span:last-child {
+  font-size: calc(var(--u) * 3.1);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.yn-numbered p {
+  margin-top: calc(var(--u) * 0.8);
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.3;
+}
+
+/* The choir row: a photo tile set in a block of ink, the story, and the record it made. */
+.ss-choir {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 120) 1fr calc(var(--u) * 124);
+  gap: calc(var(--u) * 6);
+  align-items: stretch;
+}
+
+.yn-tile {
+  background: var(--pop);
+  padding: calc(var(--u) * 6);
+  display: flex;
+}
+
+.yn-tile .yn-photo {
+  flex: 1;
+}
+
+.ss-choir .ss-choir-photo {
+  min-height: calc(var(--u) * 128);
+}
+
+.ss-record {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 5);
+  justify-content: center;
+}
+
+.ss-record .yn-vinyl {
+  width: calc(var(--u) * 70);
+  align-self: center;
+}
+
+/* A seven-inch seen from above: black vinyl as a heavy ring of ink, a fluoro paper label, and the
+ * spindle hole punched through to the paper. Typography only; nothing is drawn. */
+.yn-vinyl {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--pop);
+  border: calc(var(--u) * 9) solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: calc(var(--u) * -6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: calc(var(--u) * 2.6);
+  font-weight: 800;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.yn-vinyl::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--u) * 2.2);
+  height: calc(var(--u) * 2.2);
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.yn-vinyl .side {
+  font-family: var(--font-chunk);
+  font-size: calc(var(--u) * 6);
+  margin-bottom: calc(var(--u) * 5);
+}
+
+.yn-vinyl .rpm {
+  margin-top: calc(var(--u) * 5);
+}
+
+.ss-tracks h3 {
+  font-size: calc(var(--u) * 6);
+}
+
+.ss-tracks ol {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 3);
+  line-height: 1.25;
+  counter-reset: track;
+}
+
+.ss-tracks li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1.2);
+  padding: calc(var(--u) * 1) 0;
+  border-bottom: 1px solid var(--ink);
+  counter-increment: track;
+}
+
+.ss-tracks li::before {
+  content: "A" counter(track);
+  font-weight: 800;
+  width: calc(var(--u) * 6);
+  flex: none;
+}
+
+.ss-tracks li span:last-child {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* Bottom row: a ticket stub, a line from the booth, a quick recommendation. */
+.ss-row {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr 1fr;
+  gap: calc(var(--u) * 6);
+  align-items: stretch;
+}
+
+/* A cinema ticket: fluoro card, a perforated tear line with its two punched notches, and the
+ * stub printed sideways. */
+.yn-ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 22);
+  background: var(--pop);
+}
+
+.yn-ticket-main {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 58) 1fr;
+  gap: calc(var(--u) * 4);
+  padding: calc(var(--u) * 4);
+}
+
+.yn-ticket-main .yn-photo {
+  min-height: calc(var(--u) * 62);
+}
+
+.yn-ticket-stub {
+  position: relative;
+  border-left: calc(var(--u) * 0.6) dashed var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yn-ticket-stub::before,
+.yn-ticket-stub::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--u) * -3.3);
+  width: calc(var(--u) * 6);
+  height: calc(var(--u) * 6);
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.yn-ticket-stub::before {
+  top: calc(var(--u) * -3);
+}
+
+.yn-ticket-stub::after {
+  bottom: calc(var(--u) * -3);
+}
+
+.yn-ticket-stub p {
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+  font-family: var(--font-chunk);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: calc(var(--u) * 6);
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.yn-ticket-stub small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: calc(var(--u) * 2.2);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.yn-ticket .admit {
+  font-size: calc(var(--u) * 2.4);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.yn-ticket h3 {
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.yn-ticket .yn-body {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 3);
+}
+
+.yn-ticket .seat {
+  margin-top: calc(var(--u) * 2);
+  display: flex;
+  gap: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 2.4);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.yn-pullquote {
+  font-family: var(--font-chunk);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: calc(var(--u) * 9);
+  line-height: 0.98;
+}
+
+.yn-pullquote-by {
+  margin-top: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 2.9);
+  font-weight: 600;
+}
+
+/* ================================================================
+   Gaming — neon green with violet
+   ================================================================ */
+
+/* The arcade HUD across the top of the page, set in bitmap letters built from inked squares. */
+.gm-hud {
+  --px: calc(var(--u) * 1.6);
+  background: var(--pop);
+  padding: calc(var(--u) * 4) calc(var(--u) * 6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 6);
+}
+
+.gm-hud-mid {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(var(--u) * 2.6);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.yn-pixel {
+  display: inline-flex;
+  gap: var(--px);
+  color: var(--ink);
+}
+
+.yn-pixel-glyph {
+  display: grid;
+  grid-auto-rows: var(--px);
+}
+
+.yn-pixel-glyph .on {
+  background: currentColor;
+}
+
+.gm-top {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 176) 1fr;
+  gap: calc(var(--u) * 8);
+}
+
+/* A game cartridge: the violet shell with its corner clipped, grip ridges across the top, and a
+ * paper label carrying the photo and the title. */
+.yn-cart {
+  position: relative;
+  background: var(--pop2);
+  padding: calc(var(--u) * 16) calc(var(--u) * 9) calc(var(--u) * 11);
+  clip-path: polygon(0 0, calc(100% - var(--u) * 16) 0, 100% calc(var(--u) * 16), 100% 100%, 0 100%);
+}
+
+.yn-cart-ridges {
+  position: absolute;
+  left: calc(var(--u) * 24);
+  right: calc(var(--u) * 30);
+  top: calc(var(--u) * 4);
+  height: calc(var(--u) * 7);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.yn-cart-ridges span {
+  height: calc(var(--u) * 0.7);
+  background: var(--ink);
+}
+
+.yn-cart-label {
+  background: var(--paper);
+  padding: calc(var(--u) * 3);
+  border: 1px solid var(--ink);
+}
+
+.yn-cart-label .yn-photo {
+  height: calc(var(--u) * 166);
+}
+
+.yn-cart-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(var(--u) * 3);
+  padding-top: calc(var(--u) * 3);
+}
+
+.yn-cart-title p.yn-chunk {
+  font-size: calc(var(--u) * 14);
+}
+
+.yn-cart-title .meta {
+  font-size: calc(var(--u) * 2.3);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: right;
+  line-height: 1.4;
+}
+
+.yn-cart-foot {
+  margin-top: calc(var(--u) * 4);
+  display: flex;
+  justify-content: space-between;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(var(--u) * 2.3);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gm-sticker {
+  position: absolute;
+  right: calc(var(--u) * 5);
+  top: calc(var(--u) * 26);
+  width: calc(var(--u) * 38);
+  rotate: 9deg;
+  z-index: 3;
+}
+
+.gm-review {
+  display: flex;
+  flex-direction: column;
+}
+
+.gm-review h2 {
+  margin-top: calc(var(--u) * 2.5);
+}
+
+.gm-review .yn-dek {
+  margin-top: calc(var(--u) * 3.5);
+  font-size: calc(var(--u) * 5.4);
+}
+
+.gm-review .yn-body {
+  margin-top: calc(var(--u) * 3.5);
+  font-size: calc(var(--u) * 3.6);
+}
+
+/* The review's scorecard, ruled like a spec table and closed with one fat total. */
+.gm-scores {
+  margin-top: auto;
+  border: calc(var(--u) * 0.6) solid var(--ink);
+}
+
+.gm-scores h3 {
+  background: var(--ink);
+  color: var(--paper);
+  font-size: calc(var(--u) * 2.8);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 3);
+}
+
+.gm-scores dl {
+  padding: calc(var(--u) * 1) calc(var(--u) * 3);
+  font-size: calc(var(--u) * 3.1);
+}
+
+.gm-scores dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 1.2) 0;
+  border-bottom: 1px solid var(--ink);
+}
+
+.gm-scores dd {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.gm-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 3);
+  background: var(--pop);
+  padding: calc(var(--u) * 2.5) calc(var(--u) * 3);
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+}
+
+.gm-total .yn-fat {
+  font-size: calc(var(--u) * 18);
+}
+
+.gm-total .yn-hand {
+  font-size: calc(var(--u) * 6);
+  line-height: 0.95;
+}
+
+.gm-mid {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 108) 1fr calc(var(--u) * 112);
+  gap: calc(var(--u) * 6);
+}
+
+.gm-mid .yn-tile {
+  background: var(--pop2);
+}
+
+.gm-mid .yn-photo {
+  min-height: calc(var(--u) * 132);
+}
+
+/* Patch notes, set in monospace like the text file they come from. */
+.yn-patch {
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.55;
+}
+
+.yn-patch-head {
+  background: var(--pop);
+  border-bottom: calc(var(--u) * 0.6) solid var(--ink);
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 3);
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.yn-patch ul {
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 2.5);
+}
+
+.yn-patch li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 21) 1fr;
+  gap: calc(var(--u) * 1);
+  padding: calc(var(--u) * 1.3) 0;
+}
+
+.yn-patch li b {
+  font-weight: 800;
+}
+
+.gm-row {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  gap: calc(var(--u) * 6);
+}
+
+.gm-hiscore {
+  --px: calc(var(--u) * 2.6);
+  background: var(--ink);
+  color: var(--paper);
+  padding: calc(var(--u) * 4) calc(var(--u) * 5);
+}
+
+.gm-hiscore .yn-pixel {
+  color: var(--pop);
+  margin-top: calc(var(--u) * 3);
+}
+
+.gm-hiscore .yn-label {
+  color: var(--paper);
+}
+
+.gm-hiscore .yn-body {
+  margin-top: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 3);
+}
+
+/* The gaming page's lower rows carry bigger heads than elsewhere, so each item reads as one
+ * element on the sheet rather than a block of small print. */
+.gm-mid h2,
+.gm-row .yn-hed-sm {
+  font-size: calc(var(--u) * 11);
+}
+
+.gm-row .yn-body,
+.gm-hiscore .yn-body {
+  font-size: calc(var(--u) * 3.4);
+}
+
+.gm-row .yn-label {
+  font-size: calc(var(--u) * 7.6);
+}
+
+/* ================================================================
+   Back page — neon orange with neon yellow
+   ================================================================ */
+
+.bk-comic-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 4);
+  margin-bottom: calc(var(--u) * 3);
+}
+
+.bk-comic-title h2 {
+  font-size: calc(var(--u) * 10);
+}
+
+.bk-comic-title p {
+  font-size: calc(var(--u) * 2.4);
+  font-weight: 600;
+}
+
+.bk-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--u) * 3);
+  background: var(--ink);
+  padding: calc(var(--u) * 3);
+}
+
+.bk-panel {
+  position: relative;
+  height: calc(var(--u) * 138);
+  background: var(--paper);
+}
+
+.bk-panel .yn-photo {
+  position: absolute;
+  inset: 0;
+}
+
+.bk-panel-no {
+  position: absolute;
+  right: calc(var(--u) * 2);
+  bottom: calc(var(--u) * 2);
+  z-index: 2;
+  background: var(--pop2);
+  font-weight: 800;
+  font-size: calc(var(--u) * 2.4);
+  padding: calc(var(--u) * 0.4) calc(var(--u) * 1.4);
+}
+
+/* A comic speech balloon: an ink-ruled oval with a pointed tail aimed down at the speaker. */
+.yn-balloon {
+  position: absolute;
+  z-index: 2;
+  left: calc(var(--u) * 4);
+  top: calc(var(--u) * 4);
+  max-width: 78%;
+  background: var(--paper);
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  border-radius: 50%;
+  padding: calc(var(--u) * 3.4) calc(var(--u) * 5.4);
+  text-align: center;
+}
+
+.yn-balloon::after {
+  content: "";
+  position: absolute;
+  left: 32%;
+  bottom: calc(var(--u) * -5.2);
+  width: calc(var(--u) * 6);
+  height: calc(var(--u) * 6);
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, 18% 100%);
+}
+
+.yn-balloon.right {
+  left: auto;
+  right: calc(var(--u) * 4);
+}
+
+.yn-balloon.right::after {
+  left: auto;
+  right: 32%;
+  clip-path: polygon(0 0, 100% 0, 82% 100%);
+}
+
+.yn-balloon .who {
+  display: block;
+  font-size: calc(var(--u) * 2.2);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.yn-balloon .said {
+  font-family: var(--font-hand);
+  font-size: calc(var(--u) * 7.6);
+  line-height: 0.95;
+}
+
+.bk-puzzles {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 166) 1fr calc(var(--u) * 100);
+  gap: calc(var(--u) * 7);
+}
+
+.bk-puzzles h2 {
+  font-size: calc(var(--u) * 10);
+}
+
+/* A crossword printed the traditional way: heavy outer rule, hairline cells, solid black blocks,
+ * and a small number tucked in the corner of each starting square. */
+.yn-xword {
+  margin-top: calc(var(--u) * 3);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: calc(var(--u) * 0.9) solid var(--ink);
+  background: var(--ink);
+  gap: calc(var(--u) * 0.35);
+  aspect-ratio: 1;
+}
+
+.yn-xword > div {
+  position: relative;
+  background: var(--paper);
+}
+
+.yn-xword > div.block {
+  background: var(--ink);
+}
+
+.yn-xword > div span {
+  position: absolute;
+  left: calc(var(--u) * 1.4);
+  top: calc(var(--u) * 0.9);
+  font-size: calc(var(--u) * 3.8);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.bk-clues h3 {
+  font-size: calc(var(--u) * 3);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-bottom: calc(var(--u) * 0.6) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1);
+}
+
+.bk-clues h3 + ol {
+  margin-top: calc(var(--u) * 1.5);
+}
+
+.bk-clues ol + h3 {
+  margin-top: calc(var(--u) * 5);
+}
+
+.bk-clues li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 7) 1fr;
+  font-size: calc(var(--u) * 4.5);
+  line-height: 1.3;
+  padding: calc(var(--u) * 1.8) 0;
+}
+
+.bk-clues li b {
+  font-weight: 800;
+}
+
+.bk-clues li small {
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.bk-yesterday {
+  margin-top: calc(var(--u) * 7);
+  background: var(--pop2);
+  padding: calc(var(--u) * 4) calc(var(--u) * 5);
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1.3;
+  rotate: -1deg;
+}
+
+.bk-yesterday .yn-label {
+  display: block;
+  font-size: calc(var(--u) * 5.4);
+}
+
+.bk-side {
+  background: var(--pop);
+  padding: calc(var(--u) * 5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--u) * 5);
+}
+
+.bk-ladder ol {
+  margin-top: calc(var(--u) * 2.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 1.6);
+}
+
+.bk-ladder li {
+  display: flex;
+  gap: calc(var(--u) * 1.2);
+}
+
+.bk-ladder li span {
+  width: calc(var(--u) * 13);
+  height: calc(var(--u) * 13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: calc(var(--u) * 0.5) solid var(--ink);
+  background: var(--paper);
+  font-family: var(--font-chunk);
+  font-weight: 900;
+  font-size: calc(var(--u) * 7.4);
+}
+
+.bk-ladder .yn-body,
+.bk-riddle .yn-body {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 3.4);
+}
+
+.bk-riddle {
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  padding-top: calc(var(--u) * 4);
+}
+
+.bk-riddle .yn-chunk {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 8.4);
+  line-height: 0.95;
+}
+
+.bk-riddle details {
+  margin-top: calc(var(--u) * 3);
+}
+
+.bk-riddle summary {
+  cursor: pointer;
+  font-size: calc(var(--u) * 2.8);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  list-style: none;
+  border-bottom: 1px solid var(--ink);
+  display: inline;
+}
+
+.bk-riddle summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The answer printed upside down, the way a paper hides it from a glance. */
+.bk-riddle .answer {
+  margin-top: calc(var(--u) * 2.5);
+  rotate: 180deg;
+  text-align: right;
+  font-family: var(--font-hand);
+  font-size: calc(var(--u) * 7);
+  line-height: 1;
+}
+
+.bk-small {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 96) 1fr;
+  gap: calc(var(--u) * 7);
+}
+
+.bk-small h2 {
+  font-size: calc(var(--u) * 8.4);
+}
+
+.bk-corrections .yn-body {
+  margin-top: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 3.5);
+}
+
+/* Classifieds: ruled boxes in a strict row, a fat heading on each, as small ads always were. */
+.bk-classifieds ul {
+  margin-top: calc(var(--u) * 2.5);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-left: 1px solid var(--ink);
+}
+
+.bk-classifieds li {
+  border-right: 1px solid var(--ink);
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.6) solid var(--ink);
+  padding: calc(var(--u) * 3) calc(var(--u) * 3.5) calc(var(--u) * 4);
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.3;
+}
+
+.bk-classifieds li h3 {
+  display: inline-block;
+  background: var(--pop);
+  font-family: var(--font-chunk);
+  font-weight: 900;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1;
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 1.4) calc(var(--u) * 0.2);
+  margin-bottom: calc(var(--u) * 1.5);
+}
+
+.bk-signoff {
+  position: relative;
+  background: var(--pop);
+  padding: calc(var(--u) * 15) calc(var(--u) * 10);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 8);
+}
+
+.bk-signoff p.yn-hand {
+  font-size: calc(var(--u) * 27);
+  line-height: 0.9;
+}
+
+.bk-signoff p.yn-hand .yn-mark {
+  background: var(--pop2);
+}
+
+.bk-signoff .yn-chunk {
+  font-size: calc(var(--u) * 9);
+  text-align: right;
+  line-height: 0.95;
+}
+
+.bk-sticker {
+  position: absolute;
+  right: calc(var(--u) * 58);
+  top: calc(var(--u) * -12);
+  width: calc(var(--u) * 30);
+  rotate: -8deg;
+}
+
+/* ——— Phone: reflow into a single column ——— */
+
+@container (max-width: 760px) {
+  .yn-run {
+    grid-template-columns: auto 1fr;
+    gap: calc(var(--u) * 5);
+    align-items: center;
+  }
+
+  .yn-run .yn-vrule {
+    display: none;
+  }
+
+  .yn-run-title {
+    order: -1;
+    grid-column: 1 / -1;
+  }
+
+  .yn-run-title h1 {
+    font-size: calc(var(--u) * 17);
+    white-space: normal;
+  }
+
+  .yn-run-page {
+    justify-self: start;
+  }
+
+  .yn-run-spec dl {
+    font-size: 12px;
+  }
+
+  .yn-run-page {
+    padding: calc(var(--u) * 3) calc(var(--u) * 4);
+  }
+
+  .yn-folio {
+    flex-direction: column;
+    gap: 4px;
+    margin-top: calc(var(--u) * 6);
+    font-size: 12px;
+  }
+
+  .yn-photo-tag {
+    font-size: 10px;
+  }
+
+  .yn-kicker,
+  .yn-ticket .admit,
+  .yn-ticket .seat,
+  .gm-scores h3,
+  .yn-balloon .who,
+  .bk-clues h3,
+  .bk-riddle summary,
+  .bk-panel-no,
+  .yn-cart-title .meta,
+  .yn-cart-foot,
+  .bk-comic-title p {
+    font-size: 11px;
+  }
+
+  /* On a phone the reading sizes are fixed rather than scaled, whatever a block set for print. */
+  .yn-sheet.yn-inside .yn-body {
+    font-size: 15px;
+  }
+
+  .yn-sheet.yn-inside .yn-dek {
+    font-size: 18px;
+  }
+
+  .yn-hed {
+    font-size: calc(var(--u) * 12);
+  }
+
+  .ss-top,
+  .ss-lead-text,
+  .ss-choir,
+  .ss-row,
+  .gm-top,
+  .gm-mid,
+  .gm-row,
+  .bk-puzzles,
+  .bk-small {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 7);
+  }
+
+  .ss-frame {
+    height: calc(var(--u) * 100);
+  }
+
+  .yn-filmstrip {
+    padding: calc(var(--u) * 12) calc(var(--u) * 4);
+  }
+
+  .yn-film-edge {
+    bottom: calc(var(--u) * 8.8);
+    left: calc(var(--u) * 4);
+    right: calc(var(--u) * 4);
+  }
+
+  .ss-sticker {
+    right: calc(var(--u) * -2);
+    top: calc(var(--u) * 4);
+    width: calc(var(--u) * 40);
+  }
+
+  .ss-list,
+  .yn-numbered p,
+  .ss-tracks ol,
+  .yn-ticket .yn-body,
+  .yn-patch,
+  .gm-scores dl,
+  .gm-hiscore .yn-body,
+  .bk-clues li,
+  .bk-yesterday,
+  .bk-ladder .yn-body,
+  .bk-riddle .yn-body,
+  .bk-corrections .yn-body,
+  .bk-classifieds li,
+  .yn-pullquote-by {
+    font-size: 15px;
+  }
+
+  .yn-numbered .n span:last-child {
+    font-size: 13px;
+  }
+
+  .yn-film-edge,
+  .yn-vinyl {
+    font-size: 10px;
+  }
+
+  .ss-choir .ss-choir-photo {
+    min-height: calc(var(--u) * 90);
+  }
+
+  .ss-record .yn-vinyl {
+    width: calc(var(--u) * 90);
+  }
+
+  .ss-list li {
+    grid-template-columns: 48px 1fr;
+  }
+
+  .yn-sheet.yn-inside .yn-patch {
+    font-size: 14px;
+  }
+
+  .yn-patch li {
+    grid-template-columns: 88px 1fr;
+    gap: 6px;
+  }
+
+  .ss-tracks li::before {
+    width: 30px;
+  }
+
+  .yn-ticket-main {
+    grid-template-columns: 1fr;
+  }
+
+  .yn-ticket-main .yn-photo {
+    min-height: calc(var(--u) * 60);
+  }
+
+  .gm-hud {
+    --px: calc(var(--u) * 0.9);
+    flex-direction: column;
+    gap: calc(var(--u) * 4);
+  }
+
+  .gm-hud-mid {
+    font-size: 11px;
+  }
+
+  .yn-cart {
+    padding: calc(var(--u) * 14) calc(var(--u) * 5) calc(var(--u) * 8);
+  }
+
+  .yn-cart-label .yn-photo {
+    height: calc(var(--u) * 100);
+  }
+
+  .yn-cart-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .yn-cart-title .meta {
+    text-align: left;
+  }
+
+  .gm-sticker {
+    top: calc(var(--u) * 20);
+    right: calc(var(--u) * 2);
+  }
+
+  .gm-mid .yn-photo {
+    min-height: calc(var(--u) * 80);
+  }
+
+  .gm-hiscore {
+    --px: calc(var(--u) * 1.2);
+  }
+
+  .bk-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bk-panel {
+    height: calc(var(--u) * 78);
+  }
+
+  .yn-balloon {
+    left: calc(var(--u) * 2);
+    top: calc(var(--u) * 2);
+    max-width: 88%;
+    padding: calc(var(--u) * 2.4) calc(var(--u) * 3.6);
+  }
+
+  .yn-balloon.right {
+    right: calc(var(--u) * 2);
+  }
+
+  .yn-balloon .said {
+    font-size: 17px;
+  }
+
+  .bk-comic-title {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .yn-xword > div span {
+    font-size: 11px;
+  }
+
+  .bk-classifieds ul {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bk-signoff {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: calc(var(--u) * 7) calc(var(--u) * 6);
+  }
+
+  .bk-signoff .yn-chunk {
+    text-align: left;
+  }
+
+  .bk-signoff p.yn-hand {
+    font-size: calc(var(--u) * 17);
+    line-height: 1;
+  }
+
+  .bk-sticker {
+    right: calc(var(--u) * 3);
+    top: calc(var(--u) * -10);
+  }
+}

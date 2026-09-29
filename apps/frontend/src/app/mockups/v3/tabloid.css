@@ -1,0 +1,2735 @@
+/*
+ * Tabloid Brights — a 289 × 380 mm tabloid on bright white stock, fluoro inks only.
+ * Everything inside the sheet is measured in --u (one millimetre of the page) so the page scales
+ * as one printed object; below 760px the sheet reflows into a single reading column.
+ */
+
+.tb-desk {
+  background: #dcd8d0;
+}
+
+.tb-wrap {
+  --sheet-max: 1100px;
+}
+
+.print-sheet.tb-sheet {
+  --sheet-w: 289;
+  --sheet-h: 380;
+  --grain: 0.18;
+  --text: calc(var(--u) * 3.15);
+  --ink: #151515;
+  --orange: #ff5a1f;
+  --blue: #0078bf;
+  /* Two spot inks on every page. --a dominates (offsets, bars); --b is the second plate. */
+  --a: var(--orange);
+  --a-ink: var(--ink);
+  --b: var(--blue);
+  --b-ink: #fff;
+  /* Type set in a spot ink, and type reversed out of one. Pastel colourways swap these for the
+     deep tones and ink, since a pastel is too light to read as type or to carry white. */
+  --orange-type: var(--orange);
+  --blue-type: var(--blue);
+  --a-type: var(--orange-type);
+  --b-type: var(--blue-type);
+  --rev: #fff;
+  background: #fbfbf7;
+  color: var(--ink);
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-size: var(--text);
+  line-height: 1.36;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u) * 11) calc(var(--u) * 14) calc(var(--u) * 7);
+  gap: calc(var(--u) * 4.5);
+}
+
+.print-sheet.tb-theme-screen,
+.print-sheet.tb-theme-back {
+  --a: var(--blue);
+  --a-ink: #fff;
+  --b: var(--orange);
+  --b-ink: var(--ink);
+  --a-type: var(--blue-type);
+  --b-type: var(--orange-type);
+}
+
+.tb-sheet h1,
+.tb-sheet h2,
+.tb-sheet h3,
+.tb-sheet h4,
+.tb-sheet p,
+.tb-sheet dl,
+.tb-sheet dd,
+.tb-sheet ol,
+.tb-sheet ul,
+.tb-sheet figure {
+  margin: 0;
+  padding: 0;
+}
+.tb-sheet ol,
+.tb-sheet ul {
+  list-style: none;
+}
+
+/* ---------- type voices ---------- */
+
+.tb-cond {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.88;
+  letter-spacing: -0.005em;
+}
+.tb-wide {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  line-height: 0.9;
+}
+.tb-kicker {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1;
+}
+.tb-mono {
+  font-family: var(--font-mono), "Courier New", monospace;
+}
+.tb-hand {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-weight: 400;
+  text-transform: none;
+  font-style: normal;
+  letter-spacing: 0;
+}
+.tb-shadow {
+  text-shadow: calc(var(--u) * 1.2) calc(var(--u) * 1.2) 0 var(--a);
+}
+.tb-shadow-b {
+  text-shadow: calc(var(--u) * 1.2) calc(var(--u) * 1.2) 0 var(--b);
+}
+
+/* Highlighter bars: each wrapped line gets its own bar, with paper showing between them. */
+.tb-bars > span {
+  background: var(--a);
+  color: var(--a-ink);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0.05em 0.2em 0.02em 0.14em;
+  line-height: 1.24;
+}
+.tb-bars--b > span {
+  background: var(--b);
+  color: var(--b-ink);
+}
+
+/* ---------- masthead ---------- */
+
+.tb-mast {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: calc(var(--u) * 6);
+}
+.tb-mast-left {
+  min-width: 0;
+}
+.tb-mast-title {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 29);
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+  text-shadow: calc(var(--u) * 1.9) calc(var(--u) * 1.1) 0 var(--a);
+  padding-bottom: calc(var(--u) * 1.5);
+  white-space: nowrap;
+}
+.tb-mast-title--wide {
+  font-style: normal;
+  font-size: calc(var(--u) * 28);
+  line-height: 0.8;
+}
+.tb-theme-gaming .tb-box {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(var(--u) * 1.6);
+}
+.tb-eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 3);
+  margin-bottom: calc(var(--u) * 3);
+}
+.tb-minimark {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 8);
+  line-height: 0.9;
+  text-shadow: calc(var(--u) * 0.8) calc(var(--u) * 0.5) 0 var(--a);
+}
+.tb-eyebrow-meta {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.3);
+}
+.tb-mast-right {
+  display: flex;
+  gap: calc(var(--u) * 2.5);
+  align-items: stretch;
+}
+.tb-spec {
+  width: calc(var(--u) * 44);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.15);
+  line-height: 1.2;
+}
+.tb-spec-title {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 0.9;
+  padding-bottom: calc(var(--u) * 0.9);
+  border-bottom: calc(var(--u) * 0.5) solid var(--ink);
+}
+.tb-spec-row {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 0.75) 0;
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+}
+.tb-spec-row dt {
+}
+.tb-spec-row dd {
+  font-weight: 700;
+  text-align: right;
+}
+.tb-box {
+  background: var(--b);
+  color: var(--b-ink);
+  width: calc(var(--u) * 34);
+  padding: calc(var(--u) * 2) calc(var(--u) * 2.4);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.8);
+}
+.tb-box-num {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 19);
+  line-height: 0.78;
+}
+.tb-box-words {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 5.4);
+  line-height: 0.86;
+}
+.tb-box-words small {
+  display: block;
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-weight: 500;
+  font-size: calc(var(--u) * 2.2);
+  line-height: 1.1;
+  margin-top: calc(var(--u) * 0.8);
+}
+
+/* ---------- photos ---------- */
+
+.tb-photo {
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+}
+.tb-grow {
+  flex: 1 1 0;
+  min-height: calc(var(--u) * 60);
+}
+.tb-credit {
+  position: absolute;
+  bottom: calc(var(--u) * 1.8);
+  z-index: 3;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.7);
+  line-height: 1;
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 1);
+}
+.tb-credit-right {
+  right: calc(var(--u) * 1.8);
+}
+.tb-credit-left {
+  left: calc(var(--u) * 1.8);
+}
+.tb-credit-line {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.8);
+  margin-top: calc(var(--u) * 1);
+}
+
+/* The headline printed on the photograph, bottom left. */
+.tb-onphoto {
+  position: absolute;
+  left: calc(var(--u) * 4);
+  right: calc(var(--u) * 20);
+  bottom: calc(var(--u) * 5);
+  z-index: 2;
+}
+.tb-onphoto .tb-kicker {
+  color: #fff;
+  font-size: calc(var(--u) * 4.6);
+  margin-bottom: calc(var(--u) * 1.6);
+  text-shadow: 0 0 calc(var(--u) * 0.1) #000;
+}
+.tb-onphoto .tb-kicker--ink {
+  color: var(--ink);
+  text-shadow: none;
+}
+.tb-onphoto h2 {
+  font-size: calc(var(--u) * 15.5);
+  line-height: 1;
+}
+.tb-sticker {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  color: var(--ink);
+}
+.tb-sticker-big {
+  display: block;
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.85;
+}
+.tb-sticker-hand {
+  display: block;
+  font-family: var(--font-text), "Times New Roman", serif;
+  line-height: 1;
+}
+
+/* ---------- footer band: a thin rule then columns with hairlines between ---------- */
+
+.tb-band {
+  border-top: calc(var(--u) * 0.35) solid var(--ink);
+  padding-top: calc(var(--u) * 3.5);
+  display: grid;
+  gap: 0;
+}
+.tb-col {
+  padding: 0 calc(var(--u) * 3.2);
+  border-left: calc(var(--u) * 0.2) solid var(--ink);
+  min-width: 0;
+}
+.tb-col:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.tb-col:last-child {
+  padding-right: 0;
+}
+.tb-col p + p {
+  margin-top: calc(var(--u) * 1.6);
+}
+.tb-runin {
+  font-weight: 700;
+}
+.tb-dek {
+  font-weight: 600;
+  font-size: calc(var(--u) * 4);
+  line-height: 1.22;
+  margin-bottom: calc(var(--u) * 2);
+}
+.tb-source {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.9);
+  margin-top: calc(var(--u) * 2);
+  line-height: 1.3;
+}
+.tb-colhead {
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.tb-colhead .tb-kicker {
+  margin-bottom: calc(var(--u) * 1.2);
+}
+.tb-h3 {
+  font-size: calc(var(--u) * 9);
+}
+.tb-h3-sm {
+  font-size: calc(var(--u) * 7);
+}
+
+/* ---------- folio ---------- */
+
+.tb-folio {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 4);
+  border-top: calc(var(--u) * 0.2) solid var(--ink);
+  padding-top: calc(var(--u) * 1.6);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2);
+}
+.tb-folio-mid {
+  font-weight: 700;
+}
+
+/* =========================================================
+   FRONT PAGE
+   ========================================================= */
+
+.tb-puffs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.05fr;
+  gap: calc(var(--u) * 4);
+  border-top: calc(var(--u) * 0.2) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+  padding: calc(var(--u) * 2.2) 0;
+  margin-top: calc(var(--u) * -1);
+}
+.tb-puff {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 15) 1fr;
+  gap: calc(var(--u) * 2.4);
+  align-items: center;
+}
+.tb-puff .tb-photo {
+  aspect-ratio: 1;
+}
+.tb-puff .tb-credit {
+  display: none;
+}
+.tb-puff-head {
+  font-size: calc(var(--u) * 6.2);
+  line-height: 0.92;
+}
+.tb-puff-page {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.1);
+  margin-top: calc(var(--u) * 1);
+}
+.tb-puff-page b {
+  background: var(--a);
+  padding: 0 calc(var(--u) * 0.8);
+}
+.tb-puff-note {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: calc(var(--u) * 0.2) solid var(--ink);
+  padding-left: calc(var(--u) * 4);
+}
+.tb-puff-note .tb-hand {
+  font-size: calc(var(--u) * 6.4);
+  line-height: 1;
+}
+.tb-puff-note .tb-mono {
+  font-size: calc(var(--u) * 2.1);
+  margin-top: calc(var(--u) * 1.2);
+}
+
+.tb-front-sticker {
+  top: calc(var(--u) * 7);
+  left: calc(var(--u) * 7);
+  width: calc(var(--u) * 50);
+  transform: rotate(-7deg);
+}
+.tb-front-sticker .tb-sticker-big {
+  font-size: calc(var(--u) * 13);
+}
+.tb-front-sticker .tb-sticker-hand {
+  font-size: calc(var(--u) * 5.4);
+  margin-top: calc(var(--u) * 0.8);
+}
+
+.tb-front-band {
+  grid-template-columns: 1.95fr 0.95fr 0.95fr;
+}
+.tb-story-cols {
+  column-count: 2;
+  column-gap: calc(var(--u) * 5);
+  column-rule: calc(var(--u) * 0.2) solid var(--ink);
+}
+.tb-index li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 1);
+  padding: calc(var(--u) * 0.9) 0;
+  font-weight: 600;
+}
+.tb-index li::after {
+  content: "";
+  order: 1;
+  flex: 1;
+  border-bottom: calc(var(--u) * 0.35) dotted var(--ink);
+}
+.tb-index li b {
+  order: 2;
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-weight: 700;
+}
+.tb-index li:first-child {
+  padding-top: 0;
+}
+.tb-number {
+  font-size: calc(var(--u) * 20);
+  line-height: 0.85;
+  margin: calc(var(--u) * 1.4) 0 calc(var(--u) * 2.2);
+}
+.tb-weather {
+  margin-top: calc(var(--u) * 3.4);
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  padding-top: calc(var(--u) * 2);
+}
+.tb-weather-head {
+  font-size: calc(var(--u) * 6.8);
+  margin: calc(var(--u) * 1.4) 0 calc(var(--u) * 1.4);
+}
+
+/* =========================================================
+   SCREEN & SOUND
+   ========================================================= */
+
+/* A cinema letterboard: white letters slotted into a black ribbed board. */
+.tb-letterboard {
+  background: var(--ink);
+  color: #fff;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 3);
+  margin-top: calc(var(--u) * -1);
+}
+.tb-letterboard-rows {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.9);
+  flex: 1;
+  min-width: 0;
+}
+.tb-letterboard-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 0.45);
+}
+.tb-letter {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 800;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1;
+  width: calc(var(--u) * 4.4);
+  text-align: center;
+  padding: calc(var(--u) * 0.5) 0;
+  border-bottom: calc(var(--u) * 0.25) solid #444;
+}
+.tb-letter--gap {
+  width: calc(var(--u) * 2.4);
+}
+.tb-letterboard-tag {
+  background: var(--a);
+  color: var(--ink);
+  font-size: calc(var(--u) * 7);
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 2);
+  line-height: 0.9;
+  text-align: center;
+  flex: none;
+}
+
+.tb-screen-sticker {
+  top: calc(var(--u) * 6);
+  right: calc(var(--u) * 7);
+  width: calc(var(--u) * 46);
+  transform: rotate(6deg);
+  color: var(--rev);
+}
+.tb-screen-sticker .tb-sticker-big {
+  font-size: calc(var(--u) * 8.6);
+}
+.tb-screen-sticker .tb-sticker-hand {
+  font-size: calc(var(--u) * 5.6);
+  margin-top: calc(var(--u) * 0.8);
+}
+.tb-screen-band {
+  grid-template-columns: 1fr 1.05fr 1fr;
+}
+
+/* A film strip: sprocket holes punched top and bottom around the frame. */
+.tb-filmstrip {
+  background: var(--ink);
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 1.4);
+  margin-bottom: calc(var(--u) * 1);
+}
+.tb-sprockets {
+  display: flex;
+  justify-content: space-between;
+  padding: calc(var(--u) * 0.9) 0;
+}
+.tb-sprockets i {
+  display: block;
+  width: calc(var(--u) * 2);
+  height: calc(var(--u) * 1.4);
+  background: #fff;
+}
+.tb-filmstrip .tb-photo {
+  aspect-ratio: 16 / 10;
+}
+.tb-filmstrip .tb-credit {
+  display: none;
+}
+.tb-choir-row {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 24) 1fr;
+  gap: calc(var(--u) * 3);
+  align-items: center;
+  margin-top: calc(var(--u) * 3);
+}
+.tb-choir-row .tb-tracks {
+  margin-top: 0;
+}
+/* A pull quote set on highlighter bars, as the sample tabloid does. */
+.tb-sheet blockquote {
+  margin: 0;
+}
+.tb-pull {
+  margin-top: calc(var(--u) * 4) !important;
+}
+.tb-pull p {
+  font-size: calc(var(--u) * 7.6);
+  line-height: 1.05;
+}
+.tb-pull-by {
+  margin-top: calc(var(--u) * 1.4);
+  font-weight: 600;
+}
+/* The record label: a disc of blue ink with the details set round a centre hole. */
+.tb-label {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--b);
+  color: var(--rev);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.8);
+  line-height: 1.15;
+}
+.tb-label::after {
+  content: "";
+  position: absolute;
+  width: calc(var(--u) * 2.2);
+  height: calc(var(--u) * 2.2);
+  border-radius: 50%;
+  background: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.tb-label-top {
+  margin-bottom: calc(var(--u) * 4.2);
+}
+.tb-label-big {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 4.2);
+  line-height: 0.9;
+}
+.tb-tracks {
+  margin-top: calc(var(--u) * 2.6);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.2);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+}
+.tb-tracks li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 5) 1fr auto;
+  padding: calc(var(--u) * 0.8) 0;
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+}
+
+/* Ticket stubs: a perforated tear line and punched notches on both edges. */
+.tb-tickets {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+}
+.tb-ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr calc(var(--u) * 13);
+  background: var(--a);
+  color: var(--ink);
+}
+.tb-ticket:nth-child(2) {
+  background: var(--b);
+  color: var(--rev);
+}
+.tb-ticket::before,
+.tb-ticket::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(var(--u) * 3);
+  height: calc(var(--u) * 3);
+  border-radius: 50%;
+  background: #fff;
+  transform: translateY(-50%);
+}
+.tb-ticket::before {
+  left: calc(var(--u) * -1.5);
+}
+.tb-ticket::after {
+  right: calc(var(--u) * -1.5);
+}
+.tb-ticket-main {
+  padding: calc(var(--u) * 2) calc(var(--u) * 2.4) calc(var(--u) * 1.8) calc(var(--u) * 3);
+}
+.tb-ticket-stub {
+  border-left: calc(var(--u) * 0.45) dashed currentColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.7);
+  line-height: 1.1;
+  padding: calc(var(--u) * 1) calc(var(--u) * 1.4) calc(var(--u) * 1) calc(var(--u) * 1);
+}
+.tb-ticket-stub b {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 6.4);
+  line-height: 0.9;
+}
+.tb-ticket-meta {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.8);
+}
+.tb-ticket-title {
+  font-size: calc(var(--u) * 6.4);
+  margin: calc(var(--u) * 0.8) 0 calc(var(--u) * 0.6);
+}
+.tb-ticket-note {
+  font-size: calc(var(--u) * 2.5);
+  line-height: 1.25;
+}
+.tb-stars {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 0.6);
+}
+.tb-rewatch {
+  margin-top: calc(var(--u) * 3);
+}
+.tb-rewatch li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 7) 1fr;
+  align-items: baseline;
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+  padding: calc(var(--u) * 0.6) 0;
+  font-weight: 600;
+}
+.tb-rewatch li span:first-child {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1;
+}
+
+/* =========================================================
+   GAMING
+   ========================================================= */
+
+.tb-pixels {
+  display: inline-flex;
+  gap: calc(var(--px, 1.6) * var(--u));
+}
+.tb-glyph {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--px, 1.6) * var(--u)));
+  grid-template-rows: repeat(5, calc(var(--px, 1.6) * var(--u)));
+}
+.tb-glyph i.on {
+  background: currentColor;
+}
+.tb-box .tb-pixels {
+  --px: 1.45;
+  flex: none;
+}
+.tb-mast-title.tb-shadow-b {
+  text-shadow: calc(var(--u) * 1.5) calc(var(--u) * 1.5) 0 var(--b);
+}
+
+.tb-game-top {
+  display: grid;
+  grid-template-columns: 2.1fr 1fr;
+  gap: calc(var(--u) * 5);
+}
+.tb-game-top > .tb-photo {
+  min-height: calc(var(--u) * 60);
+}
+.tb-game-sticker {
+  top: calc(var(--u) * 6);
+  right: calc(var(--u) * 6);
+  width: calc(var(--u) * 40);
+  transform: rotate(8deg);
+  color: var(--rev);
+}
+.tb-game-sticker .tb-sticker-big {
+  font-size: calc(var(--u) * 17);
+}
+.tb-game-sticker .tb-sticker-hand {
+  font-size: calc(var(--u) * 4.6);
+}
+.tb-onphoto--game {
+  right: calc(var(--u) * 6);
+}
+.tb-onphoto--game h2 {
+  font-size: calc(var(--u) * 13.5);
+}
+
+/* The patch-notes column: a mono changelog on a block of fluoro. */
+.tb-patch {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.tb-patch .tb-photo {
+  flex: 1 1 0;
+  min-height: calc(var(--u) * 30);
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.tb-patch-head {
+  font-size: calc(var(--u) * 7.6);
+  margin: calc(var(--u) * 1) 0 calc(var(--u) * 1.6);
+}
+.tb-patch-notes {
+  margin-top: calc(var(--u) * 2.4);
+  background: var(--a);
+  padding: calc(var(--u) * 2.6) calc(var(--u) * 2.8);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.3);
+  line-height: 1.4;
+}
+.tb-patch-notes h4 {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.3);
+  font-weight: 700;
+  border-bottom: calc(var(--u) * 0.3) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1);
+  margin-bottom: calc(var(--u) * 1.2);
+}
+.tb-patch-notes li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 3.4) 1fr;
+}
+.tb-patch-notes li + li {
+  margin-top: calc(var(--u) * 0.7);
+}
+
+.tb-game-band {
+  grid-template-columns: 2.1fr 1fr;
+}
+/* Game of the week, laid out like a cartridge: a ribbed grip over a printed label. */
+.tb-cart {
+  border: calc(var(--u) * 0.6) solid var(--ink);
+}
+.tb-cart-grip {
+  display: flex;
+  gap: calc(var(--u) * 1.2);
+  justify-content: center;
+  background: var(--ink);
+  padding: calc(var(--u) * 1.3) 0;
+}
+.tb-cart-grip i {
+  display: block;
+  width: calc(var(--u) * 0.8);
+  height: calc(var(--u) * 3);
+  background: #555;
+}
+.tb-cart-body {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 56) 1fr;
+}
+.tb-cart-body > .tb-photo {
+  min-height: calc(var(--u) * 58);
+}
+.tb-cart-text {
+  padding: calc(var(--u) * 3) calc(var(--u) * 3.4);
+  border-left: calc(var(--u) * 0.6) solid var(--ink);
+}
+.tb-cart-title {
+  font-size: calc(var(--u) * 10);
+  margin: calc(var(--u) * 1.2) 0 calc(var(--u) * 1.6);
+}
+.tb-scores {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 2.4);
+  align-items: end;
+}
+.tb-scores dl {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.2);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+}
+.tb-scores dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+  padding: calc(var(--u) * 0.6) 0;
+}
+.tb-scores dd {
+  font-weight: 700;
+}
+.tb-score-big {
+  white-space: nowrap;
+  min-width: calc(var(--u) * 17);
+  background: var(--b);
+  color: var(--rev);
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 2.4);
+  text-align: center;
+}
+.tb-score-big b {
+  display: block;
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 17);
+  line-height: 0.85;
+}
+.tb-score-big span {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.8);
+}
+.tb-hiscore {
+  --px: 1.35;
+  color: var(--b-type);
+  margin: calc(var(--u) * 2) 0 calc(var(--u) * 2.4);
+}
+.tb-pull + .tb-mini,
+.tb-mini + .tb-mini {
+  margin-top: calc(var(--u) * 3);
+  padding-top: calc(var(--u) * 2.6);
+  border-top: calc(var(--u) * 0.2) solid var(--ink);
+}
+
+/* =========================================================
+   BACK PAGE
+   ========================================================= */
+
+.tb-puzzles {
+  display: grid;
+  grid-template-columns: 1.75fr 0.72fr 0.95fr;
+  gap: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * -1);
+}
+.tb-tile {
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  padding-top: calc(var(--u) * 2.4);
+  min-width: 0;
+}
+.tb-tile-head {
+  font-size: calc(var(--u) * 8.4);
+  margin-bottom: calc(var(--u) * 2.4);
+}
+.tb-xw {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 66) 1fr;
+  gap: calc(var(--u) * 4);
+}
+.tb-xw-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  aspect-ratio: 1;
+  align-self: start;
+}
+.tb-xw-cell {
+  position: relative;
+  border: calc(var(--u) * 0.15) solid var(--ink);
+  background: #fff;
+}
+.tb-xw-cell--black {
+  background: var(--ink);
+}
+.tb-xw-cell span {
+  position: absolute;
+  top: calc(var(--u) * 0.5);
+  left: calc(var(--u) * 0.8);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.4);
+  line-height: 1;
+}
+.tb-clues h4 {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.2);
+  border-bottom: calc(var(--u) * 0.3) solid var(--ink);
+  padding-bottom: calc(var(--u) * 0.6);
+  margin-bottom: calc(var(--u) * 1);
+}
+.tb-clues ol + h4 {
+  margin-top: calc(var(--u) * 2.4);
+}
+.tb-clues li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 4) 1fr;
+  font-size: calc(var(--u) * 3.1);
+  line-height: 1.25;
+}
+.tb-clues li + li {
+  margin-top: calc(var(--u) * 0.9);
+}
+.tb-clues li b {
+  font-family: var(--font-mono), "Courier New", monospace;
+}
+
+.tb-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.4);
+  margin-top: calc(var(--u) * 2);
+}
+.tb-rung {
+  display: flex;
+  gap: calc(var(--u) * 1.2);
+  align-items: center;
+}
+.tb-rung i {
+  font-style: normal;
+  width: calc(var(--u) * 11);
+  height: calc(var(--u) * 11);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: calc(var(--u) * 0.5) solid var(--ink);
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 6.4);
+}
+.tb-rung--end i {
+  background: var(--a);
+}
+.tb-rung small {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.9);
+  margin-left: calc(var(--u) * 1);
+}
+
+.tb-riddle-q {
+  font-size: calc(var(--u) * 10.5);
+  line-height: 0.92;
+  margin-bottom: calc(var(--u) * 3.4);
+}
+.tb-answer summary {
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.1);
+  border-top: calc(var(--u) * 0.2) solid var(--ink);
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+  padding: calc(var(--u) * 1) 0;
+}
+.tb-answer summary::-webkit-details-marker {
+  display: none;
+}
+.tb-answer-flip {
+  display: block;
+  transform: rotate(180deg);
+  font-size: calc(var(--u) * 8);
+  text-align: center;
+  padding: calc(var(--u) * 2) 0 calc(var(--u) * 1);
+}
+.tb-answer-hint {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-size: calc(var(--u) * 5);
+  line-height: 1;
+  margin-top: calc(var(--u) * 1.6);
+}
+.tb-yesterday {
+  margin-top: calc(var(--u) * 2.8);
+  font-size: calc(var(--u) * 2.7);
+  line-height: 1.3;
+}
+
+/* The comic strip: four photo panels and square-cornered speech balloons. */
+.tb-comic {
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  padding-top: calc(var(--u) * 2.4);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.tb-comic-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(var(--u) * 3);
+  margin-bottom: calc(var(--u) * 2.2);
+}
+.tb-comic-panels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--u) * 2.4);
+  flex: 1;
+  min-height: calc(var(--u) * 52);
+}
+.tb-panel {
+  position: relative;
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  overflow: hidden;
+}
+.tb-panel .tb-photo {
+  position: absolute;
+  inset: 0;
+}
+.tb-panel .tb-credit {
+  display: none;
+}
+.tb-balloon {
+  position: absolute;
+  z-index: 3;
+  left: calc(var(--u) * 2);
+  right: calc(var(--u) * 5);
+  top: calc(var(--u) * 2);
+  background: #fff;
+  border: calc(var(--u) * 0.5) solid var(--ink);
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 2);
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 800;
+  font-size: calc(var(--u) * 3.3);
+  line-height: 1.1;
+}
+.tb-balloon b {
+  display: block;
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 1.8);
+  font-weight: 700;
+  margin-bottom: calc(var(--u) * 0.5);
+}
+/* The balloon's tail: an ink triangle with a white one set inside it. */
+.tb-balloon::before,
+.tb-balloon::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--u) * 6);
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.tb-balloon::before {
+  bottom: calc(var(--u) * -4.2);
+  border-width: calc(var(--u) * 4) calc(var(--u) * 3.4) 0 0;
+  border-color: var(--ink) transparent transparent transparent;
+}
+.tb-balloon::after {
+  bottom: calc(var(--u) * -3);
+  left: calc(var(--u) * 6.5);
+  border-width: calc(var(--u) * 2.8) calc(var(--u) * 2.3) 0 0;
+  border-color: #fff transparent transparent transparent;
+}
+.tb-panel-no {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  background: var(--a);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 2);
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 1.2);
+}
+
+.tb-back-band {
+  grid-template-columns: 1fr 1.75fr 1fr;
+}
+.tb-correction + .tb-correction {
+  margin-top: calc(var(--u) * 1.8);
+}
+.tb-classifieds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 2.4) calc(var(--u) * 3);
+}
+.tb-ad {
+  border: calc(var(--u) * 0.35) solid var(--ink);
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 2);
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1.28;
+}
+.tb-ad h4 {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 3.4);
+  margin-bottom: calc(var(--u) * 0.8);
+}
+.tb-share {
+  background: var(--b);
+  color: var(--ink);
+  padding: calc(var(--u) * 3) calc(var(--u) * 3.4);
+  height: 100%;
+}
+.tb-share-head {
+  font-size: calc(var(--u) * 10.5);
+  margin-bottom: calc(var(--u) * 2);
+}
+.tb-share-handle {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.4);
+  margin-top: calc(var(--u) * 2.4);
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.6);
+}
+.tb-share-handle svg {
+  width: calc(var(--u) * 4.4);
+  height: calc(var(--u) * 4.4);
+}
+.tb-signoff {
+  background: var(--a);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 4);
+  padding: calc(var(--u) * 3.4) calc(var(--u) * 4);
+}
+.tb-signoff-big {
+  font-size: calc(var(--u) * 13);
+  line-height: 0.88;
+}
+.tb-signoff .tb-hand {
+  font-size: calc(var(--u) * 9);
+  line-height: 0.9;
+  text-align: right;
+  flex: none;
+}
+
+/* =========================================================
+   PASTE-UP: the human pass — overprint, stamps, clippings, hand marks
+   ========================================================= */
+
+/* Where a spot colour lands on a photo or on the other ink, it overprints rather than covers. */
+.tb-over,
+.tb-bars--over > span {
+  mix-blend-mode: multiply;
+}
+.tb-mark {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+}
+.tb-note {
+  position: absolute;
+  z-index: 4;
+  font-family: var(--font-text), "Times New Roman", serif;
+  line-height: 0.95;
+  color: var(--a-type);
+}
+.tb-ring {
+  position: relative;
+  white-space: nowrap;
+}
+.tb-ring .tb-mark {
+  inset: -0.55em -0.5em -0.45em -0.55em;
+  width: auto;
+  height: auto;
+}
+.tb-underline {
+  position: relative;
+  display: inline-block;
+}
+.tb-underline > .tb-mark {
+  left: -4%;
+  right: -6%;
+  bottom: -0.02em;
+  height: 0.42em;
+  z-index: -1;
+}
+
+.tb-mast-aside {
+  width: calc(var(--u) * 46);
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.25;
+  align-self: end;
+}
+.tb-mast-aside .tb-kicker {
+  font-size: calc(var(--u) * 3);
+  margin-bottom: calc(var(--u) * 1.2);
+}
+
+.tb-box {
+  --wear-size: 260%;
+}
+
+/* A price box with a barcode, the way a real masthead carries one. */
+.tb-barcode {
+  display: flex;
+  height: calc(var(--u) * 9);
+  width: calc(var(--u) * 17);
+  flex: none;
+}
+.tb-barcode i {
+  display: block;
+  background: currentColor;
+}
+
+/* The rubber stamp: a double-ruled frame, pressed at an angle, ink breaking up. */
+.tb-stamp {
+  --wear-size: 220%;
+  position: absolute;
+  z-index: 6;
+  border: calc(var(--u) * 0.9) double currentColor;
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 2.6);
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  line-height: 0.95;
+  text-align: center;
+  mix-blend-mode: multiply;
+}
+.tb-stamp small {
+  display: block;
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.42em;
+  margin-top: 0.35em;
+}
+
+/* A photo pasted onto the page as a print, tilted, with tape across a corner. */
+.tb-pasted {
+  position: relative;
+}
+.tb-pasted > .tb-photo {
+  width: 100%;
+  height: 100%;
+}
+.tb-pasted .tb-credit {
+  display: none;
+}
+.tb-pasted-cap {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1;
+  position: absolute;
+  left: calc(var(--u) * 2);
+  bottom: calc(var(--u) * 0.9);
+  color: var(--ink);
+}
+
+/* ---------- front, round two ---------- */
+
+.tb-front2-teasers {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 40) 1fr 1.25fr;
+  gap: calc(var(--u) * 5);
+  align-items: center;
+  border-bottom: calc(var(--u) * 0.25) solid var(--ink);
+  padding-bottom: calc(var(--u) * 3);
+  position: relative;
+}
+.tb-front2-cat {
+  aspect-ratio: 1 / 0.86;
+  transform: rotate(-3.2deg);
+  margin: calc(var(--u) * -2) 0 calc(var(--u) * -1) calc(var(--u) * 1);
+}
+.tb-front2-cat .print-tape {
+  top: calc(var(--u) * -2.6);
+  left: calc(var(--u) * 10);
+  transform: rotate(4deg);
+}
+.tb-teaser-head {
+  font-size: calc(var(--u) * 8.4);
+}
+.tb-teaser-jump {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.2);
+  margin-top: calc(var(--u) * 1.4);
+}
+.tb-teaser-jump b {
+  color: var(--a-type);
+}
+.tb-teaser2 {
+  border-left: calc(var(--u) * 0.2) solid var(--ink);
+  padding-left: calc(var(--u) * 5);
+}
+.tb-teaser2 .tb-teaser-head {
+  font-size: calc(var(--u) * 6.4);
+}
+.tb-teaser2 p + p {
+  margin-top: calc(var(--u) * 1);
+}
+
+/* The lead photo runs off both sides of the sheet: the one thing that breaks the margins. */
+.tb-bleed {
+  margin-inline: calc(var(--u) * -14);
+  overflow: visible;
+}
+.tb-bleed > img {
+  overflow: hidden;
+}
+.tb-bleed .tb-onphoto {
+  left: calc(var(--u) * 14);
+}
+.tb-bleed .tb-credit-right {
+  right: calc(var(--u) * 14);
+}
+.tb-front2-sticker {
+  top: calc(var(--u) * -9);
+  right: calc(var(--u) * 20);
+  width: calc(var(--u) * 46);
+  transform: rotate(9deg);
+  color: var(--rev);
+}
+.tb-front2-sticker .tb-sticker-big {
+  font-size: calc(var(--u) * 13);
+}
+.tb-front2-sticker .tb-sticker-hand {
+  font-size: calc(var(--u) * 5.2);
+  margin-top: calc(var(--u) * 0.6);
+}
+.tb-front2-note {
+  top: calc(var(--u) * 42);
+  right: calc(var(--u) * 26);
+  font-size: calc(var(--u) * 7);
+  transform: rotate(-4deg);
+  text-align: right;
+}
+.tb-front2-arrow {
+  top: calc(var(--u) * 52);
+  right: calc(var(--u) * 50);
+  width: calc(var(--u) * 26);
+  height: calc(var(--u) * 20);
+  transform: rotate(18deg) scaleX(-1);
+}
+.tb-front2-sparks {
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+  right: calc(var(--u) * 40);
+  bottom: calc(var(--u) * 34);
+}
+.tb-front2-stamp {
+  color: var(--b-type);
+  right: calc(var(--u) * 24);
+  bottom: calc(var(--u) * -10);
+  transform: rotate(-7deg);
+  font-size: calc(var(--u) * 5.4);
+}
+.tb-front2-band {
+  grid-template-columns: 2.2fr 0.9fr 1fr;
+}
+.tb-byline {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-size: calc(var(--u) * 2.1);
+  margin-bottom: calc(var(--u) * 2.2);
+  column-span: all;
+}
+.tb-byline b {
+  color: var(--a-type);
+}
+.tb-front2-num {
+  font-size: calc(var(--u) * 22);
+  line-height: 0.85;
+  margin: calc(var(--u) * 1.4) 0 calc(var(--u) * 2.4);
+}
+.tb-front2-num .tb-mark {
+  height: 0.35em;
+}
+
+/* ---------- screen & sound, round two ---------- */
+
+.tb-screen2-onphoto {
+  bottom: calc(var(--u) * -9);
+}
+.tb-screen2-sticker {
+  top: calc(var(--u) * 5);
+  right: calc(var(--u) * 8);
+  width: calc(var(--u) * 44);
+  transform: rotate(7deg);
+}
+.tb-screen2-sticker .tb-sticker-big {
+  font-size: calc(var(--u) * 9);
+}
+.tb-screen2-sticker .tb-sticker-hand {
+  font-size: calc(var(--u) * 5.2);
+  margin-top: calc(var(--u) * 0.6);
+}
+.tb-screen2-band {
+  grid-template-columns: 1fr 1.2fr 0.95fr;
+  padding-top: calc(var(--u) * 11);
+}
+.tb-screen2-strip {
+  transform: rotate(1.6deg);
+  margin: 0 calc(var(--u) * -1) calc(var(--u) * 1) calc(var(--u) * 1);
+  position: relative;
+}
+.tb-screen2-strip .print-tape {
+  top: calc(var(--u) * -3);
+  right: calc(var(--u) * 6);
+  transform: rotate(-6deg);
+}
+.tb-listing {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 11) 1fr;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2) 0;
+  border-bottom: calc(var(--u) * 0.2) solid var(--ink);
+}
+.tb-listing-time {
+  font-family: var(--font-mono), "Courier New", monospace;
+  font-weight: 700;
+  font-size: calc(var(--u) * 2.4);
+  line-height: 1.15;
+}
+.tb-listing-title {
+  font-size: calc(var(--u) * 6.2);
+  margin-bottom: calc(var(--u) * 0.6);
+}
+.tb-listing .tb-stars {
+  color: var(--b-type);
+  margin-top: 0;
+  line-height: 1;
+}
+.tb-one-ticket {
+  transform: rotate(-2.4deg);
+  margin: calc(var(--u) * 1) calc(var(--u) * 1) calc(var(--u) * 2) calc(var(--u) * -1);
+  --wear-size: 240%;
+}
+.tb-screen2-music {
+  width: calc(var(--u) * 11);
+  height: calc(var(--u) * 13);
+  right: 0;
+  top: calc(var(--u) * -3);
+}
+
+/* ---------- gaming, round two ---------- */
+
+.tb-game2-print {
+  aspect-ratio: 4 / 3.2;
+  transform: rotate(2.2deg);
+  margin: calc(var(--u) * 1) calc(var(--u) * 1.5) calc(var(--u) * 3) calc(var(--u) * 1);
+}
+.tb-game2-print .print-tape {
+  top: calc(var(--u) * -2.8);
+  left: calc(var(--u) * 4);
+  transform: rotate(-8deg);
+}
+.tb-game2-note {
+  right: calc(var(--u) * -2);
+  top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 5.6);
+  transform: rotate(-6deg);
+  color: var(--rev);
+}
+.tb-cart2 {
+  position: relative;
+}
+.tb-cart2-score {
+  position: absolute;
+  z-index: 5;
+  right: calc(var(--u) * -3);
+  top: calc(var(--u) * -14);
+  width: calc(var(--u) * 36);
+  text-align: center;
+  color: var(--a-type);
+  mix-blend-mode: multiply;
+  --wear-size: 200%;
+}
+.tb-cart2-score b {
+  display: block;
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 44);
+  line-height: 0.8;
+}
+.tb-cart2-score span {
+  display: block;
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-size: calc(var(--u) * 5.4);
+  color: var(--b-type);
+  transform: rotate(-5deg);
+}
+.tb-verdict {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 3.4);
+  line-height: 1.3;
+  padding-right: calc(var(--u) * 26);
+}
+.tb-verdict b {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.3em;
+}
+.tb-game2-stars {
+  width: calc(var(--u) * 14);
+  height: calc(var(--u) * 12);
+  right: calc(var(--u) * 2);
+  top: calc(var(--u) * -3);
+}
+.tb-game2-stamp {
+  color: var(--b-type);
+  left: calc(var(--u) * 10);
+  top: calc(var(--u) * 12);
+  transform: rotate(-9deg);
+  font-size: calc(var(--u) * 4.6);
+}
+
+/* ---------- back page, round two ---------- */
+
+.tb-back2-note {
+  font-size: calc(var(--u) * 5.2);
+  left: calc(var(--u) * 49);
+  top: calc(var(--u) * -8);
+  transform: rotate(-5deg);
+  color: var(--b-type);
+}
+.tb-back2-arrow {
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 12);
+  left: calc(var(--u) * 33);
+  top: calc(var(--u) * -4);
+  transform: rotate(-20deg);
+}
+.tb-rung--end i {
+  color: var(--rev);
+}
+.tb-panel:nth-child(1) {
+  transform: rotate(-1.2deg);
+}
+.tb-panel:nth-child(2) {
+  transform: rotate(0.8deg) translateY(calc(var(--u) * 1.5));
+}
+.tb-panel:nth-child(3) {
+  transform: rotate(-0.5deg);
+}
+.tb-panel:nth-child(4) {
+  transform: rotate(1.6deg) translateY(calc(var(--u) * -1));
+}
+.tb-comic-panels {
+  padding-inline: calc(var(--u) * 1);
+}
+.tb-comic-tape {
+  top: calc(var(--u) * -3);
+  left: calc(50% - var(--u) * 11);
+  transform: rotate(3deg);
+  z-index: 5;
+}
+.tb-back2-cls p {
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.3;
+}
+.tb-back2-cls p + p {
+  margin-top: calc(var(--u) * 1.6);
+}
+.tb-back2-cls b {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+}
+.tb-back2-cls {
+  column-count: 2;
+  column-gap: calc(var(--u) * 4);
+}
+.tb-back2-ad {
+  break-inside: avoid;
+  border: calc(var(--u) * 0.5) solid var(--ink);
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 2);
+  margin-top: calc(var(--u) * 1.6);
+  transform: rotate(-1deg);
+}
+.tb-share {
+  position: relative;
+  color: var(--b-ink);
+}
+.tb-share-stars {
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 14);
+  right: calc(var(--u) * -3);
+  top: calc(var(--u) * -6);
+}
+.tb-back2-stamp {
+  color: var(--b-type);
+  right: calc(var(--u) * 4);
+  top: calc(var(--u) * -3);
+  transform: rotate(8deg);
+  font-size: calc(var(--u) * 4);
+}
+/* The sign-off runs off both edges of the sheet and gets cropped there. */
+.tb-signoff2 {
+  margin-inline: calc(var(--u) * -14);
+  background: var(--a);
+  color: var(--a-ink);
+  padding: calc(var(--u) * 3) 0 calc(var(--u) * 3.4);
+  overflow: hidden;
+  position: relative;
+  --wear-size: 320%;
+}
+.tb-signoff2-big {
+  font-size: calc(var(--u) * 27);
+  line-height: 0.82;
+  white-space: nowrap;
+  margin-left: calc(var(--u) * -6);
+  letter-spacing: -0.01em;
+}
+.tb-signoff2 .tb-hand {
+  position: absolute;
+  right: calc(var(--u) * 16);
+  bottom: calc(var(--u) * 3);
+  font-size: calc(var(--u) * 8.4);
+  color: var(--ink);
+  transform: rotate(-4deg);
+  background: #fbfbf7;
+  padding: 0 calc(var(--u) * 2);
+}
+
+/* =========================================================
+   TYPE: Franklin for heads, Times-style text, typewriter for listings.
+   A few consistent devices — kicker, headline, standfirst, byline, body — and nothing else.
+   ========================================================= */
+
+.print-sheet.tb-sheet {
+  --text: calc(var(--u) * 3.35);
+  line-height: 1.34;
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* Headlines: sentence case, upright, tight but natural leading, normal tracking. */
+.tb-cond,
+.tb-wide {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  line-height: 0.98;
+  letter-spacing: -0.018em;
+  font-variant-numeric: lining-nums;
+}
+.tb-wide {
+  font-weight: 900;
+}
+
+/* The one kicker style: a short italic line in the text face. */
+.tb-kicker {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1.1;
+}
+
+/* The masthead and the photo splash are the tabloid tradition: heavy italic caps. */
+.tb-mast-title {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  font-size: calc(var(--u) * 24);
+  line-height: 0.86;
+}
+.tb-mast-title--wide {
+  font-style: italic;
+  font-size: calc(var(--u) * 24);
+}
+.tb-splash {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+.tb-onphoto h2 {
+  font-size: calc(var(--u) * 11.5);
+  line-height: 1.02;
+}
+.tb-onphoto--game h2 {
+  font-size: calc(var(--u) * 10.5);
+}
+.tb-onphoto .tb-kicker {
+  font-size: calc(var(--u) * 5);
+  text-shadow: none;
+}
+.tb-minimark {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  font-size: calc(var(--u) * 6.4);
+}
+.tb-eyebrow-meta,
+.tb-folio {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 2.9);
+  letter-spacing: 0.02em;
+}
+.tb-folio-mid {
+  font-weight: 700;
+}
+
+/* Bylines and credits in small caps; captions and sources in the text face. */
+.tb-byline {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 3.3);
+  letter-spacing: 0.02em;
+}
+.tb-byline b {
+  color: inherit;
+  font-weight: 400;
+  font-style: italic;
+  font-variant-caps: normal;
+}
+.tb-credit,
+.tb-credit-line,
+.tb-source {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.02em;
+}
+.tb-credit {
+  font-size: calc(var(--u) * 2.5);
+  padding: calc(var(--u) * 0.4) calc(var(--u) * 1.2) calc(var(--u) * 0.6);
+}
+.tb-credit-line,
+.tb-source {
+  font-size: calc(var(--u) * 2.8);
+}
+
+/* Body copy set like a newspaper column. */
+.tb-body p:not([class]),
+.tb-story-cols p:not([class]) {
+  text-align: justify;
+  hyphens: auto;
+  margin: 0;
+}
+.tb-col p:not([class]) + p:not([class]) {
+  margin-top: 0;
+  text-indent: 1em;
+}
+.tb-dek {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 4.4);
+  line-height: 1.2;
+}
+.tb-runin {
+  font-weight: 700;
+}
+.tb-dropcap::first-letter {
+  float: left;
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: 3.35em;
+  line-height: 0.8;
+  padding: 0.06em 0.08em 0 0;
+  color: var(--a-type);
+}
+
+.tb-first {
+  text-align: justify;
+  hyphens: auto;
+}
+.tb-col .tb-first + p:not([class]) {
+  text-indent: 1em;
+}
+.tb-mini-head {
+  font-size: calc(var(--u) * 5.4);
+  margin-bottom: calc(var(--u) * 1.4);
+}
+
+/* Notes an editor pencilled onto the page: italic text face, never a script font. */
+.tb-hand,
+.tb-note,
+.tb-sticker-hand,
+.tb-pasted-cap,
+.tb-answer-hint {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+}
+.tb-sticker-big {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+.tb-stamp {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.tb-stamp small {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-weight: 400;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.5em;
+}
+.tb-box-words {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+.tb-box-words small {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 2.8);
+}
+.tb-spec-title {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 800;
+  font-size: calc(var(--u) * 5);
+}
+.tb-spec {
+  font-size: calc(var(--u) * 2.5);
+}
+.tb-balloon {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.tb-balloon b {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  text-transform: none;
+  font-variant-caps: all-small-caps;
+  font-size: calc(var(--u) * 2.6);
+}
+.tb-letter {
+  font-weight: 700;
+}
+.tb-pull p {
+  font-family: var(--font-text), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: calc(var(--u) * 6.2);
+  line-height: 1.1;
+  border-top: calc(var(--u) * 0.9) solid var(--a);
+  padding-top: calc(var(--u) * 2);
+}
+.tb-pull-by {
+  font-variant-caps: all-small-caps;
+  font-weight: 400;
+}
+
+/* =========================================================
+   PHONE: the sheet becomes a single reading column
+   ========================================================= */
+
+@container (max-width: 760px) {
+  .print-sheet.tb-sheet {
+    --text: 15px;
+    padding: calc(var(--u) * 7) calc(var(--u) * 7) calc(var(--u) * 26);
+    gap: calc(var(--u) * 7);
+    line-height: 1.45;
+  }
+
+  .tb-mast {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 5);
+  }
+  .tb-mast-title {
+    font-size: calc(var(--u) * 27);
+    white-space: normal;
+  }
+  .tb-mast-title--wide {
+    font-size: calc(var(--u) * 17);
+  }
+  .tb-eyebrow {
+    flex-direction: column;
+    gap: calc(var(--u) * 1.6);
+  }
+  .tb-eyebrow-meta {
+    font-size: 11px;
+  }
+  .tb-mast-right {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+  .tb-spec {
+    width: auto;
+    font-size: 11px;
+  }
+  .tb-spec-title {
+    font-size: calc(var(--u) * 9);
+  }
+  .tb-box {
+    width: calc(var(--u) * 50);
+  }
+  .tb-box-num {
+    font-size: calc(var(--u) * 22);
+  }
+  .tb-box-words {
+    font-size: calc(var(--u) * 7.5);
+  }
+  .tb-box-words small {
+    font-size: 11px;
+  }
+
+  .tb-grow,
+  .tb-game-top > .tb-photo {
+    flex: none;
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+  }
+  .tb-game-top.tb-grow,
+  .tb-comic.tb-grow {
+    aspect-ratio: auto;
+  }
+  .tb-credit,
+  .tb-credit-line,
+  .tb-source,
+  .tb-folio,
+  .tb-ticket-meta,
+  .tb-ticket-stub,
+  .tb-puff-page,
+  .tb-puff-note .tb-mono,
+  .tb-rung small,
+  .tb-answer summary,
+  .tb-balloon b,
+  .tb-panel-no {
+    font-size: 11px;
+  }
+  .tb-kicker {
+    font-size: 12px;
+  }
+  .tb-onphoto {
+    left: calc(var(--u) * 5);
+    right: calc(var(--u) * 5);
+    bottom: calc(var(--u) * 10);
+  }
+  .tb-onphoto .tb-kicker {
+    font-size: 13px;
+  }
+  .tb-onphoto h2,
+  .tb-onphoto--game h2 {
+    font-size: calc(var(--u) * 15);
+  }
+
+  .tb-band,
+  .tb-front-band,
+  .tb-screen-band,
+  .tb-game-band,
+  .tb-back-band,
+  .tb-puffs,
+  .tb-puzzles,
+  .tb-game-top {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 8);
+  }
+  .tb-col {
+    padding: 0;
+    border-left: 0;
+  }
+  .tb-col + .tb-col {
+    border-top: 1px solid var(--ink);
+    padding-top: calc(var(--u) * 6);
+  }
+  .tb-story-cols {
+    column-count: 1;
+  }
+  .tb-dek {
+    font-size: 18px;
+  }
+  .tb-h3 {
+    font-size: calc(var(--u) * 14);
+  }
+  .tb-h3-sm {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-folio {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* front */
+  .tb-puff {
+    grid-template-columns: calc(var(--u) * 30) 1fr;
+    gap: calc(var(--u) * 4);
+  }
+  .tb-puff-head {
+    font-size: calc(var(--u) * 10);
+  }
+  .tb-puff-note {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .tb-puff-note .tb-hand {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-front-sticker {
+    width: calc(var(--u) * 58);
+    top: calc(var(--u) * 5);
+    left: calc(var(--u) * 5);
+  }
+  .tb-front-sticker .tb-sticker-big {
+    font-size: calc(var(--u) * 15);
+  }
+  .tb-front-sticker .tb-sticker-hand {
+    font-size: calc(var(--u) * 6.4);
+  }
+  .tb-number {
+    font-size: calc(var(--u) * 30);
+  }
+  .tb-weather-head {
+    font-size: calc(var(--u) * 11);
+  }
+
+  /* screen & sound */
+  .tb-letterboard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .tb-letter {
+    font-size: calc(var(--u) * 6);
+    width: calc(var(--u) * 6);
+  }
+  .tb-letterboard-tag {
+    font-size: calc(var(--u) * 10);
+  }
+  .tb-screen-sticker {
+    width: calc(var(--u) * 56);
+    right: calc(var(--u) * 4);
+    top: calc(var(--u) * 4);
+  }
+  .tb-screen-sticker .tb-sticker-big {
+    font-size: calc(var(--u) * 10);
+  }
+  .tb-screen-sticker .tb-sticker-hand {
+    font-size: calc(var(--u) * 7);
+  }
+  .tb-choir-row {
+    grid-template-columns: calc(var(--u) * 42) 1fr;
+  }
+  .tb-pull p {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-label,
+  .tb-tracks {
+    font-size: 11px;
+  }
+  .tb-label-big {
+    font-size: calc(var(--u) * 7);
+  }
+  .tb-tracks {
+    font-size: 13px;
+  }
+  .tb-tracks li {
+    grid-template-columns: 30px 1fr auto;
+    gap: 6px;
+  }
+  .tb-ticket {
+    grid-template-columns: 1fr calc(var(--u) * 24);
+  }
+  .tb-ticket-title {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-ticket-note {
+    font-size: 14px;
+  }
+  .tb-ticket-stub b {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-stars {
+    font-size: 16px;
+  }
+  .tb-rewatch li span:first-child {
+    font-size: calc(var(--u) * 9);
+  }
+  .tb-rewatch li {
+    grid-template-columns: calc(var(--u) * 11) 1fr;
+  }
+
+  /* gaming */
+  .tb-box .tb-pixels {
+    --px: 2.2;
+  }
+  .tb-patch .tb-photo {
+    flex: none;
+    aspect-ratio: 4 / 3;
+  }
+  .tb-mast-title--wide {
+    font-size: calc(var(--u) * 26);
+  }
+  .tb-game-sticker {
+    width: calc(var(--u) * 48);
+    right: calc(var(--u) * 4);
+    top: calc(var(--u) * 4);
+  }
+  .tb-game-sticker .tb-sticker-big {
+    font-size: calc(var(--u) * 20);
+  }
+  .tb-game-sticker .tb-sticker-hand {
+    font-size: calc(var(--u) * 6);
+  }
+  .tb-patch-head {
+    font-size: calc(var(--u) * 12);
+  }
+  .tb-patch-notes,
+  .tb-patch-notes h4,
+  .tb-scores dl {
+    font-size: 13px;
+  }
+  .tb-patch-notes li {
+    grid-template-columns: 20px 1fr;
+  }
+  .tb-cart-body {
+    grid-template-columns: 1fr;
+  }
+  .tb-cart-body > .tb-photo {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
+  .tb-cart-text {
+    border-left: 0;
+    border-top: calc(var(--u) * 0.8) solid var(--ink);
+    padding: calc(var(--u) * 5);
+  }
+  .tb-cart-title {
+    font-size: calc(var(--u) * 16);
+  }
+  .tb-score-big b {
+    font-size: calc(var(--u) * 24);
+  }
+  .tb-score-big span {
+    font-size: 11px;
+  }
+  .tb-hiscore {
+    --px: 2.2;
+  }
+
+  /* back */
+  .tb-tile-head {
+    font-size: calc(var(--u) * 13);
+  }
+  .tb-xw {
+    grid-template-columns: 1fr;
+  }
+  .tb-xw-grid {
+    width: 100%;
+    max-width: 320px;
+  }
+  .tb-xw-cell span,
+  .tb-clues h4 {
+    font-size: 11px;
+  }
+  .tb-clues li {
+    font-size: 15px;
+    grid-template-columns: 26px 1fr;
+  }
+  .tb-rung i {
+    width: calc(var(--u) * 16);
+    height: calc(var(--u) * 16);
+    font-size: calc(var(--u) * 9);
+  }
+  .tb-riddle-q {
+    font-size: calc(var(--u) * 14);
+  }
+  .tb-answer-flip {
+    font-size: calc(var(--u) * 14);
+  }
+  .tb-answer-hint {
+    font-size: calc(var(--u) * 9);
+  }
+  .tb-yesterday,
+  .tb-ad {
+    font-size: 15px;
+  }
+  .tb-comic-head {
+    flex-direction: column;
+  }
+  .tb-comic-panels {
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+  }
+  .tb-panel {
+    aspect-ratio: 3 / 4;
+  }
+  .tb-balloon {
+    font-size: 13px;
+    left: calc(var(--u) * 3);
+    right: calc(var(--u) * 3);
+    top: calc(var(--u) * 3);
+  }
+  .tb-classifieds {
+    grid-template-columns: 1fr;
+  }
+  .tb-ad h4 {
+    font-size: calc(var(--u) * 6);
+  }
+  .tb-share-head {
+    font-size: calc(var(--u) * 16);
+  }
+  .tb-share-handle {
+    font-size: 14px;
+  }
+  .tb-share-handle svg {
+    width: 20px;
+    height: 20px;
+  }
+  .tb-signoff {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: calc(var(--u) * 7) calc(var(--u) * 6);
+  }
+  .tb-signoff-big {
+    font-size: calc(var(--u) * 16);
+  }
+  .tb-signoff .tb-hand {
+    font-size: calc(var(--u) * 13);
+    text-align: left;
+  }
+}
+
+@container (max-width: 760px) {
+  .tb-mast-aside {
+    width: auto;
+    font-size: 14px;
+  }
+  .tb-mast-aside .tb-kicker {
+    font-size: 12px;
+  }
+  .tb-front2-teasers,
+  .tb-front2-band,
+  .tb-screen2-band {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 8);
+  }
+  .tb-front2-cat {
+    width: 70%;
+    margin: calc(var(--u) * 4) auto 0;
+  }
+  .tb-teaser-head {
+    font-size: calc(var(--u) * 13);
+  }
+  .tb-teaser2 .tb-teaser-head {
+    font-size: calc(var(--u) * 10);
+  }
+  .tb-teaser-jump,
+  .tb-byline,
+  .tb-listing-time {
+    font-size: 11px;
+  }
+  .tb-teaser2 {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .tb-bleed {
+    margin-inline: calc(var(--u) * -7);
+  }
+  .tb-bleed .tb-onphoto {
+    left: calc(var(--u) * 7);
+    right: calc(var(--u) * 7);
+  }
+  .tb-bleed .tb-credit-right {
+    right: calc(var(--u) * 7);
+  }
+  .tb-front2-sticker {
+    width: calc(var(--u) * 52);
+    right: calc(var(--u) * 6);
+    top: calc(var(--u) * -6);
+  }
+  .tb-front2-sticker .tb-sticker-big {
+    font-size: calc(var(--u) * 14);
+  }
+  .tb-front2-sticker .tb-sticker-hand {
+    font-size: calc(var(--u) * 6.4);
+  }
+  .tb-front2-note {
+    font-size: calc(var(--u) * 10);
+    top: calc(var(--u) * 60);
+    right: calc(var(--u) * 8);
+  }
+  .tb-front2-arrow {
+    display: none;
+  }
+  .tb-front2-stamp {
+    font-size: calc(var(--u) * 7);
+    right: calc(var(--u) * 8);
+    bottom: calc(var(--u) * -12);
+  }
+  .tb-front2-num {
+    font-size: calc(var(--u) * 32);
+  }
+  .tb-screen2-onphoto {
+    bottom: calc(var(--u) * 8);
+  }
+  .tb-screen2-band {
+    padding-top: calc(var(--u) * 5);
+  }
+  .tb-screen2-sticker {
+    width: calc(var(--u) * 54);
+    right: calc(var(--u) * 4);
+  }
+  .tb-screen2-sticker .tb-sticker-big {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-screen2-sticker .tb-sticker-hand {
+    font-size: calc(var(--u) * 7);
+  }
+  .tb-listing {
+    grid-template-columns: calc(var(--u) * 20) 1fr;
+  }
+  .tb-listing-title {
+    font-size: calc(var(--u) * 11);
+  }
+  .tb-game2-print {
+    aspect-ratio: 4 / 3;
+  }
+  .tb-game2-note {
+    font-size: calc(var(--u) * 9);
+  }
+  .tb-cart2-score {
+    top: calc(var(--u) * -10);
+    right: calc(var(--u) * -2);
+    width: calc(var(--u) * 44);
+  }
+  .tb-cart2-score b {
+    font-size: calc(var(--u) * 46);
+  }
+  .tb-cart2-score span {
+    font-size: calc(var(--u) * 8);
+  }
+  .tb-verdict {
+    font-size: 16px;
+    padding-right: 0;
+  }
+  .tb-game2-stamp {
+    font-size: calc(var(--u) * 6.4);
+  }
+  .tb-back2-note {
+    font-size: calc(var(--u) * 8);
+    left: auto;
+    right: 0;
+    top: calc(var(--u) * -2);
+  }
+  .tb-back2-arrow {
+    display: none;
+  }
+  .tb-back2-cls {
+    column-count: 1;
+  }
+  .tb-back2-cls p {
+    font-size: 15px;
+  }
+  .tb-back2-stamp {
+    font-size: calc(var(--u) * 6.4);
+  }
+  .tb-signoff2 {
+    margin-inline: calc(var(--u) * -7);
+    padding-bottom: calc(var(--u) * 16);
+  }
+  .tb-signoff2-big {
+    font-size: calc(var(--u) * 30);
+    white-space: normal;
+    margin-left: calc(var(--u) * 5);
+  }
+  .tb-signoff2 .tb-hand {
+    font-size: calc(var(--u) * 12);
+    right: calc(var(--u) * 7);
+  }
+  .tb-panel:nth-child(n) {
+    transform: none;
+  }
+}
+
+@container (max-width: 760px) {
+  .print-sheet.tb-sheet {
+    --text: 16px;
+  }
+  .tb-mast-title,
+  .tb-mast-title--wide {
+    font-size: calc(var(--u) * 22);
+  }
+  .tb-onphoto h2,
+  .tb-onphoto--game h2 {
+    font-size: calc(var(--u) * 12.5);
+  }
+  .tb-kicker,
+  .tb-onphoto .tb-kicker {
+    font-size: 15px;
+  }
+  .tb-eyebrow-meta,
+  .tb-folio,
+  .tb-credit,
+  .tb-credit-line,
+  .tb-source,
+  .tb-byline {
+    font-size: 13px;
+  }
+  .tb-dek {
+    font-size: 19px;
+  }
+  .tb-pull p {
+    font-size: 22px;
+  }
+  .tb-box-words small,
+  .tb-spec {
+    font-size: 12px;
+  }
+}
+
+/* ---------- round two: fixes from the first look ---------- */
+.tb-sheet .tb-bleed {
+  margin-inline: calc(var(--u) * -14);
+  overflow: visible;
+}
+.tb-sheet .tb-photo--open,
+.tb-sheet .tb-photo:has(> .tb-sticker) {
+  overflow: visible;
+}
+.tb-theme-screen .tb-mast-title,
+.tb-theme-back .tb-mast-title {
+  font-size: calc(var(--u) * 17.5);
+}
+.tb-box {
+  width: auto;
+  min-width: calc(var(--u) * 30);
+  --wear-size: 420%;
+}
+.tb-box-num {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: calc(var(--u) * 14);
+  letter-spacing: -0.04em;
+}
+.tb-front2-num {
+  font-size: calc(var(--u) * 17);
+}
+.tb-front2-stamp {
+  right: auto;
+  left: calc(var(--u) * 30);
+  top: calc(var(--u) * -6);
+  bottom: auto;
+  transform: rotate(-6deg);
+  mix-blend-mode: normal;
+}
+.tb-label {
+  color: var(--b-ink);
+}
+.tb-label-big {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+  font-weight: 900;
+  font-size: calc(var(--u) * 3.1);
+}
+.tb-sheet .tb-one-ticket {
+  background: var(--b);
+  color: var(--b-ink);
+}
+.tb-sheet .tb-one-ticket::before,
+.tb-sheet .tb-one-ticket::after {
+  background: #fbfbf7;
+}
+.tb-game2-print {
+  aspect-ratio: 1 / 0.95;
+}
+.tb-game2-arrow {
+  width: calc(var(--u) * 15);
+  height: calc(var(--u) * 13);
+  left: calc(var(--u) * -1);
+  top: calc(var(--u) * 34);
+  transform: rotate(-35deg);
+}
+.tb-game2-note2 {
+  left: calc(var(--u) * 1);
+  top: calc(var(--u) * 46);
+  font-size: calc(var(--u) * 4.6);
+  transform: rotate(-4deg);
+  color: var(--b-type);
+  background: #fbfbf7;
+  padding: 0 calc(var(--u) * 1);
+}
+.tb-cart2-score span {
+  display: none;
+}
+.tb-game2-stamp {
+  left: auto;
+  right: calc(var(--u) * 1);
+  top: calc(var(--u) * -9);
+}
+.tb-game2-stars {
+  right: auto;
+  left: calc(var(--u) * 36);
+}
+.tb-back2-note {
+  left: calc(var(--u) * 36);
+  top: calc(var(--u) * 3);
+}
+.tb-back2-arrow {
+  left: calc(var(--u) * 26);
+  top: calc(var(--u) * 7.5);
+  transform: rotate(-12deg);
+}
+.tb-back2-cls p {
+  text-indent: 0;
+}
+.tb-back2-stamp2 {
+  color: var(--b-type);
+  left: calc(var(--u) * 40);
+  bottom: calc(var(--u) * 6);
+  transform: rotate(-11deg);
+  font-size: calc(var(--u) * 3.6);
+}
+.tb-signoff2 {
+  --wear-size: 520%;
+  padding-bottom: calc(var(--u) * 11);
+}
+.tb-signoff2-big {
+  font-size: calc(var(--u) * 30);
+  margin-left: calc(var(--u) * 10);
+}
+.tb-signoff2 .tb-hand {
+  bottom: calc(var(--u) * 2.4);
+  right: calc(var(--u) * 20);
+}
+
+@container (max-width: 760px) {
+  .tb-sheet .tb-bleed {
+    margin-inline: calc(var(--u) * -7);
+  }
+  .tb-theme-screen .tb-mast-title,
+  .tb-theme-back .tb-mast-title {
+    font-size: calc(var(--u) * 20);
+  }
+  .tb-box-num {
+    font-size: calc(var(--u) * 20);
+  }
+  .tb-front2-stamp {
+    left: calc(var(--u) * 6);
+    top: calc(var(--u) * -8);
+  }
+  .tb-game2-arrow {
+    display: none;
+  }
+  .tb-game2-note2 {
+    top: auto;
+    bottom: calc(var(--u) * 9);
+    font-size: 16px;
+  }
+  .tb-label-big {
+    font-size: calc(var(--u) * 5.4);
+  }
+  .tb-signoff2-big {
+    font-size: calc(var(--u) * 24);
+    margin-left: calc(var(--u) * 6);
+  }
+  .tb-signoff2 .tb-hand {
+    right: calc(var(--u) * 7);
+  }
+}
+.tb-theme-front .tb-mast-title {
+  font-size: calc(var(--u) * 20.5);
+}
+.tb-sheet .tb-game2-print {
+  aspect-ratio: auto;
+  flex: 1 1 0;
+  min-height: calc(var(--u) * 50);
+}
+.tb-riddle-q {
+  font-weight: 700;
+  font-size: calc(var(--u) * 8);
+  line-height: 1.02;
+}
+.tb-back2-stamp2 {
+  left: calc(var(--u) * 26);
+  bottom: calc(var(--u) * 13);
+}
+.tb-ad-p {
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.3;
+  text-align: justify;
+  hyphens: auto;
+}
+.tb-ad-p + .tb-ad-p {
+  margin-top: calc(var(--u) * 1.6);
+}
+.tb-screen2-strip {
+  margin-top: calc(var(--u) * 2.4);
+}
+@container (max-width: 760px) {
+  .tb-sheet .tb-game2-print {
+    flex: none;
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
+  .tb-riddle-q {
+    font-size: calc(var(--u) * 12);
+  }
+  .tb-ad-p {
+    font-size: 15px;
+  }
+}
+@container (max-width: 760px) {
+  .tb-box {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0;
+    width: calc(var(--u) * 52);
+  }
+  .tb-mini-head {
+    font-size: 19px;
+  }
+  .tb-game2-note2,
+  .tb-back2-note {
+    display: none;
+  }
+  .tb-signoff2 .tb-hand {
+    position: static;
+    display: inline-block;
+    margin: calc(var(--u) * 4) 0 0 calc(var(--u) * 6);
+  }
+  .tb-signoff2 {
+    padding-bottom: calc(var(--u) * 7);
+  }
+}
+@container (max-width: 760px) {
+  .tb-mast-aside .tb-kicker {
+    font-size: 15px;
+  }
+  .tb-teaser-jump,
+  .tb-ticket-meta,
+  .tb-listing-time,
+  .tb-tracks,
+  .tb-patch-notes,
+  .tb-patch-notes h4,
+  .tb-byline,
+  .tb-source,
+  .tb-credit-line,
+  .tb-balloon {
+    font-size: 14px;
+  }
+}
+
+/* ---------- Pastel colourways (see ../colours/pastels.ts) ---------- */
+
+html[data-pastel] .print-sheet.tb-sheet {
+  --ink: var(--pz-ink);
+  --orange: var(--pz-a);
+  --blue: var(--pz-b);
+  --orange-type: var(--pz-a-deep);
+  --blue-type: var(--pz-b-deep);
+  --a-ink: var(--pz-ink);
+  --b-ink: var(--pz-ink);
+  --rev: var(--pz-ink);
+}

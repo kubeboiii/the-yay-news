@@ -7,6 +7,10 @@ const nextConfig = {
   output: "standalone",
   outputFileTracingRoot: path.join(import.meta.dirname, "../../"),
   transpilePackages: ["@repo/ui", "@repo/shared"],
+  images: {
+    // Design mockups load their photos straight from Unsplash's image CDN.
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+  },
 };
 
 export default nextConfig;

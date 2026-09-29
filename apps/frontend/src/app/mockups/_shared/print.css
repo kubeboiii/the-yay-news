@@ -1,0 +1,259 @@
+/*
+ * The shared print system for every mockup: a desk, a sheet of real paper, and a unit (--u) that
+ * is one millimetre of that sheet. Set --sheet-w and --sheet-h (in mm) on .print-sheet for the
+ * format — broadsheet 380 × 578, tabloid 289 × 380, midi 220 × 310, mini 170 × 250 — and size
+ * everything inside in calc(var(--u) * N) so the page scales as one printed object.
+ *
+ * Below 760px the sheet stops being a fixed-proportion page: --u switches to a phone scale and
+ * --text to a fixed reading size, so a page can reflow into a column without its type shrinking.
+ */
+
+.print-desk {
+  min-height: 100vh;
+  /* The sheet's slight tilt can push a wide spread a few pixels past the desk edge. */
+  overflow-x: clip;
+  background: #e4ded3;
+  padding: 48px 32px 96px;
+}
+
+.print-sheet-wrap {
+  container-type: inline-size;
+  width: min(var(--sheet-max, 1180px), 100%);
+  margin: 0 auto;
+}
+
+.print-sheet {
+  --sheet-w: 380;
+  --sheet-h: 578;
+  --u: calc(100cqw / var(--sheet-w));
+  --text: calc(var(--u) * 3.4);
+  position: relative;
+  aspect-ratio: var(--sheet-w) / var(--sheet-h);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.08),
+    0 10px 30px -10px rgb(0 0 0 / 0.3),
+    0 30px 60px -30px rgb(0 0 0 / 0.25);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/*
+ * The paper itself: a sheet built from a scanned recycled stock with real fibres, a faint mirrored
+ * show-through of the reverse page, soft light falloff and toned edges. It is multiplied over
+ * everything, so white becomes newsprint and every ink sits in the grain. Use
+ * .print-sheet--bright for whiter 80gsm-style stock.
+ */
+.print-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / 100% 100%;
+  mix-blend-mode: multiply;
+  opacity: var(--paper-strength, 1);
+  pointer-events: none;
+  z-index: 50;
+}
+
+.print-sheet--bright::before {
+  background-image: url("/mockup/press/newsprint-bright.jpg");
+}
+
+/*
+ * Ink on uncoated paper spreads a little and can't reach full saturation or a true black, so the
+ * whole sheet is graded slightly down and every letter gets a hair of bleed.
+ */
+.print-sheet,
+.yn-sheet {
+  filter: url(#press) saturate(0.9) contrast(0.97);
+  -webkit-font-smoothing: auto;
+}
+
+/* A folded sheet: add .print-sheet--fold for a soft crease across the middle. */
+.print-sheet--fold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 46%,
+    rgb(0 0 0 / 0.035) 49%,
+    rgb(0 0 0 / 0.09) 49.85%,
+    rgb(255 255 255 / 0.35) 50.15%,
+    rgb(255 255 255 / 0.08) 51.5%,
+    transparent 54%
+  );
+  pointer-events: none;
+  z-index: 51;
+}
+
+/* Photos printed onto paper: ink sits in the grain rather than on top of it. */
+.print-photo {
+  mix-blend-mode: multiply;
+}
+
+/* ——— Paste-up and press effects. All real assets: tape and torn edge from scans, wear from speckle. ——— */
+
+/* A strip of masking tape. Size and rotate it where it's used; it lets the paper show through. */
+.print-tape {
+  position: absolute;
+  width: calc(var(--u) * 22);
+  height: calc(var(--u) * 6);
+  background: url("/mockup/fx/tape.png") center / 100% 100% no-repeat;
+  opacity: 0.92;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* A clipping torn out of another page: rough top and bottom edges. */
+.print-torn {
+  mask: url("/mockup/fx/torn-edge.png") center / 100% 100% no-repeat;
+  -webkit-mask: url("/mockup/fx/torn-edge.png") center / 100% 100% no-repeat;
+}
+
+/* Ink that didn't take evenly: speckled coverage for stamps, badges and solid blocks. */
+.print-worn {
+  mask: url("/mockup/fx/ink-wear.png") center / var(--wear-size, 180%) repeat;
+  -webkit-mask: url("/mockup/fx/ink-wear.png") center / var(--wear-size, 180%) repeat;
+}
+
+/* A photographic print pasted onto the page: white border, the faintest lift off the paper. */
+.print-print {
+  background: #fbfaf6;
+  padding: calc(var(--u) * 1.8) calc(var(--u) * 1.8) calc(var(--u) * 5);
+  box-shadow:
+    0 calc(var(--u) * 0.2) calc(var(--u) * 0.5) rgb(0 0 0 / 0.18),
+    0 calc(var(--u) * 1) calc(var(--u) * 2.5) rgb(0 0 0 / 0.08);
+}
+
+/* Plates slightly out of register: set --misreg to a second ink on a colour element's text. */
+.print-misreg {
+  text-shadow: calc(var(--u) * 0.35) calc(var(--u) * 0.25) 0 var(--misreg, currentColor);
+}
+
+/* A two-page spread: sheets side by side with a gutter shadow, stacked on phones. */
+.print-spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+@container (max-width: 760px) {
+  .print-sheet {
+    --u: calc(100cqw / 160);
+    --text: 15px;
+    aspect-ratio: auto;
+  }
+
+  .print-sheet--fold::after {
+    display: none;
+  }
+
+  .print-spread {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 760px) {
+  .print-desk {
+    padding: 12px 10px 80px;
+  }
+}
+
+/*
+ * ——— A physical sheet on a table ———
+ * A very slight tilt, soft-light shading baked from a light map (a gentle wave, corners lifting,
+ * a real valley in the gutter of a spread) and a contact shadow where the paper meets the desk.
+ * Applies to every mockup, including v1's own sheet classes.
+ */
+.print-sheet-wrap,
+.yn-sheet-wrap {
+  position: relative;
+  transform: perspective(3600px) rotateX(1.6deg) rotateZ(-0.35deg);
+  transform-origin: 50% 20%;
+}
+
+.print-sheet-wrap::after,
+.yn-sheet-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/light-sheet.png") center / 100% 100% no-repeat;
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 60;
+}
+
+.print-sheet-wrap:has(.print-spread)::after {
+  background-image: url("/mockup/press/light-spread.png");
+}
+
+/* The sheet's contact shadow: tight under the middle, softer where the corners lift. */
+.print-sheet-wrap::before,
+.yn-sheet-wrap::before {
+  content: "";
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: -1.2%;
+  height: 4%;
+  background: radial-gradient(ellipse at 50% 30%, rgb(40 30 20 / 0.35), transparent 70%);
+  filter: blur(8px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ——— Paper choice: newsprint (default) or white stock, switched from the mockup nav ——— */
+html[data-paper="white"] .print-sheet::before,
+html[data-paper="white"] .print-sheet--bright::before,
+html[data-paper="white"] .yn-sheet::before {
+  background-image: url("/mockup/press/newsprint-white.jpg");
+}
+
+html[data-paper="white"] .print-sheet,
+html[data-paper="white"] .yn-sheet {
+  filter: url(#press) saturate(0.97) contrast(0.99);
+}
+
+/* Versions tint their own paper; on white stock every paper colour is plain white. */
+html[data-paper="white"] * {
+  --paper: #ffffff !important;
+}
+
+html[data-paper="white"] .print-desk,
+html[data-paper="white"] .yn-table {
+  background-color: #dcdcd8;
+}
+
+@container (max-width: 760px) {
+  .print-sheet-wrap,
+  .yn-sheet-wrap {
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .print-sheet-wrap,
+  .yn-sheet-wrap {
+    transform: none;
+  }
+}
+
+/* v1 keeps its credit line inside the wrapper, below the sheet, so its light layer is sized to the
+   sheet's own 380 × 578 proportions instead of covering the whole wrapper; its sheet already
+   carries its own contact shadow. */
+.yn-sheet-wrap::after {
+  inset: 0 0 auto 0;
+  aspect-ratio: 380 / 578;
+}
+
+.yn-sheet-wrap::before {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .yn-sheet-wrap::after {
+    display: none;
+  }
+}
