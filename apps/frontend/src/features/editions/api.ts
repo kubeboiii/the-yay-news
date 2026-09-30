@@ -1,5 +1,11 @@
 import "server-only";
-import { archiveListSchema, type EditionDesign, editionSchema, storySchema } from "@repo/shared";
+import {
+  archiveListSchema,
+  type EditionDesign,
+  editionSchema,
+  searchResultSchema,
+  storySchema,
+} from "@repo/shared";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { z } from "zod";
@@ -72,4 +78,25 @@ export function issueParam(value: string): number {
   const n = Number(value);
   if (!Number.isInteger(n) || n < 1 || String(n) !== value) notFound();
   return n;
+}
+
+/** Stories matching `q` in papers already released to the reader, grouped by paper. */
+export async function searchPile(q: string, preview: Preview = {}) {
+  const base = await readerQuery(preview);
+  const sep = base ? "&" : "?";
+  return read(`/api/v1/search${base}${sep}q=${encodeURIComponent(q)}`, searchResultSchema);
+}
+
+/** The paper dated `date`, or null when there isn't one (or it isn't out yet) for this reader. */
+export async function findByDate(date: string, preview: Preview = {}) {
+  try {
+    const body = (await apiGet(
+      `/api/v1/editions/date/${date}${await readerQuery(preview)}`,
+      envelope(editionSchema),
+    )) as { data: z.infer<typeof editionSchema> };
+    return body.data;
+  } catch (error) {
+    if (error instanceof ApiRequestError && error.status === 404) return null;
+    throw error;
+  }
 }

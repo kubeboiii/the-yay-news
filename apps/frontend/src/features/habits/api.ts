@@ -260,11 +260,24 @@ function subscribeClock(l: () => void) {
   };
 }
 
+/**
+ * The device's clock, or outside production the `?now=` preview clock when the address has one, so
+ * a previewed paper's streak, stamp book and front door agree with the paper being previewed.
+ */
+export function deviceNow(): Date {
+  if (process.env.NODE_ENV !== "production") {
+    const now = new URLSearchParams(window.location.search).get("now");
+    const at = now ? new Date(now) : null;
+    if (at && !Number.isNaN(at.getTime())) return at;
+  }
+  return new Date();
+}
+
 /** Today's edition date on this device (07:00 local release), or null during server rendering. */
 export function useEditionToday(): string | null {
   return useSyncExternalStore(
     subscribeClock,
-    () => editionDateAt(new Date()),
+    () => editionDateAt(deviceNow()),
     () => null,
   );
 }

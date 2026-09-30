@@ -8,6 +8,8 @@ import { Copy, Rack, racksOf, weekOf } from "@/features/archive/rack";
 import { getArchive, getToday } from "@/features/editions/api";
 import { habitFonts } from "@/features/habits/fonts";
 import { BeforeYourTime, BoxCount, CatchUp } from "@/features/pile/catch-up";
+import { BirthdayForm } from "@/features/pile/birthday-form";
+import { SearchBox } from "@/features/pile/search-box";
 import { StampCalendar } from "@/features/pile/stamp-calendar";
 import { previewFrom } from "../_preview";
 import "@/features/archive/archive.css";
@@ -81,15 +83,19 @@ export default async function PilePage({ searchParams }: PageProps<"/pile">) {
             Stamp calendar
           </Link>
         </nav>
+        <SearchBox />
       </header>
 
       {items.length === 0 ? (
         <p className="ar-empty">The first edition hasn&rsquo;t been printed yet.</p>
       ) : calendar ? (
-        <StampCalendar
-          today={todayIssue ? (today?.date ?? null) : null}
-          days={items.map((e) => ({ date: e.date, issue: e.issueNumber, ink: editionLook(e).a }))}
-        />
+        <>
+          <StampCalendar
+            today={todayIssue ? (today?.date ?? null) : null}
+            days={items.map((e) => ({ date: e.date, issue: e.issueNumber, ink: editionLook(e).a }))}
+          />
+          <BirthdayForm />
+        </>
       ) : (
         <>
           <CatchUp

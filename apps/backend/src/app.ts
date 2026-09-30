@@ -8,6 +8,7 @@ import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { adminRoutes } from "./modules/admin/admin.routes.js";
 import { editionRoutes } from "./modules/editions/edition.routes.js";
 import { healthRoutes } from "./modules/health/health.routes.js";
+import { searchRoutes } from "./modules/search/search.routes.js";
 import { storyRoutes } from "./modules/stories/story.routes.js";
 
 export function createApp() {
@@ -21,6 +22,7 @@ export function createApp() {
     .route("/health", healthRoutes)
     .route("/api/v1/editions", editionRoutes)
     .route("/api/v1/editions", storyRoutes)
+    .route("/api/v1/search", searchRoutes)
     .route("/api/v1/admin", adminRoutes);
 
   app.onError(errorHandler);
