@@ -1,0 +1,317 @@
+/* Your Pile, on top of the newsstand's own styles (features/archive/archive.css). */
+
+.pl-desk {
+  --pl-pink: #d61f7a;
+  --pl-blue: #1f4fd8;
+}
+
+/* ——— The view switch on the sign ——— */
+.pl-views {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 16px auto 0;
+  width: fit-content;
+  border: 2px solid var(--ar-ink, #1d1a16);
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+}
+.pl-views a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 800;
+  color: inherit;
+  text-decoration: none;
+}
+.pl-views a + a {
+  border-left: 2px solid var(--ar-ink, #1d1a16);
+}
+.pl-views a[aria-current="page"] {
+  background: var(--ar-ink, #1d1a16);
+  color: #f4efe3;
+}
+.pl-views a:focus-visible {
+  outline: 3px solid #6a2cf0;
+  outline-offset: 2px;
+}
+
+/* ——— The reader's mark on a copy ——— */
+.pl-stamp {
+  position: absolute;
+  top: 22%;
+  right: -10%;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--w, 180px) * 0.56);
+  aspect-ratio: 1;
+  border: 4px double var(--pl-pink, #d61f7a);
+  border-radius: 50%;
+  color: var(--pl-pink, #d61f7a);
+  background: rgb(255 255 255 / 0.5);
+  rotate: -12deg;
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  text-transform: uppercase;
+  line-height: 1;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.pl-stamp--late {
+  border-color: var(--pl-blue, #1f4fd8);
+  color: var(--pl-blue, #1f4fd8);
+  rotate: 9deg;
+}
+.pl-stamp__big {
+  font-size: calc(var(--w, 180px) * 0.14);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pl-stamp__small {
+  font-size: calc(var(--w, 180px) * 0.065);
+  margin-top: 3px;
+}
+
+.pl-ear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 6;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(225deg, #e4ded3 50%, #cfc6b4 50%);
+  box-shadow: -2px 2px 3px rgb(0 0 0 / 0.18);
+  pointer-events: none;
+}
+
+/* ——— On your pile ——— */
+.pl-catch {
+  width: min(1240px, 100%);
+  margin: 0 auto 64px;
+}
+.pl-catch > .ar-ticket {
+  rotate: 1deg;
+  margin: 0 0 18px 6px;
+  background: #e9ff1f;
+}
+.pl-catch__row .ar-front {
+  --ar-tilt: -3deg;
+}
+.pl-catch__row .ar-slot:nth-child(even) .ar-front {
+  --ar-tilt: 2.5deg;
+}
+.pl-catch--clear {
+  display: flex;
+  justify-content: center;
+}
+.pl-hand {
+  display: inline-block;
+  margin: 0;
+  padding: 10px 18px;
+  background: #fffbe6;
+  font-family: var(--hb-hand), cursive;
+  font-size: 28px;
+  line-height: 1;
+  rotate: -1.5deg;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.14);
+}
+
+/* ——— A month's box ——— */
+.pl-box {
+  width: min(1240px, 100%);
+  margin: 0 auto 28px;
+}
+.pl-box__lid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  width: min(640px, 100%);
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 16px 20px;
+  background: #c9a473;
+  border: 2px solid var(--ar-ink, #1d1a16);
+  box-shadow:
+    inset 0 -10px 0 rgb(0 0 0 / 0.1),
+    0 8px 18px rgb(0 0 0 / 0.14);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+}
+.pl-box__lid::-webkit-details-marker {
+  display: none;
+}
+.pl-box__lid:focus-visible {
+  outline: 3px solid #6a2cf0;
+  outline-offset: 3px;
+}
+.pl-box__k {
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pl-box__name {
+  font-family: var(--ar-gothic), sans-serif;
+  font-size: 34px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.pl-box__n {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 800;
+}
+.pl-box__lid::after {
+  content: "Open the box ▾";
+  width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+}
+.pl-box[open] > .pl-box__lid {
+  margin-bottom: 40px;
+}
+.pl-box[open] > .pl-box__lid::after {
+  content: "Close the box ▴";
+}
+
+.pl-before {
+  width: min(560px, 100%);
+  margin: 40px auto 0;
+  padding: 14px 18px;
+  border: 2px dashed #5f594d;
+  color: #3d3830;
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.pl-before__k {
+  display: block;
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ——— The stamp calendar ——— */
+.pl-cal {
+  width: min(560px, 100%);
+  margin: 0 auto;
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+}
+.pl-cal__month {
+  margin-bottom: 36px;
+}
+.pl-cal__name {
+  margin: 0 0 10px;
+  font-family: var(--ar-gothic), sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  text-transform: uppercase;
+}
+.pl-cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.pl-cal__head {
+  text-align: center;
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pl-cal__day,
+.pl-cal__none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.pl-cal__none {
+  color: #6b6558;
+  font-weight: 500;
+}
+.pl-cal__day {
+  position: relative;
+  color: var(--ar-ink, #1d1a16);
+  background: #ffffff;
+  border: 2px solid var(--ar-ink, #1d1a16);
+  box-shadow: inset 0 -5px 0 var(--pl-ink, #e9ff1f);
+}
+.pl-cal__day:hover {
+  translate: 0 -2px;
+}
+.pl-cal__day:focus-visible {
+  outline: 3px solid #6a2cf0;
+  outline-offset: 2px;
+}
+.pl-cal__day[data-state="stamped"],
+.pl-cal__day[data-state="late"] {
+  border-radius: 50%;
+  color: #ffffff;
+  box-shadow: none;
+}
+.pl-cal__day[data-state="stamped"] {
+  background: var(--pl-pink, #d61f7a);
+  border-color: var(--pl-pink, #d61f7a);
+  rotate: -8deg;
+}
+.pl-cal__day[data-state="late"] {
+  background: var(--pl-blue, #1f4fd8);
+  border-color: var(--pl-blue, #1f4fd8);
+  rotate: 7deg;
+}
+.pl-cal__day[data-state="started"] {
+  background: #efe8d8;
+  border-style: dashed;
+}
+.pl-cal__day[data-today] {
+  outline: 3px solid var(--ar-ink, #1d1a16);
+  outline-offset: 3px;
+}
+.pl-cal__key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+.pl-cal__key li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pl-cal__swatch {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 2px solid var(--ar-ink, #1d1a16);
+  background: #ffffff;
+}
+.pl-cal__swatch[data-state="stamped"] {
+  border-radius: 50%;
+  border-color: var(--pl-pink, #d61f7a);
+  background: var(--pl-pink, #d61f7a);
+}
+.pl-cal__swatch[data-state="late"] {
+  border-radius: 50%;
+  border-color: var(--pl-blue, #1f4fd8);
+  background: var(--pl-blue, #1f4fd8);
+}
+.pl-cal__swatch[data-state="started"] {
+  border-style: dashed;
+  background: #efe8d8;
+}

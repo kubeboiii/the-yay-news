@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getEdition, issueParam } from "@/features/editions/api";
+import { getEdition, getToday, issueParam } from "@/features/editions/api";
 import { EditionPageView } from "@/features/papers/edition-view";
 import { pageHref, pageLabel, pageSlug } from "@/features/papers/reading";
+import { PileBand } from "@/features/site/pile-band";
 import { frontPreview, storyPreview } from "@/features/reader/previews";
 import { previewFrom } from "../../../_preview";
 
@@ -35,8 +36,16 @@ export default async function IssuePage({
 }: PageProps<"/issue/[issue]/[page]">) {
   const { issue, page: slug } = await params;
   const preview = await previewFrom(searchParams);
-  const edition = await getEdition(issueParam(issue), preview);
+  const [edition, today] = await Promise.all([
+    getEdition(issueParam(issue), preview),
+    getToday(preview).catch(() => null),
+  ]);
   const page = edition.pages.find((p) => p.layout !== "front" && pageSlug(p) === slug);
   if (!page) notFound();
-  return <EditionPageView edition={edition} page={page} design={preview.design} />;
+  return (
+    <>
+      <PileBand issue={edition.issueNumber} date={edition.date} today={today} />
+      <EditionPageView edition={edition} page={page} design={preview.design} />
+    </>
+  );
 }

@@ -4,8 +4,9 @@ import { RewardHost, RewardOffer } from "@/features/cards/rewards";
 import { ReadingTracker } from "@/features/habits/reading";
 import { SaveStoryButton } from "@/features/habits/save-story";
 import { StickerLayer } from "@/features/habits/stickers";
-import { PageBar } from "@/features/reader/page-bar";
 import { ShareBar, StoryCut } from "@/features/reader/share-bar";
+import { Pager } from "@/features/site/pager";
+import { pagerPages } from "@/features/site/pager-pages";
 import { ZineLink } from "@/features/zine/zine-link";
 import { Balance } from "./balance";
 import { withOnePictureGroup } from "./plates";
@@ -54,7 +55,12 @@ export function EditionPageView({
         extra={<RewardOffer key="reward-offer" issue={edition.issueNumber} />}
       />
       <RewardHost />
-      <PageBar issue={edition.issueNumber} reading={readingFor(edition, page)} />
+      <Pager
+        issue={edition.issueNumber}
+        date={edition.date}
+        pages={pagerPages(edition)}
+        current={page.order}
+      />
     </>
   );
 }
