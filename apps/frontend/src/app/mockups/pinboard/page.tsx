@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Courier_Prime, Kalam } from "next/font/google";
-import { PressFilter } from "@/features/print/press-filter";
+import { PressFilter } from "@repo/ui/print/press-filter";
 import { Pinboard } from "./board";
 import "./pinboard.css";
 

@@ -4,7 +4,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { handwriting } from "@/features/habits/fonts";
 import { hand } from "@/features/play/fonts";
 import { Arrow } from "@/features/play/rough";
-import { imageAspect, printedPhoto } from "@/features/print/photo";
+import { imageAspect, printedPhoto } from "@repo/ui/print/photo";
 import { BriefArt, type BriefFlavour, type BriefMeasure, planBriefs } from "./brief-art";
 import type { StoryItem } from "./types";
 import { weekendKind } from "./weekend-lineup";

@@ -2,8 +2,8 @@ import type { Image as ImageData, StoryItem } from "@repo/shared";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Burst } from "@/features/print/burst";
-import { printedPhoto } from "@/features/print/photo";
+import { Burst } from "@repo/ui/print/burst";
+import { printedPhoto } from "@repo/ui/print/photo";
 import { FillPlates } from "../plates";
 import { longestWord } from "./edition-data";
 

@@ -3,8 +3,8 @@
 // ?pastel= for the Tabloid, Mini Zine and Midi Magazine (house inks when it is left off).
 
 import type { EditionDesign } from "@repo/shared";
-import { type Pastel, pastels } from "@/features/print/colourways/pastels";
-import { themes } from "@/features/print/colourways/themes";
+import { type Pastel, pastels } from "@repo/ui/print/colourways/pastels";
+import { themes } from "@repo/ui/print/colourways/themes";
 import type { FontSpec } from "./fonts";
 
 export const LOOKS = ["v1", "v3", "v4", "v5"] as const;

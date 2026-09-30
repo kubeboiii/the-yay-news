@@ -7,7 +7,7 @@ import { loadFonts } from "@/app/clip/_lib/fonts";
 import { editionLook } from "@/app/clip/_lib/looks";
 import { editionName } from "@/features/papers/weekend-lineup";
 import { issueHref, storyHref } from "@/features/papers/reading";
-import { printedPhoto } from "@/features/print/photo";
+import { printedPhoto } from "@repo/ui/print/photo";
 import { absoluteUrl } from "@/features/reader/site";
 import {
   backPanel,

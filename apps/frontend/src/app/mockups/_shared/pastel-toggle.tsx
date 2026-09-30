@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { PastelStyles } from "@/features/print/colourways/pastel-styles";
-import { type Pastel, pastels } from "@/features/print/colourways/pastels";
+import { PastelStyles } from "@repo/ui/print/colourways/pastel-styles";
+import { type Pastel, pastels } from "@repo/ui/print/colourways/pastels";
 import { useStoredChoice } from "./use-stored-choice";
 
 const HOUSE = "house";

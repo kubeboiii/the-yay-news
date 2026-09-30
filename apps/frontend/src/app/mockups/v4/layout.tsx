@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Alfa_Slab_One, Courier_Prime, PT_Serif } from "next/font/google";
 import { MockupNav } from "@/app/mockups/_shared/mockup-nav";
-import "@/features/print/print.css";
+import "@repo/ui/print/print.css";
 import "./zine.css";
 
 // Wood-type slab: the cover masthead, the big heads and the contents numerals.

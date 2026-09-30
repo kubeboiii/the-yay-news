@@ -2,7 +2,17 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
+    "./print/press-filter": "./src/print/press-filter.tsx",
+    "./print/burst": "./src/print/burst.tsx",
+    "./print/mark": "./src/print/mark.tsx",
+    "./print/photo": "./src/print/photo.ts",
+    "./print/print.css": "./src/print/print.css",
+    "./print/colourways/themes": "./src/print/colourways/themes.ts",
+    "./print/colourways/pastels": "./src/print/colourways/pastels.ts",
+    "./print/colourways/pastel-styles": "./src/print/colourways/pastel-styles.tsx",
+    "./print/colourways/neon.css": "./src/print/colourways/neon.css",
     "./*": "./src/*.tsx"
   },
   "scripts": {
@@ -21,6 +31,7 @@
   },
   "dependencies": {
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "server-only": "0.0.1"
   }
 }

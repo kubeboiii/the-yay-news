@@ -9,7 +9,7 @@ import {
   WordLadder,
   WordSearch,
 } from "@/features/play";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import { BackKeepsakes, backPlay } from "../back-play";
 import type { PageProps } from "../types";
 import { backComposition } from "./compose";

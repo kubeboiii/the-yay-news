@@ -32,7 +32,7 @@ const UNSPLASH = /^https:\/\/images\.unsplash\.com\/(photo-[\w-]+)/;
 
 /**
  * The pressed halftone print of a photo (the same copy the reader prints, see
- * features/print/photo.ts), or the CDN original for an Unsplash photo that has not been pressed.
+ * @repo/ui/print/photo.ts), or the CDN original for an Unsplash photo that has not been pressed.
  * Any other URL is used as it is; Satori fetches it.
  */
 export function photoSrc(url: string, width = 1600): string {

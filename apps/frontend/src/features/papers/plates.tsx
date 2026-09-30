@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { StoryItem } from "./types";
-import { printedPhoto } from "@/features/print/photo";
+import { printedPhoto } from "@repo/ui/print/photo";
 import "./plates.css";
 
 // Plates: how a story with more than one picture is printed. A paper that has three photographs

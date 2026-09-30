@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import type { StoryItem } from "./types";
-import { imageAspect, printedPhoto } from "@/features/print/photo";
+import { imageAspect, printedPhoto } from "@repo/ui/print/photo";
 import "./brief-art.css";
 
 // How a brief carries its picture. An art director doesn't drop the same small square above

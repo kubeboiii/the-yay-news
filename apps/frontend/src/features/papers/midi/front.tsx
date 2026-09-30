@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 import type { PageProps, Reading, StoryItem } from "../types";
 import { Body, Photo, StoryHead } from "./blocks";
 import { type FrontComposition, frontComposition } from "./compose";

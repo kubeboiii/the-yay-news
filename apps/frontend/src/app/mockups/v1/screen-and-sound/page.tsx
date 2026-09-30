@@ -1,7 +1,7 @@
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { pick } from "@/app/mockups/_data/photos";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 import { Folio, Photo, RunningHead, STRETCH, Zigzag } from "../_components/parts";
 
 const listings = [

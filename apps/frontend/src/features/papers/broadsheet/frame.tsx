@@ -24,7 +24,7 @@ const sans = Libre_Franklin({
 });
 
 /**
- * The table the broadsheet is laid on. The colourway rules in features/print/colourways/neon.css
+ * The table the broadsheet is laid on. The colourway rules in @repo/ui/print/colourways/neon.css
  * are written `[data-theme] .yn-table`, so the attribute goes on a wrapper around the table;
  * "original" is the broadsheet's own fluoro set and needs none.
  */

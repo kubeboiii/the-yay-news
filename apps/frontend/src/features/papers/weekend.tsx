@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { handwriting } from "@/features/habits/fonts";
 import { hand } from "@/features/play/fonts";
-import { printedPhoto } from "@/features/print/photo";
+import { printedPhoto } from "@repo/ui/print/photo";
 import type { BriefFlavour } from "./brief-art";
 import { Columns, Flow, Head, Pic, clamp, fit, hash, weight } from "./spreads";
 import type { PageProps, StoryItem } from "./types";

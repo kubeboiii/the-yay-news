@@ -1,12 +1,12 @@
 import { rackFonts } from "@/features/archive/fonts";
 import { KeepPreview } from "@/features/editions/keep-preview";
 import { TimezoneCookie } from "@/features/editions/timezone-cookie";
-import { PastelStyles } from "@/features/print/colourways/pastel-styles";
-import { PressFilter } from "@/features/print/press-filter";
+import { PastelStyles } from "@repo/ui/print/colourways/pastel-styles";
+import { PressFilter } from "@repo/ui/print/press-filter";
 import { ServiceWorker } from "@/features/site/offline";
 import { SiteBar } from "@/features/site/site-bar";
-import "@/features/print/print.css";
-import "@/features/print/colourways/neon.css";
+import "@repo/ui/print/print.css";
+import "@repo/ui/print/colourways/neon.css";
 
 // `sheet` is the story sheet: a story opened from inside the paper slides up over the page it was
 // on (app/(reader)/@sheet), so closing it leaves the reader exactly where they were. Opened from

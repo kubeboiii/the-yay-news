@@ -3853,7 +3853,7 @@
   }
 }
 
-/* ---------- Pastel colourways (see @/features/print/colourways/pastels.ts) ---------- */
+/* ---------- Pastel colourways (see @repo/ui/print/colourways/pastels.ts) ---------- */
 
 [data-pastel] .print-sheet.tb-sheet {
   --ink: var(--pz-ink);
