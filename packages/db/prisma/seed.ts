@@ -426,7 +426,7 @@ async function main() {
       slug: { notIn: sections.map((s) => s.slug) },
       pages: { none: {} },
       stories: { none: {} },
-      editions: { none: {} },
+      guestIn: { none: {} },
     },
     select: { slug: true },
   });
