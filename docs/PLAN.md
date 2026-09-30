@@ -222,6 +222,32 @@ Answers are revealed in the next day's edition. Spot-the-difference is a later o
 - **Saved stories** stored on the device too.
 - Stored in a shape that a later Google sign-in can **merge** into an account rather than discard.
 
+### The website around the paper
+
+Decided 2026-10-01. The paper is the product; the site is its doorstep, and it adds nothing a real
+paper wouldn't have except where the web beats paper (resuming, sharing, keeping things). Three
+places, and a pager for the paper itself:
+
+| Place                   | What it holds                                                                                                                                                                                                                                                                 |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Today** (`/`)         | Today's paper, behind a front door that changes with the day: before 07:00 the shutter is half up with a countdown and yesterday's paper underneath; the paper drops in once per issue; once it's finished the shop is **closed till 7**, with the reader's receipt to share. |
+| **Your Pile** (`/pile`) | Every paper so far: unfinished ones from the last week on top, this week's rack, earlier months in boxes, a stamp calendar, search, and the paper from your birthday. Each copy carries the reader's mark (stamped, stamped late, dog-eared).                                 |
+| **Your Wall** (`/wall`) | Everything kept: clippings, the stamp book, cards, stickers, the weekly dump and month in Yay, and a code to move it all to a new phone.                                                                                                                                      |
+
+- **The site bar** (every page): the masthead mark, today's date (opens the stamp calendar), Today,
+  Pile, Wall. It tucks away while reading.
+- **The pager** (every page of the paper): ‹ Page 4 of 13 · Music ›, an edge that fills as you read,
+  and a grid of every page. On the back page its last step is the fold: "N pages to go", then
+  "Fold it", which closes up shop.
+- **Stories** opened inside the paper slide up in a sheet over the page; opened on their own (a shared
+  link, a search) they end with a strip about the paper and more headlines from it.
+- **Pass it on**: send a story with a note scribbled on it; the note travels in the link.
+- **Older papers** carry a "From the pile" band, so nobody mistakes one for this morning's.
+- **Offline**: papers you've opened keep reading without a connection; after three finished papers
+  the closed shutter offers to put the paper on the home screen.
+- A late read earns a stamp in a different ink; the streak counts papers by their printed date, so
+  catching up on yesterday's still counts.
+
 ### Newsletter
 
 The front page delivered each morning, with double opt-in and one-click unsubscribe. It needs an email
@@ -425,8 +451,12 @@ browse back issues, and share any story to each platform's composer.
   stamp and streak when a paper's finished (`/stamps`), stickers to stick on any page, the mood
   faces and the paper-plane sign-off, and kept stories (`/saved`). Paper sounds switch in the page
   bar.
-- Still to do: the stamp book's current streak uses the device's date, not a preview `?now=`; merge
-  the log into an account when sign-in lands.
+- Still to do: merge the log into an account when sign-in lands. (The stamp book's streak now
+  follows a preview `?now=`.)
+- **The website around the paper** (2026-10-01, §7): the site bar, pager and fold; the front door's
+  shutters, drop and receipt; Your Pile (replacing `/archive`) with search and birthday papers; Your
+  Wall (replacing `/stamps` and `/saved`); story sheets, pass-it-on notes, How it's made (`/about`)
+  and offline reading.
 
 ### Phase 4 — The automated newsroom
 
