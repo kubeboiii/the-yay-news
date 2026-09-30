@@ -14,6 +14,7 @@ import {
 import { storyHref } from "@/features/papers/reading";
 import { StampBook } from "@/features/habits/stamp-book";
 import { statusesOf } from "@/features/site/status";
+import { Dumps } from "./dump";
 import { MoveMyWall } from "./move-my-wall";
 
 // Your Wall: a corkboard of everything the reader has kept. Stories they tore out, pinned up as
@@ -129,6 +130,13 @@ export function Wall() {
         <div id="wl-book" className="wl-book">
           <StampBook start={1} />
         </div>
+      </section>
+
+      <section className="wl-section" aria-labelledby="wl-week">
+        <h2 id="wl-week" className="wl-label">
+          Your week, your month
+        </h2>
+        <Dumps />
       </section>
 
       <section className="wl-section wl-section--pair" aria-label="Cards and stickers">

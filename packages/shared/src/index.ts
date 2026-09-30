@@ -4,3 +4,4 @@ export * from "./schemas/design.ts";
 export * from "./schemas/edition.ts";
 export * from "./schemas/section.ts";
 export * from "./schemas/story.ts";
+export * from "./schemas/search.ts";

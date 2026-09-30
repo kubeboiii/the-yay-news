@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { siteUrl } from "@/features/reader/site";
 import "./globals.css";
@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   // Makes every relative link-preview URL (the clippings) absolute.
   metadataBase: siteUrl,
   title: "The Yay News",
+  icons: { apple: "/icons/apple-touch-icon.png" },
+  appleWebApp: { capable: true, title: "Yay News", statusBarStyle: "black-translucent" },
 };
+
+export const viewport: Viewport = { themeColor: "#161412" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

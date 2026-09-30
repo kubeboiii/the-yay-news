@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useHabitLog, useHabitsReady, useStreak } from "@/features/habits/api";
 import { pagesRead, solvedByIssue } from "@/features/habits/core";
+import { InstallAsk } from "./install-ask";
 import "./today.css";
 
 // What sits above today's front page, depending on the time and on what the reader has done:
@@ -166,6 +167,7 @@ function Closed({ issue, pages, tags }: Pick<Props, "issue" | "pages" | "tags">)
         </p>
       ) : null}
 
+      <InstallAsk />
       <div className="ys-shutter__links">
         <Link href="/pile" className="ys-btn">
           Your Pile

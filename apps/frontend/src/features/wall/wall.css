@@ -333,3 +333,61 @@
   margin-top: 26px;
   scroll-margin-top: 70px;
 }
+
+/* ——— The weekly dump and the month in Yay ——— */
+.wl-dumps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 620px) {
+  .wl-dumps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.wl-card--dump {
+  rotate: -0.8deg;
+}
+.wl-card--month {
+  rotate: 0.9deg;
+  background: #fffbe6;
+}
+.wl-nums {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.wl-nums b {
+  font-family: var(--ar-gothic), sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+}
+.wl-maker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wl-maker__probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.wl-maker__img {
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--wl-ink);
+}
+.wl-maker__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+.wl-maker__row .wl-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
