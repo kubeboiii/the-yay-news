@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Crimson_Pro, IBM_Plex_Sans_Condensed } from "next/font/google";
-import "@/features/print/print.css";
+import "@repo/ui/print/print.css";
 import { MockupNav } from "@/app/mockups/_shared/mockup-nav";
 import "./midi.css";
 

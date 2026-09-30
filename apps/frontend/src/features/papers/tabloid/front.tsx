@@ -1,6 +1,6 @@
 import type { StoryItem } from "@repo/shared";
 import Link from "next/link";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import type { PageProps } from "../types";
 import { WeekInPictures, editionName } from "../weekend";
 import { type Area, frontComposition, gridStyle, places } from "./compose";

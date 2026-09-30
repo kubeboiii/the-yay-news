@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { habitFonts } from "@/features/habits/fonts";
-import { PressFilter } from "@/features/print/press-filter";
+import { PressFilter } from "@repo/ui/print/press-filter";
 import { HabitsReview } from "./review";
 import "./review.css";
 

@@ -1,7 +1,7 @@
 import type { Edition, Feature, Image as EditionImage } from "@repo/shared";
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
-import { printedPhoto } from "@/features/print/photo";
+import { printedPhoto } from "@repo/ui/print/photo";
 import { FillPlates } from "../plates";
 import type { PageLink, Reading, StoryItem } from "../types";
 

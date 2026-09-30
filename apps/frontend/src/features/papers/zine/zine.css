@@ -2755,7 +2755,7 @@ section:has(> .z-comic) {
   }
 }
 
-/* ---------- Pastel colourways (see @/features/print/colourways/pastels.ts) ---------- */
+/* ---------- Pastel colourways (see @repo/ui/print/colourways/pastels.ts) ---------- */
 
 /* The Frame carries the attribute on the desk itself; an ancestor works too. */
 [data-pastel].z-desk,

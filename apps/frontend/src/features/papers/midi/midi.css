@@ -417,7 +417,7 @@
   }
 }
 
-/* ---------- Pastel colourways (see features/print/colourways/pastels.ts) ----------
+/* ---------- Pastel colourways (see @repo/ui/print/colourways/pastels.ts) ----------
    The Frame puts data-pastel on the .m5 wrapper itself; an ancestor works too. */
 
 .m5[data-pastel],

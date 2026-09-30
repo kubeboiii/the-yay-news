@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { seeded } from "@/app/mockups/_shared/edition-seed";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import {
   addClipping,
   type Clipping,

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { League_Gothic, Libre_Caslon_Text, Libre_Franklin } from "next/font/google";
 import { MockupNav } from "@/app/mockups/_shared/mockup-nav";
-import "@/features/print/print.css";
+import "@repo/ui/print/print.css";
 import "./broadsheet.css";
 import "./sections.css";
 import "./paste-up.css";

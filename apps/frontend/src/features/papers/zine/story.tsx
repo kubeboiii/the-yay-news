@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 import { Gallery } from "../plates";
 import type { StoryProps } from "../types";
 import { pageLabel } from "../reading";

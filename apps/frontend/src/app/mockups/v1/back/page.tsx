@@ -1,6 +1,6 @@
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { type Photo as PhotoT, pick } from "@/app/mockups/_data/photos";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import { Folio, Photo, RunningHead, Stamp, Zigzag } from "../_components/parts";
 
 /** Splits a comic line like "PIP: Hello" into the speaker and what they said. */

@@ -1,6 +1,6 @@
 import { edition } from "@/app/mockups/_data/sample-edition";
 import { pick } from "@/app/mockups/_data/photos";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import { Folio, Masthead, MiniMark, Photo, Sheet, Stamp, Tape } from "../_components/parts";
 
 const BLUE = "var(--blue)";

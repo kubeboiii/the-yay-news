@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import type { Photo as PhotoData } from "@/app/mockups/_data/photos";
 import { unsplash } from "@/app/mockups/_data/photos";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 
 export const FOLIO_DATE = "Wed 30 Sep 2026";
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { edition } from "@/app/mockups/_data/sample-edition";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 import { Barcode, STRETCH, Stamp, Zigzag } from "./_components/parts";
 
 const pageNumbers: Record<string, number> = {

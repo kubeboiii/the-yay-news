@@ -2,8 +2,8 @@ import type { Image as EditionImage, StoryItem } from "@repo/shared";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Mark } from "@/features/print/mark";
-import { printedPhoto } from "@/features/print/photo";
+import { Mark } from "@repo/ui/print/mark";
+import { printedPhoto } from "@repo/ui/print/photo";
 import { FillPlates } from "../plates";
 import { pad2, ringSplit, type Ground } from "./text";
 

@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 
 // The stickers' printed faces: glossy vinyl in bright process inks, built from the print kit's
 // Burst shapes and the real hand-drawn marks in public/mockup/marks. Each face fills its box; the

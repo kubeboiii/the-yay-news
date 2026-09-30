@@ -1,4 +1,4 @@
-import { pastels, pastelVars } from "./pastels";
+import { pastels, pastelVars } from "./pastels.ts";
 
 /**
  * Every pastel colourway as [data-pastel="slug"] { --pz-*: … }. Each pastel design maps the --pz-*

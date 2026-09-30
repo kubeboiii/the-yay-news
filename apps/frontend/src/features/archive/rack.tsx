@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { editionLook } from "@/app/clip/_lib/looks";
 import { issueHref } from "@/features/papers/reading";
-import { printedPhoto } from "@/features/print/photo";
+import { printedPhoto } from "@repo/ui/print/photo";
 import { PileMark } from "@/features/pile/pile-mark";
 import { aged, daysSince, seeded } from "./age";
 

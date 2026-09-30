@@ -1,6 +1,6 @@
 import type { Edition } from "@repo/shared";
 import Link from "next/link";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import type { PageProps, Reading, StoryItem } from "../types";
 import { Copy, Media, StoryBlock, StoryHead } from "./blocks";
 import {

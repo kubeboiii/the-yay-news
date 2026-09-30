@@ -20,7 +20,7 @@
   --neon-blue: #2f5bff;
   --neon-violet: #b14bff;
   /* The colour of type printed on a pink or an orange ground. Ink here; colourways whose pink or
-     orange is a deep violet or blue (see features/print/colourways/neon.css) swap it for paper-white, because
+     orange is a deep violet or blue (see @repo/ui/print/colourways/neon.css) swap it for paper-white, because
      black on those grounds falls short of AA contrast. */
   --neon-pink-ink: var(--ink);
   --neon-orange-ink: var(--ink);

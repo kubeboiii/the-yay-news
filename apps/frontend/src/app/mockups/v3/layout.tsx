@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Courier_Prime, Libre_Franklin, Tinos } from "next/font/google";
-import "@/features/print/print.css";
+import "@repo/ui/print/print.css";
 import { MockupNav } from "@/app/mockups/_shared/mockup-nav";
 import "./tabloid.css";
 

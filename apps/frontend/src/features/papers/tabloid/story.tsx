@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mark } from "@/features/print/mark";
+import { Mark } from "@repo/ui/print/mark";
 import { pageHref } from "../reading";
 import { Gallery } from "../plates";
 import type { StoryProps } from "../types";

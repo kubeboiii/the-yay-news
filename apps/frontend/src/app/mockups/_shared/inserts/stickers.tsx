@@ -1,7 +1,7 @@
 "use client";
 
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 
 // The stickers on the sheet. Each is printed from the kit — Burst shapes and real hand-drawn
 // marks — and set in the viewing version's type. `w` is its width as a share of the sheet, and the

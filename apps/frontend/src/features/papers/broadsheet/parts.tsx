@@ -2,9 +2,9 @@ import type { Edition, Image as EditionImage } from "@repo/shared";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
-import { printedPhoto } from "@/features/print/photo";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
+import { printedPhoto } from "@repo/ui/print/photo";
 import type { Reading } from "../types";
 import { lastWord, longDate, shortDate, weekday } from "./lib";
 

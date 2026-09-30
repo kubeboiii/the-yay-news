@@ -1,8 +1,8 @@
 import type { Image as EditionImage, StoryItem } from "@repo/shared";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Burst } from "@/features/print/burst";
-import { Mark } from "@/features/print/mark";
+import { Burst } from "@repo/ui/print/burst";
+import { Mark } from "@repo/ui/print/mark";
 import { BriefArt, BriefBand, planBriefs } from "../brief-art";
 import { Body, Byline, Head, Photo, Print, printNote, ReadOn, Ringed, Tape, Zig } from "./parts";
 import { headSize } from "./text";

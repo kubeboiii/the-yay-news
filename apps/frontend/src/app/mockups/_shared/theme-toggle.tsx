@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { themes } from "@/features/print/colourways/themes";
+import { themes } from "@repo/ui/print/colourways/themes";
 import { useStoredChoice } from "./use-stored-choice";
 
 const ORIGINAL = "original";
