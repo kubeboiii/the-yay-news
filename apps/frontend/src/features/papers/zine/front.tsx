@@ -2,6 +2,7 @@ import type { Edition, StoryItem } from "@repo/shared";
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import type { PageProps, Reading } from "../types";
+import { WeekInPictures, editionName } from "../weekend";
 import { StoryBlock, type HeadSize, type StoryVariant } from "./blocks";
 import { frontComposition, storyMM, type FrontComposition } from "./compose";
 import { Folio, Page, RunningHead, Spread, Zig } from "./parts";
@@ -82,7 +83,12 @@ export function Front({ edition, page, reading }: PageProps) {
     },
   ];
   const fixed = (key: string, mm: number, node: ReactNode): Block[] => [{ key, mm, node }];
-  const others = more.flatMap((s) => story(s, "float", "s"));
+  const others = [
+    ...more.flatMap((s) => story(s, "float", "s")),
+    ...(editionName(edition.date) === "The Scrapbook"
+      ? fixed("wip", 60, <WeekInPictures key="wip" edition={edition} reading={reading} max={4} />)
+      : []),
+  ];
 
   // Each composition fixes the masthead and the lead; the rest go to whichever page is shorter.
   const plan: Record<
@@ -118,7 +124,7 @@ export function Front({ edition, page, reading }: PageProps) {
           "mast",
           90,
           <Fragment key="mast">
-            <Masthead />
+            <Masthead name={editionName(edition.date)} />
             <Spec edition={edition} strip />
           </Fragment>,
         ),
@@ -138,7 +144,7 @@ export function Front({ edition, page, reading }: PageProps) {
         "mast",
         90,
         <Fragment key="mast">
-          <Masthead />
+          <Masthead name={editionName(edition.date)} />
           <Spec edition={edition} strip />
         </Fragment>,
       ),
@@ -189,14 +195,14 @@ function Stamp({ edition }: { edition: Edition }) {
       {edition.kind === "slow_news_day"
         ? "Slow news day"
         : day === "Saturday" || day === "Sunday"
-          ? "Weekend edition"
+          ? (editionName(edition.date) ?? "Weekend edition")
           : `${day} edition`}
     </p>
   );
 }
 
 /** The masthead: the tall stacked wood type (the cover) or one line across the page. */
-function Masthead({ stack }: { stack?: boolean }) {
+function Masthead({ stack, name }: { stack?: boolean; name?: string | null }) {
   if (stack) {
     return (
       <div className="z-cover__stack">
@@ -221,7 +227,9 @@ function Masthead({ stack }: { stack?: boolean }) {
         The Yay News
       </p>
       <h1 className="zf-mast__line">The Yay News</h1>
-      <p className="zf-mast__meta">Only good news. Mostly fun. Occasionally weird.</p>
+      <p className="zf-mast__meta">
+        {name ? <b>{name} · </b> : null}Only good news. Mostly fun. Occasionally weird.
+      </p>
     </div>
   );
 }

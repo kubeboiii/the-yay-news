@@ -1,0 +1,224 @@
+/*
+ * Brief pictures (brief-art.tsx) and the faces the shared treatments borrow from each design.
+ * Everything is set in the design's sheet units (--u) and its inks (--ink, --paper, and the accent
+ * --plate-accent), so each design prints them in its own character.
+ */
+
+/* ——— Each design's faces, for the shared treatments ——— */
+.yn-table {
+  --k-head: var(--font-head);
+  --k-text: var(--font-text);
+  --k-label: var(--font-sans);
+  --k-accent: var(--pop, var(--neon-pink, #e8175d));
+}
+.tb-desk {
+  --k-head: var(--font-head);
+  --k-text: var(--font-text);
+  --k-label: var(--font-mono);
+  --k-accent: var(--a, #f05a28);
+}
+.z-desk {
+  --k-head: var(--z-slab);
+  --k-text: var(--z-serif);
+  --k-label: var(--z-type);
+  --k-accent: var(--rose, #f28ca0);
+}
+.m5 {
+  --k-head: var(--f-display);
+  --k-text: var(--f-text);
+  --k-label: var(--f-sans);
+  --k-accent: var(--plate-accent, #d6336c);
+}
+
+/* ——— The picture ——— */
+.ba-fig {
+  position: relative;
+  margin: 0;
+}
+.ba-pic {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--ar, 1.5);
+  background: color-mix(in srgb, var(--ink) 12%, var(--paper, #fff));
+}
+
+/* Set into the text: the words run round it and on under it. */
+.ba-float {
+  float: right;
+  width: 42%;
+  margin: calc(var(--u) * 0.5) 0 calc(var(--u) * 1.2) calc(var(--u) * 2.4);
+}
+.ba-float--l {
+  float: left;
+  margin: calc(var(--u) * 0.5) calc(var(--u) * 2.4) calc(var(--u) * 1.2) 0;
+}
+.ba-wrap .ba-pic {
+  box-shadow: 0 0 0 calc(var(--u) * 0.3) var(--ink);
+}
+:where(*:has(> .ba-float)) {
+  display: flow-root;
+}
+
+/* A print taped on at an angle, hanging over the column's edge into the margin. */
+.ba-taped {
+  width: 46%;
+  margin-right: calc(var(--u) * -2.2);
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 1.2) calc(var(--u) * 2.6);
+  background: #fffdf6;
+  box-shadow:
+    0 calc(var(--u) * 0.4) calc(var(--u) * 1.2) rgb(0 0 0 / 0.18),
+    0 0 0 1px rgb(0 0 0 / 0.08);
+  transform: rotate(2.4deg);
+}
+.ba-taped.ba-float--l {
+  margin-left: calc(var(--u) * -2.2);
+  margin-right: calc(var(--u) * 2.4);
+  transform: rotate(-2.2deg);
+}
+.ba-tape {
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--u) * -1.6);
+  left: 30%;
+  width: 40%;
+  height: calc(var(--u) * 3.4);
+  background: color-mix(in srgb, var(--k-accent) 35%, rgb(255 255 240 / 0.7));
+  transform: rotate(-4deg);
+  mix-blend-mode: multiply;
+}
+
+/* Across the top of the column at its own shape. */
+.ba-top {
+  margin: 0 0 calc(var(--u) * 1.6);
+}
+
+/* When the words don't reach the foot of a picture set into them, it goes across instead
+   (balance.tsx): a picture beside nothing is a hole in the page. */
+.ba-float[data-fallback] {
+  float: none;
+  width: 100%;
+  margin: 0 0 calc(var(--u) * 1.6);
+  transform: none;
+}
+.ba-float[data-fallback] .ba-pic {
+  aspect-ratio: max(var(--ar), 1.3);
+}
+.ba-top[data-compact] {
+  float: right;
+  width: 42%;
+  margin: calc(var(--u) * 0.5) 0 calc(var(--u) * 1.2) calc(var(--u) * 2.4);
+}
+
+/* The headline on the picture, knocked out of a band of paper along its foot. */
+.ba-behind {
+  margin: 0 0 calc(var(--u) * 1.6);
+}
+.ba-behind .ba-pic {
+  width: 100%;
+}
+.ba-behind-head {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  max-width: 88%;
+  margin: max(-48px, calc(var(--u) * -14)) 0 0;
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 2) calc(var(--u) * 1.2);
+  background: var(--paper, #fff);
+  border-top: calc(var(--u) * 0.9) solid var(--k-accent);
+}
+.ba-behind-head > :last-child {
+  margin-bottom: 0;
+}
+
+/* No picture: the kicker set big, as a type-led item. */
+.ba-bigkick {
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 1);
+  margin-bottom: calc(var(--u) * 0.8);
+}
+.ba-bigkick > * {
+  font-family: var(--k-head) !important;
+  font-size: max(30px, calc(var(--u) * 8.5)) !important;
+  line-height: 0.92 !important;
+  letter-spacing: -0.005em !important;
+  color: var(--ink) !important;
+  margin: 0 !important;
+  text-wrap: balance;
+}
+.ba-bigkick > *::after {
+  content: " \2014";
+  color: var(--k-accent);
+}
+
+/* The brief's number, keyed to a band of pictures above. */
+.ba-key {
+  display: inline-grid;
+  place-items: center;
+  min-width: calc(var(--u) * 5.2);
+  height: calc(var(--u) * 5.2);
+  margin: 0 calc(var(--u) * 1.2) calc(var(--u) * 0.8) 0;
+  padding-inline: calc(var(--u) * 0.8);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper, #fff);
+  font-family: var(--k-head);
+  font-size: max(12px, calc(var(--u) * 3.2));
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  float: left;
+}
+
+/* A band of the briefs' pictures across the top of the block. */
+.ba-band {
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: calc(var(--u) * 2.4);
+  margin: 0 0 calc(var(--u) * 3);
+  padding-bottom: calc(var(--u) * 2.4);
+  border-bottom: calc(var(--u) * 0.4) solid var(--ink);
+}
+.ba-band-frame {
+  margin: 0;
+  min-width: 0;
+}
+.ba-band-frame .ba-pic {
+  aspect-ratio: 4 / 3;
+}
+.ba-band-cap {
+  margin-top: calc(var(--u) * 1.2);
+  font-family: var(--k-text);
+  font-style: italic;
+  font-size: max(13px, calc(var(--u) * 3.2));
+  line-height: 1.3;
+  display: flow-root;
+}
+.ba-band-cap .ba-key {
+  font-style: normal;
+  min-width: calc(var(--u) * 4.4);
+  height: calc(var(--u) * 4.4);
+}
+
+@media (max-width: 760px) {
+  .ba-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* An odd picture out runs across both columns rather than beside an empty one. */
+  .ba-band-frame:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .ba-band-frame:last-child:nth-child(odd) .ba-pic {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media print {
+  .ba-taped {
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.15);
+  }
+}
+
+.ba-float + *,
+.ba-float + .ba-key + * {
+  margin-top: 0 !important;
+}

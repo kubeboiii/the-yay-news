@@ -1,142 +1,59 @@
-import type { Edition, Puzzle, SolvedPuzzle } from "@repo/shared";
+import type { Edition } from "@repo/shared";
 import type { CSSProperties } from "react";
+import {
+  Crossword,
+  CrosswordAnswers,
+  FortuneTeller,
+  type PlayInks,
+  Riddle,
+  WordLadder,
+  WordSearch,
+} from "@/features/play";
 import { Mark } from "@/features/print/mark";
+import { BackKeepsakes, backPlay } from "../back-play";
 import type { PageProps } from "../types";
 import { backComposition } from "./compose";
 import { feature, features, Folio, longDate, spreadNumbers, splitSignOff } from "./print";
 
 // The back page prints as the closing spread: puzzles on lilac (left) and the back page on paper
 // (right) — comic, corrections, letters, classifieds, word of the day — with the sign-off set once
-// across both pages at the foot. Puzzles are printed, not interactive; today's answers are never
-// on the page, yesterday's are.
+// across both pages at the foot. The puzzles are playable in pencil (and print blank); today's
+// answers are never on the page, yesterday's are.
 
-type Of<T extends Puzzle["type"]> = Extract<Puzzle, { type: T }>["data"];
-type Solved<T extends SolvedPuzzle["type"]> = Extract<SolvedPuzzle, { type: T }>;
-
-const puzzle = <T extends Puzzle["type"]>(edition: Edition, type: T) =>
-  (edition.puzzles.find((p) => p.type === type)?.data ?? null) as Of<T> | null;
-const solved = <T extends SolvedPuzzle["type"]>(edition: Edition, type: T) =>
-  (edition.yesterday?.puzzles.find((p) => p.type === type) ?? null) as Solved<T> | null;
-
-function Crossword({ data }: { data: Of<"crossword"> }) {
-  const cols = Math.max(...data.rows.map((r) => r.length), 1);
-  const numbers = new Map(data.numbers.map((n) => [`${n.row},${n.col}`, n.n]));
-  return (
-    <section className="m5b-mini" aria-labelledby="m5b-mini">
-      <h2 id="m5b-mini" className="m5-display m5b-h">
-        {data.title}
-      </h2>
-      <div
-        className="m5b-grid"
-        role="img"
-        aria-label={`A ${cols} by ${data.rows.length} crossword grid`}
-        style={{ "--cols": cols, "--rows": data.rows.length } as CSSProperties}
-      >
-        {data.rows.flatMap((row, r) =>
-          Array.from({ length: cols }, (_, c) => {
-            const n = numbers.get(`${r},${c}`);
-            const black = (row[c] ?? "#") === "#";
-            return (
-              <span key={`${r}-${c}`} className={black ? "m5b-cell m5b-cell--black" : "m5b-cell"}>
-                {n ? <b>{n}</b> : null}
-              </span>
-            );
-          }),
-        )}
-      </div>
-      <div className="m5b-clues">
-        {(["across", "down"] as const).map((dir) =>
-          data[dir].length ? (
-            <div key={dir}>
-              <h3>{dir === "across" ? "Across" : "Down"}</h3>
-              <ol>
-                {data[dir].map((c) => (
-                  <li key={`${dir}${c.n}`}>
-                    <b>{c.n}</b> {c.clue} <i>({c.length})</i>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          ) : null,
-        )}
-      </div>
-    </section>
-  );
-}
-
-function Ladder({ data }: { data: Of<"word_ladder"> }) {
-  const letters = Math.max(data.start.length, data.end.length, 1);
-  const rows = [data.start, ...Array.from({ length: data.steps }, () => ""), data.end];
-  return (
-    <section className="m5b-ladder" aria-labelledby="m5b-ladder">
-      <h2 id="m5b-ladder" className="m5-display m5b-h">
-        {data.title}
-      </h2>
-      <p className="m5b-small">{data.instructions}</p>
-      <ol
-        className={rows.length > 5 ? "m5b-rungs m5b-rungs--tall" : "m5b-rungs"}
-        aria-label={`${data.start} to ${data.end} in ${data.steps + 1} changes`}
-      >
-        {rows.map((word, i) => (
-          <li key={i}>
-            {Array.from({ length: letters }, (_, k) => (
-              <span key={k} className={word ? "m5b-tile m5b-tile--set" : "m5b-tile"}>
-                {word[k] ?? ""}
-              </span>
-            ))}
-          </li>
-        ))}
-      </ol>
-      <p className="m5-note m5b-ladder-note" aria-hidden>
-        {data.steps} {data.steps === 1 ? "step" : "steps"} between
-      </p>
-    </section>
-  );
-}
+/** The inks the reader's pencil and marker take on the midi's pastel spread. */
+const INKS: PlayInks = {
+  ink: "var(--ink)",
+  print: "var(--ink)",
+  paper: "var(--paper)",
+  highlight: "var(--butter-deep)",
+  mark: "var(--rose-deep)",
+};
 
 function Yesterday({ edition }: { edition: Edition }) {
-  if (!edition.yesterday) return null;
-  const xw = solved(edition, "crossword");
-  const ladder = solved(edition, "word_ladder");
-  const riddle = solved(edition, "riddle");
-  if (!xw && !ladder && !riddle) return null;
-  const cols = xw ? Math.max(...xw.solution.grid.map((r) => r.length), 1) : 0;
+  const y = backPlay(edition).yesterday;
+  if (!y || (!y.crossword && !y.ladder)) return null;
   return (
     <section className="m5b-yesterday" aria-labelledby="m5b-yesterday">
       <h2 id="m5b-yesterday" className="m5b-yesterday-h">
-        Yesterday’s answers <span>No. {edition.yesterday.issueNumber}</span>
+        Yesterday’s answers <span>No. {y.issue}</span>
       </h2>
       <div className="m5b-yesterday-body">
-        {xw ? (
-          <div
-            className="m5b-solved"
-            role="img"
-            aria-label={`Yesterday's ${xw.data.title}, filled in: across ${xw.solution.across.map((a) => `${a.n} ${a.answer}`).join(", ")}; down ${xw.solution.down.map((a) => `${a.n} ${a.answer}`).join(", ")}`}
-            style={{ "--cols": cols } as CSSProperties}
-          >
-            {xw.solution.grid.flatMap((row, r) =>
-              Array.from({ length: cols }, (_, c) => {
-                const ch = row[c] ?? "#";
-                return (
-                  <span key={`${r}-${c}`} className={ch === "#" ? "m5b-solved--black" : undefined}>
-                    {ch === "#" ? "" : ch}
-                  </span>
-                );
-              }),
-            )}
-          </div>
+        {y.crossword ? (
+          <CrosswordAnswers
+            data={y.crossword.data}
+            solution={y.crossword.solution}
+            inks={INKS}
+            hideTitle
+            className="yn-play m5b-answers"
+          />
         ) : null}
         <div className="m5b-yesterday-text">
-          {ladder ? (
+          {y.ladder ? (
             <p>
-              <b>{ladder.data.title}.</b> {ladder.solution.ladder.join(" → ")}
+              <b>{y.ladder.data.title}.</b> {y.ladder.solution.ladder.join(" → ")}
             </p>
           ) : null}
-          {riddle ? (
-            <p>
-              <b>{riddle.data.title}.</b> {riddle.data.question} <i>{riddle.solution.answer}.</i>
-            </p>
-          ) : null}
+          {y.riddle ? <p>Yesterday’s riddle is under the folded corner of today’s.</p> : null}
         </div>
       </div>
     </section>
@@ -184,9 +101,8 @@ function Comic({ comic }: { comic: { title: string; panels: string[] } }) {
 
 export function Back({ edition, reading }: PageProps) {
   const [left, right] = spreadNumbers(reading);
-  const crossword = puzzle(edition, "crossword");
-  const ladder = puzzle(edition, "word_ladder");
-  const riddle = puzzle(edition, "riddle");
+  const play = backPlay(edition);
+  const { issue, crossword, ladder, riddle, search, fortune } = play;
   const comic = feature(edition, "comic");
   const corrections = features(edition, "correction");
   const letters = features(edition, "letter");
@@ -225,22 +141,61 @@ export function Back({ edition, reading }: PageProps) {
       {puzzlesFirst ? null : bye2}
       <div className="m5-page-flow m5b-page">
         <h1 className="m5-display m5b-title">Puzzles</h1>
-        {crossword ? <Crossword data={crossword} /> : null}
+        {crossword ? (
+          <Crossword
+            issue={issue}
+            data={crossword.data}
+            inks={INKS}
+            headingLevel={2}
+            className="yn-play m5b-pz m5b-pz--xw"
+          />
+        ) : null}
         <div className="m5b-row">
-          {ladder ? <Ladder data={ladder} /> : null}
+          {ladder ? (
+            <WordLadder
+              issue={issue}
+              data={ladder.data}
+              inks={INKS}
+              headingLevel={2}
+              className="yn-play m5b-pz"
+            />
+          ) : null}
           <div className="m5b-row-r">
             {riddle ? (
-              <section className="m5b-riddle" aria-labelledby="m5b-riddle">
-                <h2 id="m5b-riddle" className="m5-display m5b-h">
-                  {riddle.title}
-                </h2>
-                <p className="m5-display m5b-riddle-q">{riddle.question}</p>
-                <p className="m5b-answer">The answer is in tomorrow’s paper.</p>
-              </section>
+              <Riddle
+                issue={issue}
+                data={riddle.data}
+                yesterday={play.yesterday?.riddle}
+                inks={INKS}
+                headingLevel={2}
+                className="yn-play m5b-pz"
+              />
             ) : null}
             <Yesterday edition={edition} />
           </div>
         </div>
+        {search || fortune ? (
+          <div className="m5b-row m5b-row--play">
+            {search ? (
+              <WordSearch
+                issue={issue}
+                data={search.data}
+                inks={INKS}
+                headingLevel={2}
+                className="yn-play m5b-pz"
+              />
+            ) : null}
+            {fortune ? (
+              <FortuneTeller
+                issue={issue}
+                data={fortune.data}
+                inks={INKS}
+                headingLevel={2}
+                className="yn-play m5b-pz"
+              />
+            ) : null}
+          </div>
+        ) : null}
       </div>
       {puzzlesFirst ? bye1 : <SignOff after={after} edition={edition} />}
     </article>
@@ -318,6 +273,7 @@ export function Back({ edition, reading }: PageProps) {
             </section>
           ) : null}
         </div>
+        <BackKeepsakes edition={edition} className="m5b-keepsakes" />
       </div>
       {puzzlesFirst ? <SignOff after={after} edition={edition} /> : bye1}
     </article>

@@ -17,6 +17,7 @@ import {
   weekday,
 } from "./print";
 import type { Edition } from "@repo/shared";
+import { WeekInPictures, editionName } from "../weekend";
 
 // The front route prints the cover (page 1) on its own, then the opening spread (pages 2–3). The
 // cover carries the masthead, the date, the lead's headline and standfirst and the one "Inside
@@ -58,7 +59,9 @@ function Masthead({ edition }: { edition: Edition }) {
   return (
     <>
       <div className="m5c-top">
-        <p className="m5f-stamp print-worn">{weekday(edition.date)} edition</p>
+        <p className="m5f-stamp print-worn">
+          {editionName(edition.date) ?? `${weekday(edition.date)} edition`}
+        </p>
         <p className="m5c-issue">
           Vol. {edition.volume} · No. {edition.issueNumber} · {longDate(edition.date)}
         </p>
@@ -114,7 +117,17 @@ function Figures({ edition, variant }: { edition: Edition; variant: "band" | "ra
       {quote ? (
         <section>
           <h2 className="m5c-fig-h">Overheard</h2>
-          <blockquote className="m5-display m5c-quote">“{quote.text}”</blockquote>
+          {/* A short remark is set bigger, so it fills its column as far down as its neighbours. */}
+          <blockquote
+            className="m5-display m5c-quote"
+            style={
+              quote.text.length < 90
+                ? { fontSize: `calc(var(--u) * ${quote.text.length < 50 ? 9 : 7})` }
+                : undefined
+            }
+          >
+            “{quote.text}”
+          </blockquote>
           <p className="m5-byline">{quote.by}</p>
         </section>
       ) : null}
@@ -153,6 +166,7 @@ function Story({
       {image && photo === "top" ? (
         <Photo
           image={image}
+          plates={story}
           className="m5k-photo--second"
           sizes="(max-width: 760px) 100vw, 400px"
         />
@@ -208,7 +222,12 @@ function Cover({
               <div className="m5c-cover-body">
                 <Index {...props} variant="rail" />
                 <div className="m5c-bleed">
-                  <PrintPhoto image={image} priority sizes="(max-width: 760px) 100vw, 560px" />
+                  <PrintPhoto
+                    image={image}
+                    plates={lead}
+                    priority
+                    sizes="(max-width: 760px) 100vw, 560px"
+                  />
                   <Sticker text={lead?.sticker} />
                 </div>
               </div>
@@ -229,6 +248,7 @@ function Cover({
               <div className="m5c-framed">
                 <Photo
                   image={image}
+                  plates={lead}
                   className="m5c-print"
                   sizes="(max-width: 760px) 100vw, 520px"
                   pasted
@@ -268,6 +288,7 @@ export function Front(props: PageProps) {
   ) : null;
   const stories = (photo: "top" | "inset", cols: 1 | 2) =>
     others.map((s) => <Story key={s.slug} story={s} reading={reading} photo={photo} cols={cols} />);
+  const pictures = <WeekInPictures edition={edition} reading={reading} max={5} />;
 
   let left: ReactNode;
   let right: ReactNode;
@@ -280,7 +301,14 @@ export function Front(props: PageProps) {
         <Figures edition={edition} variant="band" />
       </>,
     );
-    right = sheet(3, "Front", <div className="m5k-two">{stories("top", 1)}</div>);
+    right = sheet(
+      3,
+      "Front",
+      <>
+        <div className="m5k-two">{stories("top", 1)}</div>
+        {pictures}
+      </>,
+    );
   } else if (composition === "type-cover") {
     left = sheet(
       2,
@@ -289,6 +317,7 @@ export function Front(props: PageProps) {
         {lead?.images[0] ? (
           <Photo
             image={lead.images[0]}
+            plates={lead}
             className="m5k-photo--top m5c-lead-photo"
             sizes="(max-width: 760px) 100vw, 640px"
             priority
@@ -303,6 +332,7 @@ export function Front(props: PageProps) {
       <>
         <Figures edition={edition} variant="band" />
         {stories("inset", 2)}
+        {pictures}
       </>,
     );
   } else {
@@ -314,7 +344,14 @@ export function Front(props: PageProps) {
         <div className="m5c-railed-main">{stories("top", 1)}</div>
       </div>,
     );
-    right = sheet(3, lead?.section.name ?? "Front", leadText);
+    right = sheet(
+      3,
+      lead?.section.name ?? "Front",
+      <>
+        {leadText}
+        {pictures}
+      </>,
+    );
   }
 
   return (

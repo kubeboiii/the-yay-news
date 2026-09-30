@@ -251,7 +251,7 @@
   right: calc(var(--u) * -3);
 }
 
-/* Gaming's cartridge and Screen & Sound's film, carrying the main story's head and picture. */
+/* Play's cartridge and Screen's film, carrying the main story's head and picture. */
 .zc-story--cart .z-gotw {
   margin-top: calc(var(--u) * 2);
 }
@@ -675,4 +675,125 @@
 
 .z-page .zb-word__say {
   font-size: max(calc(var(--u) * 2.9), 12px);
+}
+
+/* ---------- the playable back page ---------- */
+.zb-pz .pl-title {
+  font-family: var(--z-slab), serif;
+  font-weight: 700;
+  font-size: calc(var(--u) * 5.2);
+  line-height: 0.95;
+}
+.z-page .zb-puzz {
+  grid-template-columns: 1fr 1fr;
+}
+.zb-pz--wide {
+  grid-column: 1 / -1;
+}
+.zb-answers {
+  max-width: calc(var(--u) * 36);
+  margin-bottom: calc(var(--u) * 2);
+}
+.zb-keepsakes {
+  margin-top: calc(var(--u) * 7);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+.zb-plane {
+  margin-top: calc(var(--u) * 5);
+}
+@container (max-width: 760px) {
+  .z-page .zb-puzz {
+    grid-template-columns: 1fr;
+  }
+  .zb-pz .pl-title {
+    font-size: 26px;
+  }
+  .zb-answers {
+    max-width: 160px;
+  }
+}
+
+/* ——— Picture groups (see ../plates.tsx) ——— */
+
+.z-page,
+.zc-page {
+  --plate-accent: var(--rose);
+}
+
+.zc-pics {
+  margin-block: calc(var(--u) * 3);
+}
+
+.zc-pics .pl-frame-label {
+  font-family: var(--z-serif);
+  font-size: calc(var(--u) * 3.2);
+}
+
+/* The rail's print runs the depth of the story, so the rail never ends in bare paper beside the
+   text (desk only; on the phone the rail sits above the text). */
+@media (min-width: 761px) {
+  .zc-story--rail {
+    align-items: stretch;
+  }
+  .zc-rail__rail {
+    display: flex;
+    flex-direction: column;
+  }
+  .zc-rail__rail > .zc-print {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .zc-rail__rail > .zc-print > figure {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .zc-rail__rail > .zc-print .z-photo {
+    flex: 1 1 auto;
+    aspect-ratio: auto !important;
+    height: auto !important;
+    min-height: calc(var(--u) * 50);
+  }
+}
+
+/* The back page's pieces are grouped so they can cross the fold (balance.tsx); the groups have no
+   box of their own, so the page lays its pieces out as if they weren't there. */
+.zb-flow {
+  display: contents;
+}
+
+/* An odd last entry in the two-column contents list runs across both columns, so it doesn't sit
+   beside a column's width of bare paper. */
+.zf-contents--list ol > li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+/* Yesterday's answers: the solved grid set into the lines, not above them with a page's width of
+   bare paper beside it. */
+.z-page .zb-yday {
+  display: flow-root;
+}
+.z-page .zb-yday > .pl-answers {
+  float: left;
+  width: max(calc(var(--u) * 30), 120px);
+  margin: 0 calc(var(--u) * 5) calc(var(--u) * 2) 0;
+}
+
+/* The riddle's card is drawn the depth of the fortune teller beside it. The quote beside the word ladder is set big, so it and yesterday's
+   answers run as deep as the ladder. */
+.zb-puzz > .pl-riddle {
+  display: flex;
+  flex-direction: column;
+}
+.zb-puzz > .pl-riddle .pl-riddle-page {
+  flex: 1;
+}
+.zb-puzz > .pl-riddle .pl-riddle-face {
+  height: 100%;
+}
+.zb-puzz__beside .zb-quote blockquote {
+  font-size: max(calc(var(--u) * 8), 26px);
+  line-height: 1.12;
 }

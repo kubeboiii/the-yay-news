@@ -1,5 +1,9 @@
 import type { CSSProperties, ReactNode } from "react";
+import { SectionDress, dressed } from "../dress";
+import { Band } from "../plates";
+import { Special, type SpecialKind, specialPages, specialParts } from "../spreads";
 import type { PageProps, Reading, StoryItem } from "../types";
+import { Weekend, weekendKind } from "../weekend";
 import { Body, Briefs, Photo, SectionTitle, StoryHead } from "./blocks";
 import { guestComposition, type InsideComposition, insideCompositions } from "./compose";
 import { Folio, type Ground, groundFor, minutes, PrintPhoto, ranked, spreadNumbers } from "./print";
@@ -64,13 +68,18 @@ function Sheet({
 }
 
 /** The main story's photograph bled off the top of the page, the section's name across its edge. */
-function BleedTitle({ p, tall }: { p: Parts; tall?: boolean }) {
+function BleedTitle({ p, tall, single }: { p: Parts; tall?: boolean; single?: boolean }) {
   const image = p.main?.images[0];
   return (
     <>
       {image ? (
         <div className={tall ? "m5k-bleed m5k-bleed--tall" : "m5k-bleed"}>
-          <PrintPhoto image={image} priority sizes="(max-width: 760px) 100vw, 700px" />
+          <PrintPhoto
+            image={image}
+            plates={single ? undefined : p.main}
+            priority
+            sizes="(max-width: 760px) 100vw, 700px"
+          />
         </div>
       ) : null}
       <h1 className="m5-display m5k-edge print-misreg" style={fitted(p.name, 30, 300, 480)}>
@@ -98,7 +107,12 @@ function Main({
     <section className="m5k-main" aria-labelledby={`h-${s.slug}`}>
       <StoryHead story={s} reading={p.reading} size={size} byline={byline(p.name, s)} />
       {image && photo === "top" ? (
-        <Photo image={image} className="m5k-photo--top" sizes="(max-width: 760px) 100vw, 640px" />
+        <Photo
+          image={image}
+          plates={s}
+          className="m5k-photo--top"
+          sizes="(max-width: 760px) 100vw, 640px"
+        />
       ) : null}
       {image && photo === "inset" ? (
         <div className="m5-body m5-read m5-read--2 m5k-inset-flow">
@@ -150,6 +164,7 @@ function Second({
       {image && photo === "top" ? (
         <Photo
           image={image}
+          plates={s}
           className="m5k-photo--second"
           sizes="(max-width: 760px) 100vw, 400px"
         />
@@ -184,7 +199,54 @@ function Spread({ left, right }: { left: ReactNode; right: ReactNode }) {
   );
 }
 
-function compose(c: InsideComposition, p: Parts, pages: [number, number], date: string, g: Ground) {
+/** A special page across the spread: the opening on the section's colour, the rest opposite. */
+function SpecialSpread({
+  kind,
+  parts,
+  sp,
+  pages,
+  date,
+  ground,
+  dress,
+}: {
+  kind: SpecialKind;
+  parts: Parts;
+  sp: NonNullable<ReturnType<typeof specialParts>>;
+  pages: [number, number];
+  date: string;
+  ground: Ground;
+  dress: ReactNode;
+}) {
+  return (
+    <Spread
+      left={
+        <Sheet page={pages[0]} name={parts.name} date={date} ground={ground}>
+          <div className="m5-page-flow">
+            <SectionTitle name={parts.name} tagline={parts.tagline} variant="band" />
+            <Special kind={kind} parts={sp} half={0} />
+          </div>
+        </Sheet>
+      }
+      right={
+        <Sheet page={pages[1]} name={parts.name} date={date}>
+          <div className="m5-page-flow">
+            {dress}
+            <Special kind={kind} parts={sp} half={1} />
+          </div>
+        </Sheet>
+      }
+    />
+  );
+}
+
+function compose(
+  c: InsideComposition,
+  p: Parts,
+  pages: [number, number],
+  date: string,
+  g: Ground,
+  dress: ReactNode,
+) {
   const sheet = (n: 0 | 1, children: ReactNode, ground?: boolean, cls?: string) => (
     <Sheet
       page={pages[n]}
@@ -193,6 +255,7 @@ function compose(c: InsideComposition, p: Parts, pages: [number, number], date: 
       ground={ground ? g : undefined}
       className={cls}
     >
+      {n === 1 && dress ? <div className="m5-page-flow m5k-dress">{dress}</div> : null}
       {children}
     </Sheet>
   );
@@ -206,6 +269,47 @@ function compose(c: InsideComposition, p: Parts, pages: [number, number], date: 
   switch (c) {
     // Photograph bled off the top of the coloured page, the name across its edge, the main story
     // below it; the second story and a strip of briefs on paper opposite.
+    // A contact sheet: the best frame bled off the coloured page with the story under it, and
+    // the rest of the roll opposite as a contact sheet, the pick ringed, above the second story.
+    case "contact-sheet": {
+      const frames = p.main?.images.slice(1, 5) ?? [];
+      return (
+        <Spread
+          left={sheet(
+            0,
+            <>
+              <BleedTitle p={p} single />
+              {flow(<Main p={p} size="big" photo="none" />, "m5k-under-bleed")}
+            </>,
+            true,
+            "m5k-bleed-sheet",
+          )}
+          right={sheet(
+            1,
+            flow(
+              <>
+                <section className="m5k-contact" aria-label="More pictures from the story">
+                  <p className="m5-kicker">From the same roll</p>
+                  <Band
+                    arrangement="contact"
+                    images={frames}
+                    pick={frames.length > 1 ? 1 : 0}
+                    labels={frames.map((i) => i.alt)}
+                  />
+                </section>
+                <Second p={p} variant="ruled" photo={p.second?.images[0] ? "inset" : "none"} />
+                <Briefs
+                  stories={p.briefs}
+                  reading={p.reading}
+                  variant="strip"
+                  className="m5k-foot"
+                />
+              </>,
+            ),
+          )}
+        />
+      );
+    }
     case "photo-led":
       return (
         <Spread
@@ -426,9 +530,67 @@ export function Section({ edition, page, reading }: PageProps) {
     ...split(page.stories),
   };
   const composition = insideCompositions(edition).get(page.order) ?? "headline-across";
+  const special = specialPages(edition.issueNumber, edition.pages, "bigtype").get(page.order);
+  const sp = specialParts(
+    page.stories,
+    reading.storyHref,
+    "mag",
+    `${edition.issueNumber}:${page.order}`,
+  );
+  const weekend = weekendKind(slug);
+  const dress =
+    !weekend && dressed(slug, edition.issueNumber, page.order) ? (
+      <SectionDress
+        slug={slug}
+        stories={page.stories}
+        issue={edition.issueNumber}
+        page={page.order}
+        date={edition.date}
+      />
+    ) : null;
+  if (weekend) {
+    const pages = spreadNumbers(reading);
+    const props = { kind: weekend, edition, page, reading, flavour: "mag" } as const;
+    return (
+      <div className="m5k" data-composition={`weekend-${weekend}`} data-ground={groundFor(slug)}>
+        <Spread
+          left={
+            <Sheet page={pages[0]} name={name} date={edition.date} ground={groundFor(slug)}>
+              <div className="m5-page-flow">
+                <SectionTitle name={name} tagline={parts.tagline} variant="band" />
+                <Weekend {...props} half={0} />
+              </div>
+            </Sheet>
+          }
+          right={
+            <Sheet page={pages[1]} name={name} date={edition.date}>
+              <div className="m5-page-flow">
+                <Weekend {...props} half={1} />
+              </div>
+            </Sheet>
+          }
+        />
+      </div>
+    );
+  }
+  if (special && sp) {
+    return (
+      <div className="m5k" data-composition={special} data-ground={groundFor(slug)}>
+        <SpecialSpread
+          kind={special}
+          parts={parts}
+          sp={sp}
+          pages={spreadNumbers(reading)}
+          date={edition.date}
+          ground={groundFor(slug)}
+          dress={dress}
+        />
+      </div>
+    );
+  }
   return (
     <div className="m5k" data-composition={composition} data-ground={groundFor(slug)}>
-      {compose(composition, parts, spreadNumbers(reading), edition.date, groundFor(slug))}
+      {compose(composition, parts, spreadNumbers(reading), edition.date, groundFor(slug), dress)}
     </div>
   );
 }
@@ -471,6 +633,16 @@ export function Guest({ edition, page, reading }: PageProps) {
     </article>
   );
   const s = parts.second;
+  const slug = page.section?.slug ?? "";
+  const dress = dressed(slug, edition.issueNumber, page.order) ? (
+    <SectionDress
+      slug={slug}
+      stories={page.stories}
+      issue={edition.issueNumber}
+      page={page.order}
+      date={edition.date}
+    />
+  ) : null;
   return (
     <div className="m5k" data-composition={composition} data-ground="butter">
       <Spread
@@ -481,6 +653,7 @@ export function Guest({ edition, page, reading }: PageProps) {
                 flow(
                   <>
                     {title}
+                    {dress}
                     <Main p={parts} size="big" photo="inset" />
                   </>,
                 ),
@@ -495,11 +668,13 @@ export function Guest({ edition, page, reading }: PageProps) {
                 flow(
                   <>
                     <Second p={parts} variant="ruled" photo={s?.images[0] ? "inset" : "none"} />
+                    {/* With no second story the briefs have the page: set down it, one under
+                        another, rather than as a strip at its foot under a bare top half. */}
                     <Briefs
                       stories={parts.briefs}
                       reading={reading}
-                      variant="strip"
-                      className="m5k-foot"
+                      variant={s ? "strip" : "numbered"}
+                      className={s ? "m5k-foot" : undefined}
                     />
                   </>,
                 ),
@@ -509,6 +684,7 @@ export function Guest({ edition, page, reading }: PageProps) {
                 flow(
                   <>
                     {title}
+                    {dress}
                     <Second p={parts} variant="boxed" photo={s?.images[0] ? "inset" : "none"} />
                     <Briefs
                       stories={parts.briefs}

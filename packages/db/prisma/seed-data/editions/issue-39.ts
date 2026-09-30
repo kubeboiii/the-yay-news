@@ -1,6 +1,5 @@
-// Issue 39, Sunday 27 September 2026. A Sunday midi: gentle, slow and snack-adjacent.
-// Stories with a sourceUrl are real, rewritten in our own words; stories marked "(sample)" are invented.
-import { ladder, mini, riddle } from "../puzzles.ts";
+// Issue 39, Sunday 27 September 2026. The Scrapbook: the week in pictures, a slow read and things to make.
+// Every story is real, rewritten in our own words from the article in its sourceUrl.
 import type { SeedEdition } from "../types.ts";
 
 export const issue39: SeedEdition = {
@@ -13,7 +12,7 @@ export const issue39: SeedEdition = {
   front: [
     {
       slug: "humpback-birth-filmed",
-      section: "discoveries",
+      section: "photo-album",
       kicker: "Whales",
       headline: "A drone counting whales off Australia films a humpback calf being born",
       dek: "It happened 700 metres from a beach at Kingscliff, and it may be the first full drone video of a humpback birth anywhere.",
@@ -30,38 +29,25 @@ export const issue39: SeedEdition = {
       source: "Live Science",
       sourceUrl:
         "https://www.livescience.com/animals/whales/its-incredibly-rare-to-see-a-moment-like-this-in-the-ocean-camera-drone-captures-moment-humpback-whale-gives-birth-off-australian-coast",
-      sticker: "Hello, world",
+      sticker: "The week in pictures",
       image: {
         file: "/editions/39/humpback-birth-filmed.jpg",
         alt: "Aerial view of humpback whales swimming in blue ocean",
         credit: "Alexander Forrest/ORRCA",
         from: "https://www.livescience.com/animals/whales/its-incredibly-rare-to-see-a-moment-like-this-in-the-ocean-camera-drone-captures-moment-humpback-whale-gives-birth-off-australian-coast",
       },
-    },
-    {
-      slug: "pluto-liquid-nitrogen",
-      section: "discoveries",
-      slot: "feature",
-      kicker: "Space",
-      headline: "Liquid nitrogen may be seeping on to Pluto's heart right now, scientists say",
-      dek: "New Horizons pictures of the famous heart-shaped glacier look a lot like Greenland.",
-      body: [
-        "Pluto's heart is a glacier of frozen nitrogen called Sputnik Planitia, and it is bigger than Texas and Oklahoma combined. New research led by Alan Stern, the principal investigator of NASA's New Horizons mission, suggests that liquid nitrogen may be flowing at its northern edge in relatively recent times: the first such evidence on Pluto.",
-        "The team compared New Horizons' images from 2015 and 2016 with Landsat 9 pictures of Greenland's ice sheet, and simulations by Orkan Umurhan of the SETI Institute show that ice several kilometres down at the base of the glacier could melt and rise. The glacier's surface is probably less than a million years old.",
-        "Pluto is only about three-quarters as wide as the continental United States, and more than half of it has never been mapped in high resolution, so there may be plenty more to find. “Pluto never stops surprising us,” Stern said, “and this new result certainly does that.”",
+      more: [
+        {
+          file: "/editions/39/humpback-birth-filmed-2.jpg",
+          alt: "Seen from the drone, a humpback and her newborn calf swim side by side in open blue water",
+          credit: "Live Science",
+          from: "https://www.livescience.com/animals/whales/its-incredibly-rare-to-see-a-moment-like-this-in-the-ocean-camera-drone-captures-moment-humpback-whale-gives-birth-off-australian-coast",
+        },
       ],
-      source: "ScienceDaily (Southwest Research Institute)",
-      sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260916232525.htm",
-      image: {
-        file: "/editions/39/pluto-liquid-nitrogen.jpg",
-        alt: "Enhanced-colour view of Pluto showing its heart-shaped glacier",
-        credit: "NASA/Johns Hopkins APL/Southwest Research Institute",
-        from: "https://www.sciencedaily.com/releases/2026/09/260916232525.htm",
-      },
     },
     {
       slug: "diplodocus-in-spain",
-      section: "discoveries",
+      section: "photo-album",
       slot: "feature",
       kicker: "Dinosaurs",
       headline: "First Diplodocus ever found outside North America turns up in Spain",
@@ -80,24 +66,79 @@ export const issue39: SeedEdition = {
         from: "https://www.sciencedaily.com/releases/2026/09/260918024807.htm",
       },
     },
+    {
+      slug: "montenegro-door-snails",
+      section: "photo-album",
+      slot: "feature",
+      kicker: "Snails",
+      headline: "Two tiny new snails from Montenegro can shut their shells like a front door",
+      dek: "Each is about 6 millimetres long and carries its own round lid on its tail.",
+      body: [
+        "Europe still has animals nobody has named, and two of them have just been described from the mountains of Montenegro. Cochlostoma komarnica and Cochlostoma dobrido are named after the places they were found: Komarnica Canyon and the Dobri Do plateau.",
+        "Both have cone-shaped shells about 6 millimetres long and live on limestone rocks, grazing on algae and lichens. Unlike most land snails, their eyes sit on the sides of the head rather than on the tips of stalks, and each carries a circular disc on its tail that closes the shell like a door.",
+        "They turned up on Taxon Expeditions trips between 2018 and 2025, which brought researchers, local students and citizen scientists together in Durmitor National Park. One co-author, Janine Buisman, is a musician from the Netherlands. The study is published in the Biodiversity Data Journal.",
+      ],
+      source: "ScienceDaily",
+      sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260923035936.htm",
+      image: {
+        file: "/editions/39/montenegro-door-snails.jpg",
+        alt: "A tiny golden cone-shaped Cochlostoma snail on a rock",
+        credit: "Roman Willi, Wildreach Productions",
+        from: "https://www.sciencedaily.com/releases/2026/09/260923035936.htm",
+      },
+    },
   ],
 
   inside: [
     {
-      section: "screen-and-sound",
+      section: "photo-album",
       stories: [
+        {
+          slug: "tasmania-antiques-roadshow",
+          slot: "brief",
+          kicker: "Heirlooms",
+          headline: "Tasmania brings out its oddest heirlooms to lure Antiques Roadshow over",
+          dek: "Exhibit A: a carved stone profile of a bearded man, bought in a charity shop.",
+          body: [
+            "The National Trust of Tasmania wants the BBC's Antiques Roadshow to film on the island, so it held a valuation day of its own at Runnymede House. Chris Gooley brought an op-shop carving of a bearded man inscribed ‘H.L. 1910’, and Kathleen Moore two tiny porcelain dolls in cotton wool. “We have so many little villages that look as though you have stepped out of the 1830s, 1860s,” said chief executive Jen Fry.",
+          ],
+          source: "ABC News (Australia)",
+          sourceUrl:
+            "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
+          image: {
+            file: "/editions/39/tasmania-antiques-roadshow.jpg",
+            alt: "Kathleen Moore holding two tiny porcelain dolls",
+            credit: "ABC News: Edoardo Falcione",
+            from: "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
+          },
+          more: [
+            {
+              file: "/editions/39/tasmania-antiques-roadshow-2.jpg",
+              alt: "Visitors crowd round a trestle table of treasures on the lawn at the National Trust valuation day",
+              credit: "ABC News",
+              from: "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
+            },
+            {
+              file: "/editions/39/tasmania-antiques-roadshow-3.jpg",
+              alt: "A beaming owner holds up a carved stone profile of a bearded man",
+              credit: "ABC News",
+              from: "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
+            },
+            {
+              file: "/editions/39/tasmania-antiques-roadshow-4.jpg",
+              alt: "A woman holds out a pair of tiny porcelain dolls in old-fashioned clothes",
+              credit: "ABC News",
+              from: "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
+            },
+          ],
+        },
         {
           slug: "masked-band-polaris",
           kicker: "Music",
           headline: "Masked band that speaks only a made-up language wins Canada's top album prize",
           dek: "Angine de Poitrine never talk in their real voices, so their manager did the thank-yous.",
           body: [
-            "The winners of this year's Polaris Music Prize, awarded to the best Canadian album of the year, did not make an acceptance speech. They could not really have made one. Angine de Poitrine, a masked and ornately costumed duo from Saguenay, Quebec, do not speak in public in their real voices at all. Its two members, known as Khn and Klek, communicate in a language they invented, which keeps them anonymous.",
-            "So at the prize concert at Massey Hall in Toronto, their manager, Sébastien Collin, did the talking. The band took home $30,000 for their second album, Vol.II, chosen from a shortlist of ten by more than 200 Canadian music critics and journalists. They also collected the $10,000 song prize for ‘Fabienk’, and received the award from last year's winner, Jeremy Dutcher.",
-            "Their music is what the band call microtonal rock, using notes that fall in the gaps between the ones on a normal piano. It is not an obvious recipe for a hit. But a live performance for the Seattle radio station KEXP spread across the internet, and that video now has 19 million views on YouTube.",
-            "Two years after their first album, the duo have sold out an international headlining tour, opened for Jack White and shared a stage with Shania Twain.",
-            "“That all this attention is being directed toward music this rock-driven and this complex is unexpected, yet entirely deserved,” Collin said.",
-            "What Khn and Klek said about it, if anything, has not been translated.",
+            "Khn and Klek, the costumed Quebec duo Angine de Poitrine, won the $30,000 Polaris Music Prize at Massey Hall in Toronto for their album Vol.II, plus the $10,000 song prize for ‘Fabienk’. They talk only in a language they invented, so their manager, Sébastien Collin, made the speech. Their microtonal rock has 19 million YouTube views from a single KEXP session.",
           ],
           source: "CBC Music",
           sourceUrl:
@@ -110,231 +151,12 @@ export const issue39: SeedEdition = {
           },
         },
         {
-          slug: "tasmania-antiques-roadshow",
-          slot: "feature",
-          kicker: "Television",
-          headline: "Tasmania brings out its oddest heirlooms to lure Antiques Roadshow over",
-          dek: "Exhibit A: a carved stone profile of a bearded man, bought in a charity shop.",
-          body: [
-            "The National Trust of Tasmania and a local tourism group have launched a campaign to persuade the BBC's Antiques Roadshow to film an episode on the island. To make their case, they held a launch at Runnymede House with a valuation session of their own, local historian Warwick Oakman doing the appraising.",
-            "Huon Valley resident Chris Gooley brought a dark-stone carving of a bearded man that he found in an op shop. “All the information that I have is on the actual carving itself, where inscribed are the initials H.L. and 1910,” he said. Kathleen Moore from Claremont brought two tiny porcelain dolls, kept safe in cotton wool.",
-            "The pitch is not only about objects. “We have so many little villages that look as though you have stepped out of the 1830s, 1860s,” said Jen Fry, the Trust's chief executive. “They would be wonderful for the Antiques Roadshow crew to come and film.”",
-          ],
-          source: "ABC News (Australia)",
-          sourceUrl:
-            "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
-          image: {
-            file: "/editions/39/tasmania-antiques-roadshow.jpg",
-            alt: "Kathleen Moore holding two tiny porcelain dolls",
-            credit: "ABC News: Edoardo Falcione",
-            from: "https://www.abc.net.au/news/2026-09-24/tasmanian-national-trust-campaigns-antiques-roadshow-bbc-visit/107184792",
-          },
-        },
-        {
-          slug: "air-guitar-champion",
-          kicker: "Air guitar",
-          headline:
-            "Finland's ‘The Angus’ wins the Air Guitar World Championships for a second year",
-          dek: "He beat Japan's ‘Seven Seas’ by four tenths of a point, on a stage built over water.",
-          body: [
-            "The 30th championships in Oulu drew more than 50 competitors from 13 countries and 5,000 spectators. Aapo ‘The Angus’ Rautio scored 34.8 to keep his title. Nanami ‘Seven Seas’ Nagura was second on 34.4, and Saladin ‘Six String Sal’ Thomas of the USA third. No guitars were harmed.",
-          ],
-          source: "Air Guitar World Championships",
-          sourceUrl:
-            "https://airguitarworldchampionships.com/en/the-2026-air-guitar-world-champion-is-aapo-the-angus-rautio/",
-          slot: "brief",
-        },
-        {
-          slug: "retirement-home-dj",
-          kicker: "DJs",
-          headline: "Student DJ ‘The QWill’ turns retirement-home happy hours into dance floors",
-          dek: "The most requested song, at nearly every set, is ‘Sweet Caroline’.",
-          body: [
-            "University of Tennessee student Will Mehring took his first senior-living booking last summer on his mother's suggestion, and now fits them in between classes and college parties, heavy on Elvis and soul. “All it takes is one, or myself, to get up and dance, and then the party started,” he said.",
-          ],
-          source: "NewsNation",
-          sourceUrl:
-            "https://www.yahoo.com/lifestyle/articles/dj-goes-viral-turning-nursing-153248294.html",
-          slot: "brief",
-        },
-        {
-          slug: "timetable-cantata",
-          kicker: "Choirs",
-          headline: "Community choir sets the local bus timetable to music, as a cantata",
-          dek: "The 7.42 to Llanfair gets a solo.",
-          body: [
-            "The Cwm Tawel Singers spent a year turning the valley's timetable into a 25-minute piece for four voices. Stops are sung in harmony, and changes at the depot are marked by a dramatic pause. The bus company has asked if it can play the recording at the station. The choir said yes, but only on time.",
-          ],
-          source: "Valley Voice (sample)",
-          slot: "brief",
-        },
-      ],
-    },
-    {
-      section: "gaming",
-      stories: [
-        {
-          slug: "do-nothing-button",
-          kicker: "Updates",
-          headline:
-            "Cosy fishing game adds a button that does absolutely nothing, and players adore it",
-          dek: "Press it and your character simply sits on the jetty and watches the water. It has been pressed 1.3 million times.",
-          body: [
-            "The two-person studio behind ‘Still Waters’, a gentle game about fishing on a lake, noticed something odd in its data: players were leaving the game running with nothing happening at all, just to look at the water.",
-            "“At first we thought it was a bug,” said co-developer Ines Varga. “Then people started emailing to say it was the most relaxing part of their week.”",
-            "So the latest update adds a button labelled ‘Sit’. Press it and your angler puts down the rod, sits on the end of the jetty and watches the lake. Nothing is caught. Nothing is earned. The light changes slowly across the water, the reeds move a little in the wind, and now and then a duck goes past.",
-            "In its first week, the button was pressed 1.3 million times, and the average sit lasts six minutes. The patch notes describe the feature, in full, as ‘a place to be’.",
-            "Players have taken to it with enthusiasm. Some sit before bed. Some sit at lunch. One group of friends meets on the same jetty every Sunday evening and sits together, in silence, for exactly ten minutes, then logs off without saying goodbye, which they describe as ‘the whole point’.",
-            "The developers say they have no plans to add anything else to the button. “It is finished,” Varga said. “Like a good cup of tea.”",
-          ],
-          source: "Patch Notes Daily (sample)",
-          photo: ["fishing", 0],
-        },
-        {
-          slug: "lego-slowpoke",
-          kicker: "Builds",
-          headline: "A LEGO fan turns a Toy Story bear set into a startlingly good Slowpoke",
-          dek: "The same builder once made a Millennium Falcon out of a pumpkin.",
-          body: [
-            "Reddit builder Minute_Food_2881 has a habit of taking one LEGO set and turning it into something else entirely. The latest: the $39.99 Lotso Huggin' Bear set from Toy Story 3, rebuilt as Slowpoke, the famously dozy pink Pokémon, down to its peg-like teeth and wide-set eyes.",
-            "Earlier builds include an Articuno made from a 3-in-1 dolphin kit, a Charmander from a pumpkin and a Pinsir from a LEGO Eevee, plus Millennium Falcons built out of a pumpkin, a Mario Kart set, a Dalmatian puppy and a dinosaur. It is a friendly scene: another fan, KraftyKoopa, is building one Pokémon a month this year, with Snorlax and Bulbasaur done and Mew on the way.",
-            "The top comment under the Slowpoke asked the question everyone was thinking: “How does he keep doing it”",
-          ],
-          source: "GamesRadar+",
-          sourceUrl:
-            "https://www.gamesradar.com/toys-collectibles/how-does-he-keep-doing-it-fan-makes-incredible-lego-pokemon-out-of-the-most-unlikely-sets/",
-          slot: "feature",
-        },
-        {
-          slug: "lost-xevious-ad",
-          kicker: "Archives",
-          headline: "A lost 1983 arcade advert turns up in the middle of a taped baseball game",
-          dek: "It was found about an hour and 23 minutes in.",
-          body: [
-            "Game historians had hunted for Atari's American TV advert for the shooter Xevious for years. Jumpman of Gaming Alexandria finally found it inside a recording of a Phillies v Mets broadcast from 5 April 1983, and it has now been put on Archive.org for anyone to watch.",
-          ],
-          source: "Aroged",
-          sourceUrl:
-            "https://www.aroged.com/2026/09/25/after-years-of-painstaking-search-missing-xevious-tv-commercial-finally-found/",
-          slot: "brief",
-        },
-        {
-          slug: "sunday-save-file",
-          kicker: "Families",
-          headline: "Family has kept one shared save file going every Sunday for eleven years",
-          dek: "Four people, one farm, and a strict rule about who waters the turnips.",
-          body: [
-            "The Adebayo-Lindqvist family of Västerby started a farming game in 2015 and have played it together every Sunday since, passing the controller between turns. Their virtual farm is now in its 44th in-game year. The youngest player was not born when it began. She is now in charge of the chickens.",
-          ],
-          source: "Save State (sample)",
-          slot: "brief",
-        },
-      ],
-    },
-    {
-      section: "sports",
-      stories: [
-        {
-          slug: "cricket-ducks-crossing",
-          kicker: "Cricket",
-          headline: "Village cricket match stops for twenty minutes so a family of ducks can cross",
-          dek: "Both teams formed a guard of honour, the umpire kept time, and nobody hurried the ducklings.",
-          body: [
-            "The Sunday fixture between Upper Brampton and Hollins Green had reached a tense point just after tea. Hollins Green needed 41 to win with five wickets left. Then a mother mallard and eight ducklings walked out from the long grass by the pavilion and set off, in single file, towards the middle of the pitch.",
-            "Umpire Clive Mabena held up both hands. Play stopped. The fielders, without being asked, stepped back into two lines either side of the ducks' route, and the batsmen took off their helmets.",
-            "The ducks did not take the direct route. They inspected the stumps at the pavilion end, walked the length of the wicket, paused at square leg for what one spectator described as ‘a meeting’, and finally left the field by the scoreboard. The whole crossing took twenty minutes, which Mr Mabena noted in his book as ‘stoppage: ducks’.",
-            "“You can't rush a duckling,” said Upper Brampton's captain, Sunita Rao. “We had waited all week for this game. We could wait a bit longer.”",
-            "The scorer, twelve-year-old Rhys Aldred, drew a small duck in the margin of the scorebook to mark the moment, and a round of applause went up from the pavilion as the last duckling disappeared. When play resumed, Upper Brampton won by three runs off the final ball. Both captains agreed in the bar afterwards that the ducks were the highlight, and the club has since put up a small sign by the long grass: ‘Right of way’.",
-          ],
-          source: "Village Green Gazette (sample)",
-          photo: "cricket",
-        },
-        {
-          slug: "teapot-marathon-runner",
-          slot: "feature",
-          kicker: "Running",
-          headline: "Marathon runner dressed as a teapot finishes with the spout still attached",
-          dek: "He had been assured the spout would fall off by mile ten. It is now on his mantelpiece.",
-          body: [
-            "Ollie Penhale spent three months building his costume from papier-mâché, chicken wire and a lampshade frame, and ran the Harrowgate marathon in it to raise money for new starting blocks at his local swimming pool.",
-            "Friends told him the spout would not survive the first hill. He reinforced it with a wooden spoon and a lot of tape, and it made it through all 26.2 miles, including a long, windy stretch along the canal.",
-            "Spectators along the route shouted ‘put the kettle on’ at him for most of the second half, which he says kept him going. He finished in 4 hours 57 minutes, and a volunteer at the line handed him a cup of tea, which he said was ‘the only correct thing to do’.",
-            "He raised £3,400, enough for the blocks. Next year he is planning to run as a sugar bowl.",
-          ],
-          source: "Finish Line (sample)",
-        },
-        {
-          slug: "floodlit-bowls-debut",
-          kicker: "Bowls",
-          headline:
-            "Lawn bowls club switches on its first floodlights, and an 88-year-old bowls under them",
-          dek: "Joan Ferris had waited 60 years for a night game.",
-          body: [
-            "The Kurrajong Heights Bowling Club raised money for its lights with a year of sausage sizzles. The first night game was opened by its longest-standing member, who delivered the first bowl, landed it a hand's width from the jack and said she would like to play at night from now on.",
-          ],
-          source: "Green & Jack (sample)",
-          slot: "brief",
-        },
-        {
-          slug: "fjord-dawn-dip",
-          kicker: "Swimming",
-          headline: "Fjord swimming group reaches 1,000 mornings in a row of dawn dips",
-          dek: "The woman who brings the hot chocolate has not missed one either.",
-          body: [
-            "The Morgenbad swimmers of Ålvik have been in the water every day since January 2024, whatever the weather. On the thousandth morning, 64 people swam and Ingrid Solheim, who has never swum once, poured 64 cups of hot chocolate from her flask trolley. The group has made her honorary captain.",
-          ],
-          source: "Nordic Water (sample)",
-          slot: "brief",
-        },
-        {
-          slug: "platform-ping-pong",
-          kicker: "Table tennis",
-          headline: "Station ping-pong table lets commuters play one point each between trains",
-          dek: "A running score has been kept on a chalkboard for six months.",
-          body: [
-            "The table on platform 2 at Leidenhoven station is ‘Northbound v Southbound’. Anyone waiting can play one point for their direction of travel. After six months the chalkboard reads 4,812 to 4,797 to Northbound. Southbound commuters say the timetable is against them.",
-          ],
-          source: "Rail & Racket (sample)",
-          slot: "brief",
-        },
-      ],
-    },
-    {
-      section: "tech",
-      stories: [
-        {
-          slug: "kostka-student-satellite",
-          kicker: "Space",
-          headline: "Czech students build a satellite from scratch, and it phones home from orbit",
-          dek: "KOSTKA, meaning ‘cube’, is the first Czech satellite designed and built entirely by students.",
-          body: [
-            "For several years, a team of students at Brno University of Technology called YSpace worked on a small cube-shaped satellite named KOSTKA. This summer they watched it leave the planet.",
-            "It flew on a SpaceX Falcon 9 rocket from Vandenberg Space Force Base in California, one of many small satellites on a rideshare mission. Fifty-eight minutes after launch, KOSTKA was released into space. An hour after that, its antenna unfolded.",
-            "Then came the moment the team had been waiting for. Shortly before noon, the first data arrived at a ground station the students had set up on the roof of their own faculty building in Brno.",
-            "“Watching the rocket lift off carrying a satellite we had worked on for years was an incredible feeling,” said Šimon Sloboda, the YSpace team leader. “But an even greater moment came when KOSTKA transmitted its first signal from orbit – that was when we knew everything was working exactly as intended.”",
-            "KOSTKA now circles the Earth at about 600 kilometres up, once every 95 minutes, which works out at about 15 laps a day. Its orbit is sun-synchronous, meaning it passes over each place at the same local time.",
-            "The faculty's Space Applications course is only four years old. “We could hardly have imagined that our students would design, build and send their own satellite into orbit in such a short time,” said vice dean Michal Kubíček.",
-          ],
-          source: "Brno University of Technology",
-          sourceUrl:
-            "https://www.vut.cz/en/but/news-f19528/kostka-satellite-successfully-deployed-into-earth-orbit-d345703",
-          image: {
-            file: "/editions/39/kostka-student-satellite.jpg",
-            alt: "Students watching the launch that carried their KOSTKA satellite",
-            credit: "Jakub Ryba / Brno University of Technology",
-            from: "https://www.vut.cz/en/but/news-f19528/kostka-satellite-successfully-deployed-into-earth-orbit-d345703",
-          },
-        },
-        {
           slug: "roadside-trinitron",
-          slot: "feature",
           kicker: "Repairs",
           headline: "Big Sony TV that stood by an Italian road for six years is working again",
           dek: "It needed a good clean, a lot of new capacitors, and a video game.",
           body: [
-            "The widescreen Sony Trinitron had been sitting beside a road in Italy for at least six years when a YouTuber called Happychoice decided to adopt it. It is one of the heavy, curved-glass tube televisions that retro gamers love.",
-            "Part one of the rescue involved removing dirt and what Hackaday describes as ‘local flora and fauna’. The power supply refused to start.",
-            "In part two he replaced most of the capacitors on the power board and on the board at the neck of the picture tube, plus a couple of transistors. This time it fired straight up, and he celebrated by plugging in a Wii and playing Persona 4 on it. After six years of weather, the old set has a new job: being a television again.",
+            "The YouTuber Happychoice adopted a widescreen Sony Trinitron that had stood beside an Italian road for at least six years. After a deep clean and new capacitors on the power board and the picture-tube board, it fired straight up, and he celebrated by playing Persona 4 on a Wii. The old set is a television again.",
           ],
           source: "Hackaday",
           sourceUrl:
@@ -356,115 +178,138 @@ export const issue39: SeedEdition = {
           ],
           source: "Hackaday",
           sourceUrl: "https://hackaday.com/2026/09/20/ski-lift-removes-mice-from-chicken-coop/",
-          slot: "brief",
+          image: {
+            file: "/editions/39/mouse-ski-lift.jpg",
+            alt: "The little wooden ski lift carrying a mouse up to the bird feeder",
+            credit: "Hackaday",
+            from: "https://hackaday.com/2026/09/20/ski-lift-removes-mice-from-chicken-coop/",
+          },
         },
         {
-          slug: "pine-cone-mast",
-          kicker: "Disguises",
-          headline: "Village's new phone mast is disguised as a giant pine cone",
-          dek: "Residents voted for it over a fake tree and a fake lighthouse.",
+          slug: "lost-xevious-ad",
+          kicker: "Archives",
+          headline: "A lost 1983 arcade advert turns up in the middle of a taped baseball game",
+          dek: "It was found about an hour and 23 minutes in.",
           body: [
-            "When the mast came to Hollins Edge, the parish council asked for designs. The winner, a 14-metre pine cone in bronze-coloured panels, was drawn by a ten-year-old. Signal is now full on the green. Squirrels have been seen staring at it with deep suspicion.",
+            "Game historians had hunted for Atari's American TV advert for the arcade shooter Xevious for years. Jumpman of Gaming Alexandria finally spotted it inside an old recording of a Phillies v Mets broadcast from 5 April 1983, and it has now been put on Archive.org for anyone at all to watch, free.",
           ],
-          source: "Parish Pump (sample)",
-          slot: "brief",
+          source: "Aroged",
+          sourceUrl:
+            "https://www.aroged.com/2026/09/25/after-years-of-painstaking-search-missing-xevious-tv-commercial-finally-found/",
+          image: {
+            file: "/editions/39/lost-xevious-ad.jpg",
+            alt: "A still from the rediscovered Xevious television advert",
+            credit: "Aroged",
+            from: "https://www.aroged.com/2026/09/25/after-years-of-painstaking-search-missing-xevious-tv-commercial-finally-found/",
+          },
         },
         {
-          slug: "sunday-lie-in-alarm",
-          kicker: "Apps",
-          headline: "An alarm-clock app that only ever goes off to tell you to go back to sleep",
-          dek: "It is set for 7am on Sundays and says, very quietly, ‘not yet’.",
+          slug: "lego-slowpoke",
+          kicker: "Builds",
+          headline: "A LEGO fan turns a Toy Story bear set into a startlingly good Slowpoke",
+          dek: "The same builder once made a Millennium Falcon out of a pumpkin.",
           body: [
-            "Developer Tomasz Wrona built ‘Snooze Mode’ as a joke for his flatmates and released it free. It rings once, at the time you would normally get up on a weekday, then plays a recording of rain and tells you to go back to sleep. It has 120,000 downloads, and one review that just says ‘thank you’.",
+            "Reddit builder Minute_Food_2881 rebuilt the $39.99 Lotso Huggin' Bear set from Toy Story 3 as Slowpoke, the famously dozy pink Pokémon, peg-like teeth and all. Earlier builds include an Articuno from a dolphin kit and Millennium Falcons from a pumpkin and a Dalmatian. The top comment asked: “How does he keep doing it”",
           ],
-          source: "App Shelf (sample)",
-          slot: "brief",
-        },
-      ],
-    },
-    {
-      section: "money",
-      stories: [
-        {
-          slug: "lemonade-stand-ice-cream",
-          kicker: "Enterprise",
-          headline: "Children's lemonade stand makes enough to buy the whole street an ice cream",
-          dek: "The business plan fitted on one sticky note. On the last Sunday of summer, it paid out in 47 cones.",
-          body: [
-            "Every Sunday afternoon from June to September, the three Okonjo-Hart siblings of Linden Row set up a pasting table at the end of their drive and sold lemonade at 50p a cup. Their business plan, stuck to the fridge, read in full: ‘1. Lemons. 2. Good sign. 3. Smile. 4. Ice cream for everyone.’",
-            "The sign did a lot of the work. Painted by eight-year-old Kemi on the back of a pizza box, it said ‘WORLD'S SECOND BEST LEMONADE’, on the grounds that ‘first best sounds like showing off’. Passers-by stopped to ask who was first. Most of them bought a cup while they argued about it.",
-            "Their brother Tolu, six, was in charge of ice and of saying ‘have a lovely day’, which he did to every customer, including a delivery driver who came back four Sundays running.",
-            "On the last weekend of the season they emptied the jam jar, counted £61.40 on the kitchen table, and walked to the ice-cream van that parks at the corner on Sunday evenings. There, the eldest, Ada, nine, ordered forty-seven cones, one for every house on the street.",
-            "“She had a list with all the house numbers,” said the van's owner, Luca Bellini. “She checked every one off. I have been doing this for twenty years and it was my best order ever.”",
-            "Ada says the secret was ‘a lot of lemons and a very good sign’. The siblings will reopen next June, with the same recipe, the same pasting table and the same price. They are considering a second sign.",
-          ],
-          source: "Pocket Money Times (sample)",
-          photo: ["iceCream", 1],
+          source: "GamesRadar+",
+          sourceUrl:
+            "https://www.gamesradar.com/toys-collectibles/how-does-he-keep-doing-it-fan-makes-incredible-lego-pokemon-out-of-the-most-unlikely-sets/",
+          image: {
+            file: "/editions/39/lego-slowpoke.jpg",
+            alt: "A yellow brick shape against a Pokémon title card",
+            credit: "GamesRadar+",
+            from: "https://www.gamesradar.com/toys-collectibles/how-does-he-keep-doing-it-fan-makes-incredible-lego-pokemon-out-of-the-most-unlikely-sets/",
+          },
         },
         {
-          slug: "rose-rent-allotments",
-          slot: "feature",
-          kicker: "Rent",
-          headline: "Allotment rent set in 1897 at one red rose a year is still paid, by bicycle",
-          dek: "The landowner's family receives it every Midsummer, and has never once put the rent up.",
-          body: [
-            "When the Penrose family lent a field to the people of Tallow Bridge for allotments in 1897, the rent was fixed in the deed at one red rose, to be delivered every Midsummer's Day.",
-            "It has been paid every year since. The job goes to the allotment society's newest member, who must grow the rose on their own plot and cycle it to the Penrose house, three miles away, in a basket.",
-            "This year it was Farida Qureshi, who took over plot 14 in March. She grew a deep red rose called Ingrid and delivered it in a jam jar. The current Mr Penrose, 71, signed the receipt book, which goes back to 1897.",
-            "The receipt book's earliest entries are in copperplate handwriting, and several are decorated with pressed petals from the rose that paid them. “I asked if the rent was going up,” she said. “He said the rose was very good this year, so no.”",
-          ],
-          source: "Plot & Purse (sample)",
-        },
-        {
-          slug: "tooth-fairy-survey",
-          kicker: "Surveys",
-          headline: "A town's children surveyed the going rate for teeth, and it is £1.12",
-          dek: "Front teeth fetch a premium. Molars are ‘a bit disappointing’.",
-          body: [
-            "Year Five at Brindley Primary asked 300 classmates what the tooth fairy left them last. The average was £1.12, with one outlier of £5 for a tooth lost ‘on a birthday, during cake’. The class has written to the tooth fairy with their findings. They have not had a reply, but they are optimistic.",
-          ],
-          source: "Pocket Money Times (sample)",
-          slot: "brief",
-        },
-        {
-          slug: "sticker-interest-bank",
-          kicker: "Savings",
-          headline: "School bank pays interest in stickers, and savings have tripled",
-          dek: "Save for four weeks in a row and you get a shiny one.",
-          body: [
-            "Pupils at Kisumu Hills Primary run their own bank from a desk in the library, with a ledger, a stamp and a tin. Anyone who saves every week for a month earns a sticker. Since the scheme began, deposits have tripled. The tin is now a biscuit tin, as the previous one was full.",
-          ],
-          source: "Community Purse (sample)",
-          slot: "brief",
-        },
-        {
-          slug: "piggy-bank-behind-fireplace",
-          kicker: "Finds",
+          slug: "uhackatik-crater-quebec",
+          kicker: "Craters",
           headline:
-            "Builders find a 1950s piggy bank behind a fireplace, and it pays for a new one",
-          dek: "It held £4 2s 6d and a note that said ‘for a rainy day’.",
+            "From space, Quebec's newly confirmed Uhackatik crater looks like a faint thumbprint",
+          dek: "At 25 kilometres across, it is the largest impact crater found since 2018.",
           body: [
-            "The family renovating a cottage in Aldwick Parva counted the old coins and took them to a coin dealer, who offered £38. They spent it on a new ceramic pig, put a note inside saying ‘found you in 2026’, and bricked it back behind the fireplace for whoever comes next.",
+            "NASA's Earth Observatory photographed the subtle ring around Lake Marsal in Quebec's Côte-Nord, the 390-million-year-old crater spotted on satellite maps by amateur astronomer Joël Lapointe. Geologist Gordon Osinski of Western University confirmed it with shatter cones, and it is named Uhackatik after talks with the Innu Council of Ekuanitshit. It is the biggest found since 2018.",
           ],
-          source: "Old House Journal (sample)",
-          slot: "brief",
+          source: "ScienceDaily (Western University)",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260921081101.htm",
+          image: {
+            file: "/editions/39/uhackatik-crater-quebec.jpg",
+            alt: "Satellite view of the faint circular Uhackatik impact structure around Lake Marsal in Quebec",
+            credit: "NASA Earth Observatory/Lauren Dauphin",
+            from: "https://www.sciencedaily.com/releases/2026/09/260921081101.htm",
+          },
         },
       ],
     },
     {
-      section: "internet-and-culture",
+      section: "hall-of-fame",
       stories: [
+        {
+          slug: "gentoo-penguin-species",
+          kicker: "Best animal",
+          headline: "Gentoo penguins turn out to be four species, including one nobody had named",
+          dek: "DNA from 64 birds settles an argument that has been running for more than a century.",
+          body: [
+            "The week's best animal is actually four of them. Gentoo penguins have long been treated as a single species. A new genetic study says there are four, and one of them had never been properly recognised at all: the first new penguin species in more than 100 years.",
+            "An international team sampled 64 penguins from 10 breeding colonies and found that the birds split into separate lineages somewhere between 300,000 and 500,000 years ago. The newly identified species, Pygoscelis kerguelensis, lives on the Kerguelen and Heard Islands, nearly 2,000 miles from the nearest permanently inhabited landmass.",
+            "The other three are Pygoscelis taeniata, on Crozet, Marion and Macquarie Islands; Pygoscelis papua, on the Falklands and Martillo Island; and Pygoscelis ellsworthi, on the Antarctic Peninsula, coastal Antarctica and South Georgia. That brings the world's tally of penguin species to 18, the tallest of them being the emperor, at about four feet.",
+            "“For over 100 years it's been controversial as to how many species or how many subspecies there are,” said Rauri Bowie, a professor of integrative biology at UC Berkeley and curator at its Museum of Vertebrate Zoology. The work was led by Daly Noll, a graduate student at the University of Chile, with senior authors Juliana Vianna and Elie Poulin in Santiago.",
+            "Biologists from Australia, Spain, Venezuela, South Africa, the UK, France, Argentina, Monaco and Brazil joined in, and the results are published in Communications Biology. “It's very important that conservation institutions in all the different countries involved recognize and take appropriate action,” said Vianna.",
+          ],
+          source: "ScienceDaily (University of California, Berkeley)",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260920222410.htm",
+          image: {
+            file: "/editions/39/gentoo-penguin-species.jpg",
+            alt: "Two gentoo penguins facing each other on rocks below snowy mountains",
+            credit: "Shutterstock, via ScienceDaily",
+            from: "https://www.sciencedaily.com/releases/2026/09/260920222410.htm",
+          },
+        },
+        {
+          slug: "kostka-student-satellite",
+          kicker: "Human heroes",
+          headline: "Czech students build a satellite from scratch, and it phones home from orbit",
+          dek: "KOSTKA, meaning ‘cube’, is the first Czech satellite designed and built entirely by students.",
+          body: [
+            "For several years, a team of students at Brno University of Technology called YSpace worked on a small cube-shaped satellite named KOSTKA. This summer it flew on a SpaceX Falcon 9 from Vandenberg Space Force Base in California, was released 58 minutes after launch, and unfolded its antenna an hour later.",
+            "Shortly before noon, the first data reached a ground station the students had built on the roof of their own faculty. “An even greater moment came when KOSTKA transmitted its first signal from orbit – that was when we knew everything was working exactly as intended,” said team leader Šimon Sloboda. KOSTKA now circles the Earth about 600 kilometres up, once every 95 minutes. The faculty's Space Applications course is only four years old, which makes the achievement all the more remarkable for its students.",
+          ],
+          source: "Brno University of Technology",
+          sourceUrl:
+            "https://www.vut.cz/en/but/news-f19528/kostka-satellite-successfully-deployed-into-earth-orbit-d345703",
+          image: {
+            file: "/editions/39/kostka-student-satellite.jpg",
+            alt: "Students watching the launch that carried their KOSTKA satellite",
+            credit: "Jakub Ryba / Brno University of Technology",
+            from: "https://www.vut.cz/en/but/news-f19528/kostka-satellite-successfully-deployed-into-earth-orbit-d345703",
+          },
+        },
+        {
+          slug: "shortest-firefighter-record",
+          kicker: "Weird record",
+          headline:
+            "Florida's Autumn Kelso is officially the shortest woman firefighter in the world",
+          dek: "She measures 4 feet 10 inches, and her crew call her ‘spider monkey’.",
+          body: [
+            "The idea began at the fire station, when one of her colleagues looked the record up; Guinness World Records then measured Autumn Kelso of St. Pete Beach at 147.32 centimetres. Five years into the job after a corporate career, she says her height helps in tight spaces. “Well, of course, I can't reach the top shelf! But I get the job done,” she said.",
+          ],
+          source: "Guinness World Records",
+          sourceUrl:
+            "https://www.guinnessworldrecords.com/news/2026/9/the-four-foot-firefighter-florida-lifesaver-takes-record-as-shortest-woman-in-profession",
+          image: {
+            file: "/editions/39/shortest-firefighter-record.jpg",
+            alt: "Autumn Kelso in full firefighting gear, holding her certificate and walking beside two taller colleagues",
+            credit: "Guinness World Records",
+            from: "https://www.guinnessworldrecords.com/news/2026/9/the-four-foot-firefighter-florida-lifesaver-takes-record-as-shortest-woman-in-profession",
+          },
+        },
         {
           slug: "aura-farming-battles",
-          kicker: "Trends",
+          kicker: "Internet moment",
           headline: "‘Aura farming’ leaves the internet and becomes a beach contest in Lima",
           dek: "Dress as Shrek or Spider-Man, strike a pose, and whoever gets the loudest cheer wins. No touching, no insults.",
           body: [
-            "Online, ‘aura farming’ means carefully cultivating an effortlessly cool presence: the slow walk, the hair flick, the look over the shoulder. Across Latin America, young people have now turned it into a live spectator sport.",
-            "On 29 August, dozens of them gathered on Las Sombrillas beach in Lima, Peru, for an ‘aura battle’. Competitors, many dressed as comic-book or film characters, took turns to show off their moves in front of a crowd. The rules are strict and friendly: contestants may not touch or insult each other. “And whoever gets the crowd to make more noise wins,” said Fernando Lícito, 25, a Peruvian content creator who has organised three of the battles.",
-            "Popular moves include a famous footballer's goal celebration and the ‘six, seven’ craze, and the crowd is the only judge that counts. Spider-Man and Shrek are regulars. The contests began in Brazil and have since popped up in Mexico City, Quito and in front of the Obelisk in Buenos Aires, and even as far away as Madrid, Burgos and Zaragoza.",
-            "Liam González, a 20-year-old film student who competed as Shrek, explained the appeal. “Aura farming is about letting your essence flow in a place where people are watching you, but where there is no shame,” he said.",
-            "María Paula Martínez, of Los Andes University, put it more simply. “It's not about being popular,” she said. “It's about showing off good vibes, and having others recognize that.”",
+            "Online, ‘aura farming’ means cultivating an effortlessly cool presence: the slow walk, the hair flick. On 29 August, dozens of young people turned it into a live contest on Las Sombrillas beach in Lima, many dressed as Spider-Man or Shrek. “Whoever gets the crowd to make more noise wins,” said organiser Fernando Lícito. The battles began in Brazil and have spread as far as Madrid.",
           ],
           source: "AP",
           sourceUrl:
@@ -476,54 +321,309 @@ export const issue39: SeedEdition = {
             from: "https://apnews.com/article/farming-aura-trend-latin-america-farmeando-aura-5b82900616f7c4dc2a34566322ccc070",
           },
         },
+      ],
+    },
+    {
+      section: "slow-read",
+      stories: [
         {
-          slug: "keyboard-cat-guest-post",
-          slot: "feature",
-          kicker: "Blogs",
+          slug: "pluto-liquid-nitrogen",
+          kicker: "Space",
+          headline: "Liquid nitrogen may be seeping on to Pluto's heart right now, scientists say",
+          dek: "New Horizons pictures of the famous heart-shaped glacier look a lot like wet ice in Greenland, and the likeliest explanation is liquid nitrogen seeping up from below.",
+          body: [
+            "Pluto has a heart. Anyone who has seen the pictures sent back by NASA's New Horizons spacecraft knows it: a pale, heart-shaped patch on the face of a small, distant world. Part of that heart is a region called Sputnik Planitia, and a new study suggests that something remarkable may be going on there, at its northern edge, right about now.",
+            "Sputnik Planitia is a glacier, but not a glacier of the kind you would find in the Alps. It is made of frozen nitrogen, and it is vast: bigger than Texas and Oklahoma put together. It is also kilometres deep, far deeper than any skating rink, and the new research suggests that at the very bottom of it, some of that nitrogen ice may be melting.",
+            "The study is led by Alan Stern, an associate vice president at the Southwest Research Institute and the principal investigator of the New Horizons mission. It offers the first evidence of liquid having flowed on Pluto's surface in recent times. Earlier research, some of it also led by Stern, had pointed to liquids flowing on Pluto long ago. This is different: it suggests there is liquid nitrogen beneath the glacier's surface now, or was very recently.",
+            "The clues are in images New Horizons took in 2015 and 2016 of the northernmost part of Sputnik Planitia. They show enormous convection cells in the ice, each the size of a city, separated by thin dark lines and by softer, more diffuse dark patches. Looking at those markings again, the team concluded that they seem to be wetted from time to time, occasionally and only temporarily, by a liquid. The most likely candidate is liquid nitrogen.",
+            "It cannot be rain, however much it might look like the aftermath of a shower. Pluto's atmosphere and temperatures make liquid nitrogen rain physically impossible. But the darkened patterns look very much like features on glaciers on Earth that have been wetted, either by rainwater or by liquid seeping up from below.",
+            "To test the idea, the researchers turned to our own planet. They compared the New Horizons pictures with images from NASA's Landsat 9 satellite of places on Earth, including the Greenland ice sheet. In Greenland, narrow dark features show up where liquid water sits on ice and snow. The Sputnik Planitia images look strikingly similar, which suggests liquid nitrogen is rising from below and wetting Pluto's nitrogen ice.",
+            "How would it get up there? Computer models led by Orkan Umurhan, a senior research scientist at the SETI Institute, show that the nitrogen ice at the base of the glacier can melt into liquid. The models also show that the liquid can be pushed upwards, by buoyancy or by pressure from below, through small conduits rather like lava tubes or the tubes of geysers. Once it reaches the surface, the melted nitrogen can stay liquid long enough to run down the slopes of the glacier, wetting the ice and leaving the dark marks New Horizons saw.",
+            "Timing matters here, and the glacier helps. “The surface of Sputnik Planitia is quite young, probably less than 1 million years old based on modeling of the surface overturn, and thus these features that we are looking at must have formed since then,” said Kelsi Singer, a principal scientist at the institute and one of the study's co-authors. She calls this part of Sputnik Planitia one of Pluto's many unique terrains, seen nowhere else in the solar system, and a chance to learn how materials behave in conditions that are hard to recreate on Earth.",
+            "Umurhan hopes it will send scientists back to the laboratory. Solid nitrogen under stress and strain can melt, he says, and those processes “have never been studied in real detail in the laboratory.” The findings could also reach well beyond Pluto. The same melting and upward flow might help explain other sights in the solar system, such as the geysers that NASA's Voyager 2 saw on Triton, Neptune's moon.",
+            "And there may be more to find on Pluto itself. No other region shows signs of this kind of flow from the base of a glacier, but more than half of Pluto has still not been mapped in high resolution. The team says more detailed mapping of Pluto and other worlds in the Kuiper Belt is needed to see whether the same thing is happening elsewhere. For now, it is a lovely thought for a slow Sunday: somewhere very cold and very far away, a heart-shaped glacier may be quietly seeping. “Pluto never stops surprising us,” Stern said, “and this new result certainly does that. In addition to suggesting that liquids have recently expressed themselves on Pluto's surface, it also suggests a new kind of time-variable feature on Pluto.” A world that changes, in other words, and one that is still worth watching.",
+          ],
+          source: "Phys.org (Southwest Research Institute)",
+          sourceUrl: "https://phys.org/news/2026-08-liquid-nitrogen-pluto-heart-glacier.html",
+          image: {
+            file: "/editions/39/pluto-liquid-nitrogen.jpg",
+            alt: "Enhanced-colour view of Pluto showing its heart-shaped glacier",
+            credit: "NASA/Johns Hopkins APL/Southwest Research Institute",
+            from: "https://www.sciencedaily.com/releases/2026/09/260916232525.htm",
+          },
+        },
+      ],
+    },
+    {
+      section: "make-and-do",
+      stories: [
+        {
+          slug: "classic-apple-crisp",
+          kicker: "Recipe",
           headline:
-            "Cat who keeps sitting on the keyboard is given his own guest post on a coding blog",
-          dek: "It is 400 characters long and mostly the letter J. Readers call it ‘his best work’.",
+            "King Arthur Baking's classic apple crisp needs no rolling pin and no special kit",
+          dek: "Three pounds of apples, a crumbly oat topping and about an hour in the oven.",
           body: [
-            "Software developer Hana Kobayashi had noticed that every draft on her coding blog picked up a few stray lines of ‘jjjjjjjj’ whenever her cat, Miso, walked across the laptop.",
-            "Rather than delete them, she decided he deserved a byline. His post, published under the title ‘Thoughts’, is 400 characters long, contains one accidental semicolon and ends with the letter J held down for most of a line.",
-            "It has had more readers than anything else on the blog this year. Commenters have praised its ‘confident structure’ and asked for a sequel. One reader, a professional editor, left a note calling the final line ‘brave’. Miso has been offered a monthly column. He has so far responded by sleeping on it.",
+            "King Arthur Baking's classic apple crisp is the kind of pudding made for a bag of apples fresh from an orchard. The ingredient list looks long, but many of the items are optional extras: at heart it is apples, sugar, a thickener and spice underneath, with flour, sugar, butter, oats and cinnamon on top.",
+            "Heat the oven to 350°F and grease a 9-inch square tin. Slice 3 pounds of apples, about 9 cups once peeled and cored, roughly a quarter of an inch thick. Toss them with 2 tablespoons of apple cider or lemon juice, a quarter to three-quarters of a cup of brown sugar, 2 tablespoons of melted butter, 1½ teaspoons of apple pie spice, 3 tablespoons of flour and a quarter-teaspoon of salt, then spread them in the tin.",
+            "For the topping, whisk together three-quarters of a cup of flour (90g), half a cup of quick oats (45g), two-thirds of a cup of packed brown sugar (142g), a teaspoon of cinnamon, three-quarters of a teaspoon of baking powder and a heaped quarter-teaspoon of salt. Work in 113g of cold butter until it is unevenly crumbly, and add half a cup of chopped pecans or walnuts if you like.",
+            "Scatter the topping over the apples, set the tin on a lined baking tray to catch drips, and bake for about an hour, until bubbling and golden. Leave it for at least 20 minutes. Served warm, it will be soft and spoonable; left to cool completely, it firms up nicely.",
+            "A mix of apple varieties gives the best result, and eight small dishes will bake in 45 to 55 minutes.",
           ],
-          source: "Around the Web (sample)",
-          photo: "catLaptop",
+          source: "King Arthur Baking",
+          sourceUrl: "https://www.kingarthurbaking.com/recipes/classic-apple-crisp-recipe",
+          image: {
+            file: "/editions/39/classic-apple-crisp.jpg",
+            alt: "Bowls of golden apple crisp topped with vanilla ice cream beside the baking dish",
+            credit: "King Arthur Baking",
+            from: "https://www.kingarthurbaking.com/blog/2026/09/08/apple-dessert-recipes",
+          },
         },
         {
-          slug: "front-door-a-day",
-          kicker: "Photos",
+          slug: "bottle-bird-feeder",
+          kicker: "Make",
           headline:
-            "An account that posts one stranger's front door a day reaches door number 2,000",
-          dek: "Door 1,000 was lilac. Door 2,000 had a knocker shaped like a fish.",
+            "The Natural History Museum's bottle bird feeder turns an empty drink into a café",
+          dek: "You need a plastic bottle, two sticks, string and some seed.",
           body: [
-            "Retired postwoman Grete Holm began photographing doors on her walks around Aarhus in 2021, always with the owner's permission, and posts one a day with a short note on its colour and its knocker. Door owners now write to her asking to be included. The waiting list is 300 doors long.",
+            "Take the cap off a plastic bottle and prick a few small drainage holes in the base with a pin. Near the bottom, make two level holes on opposite sides, widen them with scissors and push a stick through, leaving about 5 centimetres sticking out each side as perches. Above each perch, cut a feeding hole about the size of a 5p coin, then add a second pair of perches and holes higher up, turned 90 degrees.",
+            "Make two holes in the neck, thread string through, fill the bottle with bird food using a paper funnel and put the cap back on. Hang it somewhere sheltered, away from shadowy spots where cats might lurk, and wash it in warm soapy water now and then. Be patient: the museum says it may take a few days before birds regularly visit, and that different feeds and feeders attract different species.",
           ],
-          source: "Around the Web (sample)",
-          slot: "brief",
+          source: "Natural History Museum",
+          sourceUrl: "https://www.nhm.ac.uk/discover/how-to-make-a-bird-feeder.html",
+          image: {
+            file: "/editions/39/bottle-bird-feeder.jpg",
+            alt: "A blue tit perches on a homemade plastic bottle bird feeder hanging from a branch",
+            credit: "Natural History Museum",
+            from: "https://www.nhm.ac.uk/discover/how-to-make-a-bird-feeder.html",
+          },
         },
         {
-          slug: "puddle-map",
-          kicker: "Maps",
-          headline: "An online map of the best puddles for jumping in passes 10,000 entries",
-          dek: "Each puddle is rated for splash, depth and ‘how cross a parent will be’.",
+          slug: "polaris-short-list-playlist",
+          kicker: "Playlist",
+          headline: "This year's Polaris Prize short list makes a ready-made Sunday playlist",
+          dek: "Ten Canadian albums, one winner, and plenty to put on while the crisp bakes.",
           body: [
-            "The map was started by a father and his five-year-old after a rainy walk in Dunmere. It now covers puddles in more than 200 towns, with one strict rule: every entry must be jump-tested before it is added. The top-rated puddle has been visited by a school trip.",
+            "Start with the winner, Angine de Poitrine's Vol. II, then drift through Beverly Glenn-Copeland's Laughter In Summer, Bibi Club's Amaro, Begonia's Fantasy Life and Les Louanges' Alouette!. Aquakultre's 1783, Charlotte Cornfield, Rochelle Jordan and Tanya Tagaq's Saputjiji complete this year's short list of ten. Press play, pour the tea, and let the crisp bake.",
           ],
-          source: "Around the Web (sample)",
-          slot: "brief",
+          source: "Polaris Music Prize",
+          sourceUrl: "https://polarismusicprize.ca/album-prize/short-list/",
+          image: {
+            file: "/editions/39/polaris-short-list-playlist.jpg",
+            alt: "The cover of Beverly Glenn-Copeland's album Laughter in Summer, a hand holding pink roses",
+            credit: "Polaris Music Prize",
+            from: "https://polarismusicprize.ca/album-prize/short-list/",
+          },
         },
         {
-          slug: "door-handle-league",
-          kicker: "Lists",
-          headline: "Forum ranks the world's most satisfying door handles, and a library wins",
-          dek: "Voters praised its ‘reassuring clunk’.",
+          slug: "inktober-2026-prompts",
+          kicker: "Doodle",
+          headline: "Inktober starts on Thursday, and the first drawing prompt is simply ‘Apple’",
+          dek: "One ink drawing a day for all 31 days of October, at your own pace.",
           body: [
-            "Members of the Good Handle forum post a photo, a description of the click and a score out of ten. After six months and 4,000 entries, the top spot goes to a brass lever on a library in Ghent, praised for its weight, its polish and a ‘reassuring clunk’. The librarians say people now open the door twice.",
+            "The Inktober team's 2026 list has 31 one-word prompts, one for each day of October's daily drawing challenge. This year's list opens with Apple, Relic, Miniature and Cactus, and includes Contraption, Flightless, Dapper, Bake and, on the final day, Flex. The challenge aims to help artists get better at drawing and find other great artists.",
           ],
-          source: "Around the Web (sample)",
-          slot: "brief",
+          source: "The Inktober Newsletter",
+          sourceUrl: "https://inktober.substack.com/p/2026-prompt-list",
+          image: {
+            file: "/editions/39/inktober-2026-prompts.jpg",
+            alt: "The Inktober 2026 official prompt list title card, in white ink on black",
+            credit: "Inktober",
+            from: "https://inktober.substack.com/p/2026-prompt-list",
+          },
+        },
+      ],
+    },
+    {
+      section: "next-week",
+      stories: [
+        {
+          slug: "pokemon-go-harvest-week",
+          kicker: "Games",
+          headline: "Pokémon GO spends next week picking apples, then sends Pikachu into space",
+          dek: "The Harvest Festival starts on Tuesday, and an astronaut Pikachu arrives on Sunday for World Space Week.",
+          body: [
+            "Pokémon GO players have a busy week ahead, and most of it smells of apples. The game's Harvest Festival: Applin Picking runs from 10am on Tuesday 29 September until 8pm on Monday 5 October, local time.",
+            "The headline act is Applin, which can appear in its shiny form for the first time, and shiny Smoliv will turn up more often than usual too. There is event Field Research, a branching Timed Research story, PokéStop showcases and a special GO Pass, and for the whole festival, Mossy Lures will attract only apples.",
+            "From Friday 2 October, a second part of the festival, called Taken Over, brings the debut of Shadow Zekrom and a shiny Shroodle. Then on Saturday 3 October there is a Max Battle Day for Gigantamax Cinderace, between 2pm and 5pm, when it can be shiny for the first time.",
+            "The week ends somewhere else entirely. On Sunday 4 October, Pokémon GO begins its World Space Week event, which runs until 11:59pm on Saturday 10 October. It is a tie-in with a collaboration between the European Space Agency and The Pokémon Company, and it introduces a brand-new costumed Pokémon: Astronaut Pikachu, available through raids and free Timed Research.",
+            "Before any of that, the Choose Your Path Timed Research, where players pick Explore, Catch or Battle, wraps up at 8pm on Monday 28 September. So, in summary: apples on Tuesday, a big battle on Saturday and a Pikachu in orbit on Sunday. As weeks go, for anyone with a phone and a pair of walking shoes, it has range.",
+          ],
+          source: "Pokémon GO Hub",
+          sourceUrl:
+            "https://pokemongohub.net/post/news/this-week-in-pokemon-go-september-28-october-4-2026/",
+          image: {
+            file: "/editions/39/pokemon-go-harvest-week.jpg",
+            alt: "Astronaut Pikachu floats above the Earth in a white spacesuit and helmet",
+            credit: "Niantic / The Pokémon Company, via Pokémon GO Hub",
+            from: "https://pokemongohub.net/post/news/this-week-in-pokemon-go-september-28-october-4-2026/",
+          },
+        },
+        {
+          slug: "lego-one-piece-netflix",
+          kicker: "Streaming",
+          headline:
+            "Netflix's One Piece crew get the LEGO treatment in a two-part special on Tuesday",
+          dek: "Usopp tells Chopper the story so far, and the live-action cast lend their voices to their tiny brick selves.",
+          body: [
+            "LEGO One Piece arrives on Netflix on Tuesday 29 September: two episodes of about 30 minutes each that retell the first two seasons of the streamer's live-action One Piece in bricks. The framing device is Usopp recounting the Straw Hats' adventures across the East Blue, and their preparations for the Grand Line, to Tony Tony Chopper.",
+            "The live-action stars voice their LEGO versions: Iñaki Godoy as Luffy, Emily Rudd as Nami, Mackenyu as Zoro, Taz Skylar as Sanji and Jacob Romero as Usopp, with Mikaela Hoover as Chopper and Jeff Ward as Buggy the Clown. Chelsea Ker directs, and One Piece's creator, Eiichiro Oda, is among the executive producers. The tagline promises “the most spectacular, legendary, epic, earth-shattering, monumental adventure”, which seems about right for a pirate made of plastic.",
+          ],
+          source: "ComingSoon.net",
+          sourceUrl:
+            "https://www.comingsoon.net/tv/news/2195123-lego-one-piece-netflix-release-date-2",
+          image: {
+            file: "/editions/39/lego-one-piece-netflix.jpg",
+            alt: "LEGO minifigures of Luffy, Nami, Usopp, Zoro and Sanji strike poses in the LEGO One Piece special",
+            credit: "Netflix, via FandomWire",
+            from: "https://fandomwire.com/lego-one-piece-release-date-plot-cast-everything-we-know/",
+          },
+        },
+        {
+          slug: "world-smile-day",
+          kicker: "Friday",
+          headline:
+            "Friday is World Smile Day, thanks to the man who drew the smiley in ten minutes",
+          dek: "Harvey Ball was paid $45 for the design in 1963.",
+          body: [
+            "World Smile Day falls on the first Friday of October, which this year is 2 October. It was created by the foundation set up by Harvey Ball, the artist who drew the yellow smiley face in 1963 in about ten minutes. The day's motto: “Do an act of kindness – help one person smile.” By 1971, more than 50 million smiley buttons had been sold.",
+          ],
+          source: "Wikipedia",
+          sourceUrl: "https://en.wikipedia.org/wiki/Harvey_Ball",
+          image: {
+            file: "/editions/39/world-smile-day.jpg",
+            alt: "Close-up of an original Worcester-made yellow smiley face by Harvey Ball",
+            credit: "Garchy / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Authentic_Worcester-made_smiley_face,_Harvey_Ball.jpg",
+          },
+        },
+      ],
+    },
+    {
+      section: "tiny-science",
+      stories: [
+        {
+          slug: "fans-hearts-in-sync",
+          kicker: "Crowds",
+          headline: "Watching a basketball game together gets fans' hearts beating in time",
+          dek: "Sixty spectators wore heart-rate sensors and gave saliva samples at a university game in Japan.",
+          body: [
+            "Anyone who has cheered in a crowd knows the feeling of being swept up together. A study from the University of Tsukuba suggests the feeling may be written in our heartbeats.",
+            "Associate Professor Takashi Matsui and Takafumi Yamaguchi of the university's Institute of Health and Sport Sciences recruited adult spectators for a home basketball game at TSUKUBA LIVE!, the university's home-game series. The fans gave saliva samples before the game, at half-time and afterwards, wore heart-rate sensors throughout, and rated their enjoyment, their sense of unity with others, their immersion and whether they wanted to come again.",
+            "Their hearts fell into step, and the hormones in their saliva told a similar story. Heart-rate synchrony between spectators rose during the game and stayed higher afterwards. Oxytocin, a hormone linked to social bonding, went up in the people who had started with low levels and stayed high in those who started high, while the stress hormone cortisol went down.",
+            "The happiest fans had the most of it. Higher oxytocin and stronger synchrony went with greater enjoyment, a stronger feeling of unity, deeper immersion and a keener wish to attend future games.",
+            "The researchers say live sport may offer “a simple, scalable, nonpharmacological context” in which that kind of togetherness arises naturally. Or, put another way: go to the match, and take a friend along with you. The game did not just entertain the crowd; it seemed to knit it together, one heartbeat at a time. The findings are published in Translational Psychiatry.",
+          ],
+          source: "EurekAlert! (University of Tsukuba)",
+          sourceUrl: "https://www.eurekalert.org/news-releases/1137681",
+          image: {
+            file: "/editions/39/fans-hearts-in-sync.jpg",
+            alt: "Spectators wave blue cards and a flag at a TSUKUBA LIVE! university basketball game",
+            credit: "Bureau of Physical Education and Sport, University of Tsukuba",
+            from: "https://www.eurekalert.org/news-releases/1137681",
+          },
+        },
+        {
+          slug: "chocolate-scent-workout",
+          kicker: "Exercise",
+          headline: "Sniffing dark chocolate helped hungry gym-goers squeeze out 18 more leg reps",
+          dek: "Milk chocolate worked too, just not as well.",
+          body: [
+            "Researchers at the University of Malaya asked moderately trained men to do leg extensions after fasting for at least 10 hours. Before and between sets, they sniffed liquified dark chocolate (90 per cent cocoa), liquified milk chocolate (60 per cent) or water.",
+            "Dark chocolate added about 18 repetitions compared with water, and milk chocolate about nine, without the exercise feeling any harder. The dark chocolate scent seemed to work by curbing hunger and leaving the men feeling fuller, acting as what the team calls “a learned cue for a rich, bitter, and highly satiating food”. “Seeing a substantial increase in repetitions without the athletes feeling like they were exerting themselves any harder is a fascinating psychobiological outcome,” said senior author Dr Mohamed Nashrudin bin Naharudin. The study is published in Frontiers in Physiology.",
+          ],
+          source: "Frontiers",
+          sourceUrl:
+            "https://www.frontiersin.org/news/2026/07/09/sniffing-chocolate-workout-easier",
+          image: {
+            file: "/editions/39/chocolate-scent-workout.jpg",
+            alt: "A man with his eyes closed breathes in the smell of a square of dark chocolate",
+            credit: "Shutterstock, via ScienceDaily",
+            from: "https://www.sciencedaily.com/releases/2026/09/260914102445.htm",
+          },
+        },
+        {
+          slug: "effort-that-lasts-study",
+          kicker: "Motivation",
+          headline:
+            "Children as young as four try harder when they know their creation will be kept",
+          dek: "Tell people their puzzle heart will be taken apart and most pick the easy option instead.",
+          body: [
+            "In four experiments with 604 children aged 4 to 9 and 582 adults, psychologists Yilin Liu and Fan Yang offered an easy game or a harder one building heart shapes. When the heart would be saved, 83 per cent of adults and over 80 per cent of children chose the effort; when it would be dismantled, only about a third of adults did.",
+          ],
+          source: "PsyPost",
+          sourceUrl:
+            "https://www.psypost.org/a-clever-psychological-test-reveals-the-subtle-detail-that-makes-us-want-to-work-harder/",
+          image: {
+            file: "/editions/39/effort-that-lasts-study.jpg",
+            alt: "A young girl concentrates on fitting coloured puzzle pieces together at a table",
+            credit: "PsyPost",
+            from: "https://www.psypost.org/a-clever-psychological-test-reveals-the-subtle-detail-that-makes-us-want-to-work-harder/",
+          },
+        },
+      ],
+    },
+    {
+      section: "world-records",
+      stories: [
+        {
+          slug: "fortnite-gran-record",
+          kicker: "Gaming",
+          headline: "A 78-year-old Scottish gran is the oldest woman streaming Fortnite on Twitch",
+          dek: "Cath Bowie, known online as grumpygran48, has been playing since 2017 and has more than 24,000 followers.",
+          body: [
+            "Cath Bowie discovered Fortnite in 2017, the way many grandparents discover video games: by watching her grandson play. She was instantly intrigued, picked up the controller and did not put it down. A year later she was streaming, partly to prove wrong a grandson who told her nobody would watch.",
+            "Plenty of people do. The Aberdeen gamer, who broadcasts on Twitch as grumpygran48, has more than 24,000 followers, and Guinness World Records has now recognised her as the oldest female Fortnite streamer on the platform. She turned 78 on 1 September, and the title appears in the new Guinness World Records Gamer's Edition 2027. The username was her granddaughter's joke, she says; she is not actually grumpy.",
+            "She does not describe herself as a gamer, exactly. “I call myself a ‘Fortniter’ more than a gamer,” she said. She plays for enjoyment and for the community, setting her own goals rather than chasing wins.",
+            "“Nearly nine years later I am still playing it, still absolutely loving it and although still growing older I have never made my age a deterrent,” she said. Getting into the book had felt like “a distant goal – something on my wish list that I never really thought I would achieve.”",
+            "Her advice to everyone else is short: “NEVER let age stop you. If I can do it so can you.” Her plan is shorter still: “Roll on towards 80!!” Somewhere in Aberdeen, a grandson is presumably still wondering how he lost that particular argument quite so thoroughly.",
+          ],
+          source: "Guinness World Records",
+          sourceUrl:
+            "https://www.guinnessworldrecords.com/news/2026/9/scottish-gamer-gran-celebrates-turning-78-with-her-fortnite-streaming-world-record",
+          image: {
+            file: "/editions/39/fortnite-gran-record.jpg",
+            alt: "Cath Bowie holds her Guinness World Records certificate and book, and plays Fortnite in a headset",
+            credit: "Guinness World Records",
+            from: "https://www.guinnessworldrecords.com/news/2026/9/scottish-gamer-gran-celebrates-turning-78-with-her-fortnite-streaming-world-record",
+          },
+        },
+        {
+          slug: "bucharest-longest-table",
+          kicker: "Tables",
+          headline: "Twenty thousand people sit down to lunch at a 3.1-mile table in Bucharest",
+          dek: "It was made entirely from recycled materials, and it beat a record already held by another Romanian city.",
+          body: [
+            "On a Saturday in September, about 20,000 people gathered along Unirii Boulevard in Bucharest, Romania, for a community meal at the ‘Uniting Table’, organised by the Bloom The World Association. It stretched 3.1 miles, all the way to Constitution Square in front of the Palace of Parliament, and was decorated with flowers and snacks along its whole length.",
+            "Built entirely from recycled materials, it set the Guinness World Records title for the longest table of its kind. The previous record, 1.73 miles, was also Romanian, set in Alba Iulia. “Everyone, 20,000 people I am told are here today, have come around one table and a common cause,” said Joanne Brent, a senior adjudicator for Guinness World Records, who called it a record-breaking achievement with real-world impact. It was, by any measure, a lot of chairs.",
+          ],
+          source: "Yahoo News",
+          sourceUrl:
+            "https://www.yahoo.com/news/world/articles/guinness-record-set-romania-know-201332252.html",
+          image: {
+            file: "/editions/39/bucharest-longest-table.jpg",
+            alt: "Thousands of people sit at long tables stretching towards the Palace of Parliament in Bucharest",
+            credit: "Yahoo News",
+            from: "https://www.yahoo.com/news/world/articles/guinness-record-set-romania-know-201332252.html",
+          },
+        },
+        {
+          slug: "david-rush-cup-flip",
+          kicker: "Cups",
+          headline: "Serial record-breaker David Rush flips ten cups face down in 6.63 seconds",
+          dek: "It took five months of practice, and his three-year-old daughter picked it up along the way.",
+          body: [
+            "David Rush of Idaho, who holds more than 200 Guinness World Records titles, beat the old mark of 7.57 seconds at his niece's school assembly. It began as a friendly contest with a coworker, Alex. “Getting 10 plastic cups to consistently land face down became a humbling lesson in probability,” he said. His challenge to everyone else: “I dare you to try.”",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Odd_News/2026/09/21/Guinness-World-Records-David-Rush-flipping-cups/2671790001715/",
+          image: {
+            file: "/editions/39/david-rush-cup-flip.jpg",
+            alt: "David Rush, wearing a head camera, leans over a table flipping red plastic cups",
+            credit: "UPI, via Yahoo",
+            from: "https://www.yahoo.com/lifestyle/articles/watch-man-flips-10-cups-144743568.html",
+          },
         },
       ],
     },
@@ -599,21 +699,5 @@ export const issue39: SeedEdition = {
       },
     },
     { type: "sign_off", content: { text: "You're done for today. Have a slow Sunday." } },
-  ],
-
-  puzzles: [
-    mini(
-      [
-        ["LUNCH", "The meal between elevenses and afternoon tea"],
-        ["TRAIN", "It goes choo-choo, or what you do before a marathon"],
-        ["ENJOY", "What we hope you do with this paper"],
-      ],
-      [
-        ["LATTE", "A coffee with a leaf drawn on top"],
-        ["HONEY", "What bees make, and what you might call your sweetheart"],
-      ],
-    ),
-    ladder(["COLD", "CORD", "CARD", "WARD", "WARM"]),
-    riddle("What has a neck but no head?", "A bottle"),
   ],
 };

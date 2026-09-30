@@ -1,0 +1,1160 @@
+/*
+ * The puzzles, played with a pencil on the printed page. Nothing here draws a box, a button or a
+ * background of its own: the page's paper shows through, printed parts use the page's type, and
+ * everything the reader adds is in pencil (handwriting, graphite grain) or marker.
+ *
+ * Recolour per design with, on any ancestor:
+ *   --play-ink        the pencil (default graphite)
+ *   --play-highlight  the marker for circling words and the active-clue band
+ *   --play-paper      paper for strips, the folded corner and the fortune teller
+ *   --play-mark       ticks, stars and "?" (default red pencil)
+ *   --play-print      printed ink: grid lines, numbers, word lists
+ */
+
+@property --fold {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 30px;
+}
+
+.pl-root {
+  --play-ink: #34363b;
+  --play-highlight: #f2468f;
+  --play-paper: #f4efe2;
+  --play-mark: #d4372c;
+  --play-print: #1c1a17;
+  --pl-under: color-mix(in srgb, var(--play-paper), #3a2e1c 16%);
+  position: relative;
+  container-type: inline-size;
+  color: var(--play-print);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pl-root :where(button) {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.pl-root :where(button, input, [tabindex]):focus-visible {
+  outline: 2px dashed var(--play-ink);
+  outline-offset: 3px;
+}
+
+.pl-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.pl-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ——— Printed heading ——— */
+
+.pl-head {
+  margin-bottom: 0.7em;
+}
+
+.pl-title {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.15em;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.pl-kicker {
+  margin: 0.25em 0 0;
+  font-size: 0.9em;
+  line-height: 1.35;
+  font-style: italic;
+}
+
+/* ——— Pencil ——— */
+
+.pl-pencil,
+.pl-letter {
+  font-family: var(--play-hand), "Bradley Hand", cursive;
+  font-weight: 400;
+  color: var(--play-ink);
+}
+
+.pl-pencil {
+  line-height: 1.05;
+  filter: url(#pl-graphite);
+}
+
+.pl-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.pl-letter {
+  display: inline-block;
+  transform: translate(var(--pl-dx, 0), var(--pl-dy, 0)) rotate(var(--pl-rot, 0))
+    scale(var(--pl-scale, 1));
+  opacity: var(--pl-press, 0.85);
+}
+
+.pl-mark {
+  display: block;
+  overflow: visible;
+}
+
+.pl-tick,
+.pl-star {
+  color: var(--play-mark);
+}
+
+.pl-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pl-draw var(--pl-draw-dur, 0.4s) ease-in-out var(--pl-draw-delay, 0s) forwards;
+}
+
+@keyframes pl-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.pl-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pl-note {
+  min-height: 1.6em;
+  margin: 0.35em 0 0;
+  font-size: 1.45em;
+  line-height: 1;
+}
+
+.pl-done {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.pl-done .pl-tick {
+  width: 3.2em;
+  height: 3.2em;
+}
+
+.pl-done .pl-star {
+  width: 2.1em;
+  height: 2.1em;
+  margin-left: -0.3em;
+  margin-top: 1.3em;
+}
+
+/* ——— Crossword ——— */
+
+.pl-xw {
+  display: grid;
+  gap: 1.1em;
+}
+
+@container (min-width: 34em) {
+  .pl-xw {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.pl-xw-board {
+  max-width: 24em;
+}
+
+/* A bigger grid (the Sunday 9 × 9) gets more room, so its squares stay big enough to write in. */
+.pl-xw--big .pl-xw-board {
+  max-width: 34em;
+}
+
+@container (min-width: 34em) {
+  .pl-xw--big {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.pl-xw-current {
+  min-height: 2.7em;
+  margin: 0 0 0.5em;
+  font-size: 0.9em;
+  line-height: 1.35;
+}
+
+.pl-len {
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.pl-xw-grid {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pl-xw-shade {
+  opacity: 0.8;
+  filter: url(#pl-graphite);
+}
+
+.pl-xw-band {
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: opacity 0.2s;
+}
+
+.pl-xw-band.is-on {
+  opacity: 0.28;
+}
+
+.pl-xw-lines {
+  z-index: 2;
+}
+
+.pl-xw-cell {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.pl-xw-n {
+  position: absolute;
+  top: 0.14em;
+  left: 0.22em;
+  font-size: calc(100cqw / var(--cols) * 0.22);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pl-xw-letter {
+  font-size: calc(100cqw / var(--cols) * 0.86);
+  line-height: 1;
+  margin-top: 0.14em;
+  filter: url(#pl-graphite);
+}
+
+.pl-smudge {
+  position: absolute;
+  font-family: var(--play-hand), cursive;
+  font-size: calc(100cqw / var(--cols) * 0.86);
+  line-height: 1;
+  margin-top: 0.14em;
+  color: var(--play-ink);
+  pointer-events: none;
+  animation: pl-rub 2.6s ease-out forwards;
+}
+
+.pl-smudge::after {
+  content: "";
+  position: absolute;
+  inset: 12% -18%;
+  border-radius: 45% 55% 50% 40%;
+  background: var(--play-ink);
+  filter: blur(4px);
+  opacity: 0.22;
+  transform: rotate(-12deg);
+}
+
+@keyframes pl-rub {
+  0% {
+    opacity: 0.55;
+    filter: blur(0.6px);
+    transform: translateX(0);
+  }
+  12% {
+    transform: translateX(0.06em);
+  }
+  24% {
+    transform: translateX(-0.05em);
+  }
+  100% {
+    opacity: 0.1;
+    filter: blur(2.4px);
+    transform: translateX(0.02em) scaleX(1.08);
+  }
+}
+
+.pl-xw-input {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  font-size: 16px; /* 16px stops iOS zooming in when the field takes focus */
+  opacity: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.pl-xw-input:focus-visible {
+  outline: none;
+}
+
+.pl-xw-done {
+  right: -0.4em;
+  top: -2.6em;
+}
+
+.pl-xw-clues {
+  display: grid;
+  gap: 0.9em;
+  font-size: 0.92em;
+  line-height: 1.35;
+}
+
+@container (min-width: 22em) and (max-width: 33.99em) {
+  .pl-xw-clues {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pl-xw-dir {
+  margin: 0 0 0.3em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.85em;
+}
+
+.pl-xw-list ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35em;
+}
+
+.pl-clue {
+  position: relative;
+  display: inline-block;
+  padding: 0.1em 0 0.25em;
+}
+
+.pl-clue-line {
+  position: absolute;
+  left: -0.1em;
+  right: -0.1em;
+  bottom: -0.2em;
+  width: calc(100% + 0.2em);
+  height: 0.55em;
+  color: var(--play-ink);
+  filter: url(#pl-graphite);
+}
+
+/* ——— Word ladder ——— */
+
+.pl-ladder {
+  position: relative;
+  max-width: 22em;
+  padding: 0 1.4em 0 2.6em;
+}
+
+.pl-ladder-rails {
+  position: absolute;
+  inset: 0 0.5em 0 2em;
+  width: calc(100% - 2.5em);
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  opacity: 0.75;
+}
+
+.pl-rungs {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pl-rungs > li {
+  height: var(--row);
+  display: grid;
+  align-items: center;
+}
+
+.pl-strip {
+  position: relative;
+  height: 2.6em;
+  margin-inline: 0.2em;
+  transform: translateX(var(--pl-shift)) rotate(var(--pl-tilt));
+}
+
+.pl-strip-body {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(0 1px 0.6px rgb(40 30 10 / 0.35)) drop-shadow(0 3px 5px rgb(40 30 10 / 0.12));
+}
+
+.pl-strip-body.is-wobbling {
+  animation: pl-wobble 0.6s ease-in-out;
+}
+
+@keyframes pl-wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-2.4deg) translateX(-0.2em);
+  }
+  45% {
+    transform: rotate(2deg) translateX(0.2em);
+  }
+  70% {
+    transform: rotate(-1deg);
+  }
+}
+
+.pl-strip-paper {
+  position: absolute;
+  inset: -0.35em 0;
+  background:
+    url("/mockup/press/newsprint.jpg") var(--pl-tear) 30% / 40em auto,
+    var(--play-paper);
+  background-blend-mode: multiply;
+  mask: url("/mockup/fx/torn-edge.png") var(--pl-tear) 0 / 260% 100% no-repeat;
+  -webkit-mask: url("/mockup/fx/torn-edge.png") var(--pl-tear) 0 / 260% 100% no-repeat;
+}
+
+.pl-strip-ink {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+}
+
+.pl-printed-word {
+  font-weight: 800;
+  font-size: 1.35em;
+  letter-spacing: 0.32em;
+  margin-right: -0.32em;
+}
+
+.pl-slots {
+  display: flex;
+  gap: 0.5em;
+}
+
+.pl-slot {
+  position: relative;
+  width: 1.3em;
+  height: 1.9em;
+  display: grid;
+  place-items: end center;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--play-print), transparent 55%);
+}
+
+.pl-slot .pl-letter {
+  font-size: 2.05em;
+  line-height: 0.9;
+  filter: url(#pl-graphite);
+}
+
+.pl-slot.is-caret::after {
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: -4px;
+  height: 2.5px;
+  background: var(--play-ink);
+  opacity: 0.8;
+  animation: pl-caret 1s steps(2, jump-none) infinite;
+}
+
+@keyframes pl-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.pl-strip-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  font-size: 16px;
+  opacity: 0;
+  cursor: text;
+}
+
+.pl-strip:has(.pl-strip-input:focus-visible)::after {
+  content: "";
+  position: absolute;
+  inset: -0.25em -0.2em;
+  outline: 2px dashed var(--play-ink);
+  pointer-events: none;
+}
+
+.pl-verdict {
+  position: absolute;
+  right: -1.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.pl-query {
+  font-size: 2.6em;
+  color: var(--play-mark);
+  display: inline-block;
+  animation: pl-pop 0.35s ease-out;
+}
+
+.pl-query .pl-letter {
+  color: var(--play-mark);
+}
+
+.pl-query-soft {
+  position: absolute;
+  right: -1.4em;
+  top: -1.3em;
+  font-size: 1.25em;
+  transform: rotate(-8deg);
+  opacity: 0.85;
+}
+
+@keyframes pl-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-10deg);
+  }
+}
+
+.pl-ladder-arrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.6em;
+  height: 100%;
+  color: var(--play-mark);
+}
+
+.pl-ladder-done {
+  right: -1.8em;
+  top: -1.8em;
+}
+
+/* ——— Riddle with a folding corner ——— */
+
+.pl-riddle-page {
+  position: relative;
+  min-height: 15em;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pl-riddle-under {
+  position: absolute;
+  inset: 0;
+  background: var(--pl-under);
+  box-shadow: inset 2px 2px 6px rgb(0 0 0 / 0.25);
+  clip-path: polygon(100% calc(100% - var(--fold)), 100% 100%, calc(100% - var(--fold)) 100%);
+}
+
+.pl-riddle-face {
+  position: relative;
+  min-height: 15em;
+  padding: 1em 1.1em 2.6em;
+  border: 1.5px solid var(--play-print);
+  background:
+    url("/mockup/press/newsprint.jpg") center / 60em auto,
+    var(--play-paper);
+  background-blend-mode: multiply;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--fold)),
+    calc(100% - var(--fold)) 100%,
+    0 100%
+  );
+  transition: clip-path 0s;
+}
+
+.pl-riddle-q {
+  margin: 0 0 0.9em;
+  font-size: 1.3em;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.pl-guess {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  max-width: 20em;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.pl-guess-label {
+  flex: none;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pl-guess-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 0.1em;
+  border: 0;
+  border-bottom: 1.5px dotted var(--play-print);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--play-hand), cursive;
+  font-size: max(16px, 1.9em);
+  line-height: 1.15;
+  color: var(--play-ink);
+  caret-color: var(--play-ink);
+  filter: url(#pl-graphite);
+}
+
+.pl-guess-input:focus {
+  outline: none;
+}
+
+.pl-guess-input:focus-visible {
+  outline: none;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+}
+
+.pl-riddle-done {
+  right: -2.2em;
+  top: -1.2em;
+}
+
+.pl-riddle-note {
+  margin: 1em 0 0;
+  font-size: 0.85em;
+  font-style: italic;
+  max-width: 22em;
+}
+
+.pl-riddle-hint {
+  position: absolute;
+  right: 3.2em;
+  bottom: 0.6em;
+  margin: 0;
+  font-family: var(--play-hand), cursive;
+  font-size: 1.3em;
+  color: var(--play-ink);
+  transform: rotate(-4deg);
+  transition: opacity 0.3s;
+}
+
+.pl-flap-shadow {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--fold);
+  height: var(--fold);
+  filter: drop-shadow(-2px -2px 3px rgb(30 20 5 / 0.22))
+    drop-shadow(-6px -6px 10px rgb(30 20 5 / 0.12));
+  pointer-events: none;
+}
+
+.pl-flap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, transparent 58%, rgb(60 40 10 / 0.12) 100%),
+    url("/mockup/press/newsprint.jpg") center / 60em auto,
+    color-mix(in srgb, var(--play-paper), #fff 20%);
+  background-blend-mode: normal, multiply, normal;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.pl-flap-print {
+  position: absolute;
+  top: 0.8em;
+  left: 0.8em;
+  width: calc(var(--fold-open, 14em) * 0.56);
+  font-size: 0.82em;
+  line-height: 1.3;
+}
+
+.pl-flap-kicker {
+  margin: 0 0 0.3em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8em;
+}
+
+.pl-flap-q {
+  margin: 0 0 0.4em;
+  font-style: italic;
+}
+
+.pl-flap-a {
+  display: inline-block;
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.5em;
+  transform: rotate(180deg);
+}
+
+.pl-flap-none {
+  display: block;
+  font-size: 1.4em;
+}
+
+.pl-riddle-page:not(.is-dragging) {
+  transition: --fold 0.6s cubic-bezier(0.3, 0.8, 0.25, 1);
+}
+
+.pl-corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: max(var(--fold), 48px);
+  height: max(var(--fold), 48px);
+  touch-action: none;
+  cursor: grab;
+}
+
+.is-dragging .pl-corner {
+  cursor: grabbing;
+}
+
+/* ——— Word search ——— */
+
+.pl-ws {
+  display: grid;
+  gap: 1em;
+}
+
+@container (min-width: 34em) {
+  .pl-ws {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.pl-ws-grid {
+  position: relative;
+  max-width: 26em;
+  container-type: inline-size;
+  display: grid;
+  grid-template-rows: repeat(var(--rows), 1fr);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: crosshair;
+}
+
+.pl-ws-row {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+}
+
+.pl-ws-letter {
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: calc(100cqw / var(--cols) * 0.56);
+  line-height: 1;
+}
+
+.pl-ws-loops g {
+  mix-blend-mode: multiply;
+  filter: url(#pl-marker);
+}
+
+.pl-ws-live {
+  opacity: 0.75;
+}
+
+.pl-ws-fade {
+  animation: pl-fade 0.9s ease-in 0.15s forwards;
+}
+
+@keyframes pl-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+.pl-ws-cursor {
+  fill: none;
+  stroke: var(--play-ink);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+  opacity: 0;
+}
+
+.pl-ws-grid:focus-visible {
+  outline: none;
+}
+
+.pl-ws-grid:focus-visible .pl-ws-cursor {
+  opacity: 1;
+}
+
+.pl-ws-done {
+  right: -0.8em;
+  top: -2.4em;
+}
+
+.pl-ws-words {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7em, 1fr));
+  gap: 0.35em 1em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-size: 0.95em;
+}
+
+.pl-ws-words li {
+  position: relative;
+  width: fit-content;
+}
+
+.pl-ws-words li.is-found span:first-child {
+  opacity: 0.55;
+}
+
+.pl-ws-strike {
+  position: absolute;
+  left: -0.25em;
+  top: 0.25em;
+  width: calc(100% + 0.5em);
+  height: 0.7em;
+  color: var(--play-ink);
+  filter: url(#pl-graphite);
+}
+
+/* ——— Fortune teller ——— */
+
+.pl-teller {
+  display: grid;
+  justify-items: center;
+  gap: 0.4em;
+}
+
+.pl-teller-help {
+  min-height: 1.4em;
+  margin: 0;
+  font-size: 1.7em;
+  line-height: 1;
+}
+
+.pl-teller-stage {
+  width: 17em;
+  max-width: 92%;
+  aspect-ratio: 1;
+  perspective: 700px;
+  margin: 0.4em 0 0.6em;
+}
+
+.pl-teller-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(16deg);
+  transition: transform 0.26s ease-out;
+}
+
+.is-shut .pl-teller-body {
+  transform: rotateX(16deg) scale(0.97);
+}
+
+.pl-teller-inside {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--play-paper), #2a1f0e 45%);
+}
+
+.pl-teller-tris {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pl-tri {
+  fill: color-mix(in srgb, var(--play-paper), #2a1f0e 38%);
+  transition: fill 0.2s;
+}
+
+.pl-tri.is-lit {
+  fill: var(--play-paper);
+}
+
+.pl-teller-num {
+  position: absolute;
+  z-index: 1;
+  width: 2.3em;
+  height: 2.3em;
+  margin: -1.15em 0 0 -1.15em;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.15em;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.is-open-rows .pl-teller-num[data-axis="rows"],
+.is-open-cols .pl-teller-num[data-axis="cols"] {
+  opacity: 1;
+}
+
+.pl-teller-num:disabled {
+  cursor: default;
+}
+
+.pl-teller-num.is-chosen {
+  opacity: 1;
+}
+
+.pl-teller-flap {
+  position: absolute;
+  inset: 0;
+  background: var(--play-paper);
+  animation: pl-lift 0.75s cubic-bezier(0.4, 0.1, 0.3, 1) forwards;
+  backface-visibility: visible;
+}
+
+@keyframes pl-lift {
+  from {
+    transform: rotate3d(var(--axis-x), var(--axis-y), 0, 0deg);
+  }
+  to {
+    transform: rotate3d(var(--axis-x), var(--axis-y), 0, 155deg);
+    filter: brightness(0.82);
+  }
+}
+
+.pl-quad {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  transform: translate3d(0, 0, 14px);
+  transition:
+    transform 0.24s cubic-bezier(0.35, 0.6, 0.3, 1),
+    filter 0.24s;
+  transform-style: preserve-3d;
+}
+
+.pl-quad-tl {
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.pl-quad-tr {
+  right: 0;
+  top: 0;
+  transform-origin: 100% 0;
+}
+.pl-quad-br {
+  right: 0;
+  bottom: 0;
+  transform-origin: 100% 100%;
+}
+.pl-quad-bl {
+  left: 0;
+  bottom: 0;
+  transform-origin: 0 100%;
+}
+
+.is-open-rows .pl-quad {
+  transform: translate3d(0, calc(var(--qr) * 24%), 14px) rotateX(calc(var(--qr) * 24deg));
+  filter: brightness(0.96);
+}
+
+.is-open-cols .pl-quad {
+  transform: translate3d(calc(var(--qc) * 24%), 0, 14px) rotateY(calc(var(--qc) * -24deg));
+  filter: brightness(0.96);
+}
+
+.pl-quad-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    url("/mockup/press/newsprint.jpg") center / 40em auto,
+    var(--play-paper);
+  background-blend-mode: multiply;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--play-print), transparent 70%),
+    0 2px 3px rgb(40 30 10 / 0.25);
+}
+
+.pl-quad-face:disabled {
+  cursor: default;
+}
+
+.pl-quad-face:focus-visible {
+  outline-offset: -6px;
+}
+
+.pl-crayon {
+  position: absolute;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+
+.pl-quad-crease {
+  position: absolute;
+  inset: 0;
+  background: rgb(60 40 10 / 0.09);
+  pointer-events: none;
+}
+
+.pl-quad-tl .pl-quad-crease,
+.pl-quad-br .pl-quad-crease {
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.pl-quad-tr .pl-quad-crease,
+.pl-quad-bl .pl-quad-crease {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.pl-quad-word {
+  position: relative;
+  font-weight: 800;
+  font-size: 1.05em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pl-teller-fortune {
+  min-height: 6.4em;
+  text-align: center;
+  max-width: 20em;
+}
+
+/* Until a flap is lifted, the space the fortune will fill is a pencilled box waiting for it. */
+.pl-teller-wait {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-height: 6.4em;
+  width: 17em;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.6em 1em;
+  border: 2px dashed color-mix(in srgb, currentColor 35%, transparent);
+  border-radius: 0.6em;
+  font-family: var(--play-hand), cursive;
+  font-size: 1.5em;
+  line-height: 1.1;
+  opacity: 0.7;
+}
+
+.pl-teller-under {
+  margin: 0;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pl-teller-says {
+  margin: 0.15em 0 0.2em;
+  font-size: 1.75em;
+  line-height: 1.05;
+  animation: pl-pop 0.4s ease-out;
+}
+
+.pl-again {
+  font-size: 1.3em;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--play-ink), transparent 50%);
+  text-underline-offset: 0.2em;
+}
+
+/* ——— Reduced motion: marks appear, papers fold, nothing travels ——— */
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-root *,
+  .pl-root *::before,
+  .pl-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+  .pl-draw {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ——— Yesterday's answers, printed ——— */
+
+.pl-answers {
+  max-width: 12em;
+  cursor: default;
+}
+
+.pl-answer-cell {
+  cursor: default;
+}
+
+.pl-answer-letter {
+  font-weight: 800;
+  font-size: calc(100cqw / var(--cols) * 0.5);
+  line-height: 1;
+  margin-top: 0.15em;
+}

@@ -111,10 +111,52 @@ export const wordLadderSolutionSchema = z.object({ ladder: z.array(z.string()).m
 export const riddleDataSchema = z.object({ title: z.string(), question: z.string() });
 export const riddleSolutionSchema = z.object({ answer: z.string() });
 
+/** A letter grid with words hidden across, down and diagonally (forwards or backwards). */
+export const wordSearchDataSchema = z.object({
+  title: z.string(),
+  /** What links the words, e.g. "Things in today's paper". */
+  theme: z.string(),
+  /** One string per row, all the same length, upper-case letters. */
+  grid: z.array(z.string()).min(5),
+  /** The words to find, upper-case, as printed in the list beside the grid. */
+  words: z.array(z.string()).min(3),
+});
+export const wordSearchSolutionSchema = z.object({
+  /** Where each word lies: first and last letter as [row, col], zero-based. */
+  placements: z.array(
+    z.object({
+      word: z.string(),
+      start: z.tuple([z.number().int(), z.number().int()]),
+      end: z.tuple([z.number().int(), z.number().int()]),
+    }),
+  ),
+});
+
+/**
+ * A folding paper fortune teller: pick a colour (spell it out, one fold per letter), pick a
+ * number (count it out), then open a flap to read one of eight happy fortunes. Not a puzzle to
+ * solve, so it has no solution; it lives on the back page with the puzzles.
+ */
+export const fortuneTellerDataSchema = z.object({
+  title: z.string(),
+  /** Four colour words on the outer flaps. */
+  colours: z.array(z.string()).length(4),
+  /** Eight numbers on the inner flaps, in order round the teller. */
+  numbers: z.array(z.number().int().min(1).max(12)).length(8),
+  /** Eight fortunes under the flaps, one per number, each a short happy line. */
+  fortunes: z.array(z.string()).length(8),
+});
+
 export const puzzleSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("crossword"), order: z.number().int(), data: crosswordDataSchema }),
   z.object({ type: z.literal("word_ladder"), order: z.number().int(), data: wordLadderDataSchema }),
   z.object({ type: z.literal("riddle"), order: z.number().int(), data: riddleDataSchema }),
+  z.object({ type: z.literal("word_search"), order: z.number().int(), data: wordSearchDataSchema }),
+  z.object({
+    type: z.literal("fortune_teller"),
+    order: z.number().int(),
+    data: fortuneTellerDataSchema,
+  }),
 ]);
 
 export const solvedPuzzleSchema = z.discriminatedUnion("type", [
@@ -136,9 +178,28 @@ export const solvedPuzzleSchema = z.discriminatedUnion("type", [
     data: riddleDataSchema,
     solution: riddleSolutionSchema,
   }),
+  z.object({
+    type: z.literal("word_search"),
+    order: z.number().int(),
+    data: wordSearchDataSchema,
+    solution: wordSearchSolutionSchema,
+  }),
+  z.object({
+    type: z.literal("fortune_teller"),
+    order: z.number().int(),
+    data: fortuneTellerDataSchema,
+    /** Fortune tellers have nothing to solve. */
+    solution: z.object({}),
+  }),
 ]);
 
-export const puzzleTypeSchema = z.enum(["crossword", "word_ladder", "riddle"]);
+export const puzzleTypeSchema = z.enum([
+  "crossword",
+  "word_ladder",
+  "riddle",
+  "word_search",
+  "fortune_teller",
+]);
 
 // ——— Editions ———
 

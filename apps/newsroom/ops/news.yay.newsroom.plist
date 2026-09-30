@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  The Yay News newsroom, run daily at 04:00 local time by launchd (macOS). Not installed by
+  default: see apps/newsroom/README.md ("Scheduling") to install it. Edit REPO_DIR below first.
+
+  It runs ops/run-daily.sh, which builds tomorrow's edition (so it is filed well before the
+  16:00 UTC deadline for the earliest time zone) and logs to ~/Library/Logs/yay-newsroom.log.
+-->
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>news.yay.newsroom</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/zsh</string>
+      <string>-lc</string>
+      <string>"$REPO_DIR/apps/newsroom/ops/run-daily.sh"</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>REPO_DIR</key>
+      <string>/Users/YOU/path/to/the-yay-news</string>
+      <key>NEWSROOM_MODEL</key>
+      <string>claude-code</string>
+      <key>NEWSROOM_MODEL_FALLBACK</key>
+      <string>gemini</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>4</integer>
+      <key>Minute</key>
+      <integer>0</integer>
+    </dict>
+
+    <!-- launchd runs a missed calendar job when the Mac wakes; don't also run it on load. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/yay-newsroom.launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/yay-newsroom.launchd.log</string>
+  </dict>
+</plist>

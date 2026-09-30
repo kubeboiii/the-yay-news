@@ -1,6 +1,7 @@
 import type { Image as EditionImage } from "@repo/shared";
 import Link from "next/link";
 import type { Reading, StoryItem } from "../types";
+import { BriefArt, BriefBand, planBriefs } from "../brief-art";
 import { lengthClass, PrintPhoto } from "./print";
 
 // The pieces every Midi page is composed from: a story's head, its text, a photograph, a second
@@ -71,24 +72,26 @@ export function Photo({
   sizes,
   pasted,
   priority,
+  plates,
 }: {
   image: EditionImage;
   className?: string;
   sizes: string;
   pasted?: boolean;
   priority?: boolean;
+  plates?: Pick<StoryItem, "slug" | "images">;
 }) {
   if (pasted) {
     return (
       <figure className={`m5-pasted print-print m5k-photo ${className ?? ""}`}>
-        <PrintPhoto image={image} sizes={sizes} priority={priority} />
+        <PrintPhoto image={image} sizes={sizes} priority={priority} plates={plates} />
         <span className="print-tape m5-pasted-tape" aria-hidden />
       </figure>
     );
   }
   return (
     <figure className={`m5k-photo ${className ?? ""}`}>
-      <PrintPhoto image={image} sizes={sizes} priority={priority} />
+      <PrintPhoto image={image} sizes={sizes} priority={priority} plates={plates} />
     </figure>
   );
 }
@@ -107,6 +110,11 @@ export function Briefs({
 }) {
   if (!stories.length) return null;
   const id = `m5-brief-${stories[0]!.slug}`;
+  const plan = planBriefs(stories, {
+    measure: variant === "strip" ? "wide" : "narrow",
+    flavour: "mag",
+    seed: stories.map((s) => s.slug).join("|"),
+  });
   return (
     <section
       className={`m5k-briefs m5k-briefs--${variant} ${className ?? ""}`}
@@ -116,19 +124,26 @@ export function Briefs({
       <h2 id={id} className="m5-display m5k-briefs-h">
         In brief
       </h2>
+      {plan.band ? <BriefBand stories={stories} /> : null}
       <ol>
         {stories.map((b, i) => (
-          <li key={b.slug}>
-            {variant === "numbered" ? (
+          <li key={b.slug} data-art={plan.arts[i]}>
+            {variant === "numbered" && !plan.band ? (
               <b className="m5-display m5k-brief-n" aria-hidden>
                 {i + 1}
               </b>
             ) : null}
             <article>
-              <p className="m5-kicker">{b.kicker}</p>
-              <h3 className="m5-display m5k-brief-head">
-                <Link href={reading.storyHref(b.slug)}>{b.headline}</Link>
-              </h3>
+              <BriefArt
+                story={b}
+                art={plan.arts[i]!}
+                keyNo={plan.band ? i + 1 : undefined}
+                kicker={<p className="m5-kicker">{b.kicker}</p>}
+              >
+                <h3 className="m5-display m5k-brief-head">
+                  <Link href={reading.storyHref(b.slug)}>{b.headline}</Link>
+                </h3>
+              </BriefArt>
               {b.dek ? <p className="m5k-brief-dek">{b.dek}</p> : null}
               <div className="m5-body m5-read m5-read--1">
                 {b.body.map((p, k) => (

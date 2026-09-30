@@ -1,7 +1,7 @@
 /*
  * Colourways for the v1 broadsheet, one per theme in ../colours/themes.ts, mapped onto v1's six
- * ink tokens (yellow, green, pink, orange, violet, blue). The front prints yellow + pink, Screen &
- * Sound pink + blue, Gaming green + violet, the back page orange + yellow, so a multi-ink theme
+ * ink tokens (yellow, green, pink, orange, violet, blue). The front prints yellow + pink, Screen
+ * pink + blue, Play green + violet, the back page orange + yellow, so a multi-ink theme
  * gives every section its own pair from one family. Blue always carries reversed white type.
  * Set by [data-theme]; "original" (or no attribute) keeps v1's own six-ink fluoro set.
  *

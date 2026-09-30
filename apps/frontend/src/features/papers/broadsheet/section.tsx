@@ -1,6 +1,9 @@
+import { Band } from "../plates";
 import type { PageProps, Reading, StoryItem } from "../types";
 import { Briefs, Copy, InkPull, Media, StoryBlock, StoryHead, frameFor } from "./blocks";
-import { type SectionComp, type Theme, sectionComps, storiesOf, themeFor } from "./lib";
+import { SectionDress, dressed } from "../dress";
+import { Special, specialParts } from "../spreads";
+import { type SectionComp, type Theme, isSpecial, sectionComps, storiesOf, themeFor } from "./lib";
 import { Folio, RunningHead, Zigzag } from "./parts";
 
 // An inside page for a core section. Every page carries its main story, its second story and
@@ -27,12 +30,45 @@ export function Section({ edition, page, reading }: PageProps) {
         />
         <Zigzag />
         <div className="bs-page">
-          <Composition comp={comp} theme={theme} reading={reading} {...stories} />
+          {section && dressed(section.slug, edition.issueNumber, page.order) ? (
+            <SectionDress
+              slug={section.slug}
+              stories={page.stories}
+              issue={edition.issueNumber}
+              page={page.order}
+              date={edition.date}
+            />
+          ) : null}
+          {isSpecial(comp) ? (
+            <SpecialPage
+              comp={comp}
+              page={page}
+              reading={reading}
+              seed={`${edition.issueNumber}:${page.order}`}
+            />
+          ) : (
+            <Composition comp={comp} theme={theme} reading={reading} {...stories} />
+          )}
         </div>
         <Folio edition={edition} reading={reading} section={section?.name ?? "Inside"} />
       </article>
     </div>
   );
+}
+
+function SpecialPage({
+  comp,
+  page,
+  reading,
+  seed,
+}: {
+  comp: Parameters<typeof Special>[0]["kind"];
+  page: PageProps["page"];
+  reading: Reading;
+  seed: string;
+}) {
+  const parts = specialParts(page.stories, reading.storyHref, "news", seed);
+  return parts ? <Special kind={comp} parts={parts} /> : null;
 }
 
 type Parts = {
@@ -77,12 +113,14 @@ function Seconds({
   cols,
   className,
   mediaFirst,
+  pictures,
 }: {
   stories: StoryItem[];
   reading: Reading;
   cols: 1 | 2 | 3;
   className?: string;
   mediaFirst?: boolean;
+  pictures?: boolean;
 }) {
   return (
     <>
@@ -95,14 +133,62 @@ function Seconds({
           size="lg"
           className={className}
           mediaFirst={mediaFirst}
+          pictures={pictures}
         />
       ))}
     </>
   );
 }
 
+/** How much a story fills, roughly: its words, and its picture if it has one. */
+const weight = (stories: StoryItem[]) =>
+  stories.reduce(
+    (n, s) =>
+      n + s.headline.length + s.dek.length + s.body.join(" ").length + (s.images[0] ? 700 : 0),
+    0,
+  );
+
+/**
+ * The foot of a page: the second story beside the briefs — unless the briefs would run far
+ * deeper than the story in their narrower column, when the story goes across and the briefs
+ * across beneath it, so neither leaves a column of bare paper.
+ */
+function Foot({
+  more,
+  briefs,
+  reading,
+  variant,
+}: {
+  more: StoryItem[];
+  briefs: StoryItem[];
+  reading: Reading;
+  variant: "rail" | "numbered";
+}) {
+  // The briefs' column is about 1/1.7 the width of the story's.
+  const across = !more.length || weight(briefs) * 1.7 > weight(more) * 1.8;
+  if (across) {
+    return (
+      <>
+        {more.length ? (
+          <Seconds stories={more} reading={reading} cols={3} className="bs-second-across" />
+        ) : null}
+        {more.length && briefs.length ? <Zigzag /> : null}
+        <Briefs stories={briefs} reading={reading} variant="strip" />
+      </>
+    );
+  }
+  return (
+    <div className="bs-grid bs-g-foot">
+      <div className="bs-stack">
+        <Seconds stories={more} reading={reading} cols={2} className="bs-second-split" />
+      </div>
+      <Briefs stories={briefs} reading={reading} variant={variant} />
+    </div>
+  );
+}
+
 function Composition({ comp, theme, reading, main, second, extra, briefs }: Parts) {
-  if (!main) return null;
+  if (!main || isSpecial(comp)) return null;
   const photo = Boolean(main.images[0]);
   const more = [second, ...extra].filter((s): s is StoryItem => Boolean(s));
 
@@ -174,12 +260,7 @@ function Composition({ comp, theme, reading, main, second, extra, briefs }: Part
             <MainMedia story={main} theme={theme} frame="flat" className="bs-m-tall" />
           </div>
           <Zigzag />
-          <div className="bs-grid bs-g-foot">
-            <div className="bs-stack">
-              <Seconds stories={more} reading={reading} cols={2} className="bs-second-split" />
-            </div>
-            <Briefs stories={briefs} reading={reading} variant="numbered" />
-          </div>
+          <Foot more={more} briefs={briefs} reading={reading} variant="numbered" />
         </>
       );
 
@@ -218,17 +299,10 @@ function Composition({ comp, theme, reading, main, second, extra, briefs }: Part
               <StoryHead story={main} reading={reading} size="xl" dek={false} />
             </div>
           </figure>
-          <div className="bs-grid bs-g-picture">
-            <p className="yn-dek bs-dek-big">{main.dek}</p>
-            <Copy story={main} cols={2} dropcap />
-          </div>
+          <p className="yn-dek bs-dek-big bs-dek-across">{main.dek}</p>
+          <Copy story={main} cols={3} dropcap />
           <Zigzag />
-          <div className="bs-grid bs-g-foot">
-            <div className="bs-stack">
-              <Seconds stories={more} reading={reading} cols={2} className="bs-second-split" />
-            </div>
-            <Briefs stories={briefs} reading={reading} variant="rail" />
-          </div>
+          <Foot more={more} briefs={briefs} reading={reading} variant="rail" />
         </>
       );
 
@@ -251,6 +325,73 @@ function Composition({ comp, theme, reading, main, second, extra, briefs }: Part
         </>
       );
 
+    // A picture page: every photograph on the page gathered in a grid across the top, each keyed
+    // to its story, and the stories set as type beneath.
+    case "album": {
+      // One picture per story: the page's stories in pictures, not one story's roll.
+      const pics = [main, ...more, ...briefs].flatMap((s) =>
+        s.images[0] ? [{ image: s.images[0], kicker: s.kicker }] : [],
+      );
+      return (
+        <>
+          <section className="bs-album" aria-label="The page in pictures">
+            <p className="yn-label bs-album-title">The page in pictures</p>
+            <Band
+              arrangement="grid"
+              images={pics.slice(0, 7).map((p) => p.image)}
+              labels={pics.slice(0, 7).map((p) => p.kicker)}
+            />
+          </section>
+          <Zigzag />
+          <div className="bs-grid bs-g-rail">
+            <div className="bs-stack">
+              <StoryHead story={main} reading={reading} size="xl" dek />
+              <Copy story={main} cols={2} dropcap />
+            </div>
+            <Briefs stories={briefs} reading={reading} variant="rail" thumbs={false} />
+          </div>
+          {more.length ? (
+            <>
+              <Zigzag />
+              <Seconds
+                stories={more}
+                reading={reading}
+                cols={3}
+                className="bs-second-across"
+                pictures={false}
+              />
+            </>
+          ) : null}
+        </>
+      );
+    }
+
+    // The lead's frames off the contact sheet across the page, the editor's pick ringed; the
+    // headline under them and the text in three columns.
+    case "contact":
+      return (
+        <>
+          <Band arrangement="contact" images={main.images.slice(0, 5)} className="bs-contact" />
+          <p className="yn-caption bs-cap bs-contact-cap">
+            {main.images.slice(0, 5).map((img, i) => (
+              <span key={img.url}>
+                <b>{i + 1}.</b> {img.alt}{" "}
+              </span>
+            ))}
+          </p>
+          <StoryHead
+            story={main}
+            reading={reading}
+            size="xxl"
+            dek
+            className="bs-head--across bs-head--rule"
+          />
+          <Copy story={main} cols={3} dropcap />
+          <Zigzag />
+          <Foot more={more} briefs={briefs} reading={reading} variant="numbered" />
+        </>
+      );
+
     // The lead's head set big on a block of ink with its picture pasted over the edge; the text
     // in three columns beneath.
     case "poster":
@@ -263,12 +404,7 @@ function Composition({ comp, theme, reading, main, second, extra, briefs }: Part
           </div>
           <Copy story={main} cols={3} dropcap />
           <Zigzag />
-          <div className="bs-grid bs-g-foot">
-            <div className="bs-stack">
-              <Seconds stories={more} reading={reading} cols={2} className="bs-second-split" />
-            </div>
-            <Briefs stories={briefs} reading={reading} variant="numbered" />
-          </div>
+          <Foot more={more} briefs={briefs} reading={reading} variant="numbered" />
         </>
       );
   }

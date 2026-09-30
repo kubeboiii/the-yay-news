@@ -1,0 +1,673 @@
+/* The stamp book: a kraft passport, stapled at the spine, with manila pages. */
+
+.hb-bookwrap {
+  --kraft: #b3844f;
+  --kraft-dark: #8d6236;
+  --manila: #ead6ae;
+  --ink: #2a241d;
+  --pencil: #4a4744;
+  color: var(--ink);
+}
+
+.hb-bookwrap__back {
+  margin: 18px 0 0;
+  text-align: center;
+  font-family: var(--hb-hand), cursive;
+  font-size: 19px;
+}
+
+.hb-bookwrap__back a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+
+/* ——— The booklet ——— */
+
+.hb-book {
+  --page-w: min(400px, calc(50vw - 40px));
+  --page-h: calc(var(--page-w) * 1.38);
+  position: relative;
+  margin: 0 auto;
+  width: max-content;
+  max-width: 100%;
+}
+
+.hb-book.is-single {
+  --page-w: min(420px, calc(100vw - 32px));
+  --page-h: calc(var(--page-w) * 1.38);
+}
+
+.hb-book__stage {
+  position: relative;
+  display: flex;
+  perspective: 2200px;
+  touch-action: pan-y;
+  transition: translate 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hb-book.is-wide.is-shut .hb-book__stage {
+  translate: calc(var(--page-w) / -2) 0;
+}
+
+.hb-book__half {
+  position: relative;
+  width: var(--page-w);
+  height: var(--page-h);
+  transform-style: preserve-3d;
+}
+
+.hb-book__page {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--manila);
+  isolation: isolate;
+}
+
+/* Card grain in every page. */
+.hb-book__page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/inserts/tex-card.jpg") center / 520px;
+  mix-blend-mode: multiply;
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* The fold's shadow into the spine, and the stack of pages under each side. */
+.hb-book__page--right {
+  box-shadow:
+    inset 18px 0 22px -18px rgb(60 35 10 / 0.45),
+    1px 1px 0 #d9c298,
+    2px 2px 0 #cfb68a,
+    3px 3px 0 #c6ab7e,
+    6px 10px 18px -6px rgb(40 25 10 / 0.45);
+}
+
+.hb-book__page--left {
+  box-shadow:
+    inset -18px 0 22px -18px rgb(60 35 10 / 0.45),
+    -1px 1px 0 #d9c298,
+    -2px 2px 0 #cfb68a,
+    -3px 3px 0 #c6ab7e,
+    -6px 10px 18px -6px rgb(40 25 10 / 0.45);
+}
+
+.hb-book.is-single .hb-book__page--right {
+  box-shadow:
+    inset 10px 0 14px -10px rgb(60 35 10 / 0.4),
+    1px 1px 0 #d9c298,
+    2px 2px 0 #cfb68a,
+    3px 3px 0 #c6ab7e,
+    4px 10px 18px -6px rgb(40 25 10 / 0.45);
+}
+
+.hb-book__page--blank {
+  background: #e3cea4;
+}
+
+/* ——— A turning leaf ——— */
+
+.hb-book__leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  z-index: 5;
+}
+
+.hb-book__leaf.turn-next {
+  animation: hb-turn-next 0.8s cubic-bezier(0.45, 0.05, 0.3, 1) forwards;
+}
+
+.hb-book__leaf.turn-prev {
+  animation: hb-turn-prev 0.8s cubic-bezier(0.45, 0.05, 0.3, 1) forwards;
+}
+
+@keyframes hb-turn-next {
+  from {
+    transform: rotateY(0deg);
+  }
+  /* The paper bows a little as it lifts, rather than swinging like a door. */
+  45% {
+    transform: rotateY(-80deg) skewY(-1.5deg);
+  }
+  to {
+    transform: rotateY(-180deg);
+  }
+}
+
+@keyframes hb-turn-prev {
+  from {
+    transform: rotateY(-180deg);
+  }
+  55% {
+    transform: rotateY(-100deg) skewY(1.5deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+.hb-book__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.hb-book__face--back {
+  transform: rotateY(180deg);
+}
+
+/* Light across the turning page: brightest flat, shadowed as it stands up. */
+.hb-book__light {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(40 25 10 / 0.35),
+    rgb(40 25 10 / 0.05) 60%,
+    rgb(255 250 240 / 0.12)
+  );
+  opacity: 0;
+  animation: hb-turn-light 0.8s ease-in-out;
+}
+
+.hb-book__face--back .hb-book__light {
+  background: linear-gradient(
+    to left,
+    rgb(40 25 10 / 0.35),
+    rgb(40 25 10 / 0.05) 60%,
+    rgb(255 250 240 / 0.12)
+  );
+}
+
+@keyframes hb-turn-light {
+  50% {
+    opacity: 1;
+  }
+}
+
+.hb-book.is-single .hb-book__leaf.turn-next,
+.hb-book.is-single .hb-book__leaf.turn-prev {
+  animation-duration: 0.7s;
+}
+
+/* ——— Controls: pencilled on the desk under the book ——— */
+
+.hb-book__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  width: min(100%, calc(var(--page-w) * 2));
+  margin: 16px auto 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 20px;
+}
+
+.hb-book.is-single .hb-book__controls {
+  width: var(--page-w);
+}
+
+.hb-book.is-wide.is-shut .hb-book__controls {
+  width: var(--page-w);
+}
+
+.hb-book__turn {
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.hb-book__turn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  text-decoration: none;
+}
+
+.hb-book__turn:focus-visible {
+  outline: 2px dashed var(--ink);
+  outline-offset: 2px;
+}
+
+.hb-book__where {
+  font-family: var(--hb-stamp), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* ——— The cover ——— */
+
+.hb-book__page:has(> .hb-cover) {
+  background: var(--kraft);
+}
+
+.hb-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 11% 10% 8%;
+  color: #3a2715;
+  text-align: center;
+}
+
+/* Blind-embossed rule round the cover. */
+.hb-cover::before {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border: 2px solid rgb(58 39 21 / 0.35);
+  box-shadow:
+    1px 1px 0 rgb(255 230 190 / 0.25),
+    inset 1px 1px 0 rgb(255 230 190 / 0.25);
+}
+
+/* The elastic that keeps it shut. */
+.hb-cover__band {
+  position: absolute;
+  top: -2%;
+  bottom: -2%;
+  right: 12%;
+  width: 3.4%;
+  background: #2b2522;
+  box-shadow:
+    -1px 0 0 rgb(255 255 255 / 0.1),
+    2px 0 3px rgb(0 0 0 / 0.35);
+  z-index: 4;
+}
+
+.hb-cover__paper {
+  position: relative;
+  margin: 0;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: calc(var(--page-w) * 0.045);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.hb-cover__title {
+  position: relative;
+  margin: 6% 0 2%;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: calc(var(--page-w) * 0.24);
+  font-weight: 400;
+  line-height: 0.84;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  /* Foil-less stamping into the card: darker, with a lit lower lip. */
+  color: #4a321b;
+  text-shadow:
+    0 1px 0 rgb(255 225 180 / 0.35),
+    0 -1px 0 rgb(0 0 0 / 0.25);
+  mix-blend-mode: multiply;
+}
+
+.hb-cover__sub {
+  position: relative;
+  margin: 0;
+  font-family: var(--hb-stamp), monospace;
+  font-size: calc(var(--page-w) * 0.033);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hb-cover__emblem {
+  position: relative;
+  width: 26%;
+  margin: 8% 0 0;
+  fill: none;
+  stroke: #4a321b;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+/* A paper label glued on, with the streak written on it. */
+.hb-cover__label {
+  position: relative;
+  order: 5;
+  margin-top: auto;
+  width: 74%;
+  padding: 5% 6% 6%;
+  background: #f6efdf;
+  rotate: -2deg;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.2);
+  color: var(--ink);
+  font-family: var(--hb-hand), cursive;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 calc(var(--page-w) * 0.075),
+    rgb(90 120 170 / 0.35) calc(var(--page-w) * 0.075) calc(var(--page-w) * 0.075 + 1px)
+  );
+  background-position: 0 calc(var(--page-w) * 0.018);
+}
+
+.hb-cover__label-line {
+  display: block;
+  font-size: calc(var(--page-w) * 0.052);
+  line-height: calc(var(--page-w) * 0.075);
+}
+
+.hb-cover__label-line--big {
+  font-size: calc(var(--page-w) * 0.07);
+}
+
+/* ——— Inside pages ——— */
+
+.hb-leafpage {
+  position: absolute;
+  inset: 0;
+  padding: 9% 9% 11%;
+  /* Faint guilloche printed in the page like a real passport's. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cpath d='M0 20 Q15 2 30 20 T60 20 T90 20 T120 20 M0 26 Q15 8 30 26 T60 26 T90 26 T120 26' fill='none' stroke='%23b48e57' stroke-opacity='0.16' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: calc(var(--page-w) * 0.3) auto;
+}
+
+.hb-leafpage--end {
+  background-image: none;
+}
+
+.hb-leafpage__head {
+  margin: 0 0 6%;
+  padding-bottom: 2%;
+  border-bottom: 1.5px solid rgb(42 36 29 / 0.55);
+  font-family: var(--hb-stamp), monospace;
+  font-size: calc(var(--page-w) * 0.034);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.hb-leafpage__folio {
+  position: absolute;
+  bottom: 4%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-family: var(--hb-stamp), monospace;
+  font-size: calc(var(--page-w) * 0.03);
+  text-align: center;
+  opacity: 0.6;
+}
+
+.hb-typed {
+  margin: 0;
+  font-family: var(--hb-stamp), monospace;
+  font-size: calc(var(--page-w) * 0.032);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.hb-typed--gap {
+  margin-top: 8%;
+}
+
+.hb-written {
+  margin: 1% 0 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: calc(var(--page-w) * 0.065);
+  line-height: 1.1;
+  color: #2c3a66;
+}
+
+.hb-written--line {
+  border-bottom: 1px dotted rgb(42 36 29 / 0.6);
+  padding-bottom: 1%;
+}
+
+.hb-written--big {
+  margin: 0;
+  font-size: calc(var(--page-w) * 0.11);
+  rotate: -3deg;
+}
+
+.hb-written--small {
+  font-size: calc(var(--page-w) * 0.045);
+  line-height: 1.2;
+}
+
+.hb-streak {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2% 5%;
+  margin: 3% 0 2%;
+}
+
+.hb-tally {
+  height: calc(var(--page-w) * 0.12);
+  max-width: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--pencil);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+.hb-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4%;
+  margin: 10% 0 0;
+}
+
+.hb-facts dd {
+  margin: 0;
+}
+
+/* ——— Month ——— */
+
+.hb-month__nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: -2% 0 3%;
+}
+
+.hb-month__title {
+  margin: 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: calc(var(--page-w) * 0.08);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.hb-month__btn {
+  padding: 2px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--hb-hand), cursive;
+  font-size: calc(var(--page-w) * 0.045);
+  cursor: pointer;
+}
+
+.hb-month__btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.hb-month__btn:focus-visible {
+  outline: 2px dashed var(--ink);
+}
+
+.hb-month {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.hb-month th {
+  padding-bottom: 2%;
+  font-size: calc(var(--page-w) * 0.028);
+  font-weight: 400;
+}
+
+.hb-day {
+  position: relative;
+  height: calc(var(--page-w) * 0.13);
+  border: 1px solid rgb(42 36 29 / 0.22);
+  vertical-align: top;
+  padding: 0;
+}
+
+.hb-day__n {
+  position: absolute;
+  top: 3%;
+  left: 6%;
+  font-family: var(--hb-stamp), monospace;
+  font-size: calc(var(--page-w) * 0.024);
+  opacity: 0.75;
+}
+
+.hb-day.is-today .hb-day__n {
+  opacity: 1;
+  outline: 1.5px solid var(--pencil);
+  outline-offset: 1px;
+  border-radius: 50%;
+}
+
+/* A tiny date-stamp ring, in the paper's ink. */
+.hb-day__stamp {
+  position: absolute;
+  inset: 16% 14% 10% 20%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-color: var(--ink);
+  border-radius: 50%;
+  color: var(--ink);
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: calc(var(--page-w) * 0.034);
+  line-height: 1;
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+}
+
+.hb-day__rest {
+  position: absolute;
+  inset: auto 0 18% 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: calc(var(--page-w) * 0.032);
+  color: var(--pencil);
+  text-align: center;
+  rotate: -8deg;
+}
+
+.hb-day__mood {
+  position: absolute;
+  right: -8%;
+  bottom: -10%;
+  width: 52%;
+  max-width: none;
+}
+
+.hb-day__mood .hb-face__stroke {
+  stroke: #2c3a66;
+  opacity: 0.95;
+}
+
+.hb-day__mood .hb-face__dot {
+  fill: #2c3a66;
+  stroke: #2c3a66;
+}
+
+.hb-month__sum {
+  margin-top: 4%;
+}
+
+/* ——— Stamp pages ——— */
+
+.hb-slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3% 5%;
+  height: 84%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hb-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.hb-slot.is-empty::before {
+  content: "";
+  position: absolute;
+  inset: 8% 10%;
+  border: 1.5px dashed rgb(90 60 20 / 0.22);
+}
+
+.hb-slot__stamp {
+  width: 96%;
+  max-width: calc(var(--page-h) * 0.26);
+}
+
+.hb-slot__stamp.is-fresh {
+  animation: hb-fresh 2s ease-out;
+}
+
+@keyframes hb-fresh {
+  0% {
+    filter: saturate(1.5) brightness(0.8);
+  }
+}
+
+.hb-slot__next {
+  position: relative;
+  max-width: 70%;
+  font-family: var(--hb-hand), cursive;
+  font-size: calc(var(--page-w) * 0.042);
+  line-height: 1.1;
+  text-align: center;
+  color: var(--pencil);
+  rotate: -4deg;
+}
+
+.hb-rules {
+  margin: 0;
+  padding-left: 7%;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: calc(var(--page-w) * 0.034);
+  line-height: 1.45;
+}
+
+.hb-rules li {
+  margin-bottom: 3%;
+  padding-left: 1%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-book__stage {
+    transition: none;
+  }
+  .hb-book__leaf.turn-next,
+  .hb-book__leaf.turn-prev,
+  .hb-book__light,
+  .hb-slot__stamp.is-fresh {
+    animation: none;
+  }
+}

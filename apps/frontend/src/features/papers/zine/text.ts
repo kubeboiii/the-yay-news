@@ -96,10 +96,14 @@ export function teaseFor(edition: Edition, order: number): string {
   if (page.layout === "back") {
     const kinds = edition.puzzles.map((p) =>
       p.type === "crossword"
-        ? "the Mini crossword"
+        ? `the ${p.data.title.replace(/^The /, "")}${/crossword/i.test(p.data.title) ? "" : " crossword"}`
         : p.type === "riddle"
           ? "a riddle"
-          : "a word ladder",
+          : p.type === "word_ladder"
+            ? "a word ladder"
+            : p.type === "word_search"
+              ? "a word search"
+              : "a fortune teller",
     );
     const comic = feature(edition, "comic");
     const bits = [...kinds, comic ? comic.content.title : null].filter(Boolean) as string[];

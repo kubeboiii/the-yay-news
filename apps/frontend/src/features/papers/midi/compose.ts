@@ -37,6 +37,7 @@ export const INSIDE = [
   "boxed-feature",
   "boxed-feature-right",
   "quiet-inset",
+  "contact-sheet",
 ] as const;
 export type InsideComposition = (typeof INSIDE)[number];
 const PHOTO_LED = new Set<InsideComposition>(["photo-led", "photo-led-right", "picture-story"]);
@@ -48,6 +49,7 @@ export function insideCompositions(edition: Edition): Map<number, InsideComposit
     const main = ranked(p.stories)[0];
     return {
       photo: Boolean(main?.images[0]),
+      roll: (main?.images.length ?? 0) >= 3,
       long: (main?.headline.length ?? 0) > 72,
       words: main?.body.join(" ").split(/\s+/).length ?? 0,
     };
@@ -60,7 +62,9 @@ export function insideCompositions(edition: Edition): Map<number, InsideComposit
   const out = new Map<number, InsideComposition>();
   for (const p of queue) {
     const s = shape(p);
-    const eligible = INSIDE.filter((c) => s.photo || !PHOTO_LED.has(c));
+    const eligible = INSIDE.filter(
+      (c) => (s.photo || !PHOTO_LED.has(c)) && (c !== "contact-sheet" || s.roll),
+    );
     const start =
       seed(`${edition.issueNumber}:${p.order}:${p.section?.slug}:${s.long}:${s.words > 250}`) %
       eligible.length;

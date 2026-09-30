@@ -3,6 +3,7 @@ import { guestComposition } from "./compose";
 import { folioDate, pad2 } from "./edition-data";
 import { Folio, Masthead, MiniMark, Sheet, themeFor } from "./parts";
 import { StoriesGrid } from "./section";
+import { SectionDress, dressed } from "../dress";
 
 // The guest section: a visiting desk that has this page every other day. It prints as a pull-out
 // inside the paper — a striped "Guest section" strip under the masthead and the stories on a tinted
@@ -40,6 +41,15 @@ export function Guest({ edition, page, reading }: PageProps) {
         {section ? <span className="tb-guest-strip-note">{section.tagline}</span> : null}
       </div>
 
+      {section && dressed(section.slug, edition.issueNumber, page.order) ? (
+        <SectionDress
+          slug={section.slug}
+          stories={page.stories}
+          issue={edition.issueNumber}
+          page={page.order}
+          date={edition.date}
+        />
+      ) : null}
       <div className="tb-guest-ground">
         <StoriesGrid
           page={page}

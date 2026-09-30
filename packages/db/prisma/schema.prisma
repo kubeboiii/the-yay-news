@@ -70,6 +70,35 @@ enum PuzzleType {
   crossword
   word_ladder
   riddle
+  word_search
+  fortune_teller
+}
+
+enum SourceType {
+  rss
+  reddit
+  api
+}
+
+/// What the newsroom decided about a candidate, and at which stage.
+enum CandidateDecision {
+  pending
+  rejected_blocklist
+  rejected_delight
+  duplicate
+  not_selected
+  selected
+  reserve
+  failed_fact_check
+  published
+}
+
+enum PipelineRunStatus {
+  running
+  succeeded
+  failed
+  slow_news_day
+  skipped
 }
 
 // ——— Models ———
@@ -109,6 +138,8 @@ model Edition {
   stories        Story[]
   features       Feature[]
   puzzles        Puzzle[]
+  /// Newsroom runs that built (or tried to build) this edition.
+  runs           PipelineRun[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -208,4 +239,68 @@ model Puzzle {
   solution  Json
 
   @@unique([editionId, order])
+}
+
+// ——— The newsroom (PLAN §9) ———
+
+/// An allowlisted source the newsroom gathers from. The allowlist is data, seeded from apps/newsroom.
+model Source {
+  id         String      @id @default(cuid())
+  slug       String      @unique
+  name       String
+  /// Feed, subreddit JSON or API endpoint.
+  url        String
+  type       SourceType
+  /// Section slugs this source can feed.
+  sections   String[]
+  enabled    Boolean     @default(true)
+  candidates Candidate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// One item gathered during a run, with the decision the pipeline made about it.
+model Candidate {
+  id             String            @id @default(cuid())
+  run            PipelineRun       @relation(fields: [runId], references: [id], onDelete: Cascade)
+  runId          String
+  source         Source?           @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  sourceId       String?
+  url            String
+  title          String
+  summary        String
+  imageUrl       String?
+  fetchedAt      DateTime
+  decision       CandidateDecision @default(pending)
+  decisionReason String?
+  /// The stage that made the final decision (e.g. "delight", "dedup", "select", "write").
+  stage          String?
+  section        String?
+  /// The story slug, when the candidate made it into the edition (as a story or a reserve).
+  storySlug      String?
+
+  @@unique([runId, url])
+  @@index([sourceId])
+  @@index([decision])
+}
+
+/// One run of the newsroom for one edition date. `log` holds the per-stage record.
+model PipelineRun {
+  id         String            @id @default(cuid())
+  /// The calendar date of the edition being built.
+  date       DateTime          @db.Date
+  edition    Edition?          @relation(fields: [editionId], references: [id], onDelete: SetNull)
+  editionId  String?
+  status     PipelineRunStatus @default(running)
+  dryRun     Boolean           @default(false)
+  /// Which model provider(s) served the run.
+  model      String?
+  startedAt  DateTime          @default(now())
+  finishedAt DateTime?
+  log        Json              @default("[]")
+  candidates Candidate[]
+
+  @@index([date])
+  @@index([editionId])
 }

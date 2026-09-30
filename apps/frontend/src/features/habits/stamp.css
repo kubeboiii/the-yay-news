@@ -1,0 +1,24 @@
+/* A rubber stamp impression, and the moment it's made. */
+
+.hb-stamp {
+  display: block;
+  position: relative;
+  aspect-ratio: 1;
+  /* Ink sits in the paper: multiply it, and grade it down a touch like uncoated stock. */
+  mix-blend-mode: multiply;
+}
+
+.hb-stamp__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hb-stamp__ink text {
+  font-kerning: none;
+}
+
+.hb-fill {
+  fill: currentColor;
+}

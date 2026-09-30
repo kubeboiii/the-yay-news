@@ -391,7 +391,7 @@
 /* ---------- guest ---------- */
 
 .m5 .m5q-butter {
-  background: var(--butter);
+  background: var(--section-colour, var(--butter));
 }
 .m5q-head {
   display: flex;
@@ -613,4 +613,37 @@
 /* One brief in a strip runs on across both columns. */
 .m5k-briefs--strip[data-count="1"] li {
   break-inside: auto;
+}
+
+/* ——— Picture groups (see ../plates.tsx) ——— */
+
+.m5-sheet-flow {
+  --plate-accent: var(--pz-pink-deep, #d6336c);
+}
+
+.m5k-contact {
+  margin-bottom: calc(var(--u) * 6);
+}
+
+.m5k-contact .pl-frame-label {
+  font-size: calc(var(--u) * 3.1);
+}
+
+/* A strip of briefs may carry an item on from the foot of one column to the head of the next, so
+   the two columns end level (a picture or a head is never split). */
+.m5k-briefs--strip li {
+  break-inside: auto;
+}
+.m5k-briefs--strip li :is(figure, h3, .ba-behind, .ba-bigkick, .m5-kicker) {
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+/* The section's dressing printed at the head of a page, above the page's own matter. */
+.m5 .m5k-dress {
+  flex: none;
+  padding-bottom: 0;
+}
+.m5 .m5k-dress + .m5-page-flow {
+  padding-top: calc(var(--u) * 2);
 }

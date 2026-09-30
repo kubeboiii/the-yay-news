@@ -13,6 +13,8 @@ const envSchema = z.object({
         .map((s) => s.trim())
         .filter(Boolean),
     ),
+  // The emergency admin (PLAN §9). Unset, the admin routes answer 503.
+  ADMIN_PASSWORD: z.string().min(12).optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

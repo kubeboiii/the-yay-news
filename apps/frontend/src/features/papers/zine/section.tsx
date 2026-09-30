@@ -1,5 +1,9 @@
 import type { StoryItem } from "@repo/shared";
+import { SectionDress, dressed } from "../dress";
+import { Band } from "../plates";
+import { Special, specialPages, specialParts } from "../spreads";
 import type { PageProps } from "../types";
+import { Weekend, weekendKind } from "../weekend";
 import { Briefs, StoryBlock, type BriefsVariant, type StoryVariant } from "./blocks";
 import { balance, briefMM, insideComposition, storyMM } from "./compose";
 import { Across, doodleFor, Folio, Head, Page, RunningHead, Spread } from "./parts";
@@ -12,8 +16,8 @@ import { byOrder, fitSize, folios, groundsFor, shortDate } from "./text";
  * floated, under a taped brief box or on a block of ink; numbered, boxed or ruled briefs) comes
  * from compose.ts, so no two inside spreads of an edition are laid out alike.
  *
- * Screen & Sound's main picture goes onto a strip of film and Gaming's main story into its
- * cartridge label when the composition puts the print across the top; Gaming keeps its pixel head.
+ * Screen's main picture goes onto a strip of film and Play's main story into its
+ * cartridge label when the composition puts the print across the top; Play keeps its pixel head.
  */
 export function Section({ edition, page, reading }: PageProps) {
   const slug = page.section?.slug ?? reading.current.slug;
@@ -28,19 +32,20 @@ export function Section({ edition, page, reading }: PageProps) {
   const date = shortDate(edition.date);
   const size = fitSize(name, 300, 23, 12);
   const comp = insideComposition(edition, page);
+  const pics = comp.left.pics && (first?.images.length ?? 0) >= 3 ? comp.left.pics : null;
   const next = reading.next ? { ...reading.next, n: folios(reading, reading.next.order)[0] } : null;
 
   const leftVariant: StoryVariant =
-    comp.left.variant === "top" && slug === "gaming"
+    comp.left.variant === "top" && slug === "play"
       ? "cart"
-      : comp.left.variant === "top" && slug === "screen-and-sound"
+      : comp.left.variant === "top" && slug === "screen"
         ? "film"
         : comp.left.variant;
 
   const head = (side: "left" | "right") =>
-    slug === "gaming" && side === "left" ? (
-      <GamingMast name={name} tagline={tagline} />
-    ) : slug === "gaming" ? null : (
+    slug === "play" && side === "left" ? (
+      <PlayMast name={name} tagline={tagline} />
+    ) : slug === "play" ? null : (
       <Across side={side} height={size + 9}>
         <Head as={side === "left" ? "h1" : "div"} top={tagline} bottom={name} size={size} />
       </Across>
@@ -61,7 +66,7 @@ export function Section({ edition, page, reading }: PageProps) {
   // Share the copy out so the two pages come out close in length: the briefs (or the second
   // story) move under the main story when the right page would otherwise run much longer.
   const est = [
-    first ? storyMM(first, leftVariant, comp.left.size) + (slug === "gaming" ? 40 : 0) : 0,
+    first ? storyMM(first, leftVariant, comp.left.size) + (slug === "play" ? 40 : 0) : 0,
     rest.reduce((n, s) => n + storyMM(s, comp.right.second, "m") + 8, 0),
     briefs.map(briefMM),
   ] as const;
@@ -80,6 +85,65 @@ export function Section({ edition, page, reading }: PageProps) {
     />
   );
 
+  const special = specialPages(edition.issueNumber, edition.pages, "scrapbook").get(page.order);
+  const parts = specialParts(
+    page.stories,
+    reading.storyHref,
+    "scrappy",
+    `${edition.issueNumber}:${page.order}`,
+  );
+  const weekend = weekendKind(slug);
+  const dress =
+    !weekend && dressed(slug, edition.issueNumber, page.order) ? (
+      <SectionDress
+        slug={slug}
+        stories={page.stories}
+        issue={edition.issueNumber}
+        page={page.order}
+        date={edition.date}
+      />
+    ) : null;
+
+  if (weekend) {
+    const props = { kind: weekend, edition, page, reading, flavour: "scrappy" } as const;
+    return (
+      <Spread label={`${name} spread`}>
+        <Page ground={gl} side="left" className="zc-page" composition={`weekend-${weekend}`}>
+          <RunningHead>The Yay Zine · {name}</RunningHead>
+          {head("left")}
+          <Weekend {...props} half={0} />
+          <Folio n={lf} date={date} />
+        </Page>
+        <Page ground={gr} side="right" className="zc-page">
+          <RunningHead>The Yay Zine · {name}</RunningHead>
+          {head("right")}
+          <Weekend {...props} half={1} />
+          <Folio n={rf} date={date} next={next} />
+        </Page>
+      </Spread>
+    );
+  }
+
+  if (special && parts) {
+    return (
+      <Spread label={`${name} spread`}>
+        <Page ground={gl} side="left" className="zc-page" composition={special}>
+          <RunningHead>The Yay Zine · {name}</RunningHead>
+          {head("left")}
+          <Special kind={special} parts={parts} half={0} />
+          <Folio n={lf} date={date} />
+        </Page>
+        <Page ground={gr} side="right" className="zc-page">
+          <RunningHead>The Yay Zine · {name}</RunningHead>
+          {head("right")}
+          {dress}
+          <Special kind={special} parts={parts} half={1} />
+          <Folio n={rf} date={date} next={next} />
+        </Page>
+      </Spread>
+    );
+  }
+
   return (
     <Spread label={`${name} spread`}>
       <Page
@@ -93,7 +157,7 @@ export function Section({ edition, page, reading }: PageProps) {
         {head("left")}
         {first ? (
           <StoryBlock
-            story={first}
+            story={pics ? { ...first, images: first.images.slice(0, 1) } : first}
             href={reading.storyHref(first.slug)}
             variant={leftVariant}
             size={comp.left.size}
@@ -105,6 +169,14 @@ export function Section({ edition, page, reading }: PageProps) {
         ) : (
           <p className="zs-empty">Nothing in {name} today.</p>
         )}
+        {pics && first ? (
+          <Band
+            arrangement={pics}
+            images={first.images.slice(1, 5)}
+            className="zc-pics"
+            labels={pics === "contact" ? first.images.slice(1, 5).map((i) => i.alt) : undefined}
+          />
+        ) : null}
         {leftSeconds.map(secondBlock)}
         {briefBlock(leftBriefs, comp.right.briefs)}
         <Folio n={lf} date={date} />
@@ -113,6 +185,7 @@ export function Section({ edition, page, reading }: PageProps) {
       <Page ground={gr} side="right" className="zc-page">
         <RunningHead>The Yay Zine · {name}</RunningHead>
         {head("right")}
+        {dress}
         {comp.right.briefsFirst
           ? briefBlock(rightBriefs, comp.right.briefs, leftBriefs.length)
           : null}
@@ -126,7 +199,7 @@ export function Section({ edition, page, reading }: PageProps) {
   );
 }
 
-// ——— Gaming's head: the section name as a mosaic of lit cells ———
+// ——— Play's head: the section name as a mosaic of lit cells ———
 
 // A 5 × 7 bitmap for each letter of "GAMING"; "1" is a lit cell.
 const GLYPHS: Record<string, string[]> = {
@@ -137,7 +210,7 @@ const GLYPHS: Record<string, string[]> = {
   N: ["10001", "11001", "10101", "10011", "10001", "10001", "10001"],
 };
 
-function GamingMast({ name, tagline }: { name: string; tagline: string }) {
+function PlayMast({ name, tagline }: { name: string; tagline: string }) {
   return (
     <>
       <h1 className="z-sr">{name}</h1>

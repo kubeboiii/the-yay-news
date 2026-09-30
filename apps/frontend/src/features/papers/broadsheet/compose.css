@@ -307,10 +307,18 @@
 }
 
 .bs-brief-body {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--u) * 1.8);
+  /* A block, not a flex column, so a picture can be set into the text and the words run round it. */
+  display: flow-root;
+  flex: 1;
   min-width: 0;
+}
+
+.bs-brief-body > * + *:not(.ba-float) {
+  margin-top: calc(var(--u) * 1.8);
+}
+
+.bs-briefs--ink .ba-behind-head {
+  color: var(--ink);
 }
 
 .bs-brief-dek {
@@ -1026,4 +1034,152 @@
     font-size: 17px;
     columns: 1;
   }
+}
+
+/* ---------- the playable back page ---------- */
+.bs-back .bs-puzzles--play {
+  grid-template-columns: 1fr calc(var(--u) * 110);
+}
+.bs-back .bs-puzzles--play.bs-puzzles--nogrid {
+  grid-template-columns: 1fr;
+}
+.bs-back .bs-play .pl-title {
+  font-family: var(--font-head), "Arial Narrow", sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--u) * 10);
+  line-height: 0.92;
+}
+.bs-back .bk-side .bs-play {
+  position: relative;
+}
+.bs-play-row {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: calc(var(--u) * 7);
+  margin-top: calc(var(--u) * 8);
+  align-items: start;
+}
+.bs-play-row .bk-yesterday {
+  margin-top: 0;
+}
+.bs-y-grid {
+  width: calc(var(--u) * 34);
+  margin-bottom: calc(var(--u) * 2);
+}
+.bs-keepsakes {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin-block: calc(var(--u) * 8);
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 4);
+}
+.bs-plane {
+  margin-block: calc(var(--u) * 4) calc(var(--u) * 8);
+}
+@container (max-width: 760px) {
+  .bs-back .bs-puzzles--play,
+  .bs-play-row {
+    grid-template-columns: 1fr;
+  }
+  .bs-back .bs-play .pl-title {
+    font-size: 28px;
+  }
+  .bs-y-grid {
+    width: 140px;
+  }
+}
+
+/* ——— Picture-led compositions (album, contact) and multi-picture plates ——— */
+
+.yn-sheet {
+  --plate-accent: var(--pop, var(--neon-pink));
+}
+
+.bs-album-title {
+  margin-bottom: calc(var(--u) * 2);
+}
+
+.bs-album .pl-frame-label {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: calc(var(--u) * 2.4);
+}
+
+.bs-contact {
+  margin-top: calc(var(--u) * 2);
+}
+
+.bs-contact-cap {
+  margin-block: calc(var(--u) * 1.5) calc(var(--u) * 4);
+}
+
+.bs-story-gallery {
+  margin-inline: calc(var(--u) * 2);
+}
+
+.bs-dek-across {
+  max-width: 80%;
+  margin-block: calc(var(--u) * 3);
+}
+
+/* The word of the day's box runs the depth of the story beside it. */
+.bs-g-guestcover > .bs-extra {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* "Inside today" at the foot of a front-page column runs to the column's foot: its entries are
+ * spaced out down the column rather than leaving bare paper under the last one. */
+@media (min-width: 761px) {
+  .bs-f-rail,
+  .bs-f-row3 > .bs-index {
+    align-self: stretch;
+  }
+  .bs-f-rail {
+    display: flex;
+    flex-direction: column;
+  }
+  .bs-f-rail > .bs-index,
+  .bs-f-row3 > .bs-index {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .bs-f-rail > .bs-index > ol,
+  .bs-f-row3 > .bs-index > ol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+/* A front-page rail without the index: the day's number panel takes up the column's depth. */
+@media (min-width: 761px) {
+  .bs-f-rail:not(:has(> .bs-index)) > .bs-numtall {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* A strip's briefs run the width of their share of the page, not a column's measure: a single
+   brief across the page would otherwise leave half the strip bare beside its picture. */
+.bs-briefs--strip .bs-brief .bs-copy {
+  max-width: none;
+}
+
+/* The word search shares its row with the fortune teller and yesterday's answers: its letters
+   kept to the others' depth, so neither leaves bare paper under it. */
+.bs-play-row .pl-ws-grid {
+  max-width: 20em;
+}
+
+/* The quote of the day alone across the page is set centred, so a short one doesn't leave the
+   right-hand third of the row bare. */
+.bs-odds .bs-odd-quote:only-child {
+  text-align: center;
 }

@@ -16,8 +16,8 @@ const section = (slug: string, name: string, kind: "core" | "guest" = "core") =>
 });
 
 const discoveries = section("discoveries", "Discoveries");
-const gaming = section("gaming", "Gaming");
-const foodAndWords = section("food-and-words", "Food & Words", "guest");
+const play = section("play", "Play");
+const wordNerd = section("word-nerd", "Word Nerd", "guest");
 
 function story(
   id: string,
@@ -92,8 +92,8 @@ export function makeEdition({
     kind: "regular",
     design,
     colourway,
-    guestSectionId: guest ? "food-and-words" : null,
-    guestSection: guest ? foodAndWords : null,
+    guestSectionId: guest ? "word-nerd" : null,
+    guestSection: guest ? wordNerd : null,
     createdAt: at,
     updatedAt: at,
     pages: [
@@ -110,12 +110,12 @@ export function makeEdition({
         id: p(2),
         editionId: id,
         order: 2,
-        sectionId: "gaming",
-        section: gaming,
+        sectionId: "play",
+        section: play,
         layout: "section",
         stories: [
-          story(`game-a-${issueNumber}`, p(2), 1, "feature", gaming),
-          story(`game-b-${issueNumber}`, p(2), 2, "brief", gaming),
+          story(`game-a-${issueNumber}`, p(2), 1, "feature", play),
+          story(`game-b-${issueNumber}`, p(2), 2, "brief", play),
         ],
       },
       {
@@ -152,6 +152,38 @@ export function makeEdition({
         order: 0,
         data: { title: "The Riddle", question: `Riddle number ${issueNumber}?` },
         solution: { answer: `Answer ${issueNumber}` },
+      },
+      {
+        id: `${id}-z2`,
+        editionId: id,
+        type: "word_search",
+        order: 1,
+        data: {
+          title: "Word Search",
+          theme: "Pets",
+          grid: ["CATXX", "XDOGX", "XXXXX", "XXXXX", "XXXXX"],
+          words: ["CAT", "DOG", "XXXXX"],
+        },
+        solution: {
+          placements: [
+            { word: "CAT", start: [0, 0], end: [0, 2] },
+            { word: "DOG", start: [1, 1], end: [1, 3] },
+            { word: "XXXXX", start: [4, 0], end: [4, 4] },
+          ],
+        },
+      },
+      {
+        id: `${id}-z3`,
+        editionId: id,
+        type: "fortune_teller",
+        order: 2,
+        data: {
+          title: "Fortune Teller",
+          colours: ["RED", "BLUE", "TEAL", "LILAC"],
+          numbers: [1, 2, 3, 4, 5, 6, 7, 8],
+          fortunes: Array.from({ length: 8 }, (_, i) => `Fortune ${issueNumber}.${i + 1}`),
+        },
+        solution: {},
       },
     ],
   };

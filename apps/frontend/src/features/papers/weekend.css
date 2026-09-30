@@ -1,0 +1,662 @@
+/*
+ * The weekend pages (weekend.tsx), set on the special pages' type (spreads.css) in each design's
+ * faces and inks. Sizes are in the design's sheet units (--u).
+ */
+
+.wk {
+  --wk-ink: var(--section-colour, var(--k-accent));
+  --wk-card: color-mix(in srgb, var(--paper, #fff) 55%, #fff);
+}
+.wk a {
+  overflow-wrap: anywhere;
+}
+
+/* ——— The Week in 10 ——— */
+.wk-ten-title {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 5);
+  margin-bottom: calc(var(--u) * 5);
+  padding-bottom: calc(var(--u) * 3);
+  border-bottom: calc(var(--u) * 1.2) solid var(--ink);
+}
+.wk-ten-big {
+  font-family: var(--k-head);
+  font-size: max(84px, calc(var(--u) * 36));
+  line-height: 0.8;
+  color: var(--k-accent);
+  -webkit-text-stroke: calc(var(--u) * 0.5) var(--ink);
+  text-shadow: calc(var(--u) * 1.4) calc(var(--u) * 1.4) 0 var(--ink);
+}
+.wk-ten-hed {
+  font-family: var(--k-head);
+  font-size: max(30px, calc(var(--u) * 13));
+  line-height: 0.98;
+  margin: 0 0 calc(var(--u) * 1.6);
+}
+.wk-ten-note {
+  font-size: 0.45em;
+  color: var(--k-accent);
+  filter: brightness(0.8);
+  white-space: nowrap;
+}
+.wk-ten-item {
+  display: grid;
+  grid-template-columns: max(52px, calc(var(--u) * 18)) minmax(0, 1fr);
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 3) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  break-inside: avoid;
+}
+.wk-ten-n {
+  font-family: var(--k-head);
+  font-size: max(40px, calc(var(--u) * 15));
+  line-height: 0.85;
+  color: var(--k-accent);
+  -webkit-text-stroke: calc(var(--u) * 0.3) var(--ink);
+  text-align: right;
+}
+.wk-ten-text {
+  display: flow-root;
+  min-width: 0;
+}
+.wk-ten-pic {
+  float: right;
+  width: 40%;
+  margin: 0 0 calc(var(--u) * 1.6) calc(var(--u) * 3);
+  box-shadow: 0 0 0 calc(var(--u) * 0.4) var(--ink);
+}
+.wk-ten-copy {
+  font-size: max(15px, calc(var(--u) * 4.4));
+  line-height: 1.42;
+  margin: 0 0 calc(var(--u) * 1.2);
+}
+.wk-ten-from {
+  font-family: var(--k-label);
+  font-size: max(12px, calc(var(--u) * 2.9));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: calc(var(--u) * 1) 0 0;
+}
+.wk-ten-from a {
+  border-bottom: calc(var(--u) * 0.5) solid var(--k-accent);
+}
+.sp--news .wk-ten-n,
+.sp--mag .wk-ten-n {
+  -webkit-text-stroke: 0;
+  color: var(--ink);
+}
+
+/* ——— The long read ——— */
+.wk-long-head {
+  margin-bottom: calc(var(--u) * 4);
+}
+.wk-long-hed {
+  font-family: var(--k-head);
+  font-size: max(34px, calc(var(--c) * 0.9cqw / var(--k-cw)));
+  line-height: 0.96;
+  margin: 0 0 calc(var(--u) * 3.4);
+  text-wrap: balance;
+}
+.sp--loud .wk-long-hed {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+.sp--mag .wk-long-hed {
+  font-weight: 500;
+  font-style: italic;
+}
+.wk-long-by {
+  font-family: var(--k-label);
+  font-size: max(12px, calc(var(--u) * 3));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+  padding-top: calc(var(--u) * 1.6);
+  border-top: 1px solid var(--ink);
+}
+.wk-long-fig {
+  margin: 0 0 calc(var(--u) * 4);
+}
+.wk-long-fig .sp-pic {
+  box-shadow: 0 0 0 calc(var(--u) * 0.4) var(--ink);
+}
+.wk-long-fig--in {
+  break-inside: avoid;
+  margin: calc(var(--u) * 2) 0 calc(var(--u) * 3);
+}
+.wk-credit {
+  opacity: 0.75;
+}
+.wk-long-copy > p.wk-first {
+  text-indent: 0;
+}
+.wk-long-copy > * + p {
+  text-indent: 1.2em;
+}
+.wk-long-copy > :is(blockquote, figure) + p,
+.wk-long-copy[data-half="1"] > p:first-child {
+  text-indent: 0;
+}
+.wk-pull {
+  break-inside: avoid;
+  margin: calc(var(--u) * 3) 0;
+  padding: calc(var(--u) * 3) 0 calc(var(--u) * 3.4);
+  border-top: calc(var(--u) * 1.2) solid var(--wk-ink);
+  border-bottom: calc(var(--u) * 0.5) solid var(--ink);
+}
+.wk-pull p {
+  font-family: var(--k-head);
+  font-size: max(22px, calc(var(--u) * 8));
+  line-height: 1.08;
+  text-indent: 0;
+  text-wrap: balance;
+}
+.sp--loud .wk-pull p {
+  font-weight: 900;
+  font-style: italic;
+}
+.sp--mag .wk-pull p {
+  font-style: italic;
+}
+.wk-also {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16em, 1fr));
+  gap: var(--sp-gap);
+  margin-top: calc(var(--u) * 6);
+  padding-top: calc(var(--u) * 4);
+  border-top: calc(var(--u) * 0.5) solid var(--ink);
+}
+
+/* ——— The photo album ——— */
+.wk-album-title {
+  justify-content: space-between;
+}
+.wk-album {
+  column-gap: calc(var(--sp-gap) * 1.1);
+}
+.wk-album--3 {
+  columns: 3 12em;
+}
+.wk-album--2 {
+  columns: 2 12em;
+}
+.wk-snap {
+  /* Only the print and its head hold together; the note may run on into the next column, so
+     the columns end level instead of leaving a hole under the shorter one. */
+  display: block;
+  width: 100%;
+  margin: calc(var(--u) * 3) 0 calc(var(--u) * 6);
+}
+.wk-snap-print {
+  margin: 0 calc(var(--u) * 1) calc(var(--u) * 2);
+}
+.wk-tape--r {
+  left: auto;
+  right: 8%;
+  transform: rotate(8deg);
+}
+.wk-snap-note {
+  padding: 0 calc(var(--u) * 1.5);
+}
+.wk-snap-copy {
+  font-size: max(15px, calc(var(--u) * 4.2));
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ——— The hall of fame ——— */
+.wk-plaque {
+  text-align: center;
+  margin: 0 auto calc(var(--u) * 5);
+  padding: calc(var(--u) * 3) calc(var(--u) * 5);
+  border: calc(var(--u) * 0.6) solid var(--ink);
+  outline: calc(var(--u) * 0.3) solid var(--ink);
+  outline-offset: calc(var(--u) * 1.2);
+  background: color-mix(in srgb, #e9c65b 45%, var(--paper, #fff));
+  max-width: 92%;
+}
+.wk-plaque .sp-label {
+  margin: 0;
+}
+.wk-plaque-hed {
+  font-family: var(--k-head);
+  font-size: max(30px, calc(var(--u) * 12));
+  line-height: 1;
+  margin: calc(var(--u) * 1) 0;
+}
+.wk-plaque-sub {
+  font-family: var(--k-label);
+  font-size: max(12px, calc(var(--u) * 3));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.wk-awards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--sp-gap) * 1.1);
+}
+.wk-awards--page {
+  grid-template-columns: 1fr;
+}
+.wk-award {
+  position: relative;
+  min-width: 0;
+  padding: calc(var(--u) * 4);
+  background: var(--wk-card);
+  border: calc(var(--u) * 0.5) solid var(--ink);
+  box-shadow: calc(var(--u) * 1.4) calc(var(--u) * 1.4) 0 var(--wk-ink);
+}
+.wk-award-top {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+  margin: calc(var(--u) * -2) 0 calc(var(--u) * 2);
+}
+.wk-rosette {
+  flex: none;
+  width: max(52px, calc(var(--u) * 20));
+  height: auto;
+}
+.wk-ros-petals {
+  fill: var(--wk-ink);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+.wk-ros-ring {
+  fill: var(--paper, #fff);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+.wk-ros-core {
+  fill: #e9c65b;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.wk-ros-tail {
+  fill: var(--wk-ink);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  filter: brightness(0.85);
+}
+.wk-ros-tail--b {
+  filter: brightness(0.7);
+}
+.wk-ros-no {
+  font:
+    700 11px var(--k-label),
+    sans-serif;
+  fill: var(--ink);
+  letter-spacing: 0.1em;
+}
+.wk-ros-n {
+  font:
+    700 22px var(--k-head),
+    serif;
+  fill: var(--ink);
+}
+.wk-award-cat {
+  font-family: var(--k-head);
+  font-size: max(24px, calc(var(--u) * 8.4));
+  line-height: 1;
+  margin: 0 0 calc(var(--u) * 1);
+}
+.sp--loud .wk-award-cat {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+}
+.wk-award-sub {
+  margin: 0;
+}
+.wk-award-frame {
+  margin: 0 0 calc(var(--u) * 3);
+  padding: calc(var(--u) * 1.6);
+  background: #e9c65b;
+  box-shadow:
+    inset 0 0 0 calc(var(--u) * 0.4) var(--ink),
+    0 0 0 calc(var(--u) * 0.4) var(--ink);
+}
+
+/* ——— Make & Do ——— */
+.wk-make-title,
+.wk-album-title {
+  margin-bottom: calc(var(--u) * 5);
+}
+.wk-make-title h2 {
+  font-size: max(30px, calc(var(--u) * 11));
+  line-height: 1.05;
+  margin: 0 0 calc(var(--u) * 1);
+}
+.wk-makes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--sp-gap) * 1.1);
+}
+.wk-makes--page {
+  grid-template-columns: 1fr;
+}
+.wk-make {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: max(34px, calc(var(--u) * 10)) calc(var(--u) * 4) calc(var(--u) * 4);
+  background: var(--wk-card);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  color: #222;
+}
+.wk-make .sp-kick {
+  color: #222;
+}
+.wk-make-tab {
+  position: absolute;
+  top: calc(var(--u) * -0.4);
+  left: calc(var(--u) * 4);
+  margin: 0;
+  padding: calc(var(--u) * 1) calc(var(--u) * 3);
+  background: var(--ink);
+  color: var(--paper, #fff);
+  font-family: var(--k-label);
+  font-size: max(12px, calc(var(--u) * 3));
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.wk-make--recipe {
+  background:
+    linear-gradient(#e2505a, #e2505a) 0 calc(var(--u) * 6) / 100% 2px no-repeat,
+    repeating-linear-gradient(
+      transparent 0 calc(var(--u) * 7.2 - 1px),
+      #9cc3e6 calc(var(--u) * 7.2 - 1px) calc(var(--u) * 7.2)
+    ),
+    #fffdf4;
+}
+.wk-make--diy {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgb(47 91 255 / 0.13) 0 1px,
+      transparent 1px calc(var(--u) * 5)
+    ),
+    repeating-linear-gradient(rgb(47 91 255 / 0.13) 0 1px, transparent 1px calc(var(--u) * 5)),
+    #f6f9ff;
+}
+.wk-make--playlist {
+  background: #fff6e0;
+  border-radius: calc(var(--u) * 3);
+  box-shadow: inset 0 calc(var(--u) * 5.2) 0 var(--wk-ink);
+}
+.wk-make--doodle {
+  background: #fff;
+  transform: rotate(-0.6deg);
+}
+.wk-make-pic {
+  margin: 0 0 calc(var(--u) * 3);
+}
+.wk-make-intro {
+  font-size: max(15px, calc(var(--u) * 4.4));
+  line-height: 1.45;
+  margin: 0 0 calc(var(--u) * 2);
+}
+.wk-make-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wk-make-steps li {
+  display: grid;
+  grid-template-columns: max(26px, calc(var(--u) * 8)) minmax(0, 1fr);
+  gap: calc(var(--u) * 2);
+  margin-bottom: calc(var(--u) * 2);
+}
+.wk-make-steps p {
+  font-size: max(15px, calc(var(--u) * 4.4));
+  line-height: 1.45;
+  margin: 0;
+}
+.wk-make-no {
+  display: grid;
+  place-items: center;
+  height: max(26px, calc(var(--u) * 8));
+  border-radius: 999px;
+  background: var(--wk-ink);
+  color: var(--ink);
+  font-family: var(--k-head);
+  font-size: max(14px, calc(var(--u) * 4));
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.wk-make--playlist .wk-make-no {
+  border-radius: calc(var(--u) * 1);
+  font-family: var(--k-label);
+}
+.wk-doodle {
+  flex: 1;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  min-height: max(160px, calc(var(--u) * 60));
+  margin-top: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2) calc(var(--u) * 3);
+  border: calc(var(--u) * 0.5) dashed color-mix(in srgb, var(--ink) 55%, transparent);
+  border-radius: calc(var(--u) * 2);
+  background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--ink) 22%, transparent) 1px,
+      transparent 1.4px
+    )
+    0 0 / calc(var(--u) * 5) calc(var(--u) * 5);
+}
+.wk-doodle span {
+  font-size: max(20px, calc(var(--u) * 6));
+  color: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+/* ——— Next week ——— */
+.wk-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: calc(var(--u) * 1.2);
+  list-style: none;
+  margin: 0 0 calc(var(--u) * 6);
+  padding: 0;
+}
+.wk-week li {
+  display: grid;
+  justify-items: center;
+  padding: calc(var(--u) * 1.6) 0 calc(var(--u) * 2);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  background: var(--wk-card);
+  font-family: var(--k-label);
+  line-height: 1;
+  min-width: 0;
+}
+.wk-week span,
+.wk-week small {
+  font-size: max(10px, calc(var(--u) * 2.8));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.wk-week b {
+  font-family: var(--k-head);
+  font-size: max(22px, calc(var(--u) * 10));
+  margin: calc(var(--u) * 1) 0;
+}
+.wk-week--on {
+  background: var(--wk-ink) !important;
+  box-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--ink);
+}
+.wk-list-item {
+  display: grid;
+  grid-template-columns: max(56px, calc(var(--u) * 17)) minmax(0, 1fr);
+  gap: calc(var(--u) * 3.4);
+  padding: calc(var(--u) * 3) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  break-inside: avoid;
+}
+.wk-list-date {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  margin: 0;
+  padding: calc(var(--u) * 1.6) calc(var(--u) * 0.6);
+  background: var(--ink);
+  color: var(--paper, #fff);
+  font-family: var(--k-label);
+  line-height: 1;
+  text-align: center;
+}
+.wk-list-date span {
+  font-size: max(11px, calc(var(--u) * 3));
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.wk-list-date b {
+  font-family: var(--k-head);
+  font-size: max(26px, calc(var(--u) * 10));
+  margin-top: calc(var(--u) * 1);
+}
+.wk-list-any {
+  overflow-wrap: anywhere;
+}
+
+/* ——— On the front ——— */
+.wk-flag {
+  display: inline-block;
+  margin: 0;
+  padding: calc(var(--u) * 1) calc(var(--u) * 3);
+  background: var(--k-accent, var(--ink));
+  color: var(--ink);
+  border: calc(var(--u) * 0.4) solid var(--ink);
+  font-family: var(--k-head, inherit);
+  font-size: max(14px, calc(var(--u) * 4.6));
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  transform: rotate(-1.5deg);
+  white-space: nowrap;
+}
+.wk-wip {
+  margin: calc(var(--u) * 3) 0;
+  font-family: var(--k-label, inherit);
+}
+.wk-wip-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 1) calc(var(--u) * 4);
+  border-bottom: calc(var(--u) * 0.6) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1.2);
+  margin-bottom: calc(var(--u) * 3);
+}
+.wk-wip-hed {
+  font-family: var(--k-head, inherit);
+  font-size: max(22px, calc(var(--u) * 8));
+  line-height: 1;
+  margin: 0;
+}
+.wk-wip-to {
+  font-size: max(12px, calc(var(--u) * 3));
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+}
+.wk-wip-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(84px, calc(var(--u) * 26)), 1fr));
+  gap: calc(var(--u) * 3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wk-wip-row li {
+  transform: rotate(var(--tilt));
+}
+.wk-wip-row a {
+  display: block;
+  padding: calc(var(--u) * 1.4) calc(var(--u) * 1.4) 0;
+  background: #fff;
+  color: #2a2a2a;
+  text-decoration: none;
+  box-shadow:
+    0 calc(var(--u) * 0.5) calc(var(--u) * 1.4) rgb(0 0 0 / 0.22),
+    0 0 0 1px rgb(0 0 0 / 0.08);
+}
+.wk-wip-pic {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.wk-wip-cap {
+  display: block;
+  font-family: var(--hb-hand), "Bradley Hand", cursive;
+  font-size: max(14px, calc(var(--u) * 4.2));
+  line-height: 1.1;
+  padding: calc(var(--u) * 1) 0 calc(var(--u) * 1.4);
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 760px) {
+  .wk-awards,
+  .wk-makes {
+    grid-template-columns: 1fr;
+  }
+  .wk-album--3,
+  .wk-album--2 {
+    columns: 1;
+  }
+  .wk-week {
+    gap: 4px;
+  }
+  .wk-week b {
+    font-size: 20px;
+  }
+  .wk-ten-title {
+    gap: 14px;
+  }
+  .wk-make--doodle {
+    transform: none;
+  }
+}
+
+@media print {
+  .wk-wip-row a {
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.2);
+  }
+}
+
+.wk-snap-print,
+.wk-snap-note .sp-hed {
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+/* On a phone the week's pictures go two to a row (three to a row would strand the fourth beside
+   two empty frames); an odd one out is centred under the rest. */
+@media (max-width: 760px) {
+  .wk-wip-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .wk-wip-row li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - var(--u) * 1.5);
+  }
+}
+
+/* The long read's columns balance to the line: a paragraph may leave a single line at a column's
+   foot or head, rather than the column ending two or three lines short of the one beside it. */
+.wk-long-copy p {
+  orphans: 1;
+  widows: 1;
+}

@@ -1,15 +1,20 @@
-import type { Image as ImageData } from "@repo/shared";
+import type { Image as ImageData, StoryItem } from "@repo/shared";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { Burst } from "@/features/print/burst";
 import { printedPhoto } from "@/features/print/photo";
+import { FillPlates } from "../plates";
 import { longestWord } from "./edition-data";
 
-export type Theme = "front" | "screen" | "gaming" | "back";
+export type Theme = "front" | "screen" | "play" | "back";
+
+/** Sections that always lead with one plate: Music on orange, Startups on blue. */
+const LEAD: Record<string, Theme> = { music: "front", startups: "screen" };
 
 /** The plates a theme leads with: orange-led pages, or blue-led ones. */
-export const themeFor = (order: number): Theme => (order % 2 === 0 ? "screen" : "front");
+export const themeFor = (order: number, slug = ""): Theme =>
+  LEAD[slug] ?? (order % 2 === 0 ? "screen" : "front");
 
 /**
  * The printed sheet: a bright-white tabloid page in its section's two inks. `cut` is a story
@@ -176,7 +181,7 @@ export function MiniMark({
   children,
 }: {
   href: string;
-  /** The page's line: "Page 2 · Screen & Sound · Sat 26 Sept 2026". */
+  /** The page's line: "Page 2 · Screen · Sat 26 Sept 2026". */
   children: ReactNode;
 }) {
   return (
@@ -205,6 +210,7 @@ export function Photo({
   position,
   priority,
   children,
+  plates,
 }: {
   image: ImageData;
   sizes: string;
@@ -213,7 +219,17 @@ export function Photo({
   position?: string;
   priority?: boolean;
   children?: ReactNode;
+  /** A story with more than one picture prints them all, as a group, in the photo's place. */
+  plates?: Pick<StoryItem, "slug" | "images">;
 }) {
+  if (plates && plates.images.length > 1) {
+    return (
+      <figure className={`tb-photo tb-photo--plates ${className ?? ""}`}>
+        <FillPlates story={plates} sizes={sizes} priority={priority} />
+        {children}
+      </figure>
+    );
+  }
   return (
     <figure className={`tb-photo ${className ?? ""}`}>
       <Image

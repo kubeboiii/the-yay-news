@@ -155,7 +155,7 @@
   font-size: calc(var(--u) * 28);
   line-height: 0.8;
 }
-.tb-theme-gaming .tb-box {
+.tb-theme-play .tb-box {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
@@ -1519,7 +1519,7 @@
   top: calc(var(--u) * -3);
 }
 
-/* ---------- gaming, round two ---------- */
+/* ---------- play, round two ---------- */
 
 .tb-game2-print {
   aspect-ratio: 4 / 3.2;
@@ -2164,7 +2164,7 @@
     grid-template-columns: calc(var(--u) * 11) 1fr;
   }
 
-  /* gaming */
+  /* play */
   .tb-box .tb-pixels {
     --px: 2.2;
   }
@@ -2940,7 +2940,7 @@
   transform: rotate(-4deg);
 }
 
-/* Gaming: a story in a column printed on a cartridge label. */
+/* Play: a story in a column printed on a cartridge label. */
 
 .tb-cart-grip {
   overflow: hidden;
@@ -2962,7 +2962,7 @@
   margin-top: calc(var(--u) * -1);
   background-image: repeating-linear-gradient(
     -45deg,
-    var(--a) 0 calc(var(--u) * 2.2),
+    var(--section-colour, var(--a)) 0 calc(var(--u) * 2.2),
     transparent calc(var(--u) * 2.2) calc(var(--u) * 4.4)
   );
   border-top: calc(var(--u) * 0.6) solid var(--ink);
@@ -3864,4 +3864,76 @@
   --a-ink: var(--pz-ink);
   --b-ink: var(--pz-ink);
   --rev: var(--pz-ink);
+}
+
+/* ---------- the playable back page ---------- */
+.tb-puzzles .tb-tile--search {
+  grid-column: 1 / span 2;
+}
+/* The Sunday crossword (a 9 × 9) takes the row to itself, its clues beside the grid. */
+.tb-puzzles .tb-tile--xw:has(.pl-xw--big) {
+  grid-column: 1 / -1;
+}
+.tb-puzzles:has(.pl-xw--big) .tb-tile--search {
+  grid-column: 1 / span 2;
+}
+.tb-puzzles--2 .tb-tile--search,
+.tb-puzzles--1 .tb-tile--search {
+  grid-column: 1;
+}
+.tb-play .pl-title,
+.tb-play .pl-xw-dir {
+  font-family: var(--font-head), "Libre Franklin", sans-serif;
+}
+.tb-yday-grid {
+  width: calc(var(--u) * 26);
+  flex: none;
+}
+.tb-keepsakes {
+  margin-top: calc(var(--u) * 6);
+  border-top: calc(var(--u) * 0.6) solid var(--ink);
+  padding-top: calc(var(--u) * 3);
+}
+.tb-plane {
+  margin-top: calc(var(--u) * 4);
+}
+@container (max-width: 760px) {
+  .tb-puzzles .tb-tile--search {
+    grid-column: 1;
+  }
+  .tb-yday-grid {
+    width: 130px;
+  }
+}
+
+/* ---------- Picture groups (see ../plates.tsx) ---------- */
+
+.tb-sheet,
+.tb-cut-gallery {
+  --plate-accent: var(--a);
+}
+
+.tb-pics .pl-frame-label {
+  font-family: var(--font-text);
+  font-size: calc(var(--u) * 2.9);
+}
+
+.tb-cut-gallery {
+  margin-inline: calc(var(--u) * 6);
+}
+
+/* A pair of brief columns may carry an item on over the column break, so both end level (never
+   splitting a picture or a head). */
+.tb-briefs--pair .tb-brief {
+  break-inside: auto;
+}
+.tb-briefs--pair .tb-brief :is(figure, h3, .ba-behind, .ba-bigkick, .tb-kicker) {
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+/* The daily mini (a 5 × 5) needn't be drawn wall to wall: at full width it sets the puzzle row
+   far deeper than the ladder and riddle beside it, and leaves bare paper under them. */
+.tb-tile--xw .pl-xw:not(.pl-xw--big) .pl-xw-board {
+  max-width: 13em;
 }

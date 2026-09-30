@@ -1,6 +1,5 @@
 // Issue 42, Wednesday 30 September 2026. Real good-news stories, rewritten in the paper's own voice,
 // each with its source article; images fetched with apps/frontend/scripts/fetch_image.py.
-import { ladder, mini, riddle } from "../puzzles.ts";
 import type { SeedEdition } from "../types.ts";
 
 export const issue42: SeedEdition = {
@@ -87,7 +86,345 @@ export const issue42: SeedEdition = {
 
   inside: [
     {
-      section: "screen-and-sound",
+      section: "tech",
+      stories: [
+        {
+          slug: "doom-ported-to-sql",
+          kicker: "Database games",
+          headline: "Database engineer rebuilds all of 1993’s Doom in SQL, and it plays",
+          dek: "The game logic takes about 5,900 lines of queries, fewer than the original C, and a four-player deathmatch came almost free.",
+          body: [
+            "Most databases spend their days tallying invoices. At the database company CedarDB, one has been fighting demons. Engineer Lukas Vogel has rebuilt the original 1993 Doom so that both the game’s rules and its pictures are produced by SQL queries running inside the database.",
+            "He set himself strict rules. A small Python script may only read the keyboard, keep time and put the finished picture on screen. Everything else, from opening doors to rockets in flight, lives in tables. The game ticks at its original 35 times a second, and the renderer turns out a full 320-by-200 frame up to 60 times a second on Vogel’s laptop.",
+            "Drawing one frame takes about 1,300 lines of SQL spread over 89 steps known as common table expressions. The game logic runs to roughly 5,900 lines, which Vogel points out is shorter than the original C code at about 9,000. “To be honest, I was surprised how easy it is to express pretty complicated game logic in SQL,” he wrote.",
+            "Keeping everything as data has perks. The shotgun is a single row in a table, so when Vogel felt underpowered he edited it to fire 500 pellets at once. And because a database already handles logins, permissions and lots of users at the same time, multiplayer came almost for nothing: up to four people can join a public deathmatch, and anyone waiting in the queue can query the live match.",
+            "This is his second attempt. Last year’s DOOMQL drew ASCII art that people pointed out looked more like Wolfenstein 3D. The new version looks like the real thing, and Vogel credits the original’s designer in a section titled “John Carmack was a genius.”",
+            "Somewhere, a spreadsheet is feeling nervous.",
+          ],
+          source: "CedarDB",
+          sourceUrl: "https://cedardb.com/blog/sqldoom/",
+          image: {
+            file: "/editions/42/doom-ported-to-sql.jpg",
+            alt: "A frame of Doom rendered by SQL, with a live chart of frames per second beside it and the query along the bottom",
+            credit: "Lukas Vogel / CedarDB",
+            from: "https://cedardb.com/blog/sqldoom/",
+          },
+          sticker: "It runs!",
+        },
+        {
+          slug: "center-pivot-lawn-mower",
+          kicker: "Garden robotics",
+          headline: "YouTuber builds a tiny farm irrigation rig that mows his lawn in circles",
+          dek: "It keeps its long arm straight using the same trick giant crop sprinklers use.",
+          body: [
+            "Fly over parts of the United States or Australia and the farmland is dotted with huge green circles, drawn by centre-pivot irrigation rigs sweeping slowly round a fixed point. The maker behind the YouTube channel rctestflight has built a small one for his garden and swapped the water for blades.",
+            "Like the real thing, his rig is a chain of loosely jointed sections, each on its own wheels. The outermost wheels roll at a steady pace, and each inner section catches up whenever the joint beside it bends too far. At first simple limit switches did the job; later a smoother potentiometer-based controller took over. A carriage carrying a pair of motor-driven knives shuttles back and forth along one arm, trimming as the whole thing turns.",
+            "His damp Pacific Northwest garden fought back with rust, mud and fast-growing plants. Luckily the circle was already worn in, from earlier experiments to see how much punishment RC cars could take.",
+            "The result is the tidiest crop circle on the street.",
+          ],
+          source: "Hackaday",
+          sourceUrl: "https://hackaday.com/2026/09/27/center-pivot-system-modified-to-mow-lawn/",
+          image: {
+            file: "/editions/42/center-pivot-lawn-mower.jpg",
+            alt: "Aerial view of a lawn cut into concentric circles by a miniature centre-pivot rig with four wheeled towers",
+            credit: "rctestflight via Hackaday",
+            from: "https://hackaday.com/2026/09/27/center-pivot-system-modified-to-mow-lawn/",
+          },
+        },
+        {
+          slug: "pico-8-handheld-made-real",
+          kicker: "Pocket games",
+          headline: "Maker gives the make-believe PICO-8 games console a real, square body",
+          dek: "A 720-by-720 screen matches the virtual machine’s square picture exactly.",
+          body: [
+            "PICO-8 is a “fantasy console”: a pretend 8-bit games machine that exists only as software. A builder known as UncleStem has made it solid, with a Game Boy-style handheld built around a Raspberry Pi Zero 2 W and a square 720-by-720 screen to match PICO-8’s square picture. The case began as a 3D print, then was milled from aluminium by a professional once his own attempt stalled.",
+          ],
+          source: "Hackaday",
+          sourceUrl: "https://hackaday.com/2026/09/28/this-pico-8-handheld-is-no-fantasy/",
+          image: {
+            file: "/editions/42/pico-8-handheld-made-real.jpg",
+            alt: "The purple 3D-printed PICO-8 handheld on a cutting mat",
+            credit: "Hackaday",
+            from: "https://hackaday.com/2026/09/28/this-pico-8-handheld-is-no-fantasy/",
+          },
+        },
+        {
+          slug: "postmarketos-renamed-nura",
+          kicker: "New name",
+          headline: "Phone Linux project postmarketOS picks a new name from 300 suggestions",
+          dek: "The winner comes from Sardinian stone towers that have stood for thousands of years.",
+          body: [
+            "The open-source project that keeps old phones useful by running Linux on them is now called Nura. The name is short for nuraghe, granite towers in Sardinia built 5,000 or more years ago, many of which still stand. The old name, the team said, was hard to say. Community member Davide Depau suggested the winner, which was picked from more than 300 ideas and revealed at the project’s own conference.",
+          ],
+          source: "Nura",
+          sourceUrl: "https://nura.eco/blog/2026/09/27/nura-rename/",
+          image: {
+            file: "/editions/42/postmarketos-renamed-nura.jpg",
+            alt: "Stickers bearing the project's new name, Nura",
+            credit: "Nura",
+            from: "https://nura.eco/blog/2026/09/27/nura-rename/",
+          },
+        },
+      ],
+    },
+    {
+      section: "startups",
+      stories: [
+        {
+          slug: "dazzle-camera-roll-assistant",
+          kicker: "Snap judgement",
+          headline:
+            "Marissa Mayer’s new startup Dazzle reads your camera roll to plan your weekends",
+          dek: "The former Yahoo boss reckons your photos know more about what you love than your inbox ever will.",
+          body: [
+            "Marissa Mayer, once the boss of Yahoo, has a new idea about where your life is really written down. It is not in your email or your calendar. It is in the thousands of photos sitting on your phone. Her startup, Dazzle, has unveiled a personal AI assistant that learns about you from your camera roll and nothing else.",
+            "“I think that photos are an underappreciated source of information,” Mayer told TechCrunch. Pictures, she argues, quietly record your hobbies, the food you like, the clothes you wear and the people you spend time with. A few snaps from the slopes say you ski; a run of pictures from one pitch says your children play football. Or, as she put it: “if a photo is worth a thousand words, your camera roll is worth millions”.",
+            "Dazzle does two kinds of job. The quick ones use your latest photos: snap a flyer and it can pull the event details into your calendar, or spot the thing in the kitchen that needs fixing. The slower, cleverer ones dig through the whole library to suggest holidays, birthday presents and days out.",
+            "When TechCrunch’s reporter gave it a go, Dazzle noticed past trips to Spain and Greece and suggested more of the Mediterranean, including Sicily, a visit from four years earlier. Closer to home, it proposed a pottery studio and bioluminescent kayaking, which is a far better weekend than most apps have ever offered.",
+            "Mayer says the assistant is built with privacy in mind, and discards any personal information the AI flags as sensitive. The company raised $8 million in a seed round last December, led by Kirsten Green of Forerunner Ventures, and Dazzle works both as a mobile app and by text. Your blurry holiday photos, it turns out, were research all along.",
+          ],
+          source: "TechCrunch",
+          sourceUrl:
+            "https://techcrunch.com/2026/09/29/with-dazzle-marissa-mayer-bets-your-camera-roll-has-more-info-on-your-life-than-your-inbox/",
+          image: {
+            file: "/editions/42/dazzle-camera-roll-assistant.jpg",
+            alt: "Marissa Mayer sitting in the middle of the smiling Dazzle team in front of the company’s sign",
+            credit: "Dazzle via TechCrunch",
+            from: "https://techcrunch.com/2026/09/29/with-dazzle-marissa-mayer-bets-your-camera-roll-has-more-info-on-your-life-than-your-inbox/",
+          },
+        },
+        {
+          slug: "feather-modular-robot",
+          kicker: "Build-a-bot",
+          headline:
+            "Two founders want Feather to be the robot that developers can finally tinker with",
+          dek: "Its modular humanoid costs $30,000 and is already cooking in restaurants and tidying science labs.",
+          body: [
+            "Feather, a young robotics company, wants to do for robots what Android did for phones: give developers a platform they can build on. Its modular humanoid can be put together in different shapes for different jobs, and it is already at work as a cook in restaurants and as a cleaner in science labs.",
+            "The robot costs $30,000, roughly half the price of Unitree’s H2 Edu, and it can run AI models from Nvidia, Skild or Physical Intelligence. Co-founders Hoa Mai and Parsa Bakhtiari, a former Tesla Model 3 engineer, have raised a $7.6 million pre-seed round led by Gradient Ventures, and early sales have already passed $1 million.",
+            "“You can’t buy a Tesla robot today and develop on top of it,” Mai told TechCrunch. With Feather, you can, and presumably teach it to make an omelette.",
+          ],
+          source: "TechCrunch",
+          sourceUrl:
+            "https://techcrunch.com/2026/09/24/meet-feather-the-startup-building-the-android-of-robotics-for-developers/",
+          image: {
+            file: "/editions/42/feather-modular-robot.jpg",
+            alt: "Feather co-founders Hoa Mai and Parsa Bakhtiari standing either side of their white two-armed robot",
+            credit: "Feather via TechCrunch",
+            from: "https://techcrunch.com/2026/09/24/meet-feather-the-startup-building-the-android-of-robotics-for-developers/",
+          },
+        },
+        {
+          slug: "peak-xv-surge-riffle-cohort",
+          kicker: "Class of 12",
+          headline:
+            "Peak XV’s newest startup class includes a browser studio for making music together",
+          dek: "Eighteen young companies join the Surge programme, now with up to $5 million each.",
+          body: [
+            "Peak XV has picked 18 startups for the twelfth class of its Surge programme, and raised the most it will put into each at seed from $3 million to $5 million. The cohort runs from satellites to pipe-crawling robots, but our favourite is Riffle, a browser tool that lets musicians write and collaborate on songs all in one place. More than half the class is based in India, and together they have raised over $90 million.",
+          ],
+          source: "TechCrunch",
+          sourceUrl:
+            "https://techcrunch.com/2026/09/28/peak-xv-goes-bigger-at-seed-with-new-surge-cohort-as-series-a-bar-rises/",
+          image: {
+            file: "/editions/42/peak-xv-surge-riffle-cohort.jpg",
+            alt: "Riffle’s music studio in a browser, with colourful tracks laid out on a canvas and a sticky note suggesting a jungle beat",
+            credit: "Riffle via Music Ally",
+            from: "https://musically.com/2026/08/12/startup-riffle-launches-its-multiplayer-music-studio-web-app/",
+          },
+        },
+      ],
+    },
+    {
+      section: "screen",
+      stories: [
+        {
+          slug: "i-play-rocky-tiff-crowd",
+          kicker: "Festival favourite",
+          headline: "I Play Rocky, the story of how Stallone got Rocky made, has Toronto cheering",
+          dek: "Peter Farrelly’s film about the famous underdog script had the Toronto crowd applauding all the way through.",
+          body: [
+            "Sylvester Stallone’s Rocky is the most famous underdog story in film. Now the story of how Rocky itself got made is winning over crowds. Peter Farrelly’s I Play Rocky premiered at the Toronto International Film Festival this month, and audiences clapped all the way through, cheering on the underdog.",
+            "Anthony Ippolito plays the young Stallone, a theatre usher with big ideas and not much else. He meets his girlfriend, Sasha, played by AnnaSophia Robb, at the cinema where he works. Then, watching Muhammad Ali fight Chuck Wepner, he is struck by the idea for a boxing picture, and he writes the first draft of Rocky in three days.",
+            "The producers, Robert Chartoff and Irwin Winkler, played by Toby Kebbell and P.J. Byrne, love the script but want an established star in the lead. Stallone will not budge: he is playing Rocky. What follows is a shoot on a tiny budget with obstacle after obstacle, with a director, John Avildsen (Jay Duplass), who sees the script as a character study, and a leading man and a Carl Weathers (Stephan James) who, delightfully, cannot actually box.",
+            "Toronto loved it. Awards Radar called it an “incredibly satisfying crowdpleaser” and reported that the audience applauded throughout. The site gave it three and a half stars out of five.",
+            "Matt Dillon, Tracy Letts, Robert Morgan and Kiki Seto also appear, and Amazon MGM Studios is releasing the film. As one reviewer put it, this is “something you’ll be able to watch over and over again”. Cue the trumpets.",
+          ],
+          source: "Awards Radar",
+          sourceUrl:
+            "https://awardsradar.com/2026/09/14/tiff-review-i-play-rocky-is-an-incredibly-satisfying-crowdpleaser-that-will-have-you-cheering-for-the-underdog/",
+          image: {
+            file: "/editions/42/i-play-rocky-tiff-crowd.jpg",
+            alt: "Anthony Ippolito as the young Sylvester Stallone jogging along a beach with a big dog on a lead",
+            credit: "Amazon MGM Studios via Awards Radar",
+            from: "https://awardsradar.com/2026/09/14/tiff-review-i-play-rocky-is-an-incredibly-satisfying-crowdpleaser-that-will-have-you-cheering-for-the-underdog/",
+          },
+          sticker: "Ding ding",
+        },
+        {
+          slug: "endgame-encore-tops-box-office",
+          kicker: "Encore!",
+          headline: "Seven years on, Avengers: Endgame returns and wins the weekend again",
+          dek: "Its $26 million opening is the third-best ever for a re-release, beaten only by Star Wars and The Lion King.",
+          body: [
+            "Most films leave cinemas and stay gone. Avengers: Endgame, the 2019 superhero finale, came back last weekend as Avengers: Endgame Encore and went straight to No. 1 at the North American box office with $26 million.",
+            "That is the third-biggest opening ever for a re-release, behind the 1997 Special Edition of Star Wars ($35.9 million) and Disney’s 3-D Lion King from 2011, and just ahead of last year’s 20th-anniversary return of Revenge of the Sith ($25.4 million). The Encore carries extra scenes, a strong lure for fans warming up for the next Avengers film, Doomsday.",
+            "It pipped Resident Evil, which took $23.3 million in its second weekend, with Heart of the Beast third on $20 million and Primetime fourth on $19.1 million. Endgame is now the third-highest-grossing domestic first-run release of all time, since Spider-Man: Brand New Day nudged past it. The snap, it turns out, works on ticket queues too.",
+          ],
+          source: "Rotten Tomatoes",
+          sourceUrl:
+            "https://editorial.rottentomatoes.com/article/weekend-box-office-avengers-endgame-encore-week-1/",
+          image: {
+            file: "/editions/42/endgame-encore-tops-box-office.jpg",
+            alt: "Captain America at the front of the assembled heroes in a still from Avengers: Endgame",
+            credit: "Marvel Studios via Rotten Tomatoes",
+            from: "https://editorial.rottentomatoes.com/article/weekend-box-office-avengers-endgame-encore-week-1/",
+          },
+        },
+        {
+          slug: "aperitif-tg4-dating-by-courses",
+          kicker: "Love, as Gaeilge",
+          headline: "Irish-language dating show serves each date as a separate course",
+          dek: "TG4’s Aperitíf is First Dates in Irish, set over a three-course dinner.",
+          body: [
+            "TG4’s new Aperitíf is First Dates in Irish, with a twist from the kitchen: each hopeful meets three dates at Dublin’s Iveagh Garden Hotel, one arriving with the starter, one with the main and one with dessert.",
+            "Among the singletons is Isibéal, a Galway teacher who is the voice of Ring doorbells in Ireland and the UK. Chemistry is not guaranteed; a warm welcome at the door is.",
+          ],
+          source: "The Irish Times",
+          sourceUrl:
+            "https://www.irishtimes.com/culture/tv-radio/2026/09/23/aperitif-on-tg4-this-first-dates-as-gaeilge-show-is-cheap-cheerful-and-quietly-disarming/",
+          image: {
+            file: "/editions/42/aperitif-tg4-dating-by-courses.jpg",
+            alt: "Two contestants on a dinner date in TG4's Apéritif",
+            credit: "The Irish Times",
+            from: "https://www.irishtimes.com/culture/tv-radio/2026/09/23/aperitif-on-tg4-this-first-dates-as-gaeilge-show-is-cheap-cheerful-and-quietly-disarming/",
+          },
+        },
+      ],
+    },
+    {
+      section: "play",
+      stories: [
+        {
+          slug: "toem-2-photo-adventure",
+          kicker: "New release",
+          headline: "Toem 2 arrives, and its bus driver is a fluffy thing in a bowtie",
+          dek: "Sweden’s Something We Made has released its black-and-white photo sequel, where snapping strangers’ problems pays your fare.",
+          body: [
+            "The fastest way across Toem 2’s countryside is to photograph everyone’s problems until the bus agrees to take you. Swedish studio Something We Made released its black-and-white photo adventure on 29 September for PC, Mac, Linux, PlayStation 5, Switch and Switch 2.",
+            "The quiet, camera-toting hero of the first game is back several years on, heading for the Whirlhill Festival to see the Whirling Birch bloom. The bus refuses to go direct, so every stop becomes a detour: help the locals, earn stamps and tokens, move one stop closer to the tree.",
+            "This time the hero can run, jump and climb through a more fully three-dimensional world, while the characters stay flat, hand-drawn cut-outs. Each region hands out a new camera attachment, starting with a pair of scissors for snipping at the scenery, and there is a floating drone and a tripod for trickier shots.",
+            "Each area has its own look, from the farmland of Cropten to the fairytale Taletorp, and each has a main character with a longer quest to help with. The people are the point. Somewhere along the route you may meet a skeleton stuck in a hanging cage, fretting about whether it left the stove on. The wildlife gets stamps of its own, with names like Blobnuts and Mopeyrelles.",
+            "Reviewing it for GamesRadar+, Sam Loveridge called Toem 2 “a game for nosy people” and “probably the gentlest Metroidvania-alike you’re ever going to find.” Her main complaint is that its roughly four hours end; 95% of critics on OpenCritic recommend it.",
+            "Pack a spare memory card. The bus is patient, but the locals are chatty.",
+          ],
+          source: "GamesRadar+",
+          sourceUrl: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+          image: {
+            file: "/editions/42/toem-2-photo-adventure.jpg",
+            alt: "A black-and-white cartoon bus driven by a fluffy creature wearing a bowtie, in Toem 2",
+            credit: "Something We Made via GamesRadar+",
+            from: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+          },
+          more: [
+            {
+              file: "/editions/42/toem-2-photo-adventure-2.jpg",
+              alt: "Knights chat in a black-and-white inn, one complaining he has no time to pet his horse",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+            },
+            {
+              file: "/editions/42/toem-2-photo-adventure-3.jpg",
+              alt: "A little toy-like town in Toem 2, all grey card and tiny figures",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+            },
+            {
+              file: "/editions/42/toem-2-photo-adventure-4.jpg",
+              alt: "The camera screen snaps a critter and stamps it Critter Discovered",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+            },
+          ],
+          sticker: "Out now",
+        },
+        {
+          slug: "witcher-3-low-poly-pigeons",
+          kicker: "Remaster watch",
+          headline:
+            "The Witcher 3 remaster changes almost everything except its beloved blocky pigeons",
+          dek: "Fans feared the 2015 game’s famously low-detail birds had been polished away; they were looking at the wrong pigeon.",
+          body: [
+            "The Witcher 3: Wild Hunt – Remastered arrived on 29 September as a free update for anyone who owns the 2015 game, and within hours it had beaten the game’s all-time Steam player peak. Almost everything looks new. That was the worry.",
+            "A Reddit post titled “Pigeons Remastered” put an old and new bird side by side, and fans feared the game’s famously chunky, low-poly flying pigeons had been smoothed out of existence.",
+            "Kotaku editor Ethan Gach called it “a false alarm”: the fancier bird was a street pigeon, which always looked like that, and the flying flock remains as angular as ever, now under path-traced light. Replying to Gach, one relieved fan announced the pigeons were still there; the top response read: “Glory to low poly.”",
+            "Some things are too blocky to fix.",
+          ],
+          source: "GamesRadar+",
+          sourceUrl:
+            "https://www.gamesradar.com/games/the-witcher/the-witcher-3-remastered-did-not-in-fact-change-the-rpgs-hilarious-low-poly-pigeons-much-to-fans-delight-glory-to-low-poly/",
+          image: {
+            file: "/editions/42/witcher-3-low-poly-pigeons.jpg",
+            alt: "Geralt of Rivia in chainmail in The Witcher 3",
+            credit: "CD Projekt Red via GamesRadar+",
+            from: "https://www.gamesradar.com/games/the-witcher/the-witcher-3-remastered-did-not-in-fact-change-the-rpgs-hilarious-low-poly-pigeons-much-to-fans-delight-glory-to-low-poly/",
+          },
+          more: [
+            {
+              file: "/editions/42/witcher-3-low-poly-pigeons-2.jpg",
+              alt: "Geralt, bruised and bloodied, lies back on the ground",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/the-witcher/the-witcher-3-remastered-did-not-in-fact-change-the-rpgs-hilarious-low-poly-pigeons-much-to-fans-delight-glory-to-low-poly/",
+            },
+            {
+              file: "/editions/42/witcher-3-low-poly-pigeons-3.jpg",
+              alt: "Geralt frowns into the light of a campfire",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/the-witcher/the-witcher-3-remastered-did-not-in-fact-change-the-rpgs-hilarious-low-poly-pigeons-much-to-fans-delight-glory-to-low-poly/",
+            },
+          ],
+        },
+        {
+          slug: "castlevania-40-free-on-mobile",
+          kicker: "Free game",
+          headline: "Castlevania turns 40 and Konami is giving the original away on phones",
+          dek: "Claim it by 24 October and it stays yours.",
+          body: [
+            "Konami is marking 40 years of Castlevania, whose anniversary fell on 26 September, by giving away the original NES game on the App Store and Google Play until 24 October. Anyone who grabs the 1986 vampire-whipper in time can keep playing it after the offer ends. The series now runs to more than 30 games.",
+          ],
+          source: "Shacknews",
+          sourceUrl:
+            "https://www.shacknews.com/article/150820/konami-castlevania-free-ios-android-40th-anniversary",
+          image: {
+            file: "/editions/42/castlevania-40-free-on-mobile.jpg",
+            alt: "Castlevania's hero on the stairs of Dracula's castle",
+            credit: "Shacknews",
+            from: "https://www.shacknews.com/article/150820/konami-castlevania-free-ios-android-40th-anniversary",
+          },
+        },
+        {
+          slug: "valheim-cheaters-confession-code",
+          kicker: "Honesty policy",
+          headline:
+            "Valheim lets cheaters earn achievements again, if they type a confession first",
+          dek: "Iron Gate Studio has left the final judgement to a Norse god.",
+          body: [
+            "Viking survival game Valheim has reached version 1.0 with 50 new achievements, and Iron Gate Studio has softened its rule locking them for anyone who used developer commands. To opt back in, type “yesiuseddevcommandsbutiwantmyachievementsanyway”. The patch notes leave it to your conscience: “Oden will surely know if you use it dishonourably.”",
+          ],
+          source: "GamesRadar+",
+          sourceUrl:
+            "https://www.gamesradar.com/games/survival/valheim-1-0-lets-cheaters-earn-achievements-by-admitting-their-crimes-and-then-cheating-even-harder-oden-will-surely-know-if-you-use-it-dishonourably/",
+          image: {
+            file: "/editions/42/valheim-cheaters-confession-code.jpg",
+            alt: "A Viking warrior walks through a blue-lit hall in Valheim",
+            credit: "GamesRadar+",
+            from: "https://www.gamesradar.com/games/survival/valheim-1-0-lets-cheaters-earn-achievements-by-admitting-their-crimes-and-then-cheating-even-harder-oden-will-surely-know-if-you-use-it-dishonourably/",
+          },
+        },
+      ],
+    },
+    {
+      section: "music",
       stories: [
         {
           slug: "u2-bewleys-balcony-50th",
@@ -113,43 +450,26 @@ export const issue42: SeedEdition = {
           sticker: "50 years",
         },
         {
-          slug: "endgame-encore-tops-box-office",
-          slot: "feature",
-          kicker: "Encore!",
-          headline: "Seven years on, Avengers: Endgame returns and wins the weekend again",
-          dek: "Its $26 million opening is the third-best ever for a re-release, beaten only by Star Wars and The Lion King.",
+          slug: "sam-smith-coliseum-residency",
+          kicker: "Eight nights",
+          headline: "Sam Smith swaps arena spectacle for a piano and a very big voice",
+          dek: "The To Be Free residency at the London Coliseum puts the singing front and centre, with BBC cameras rolling.",
           body: [
-            "Most films leave cinemas and stay gone. Avengers: Endgame, the 2019 superhero finale, came back last weekend as Avengers: Endgame Encore and went straight to No. 1 at the North American box office with $26 million.",
-            "That is the third-biggest opening ever for a re-release, behind the 1997 Special Edition of Star Wars ($35.9 million) and Disney’s 3-D Lion King from 2011, and just ahead of last year’s 20th-anniversary return of Revenge of the Sith ($25.4 million). The Encore carries extra scenes, a strong lure for fans warming up for the next Avengers film, Doomsday.",
-            "It pipped Resident Evil, which took $23.3 million in its second weekend. The snap, it turns out, works on ticket queues too.",
+            "Sam Smith spent eight nights at the London Coliseum between 8 and 19 September, and left most of the arena trimmings at home. The To Be Free residency put the voice front and centre, with songs from the new album Hazel Eyes, including My Guy, Hold On and the title track, alongside favourites such as I’m Not the Only One and Too Good at Goodbyes.",
+            "Unholy came back reworked with piano and backing harmonies in place of its electronic pulse, Smith took on Rufus and Chaka Khan’s Ain’t Nobody, and the night closed with Stay With Me. BBC camera crews filmed throughout for a television special, so the rest of us get a seat too. Attitude gave the run four stars and called it a reset that let the singing do the work.",
           ],
-          source: "Rotten Tomatoes",
+          source: "Attitude",
           sourceUrl:
-            "https://editorial.rottentomatoes.com/article/weekend-box-office-avengers-endgame-encore-week-1/",
+            "https://www.attitude.co.uk/culture/sam-smith-strips-back-the-spectacle-london-coliseum-residency-533981/",
           image: {
-            file: "/editions/42/endgame-encore-tops-box-office.jpg",
-            alt: "Captain America at the front of the assembled heroes in a still from Avengers: Endgame",
-            credit: "Marvel Studios via Rotten Tomatoes",
-            from: "https://editorial.rottentomatoes.com/article/weekend-box-office-avengers-endgame-encore-week-1/",
+            file: "/editions/42/sam-smith-coliseum-residency.jpg",
+            alt: "Sam Smith in a brown suit on a dark stage beside a pianist",
+            credit: "Attitude",
+            from: "https://www.attitude.co.uk/culture/sam-smith-strips-back-the-spectacle-london-coliseum-residency-533981/",
           },
         },
         {
-          slug: "aperitif-tg4-dating-by-courses",
-          slot: "brief",
-          kicker: "Love, as Gaeilge",
-          headline: "Irish-language dating show serves each date as a separate course",
-          dek: "TG4’s Aperitíf is First Dates in Irish, set over a three-course dinner.",
-          body: [
-            "TG4’s new Aperitíf is First Dates in Irish, with a twist from the kitchen: each hopeful meets three dates at Dublin’s Iveagh Garden Hotel, one arriving with the starter, one with the main and one with dessert.",
-            "Among the singletons is Isibéal, a Galway teacher who is the voice of Ring doorbells in Ireland and the UK. Chemistry is not guaranteed; a warm welcome at the door is.",
-          ],
-          source: "The Irish Times",
-          sourceUrl:
-            "https://www.irishtimes.com/culture/tv-radio/2026/09/23/aperitif-on-tg4-this-first-dates-as-gaeilge-show-is-cheap-cheerful-and-quietly-disarming/",
-        },
-        {
           slug: "colin-farrell-swift-video",
-          slot: "brief",
           kicker: "Casting call",
           headline: "Colin Farrell becomes the latest Irishman to wander into a Taylor Swift video",
           dek: "He follows Domhnall Gleeson, Cillian Murphy and Graham Norton.",
@@ -159,84 +479,78 @@ export const issue42: SeedEdition = {
           source: "The Irish Times",
           sourceUrl:
             "https://www.irishtimes.com/culture/music/review/2026/09/25/taylor-swifts-showgirl-encore-three-superb-new-songs-some-newly-wed-cringe-and-a-colin-farrell-cameo/",
+          image: {
+            file: "/editions/42/colin-farrell-swift-video.jpg",
+            alt: "Taylor Swift on stage in front of a red curtain",
+            credit: "The Irish Times",
+            from: "https://www.irishtimes.com/culture/music/review/2026/09/25/taylor-swifts-showgirl-encore-three-superb-new-songs-some-newly-wed-cringe-and-a-colin-farrell-cameo/",
+          },
         },
       ],
     },
     {
-      section: "gaming",
+      section: "money",
       stories: [
         {
-          slug: "toem-2-photo-adventure",
-          kicker: "New release",
-          headline: "Toem 2 arrives, and its bus driver is a fluffy thing in a bowtie",
-          dek: "Sweden’s Something We Made has released its black-and-white photo sequel, where snapping strangers’ problems pays your fare.",
+          slug: "craigslist-bob-ross-paintings",
+          kicker: "Happy accident",
+          headline: "Two Bob Ross paintings bought on Craigslist sell for $165,000",
+          dek: "Both were signed to a friend called Jan, and came with photos of Ross painting them in front of fans in 1987.",
           body: [
-            "The fastest way across Toem 2’s countryside is to photograph everyone’s problems until the bus agrees to take you. Swedish studio Something We Made released its black-and-white photo adventure on 29 September for PC, Mac, Linux, PlayStation 5, Switch and Switch 2.",
-            "The quiet, camera-toting hero of the first game is back several years on, heading for the Whirlhill Festival to see the Whirling Birch bloom. The bus refuses to go direct, so every stop becomes a detour: help the locals, earn stamps and tokens, move one stop closer to the tree.",
-            "This time the hero can run, jump and climb through a more fully three-dimensional world, while the characters stay flat, hand-drawn cut-outs. Each region hands out a new camera attachment, starting with a pair of scissors for snipping at the scenery, and there is a floating drone and a tripod for trickier shots.",
-            "The people are the point. Somewhere along the route you may meet a skeleton stuck in a hanging cage, fretting about whether it left the stove on. The wildlife gets stamps of its own, with names like Blobnuts and Mopeyrelles.",
-            "Reviewing it for GamesRadar+, Sam Loveridge called Toem 2 “a game for nosy people” and “probably the gentlest Metroidvania-alike you’re ever going to find.” Her main complaint is that its roughly four hours end; 95% of critics on OpenCritic recommend it.",
-            "Pack a spare memory card. The bus is patient, but the locals are chatty.",
+            "About ten years ago, someone scrolling Craigslist bought two landscape paintings by Bob Ross. On 15 September they went under the hammer at Caza Sikes, a gallery and auction house in Cincinnati, and made $65,000 and $100,000. Happy little trees, happier little bank balance.",
+            "It was not a steal at the time. Will Sikes, a partner at the firm, told the Cincinnati radio station WVXU that the consignor paid what “was probably a fair price”, though “far less than they are worth now.” Each painting carried a pre-sale estimate of $50,000 to $75,000, which the auction house itself called conservative, and “Mountain Landscape” sailed straight past it.",
+            "Both canvases date from 1987 and were painted wet-on-wet, the method Ross taught on The Joy of Painting from 1982 to 1994; Mountain Landscape measures 35 by 29 inches framed. They are not the pictures Ross painted for his television show or his instruction books. Each is inscribed on the back to “Jan”, who is believed to have run an art shop in Dayton, Ohio, where Ross gave a demonstration. The lots came with photographs of the day: Ross mid-painting, smiling for the camera, and one fan in a Bob Ross T-shirt. Bob Ross, Inc. authenticated both, and the certificates went with the paintings.",
+            "“Ross was an important figure during so many people’s formative years,” said the principal auctioneer, Graydon Sikes. “He’s transcended the world of art and television and become a pop culture phenomenon.”",
+            "Somewhere, a Craigslist buyer is quietly admiring a very happy accident.",
           ],
-          source: "GamesRadar+",
-          sourceUrl: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+          source: "Antique Trader",
+          sourceUrl:
+            "https://www.antiquetrader.com/bob-ross-paintings-bought-before-the-boom-sell-at-auction",
           image: {
-            file: "/editions/42/toem-2-photo-adventure.jpg",
-            alt: "A black-and-white cartoon bus driven by a fluffy creature wearing a bowtie, in Toem 2",
-            credit: "Something We Made via GamesRadar+",
-            from: "https://www.gamesradar.com/games/adventure/toem-2-review/",
+            file: "/editions/42/craigslist-bob-ross-paintings.jpg",
+            alt: "Bob Ross’s ‘Mountain Landscape’: a snowy peak above a turquoise stream, framed by tall trees, in an ornate gold frame",
+            credit: "Caza Sikes, via Antique Trader",
+            from: "https://www.antiquetrader.com/bob-ross-paintings-bought-before-the-boom-sell-at-auction",
           },
-          sticker: "Out now",
+          sticker: "$165k",
         },
         {
-          slug: "witcher-3-low-poly-pigeons",
-          slot: "feature",
-          kicker: "Remaster watch",
-          headline:
-            "The Witcher 3 remaster changes almost everything except its beloved blocky pigeons",
-          dek: "Fans feared the 2015 game’s famously low-detail birds had been polished away; they were looking at the wrong pigeon.",
+          slug: "pokemon-spam-gift-sets",
+          kicker: "Resale",
+          headline: "Pokémon-themed Spam tins sell on eBay for nearly double the shop price",
+          dek: "The South Korean gift sets come with lunch-box stickers, and the free keychain of Snorlax holding a bowl of Spam is worth more than the meat.",
           body: [
-            "The Witcher 3: Wild Hunt – Remastered arrived on 29 September as a free update for anyone who owns the 2015 game, and within hours it had beaten the game’s all-time Steam player peak. Almost everything looks new. That was the worry.",
-            "A Reddit post titled “Pigeons Remastered” put an old and new bird side by side, and fans feared the game’s famously chunky, low-poly flying pigeons had been smoothed out of existence.",
-            "Kotaku editor Ethan Gach called it “a false alarm”: the fancier bird was a street pigeon, which always looked like that, and the flying flock remains as angular as ever, now under path-traced light. Replying to Gach, one relieved fan announced the pigeons were still there; the top response read: “Glory to low poly.”",
-            "Some things are too blocky to fix.",
+            "Pokémon has turned cards, cereal and snacks into collectables. In its 30th year, it has done the same for tinned meat. In South Korea, where Spam gift sets are a traditional present for the Chuseok harvest festival, the franchise released three themed bundles on 9 September: one each for Charmander, Snorlax and Ditto.",
+            "Each set holds five 200g tins and a sheet of stickers (lunch-box decoration is the suggested use) and costs 19,900 won, or about $15. Two days after launch, a trio of unopened sets sold on eBay for $88 plus shipping, almost twice what they cost in the shops. The real prize is the free gift for buying all three: a fuzzy Ditto or Snorlax keychain clutching a plush bowl of rice and Spam. One Snorlax went for $126, and a Ditto for $149.99.",
+            "Gotta can ’em all.",
           ],
-          source: "GamesRadar+",
+          source: "Antique Trader",
           sourceUrl:
-            "https://www.gamesradar.com/games/the-witcher/the-witcher-3-remastered-did-not-in-fact-change-the-rpgs-hilarious-low-poly-pigeons-much-to-fans-delight-glory-to-low-poly/",
+            "https://www.antiquetrader.com/pokemon-spam-goes-from-grocery-shelves-to-ebay-sales",
           image: {
-            file: "/editions/42/witcher-3-low-poly-pigeons.jpg",
-            alt: "Geralt of Rivia in chainmail in The Witcher 3",
-            credit: "CD Projekt Red via GamesRadar+",
-            from: "https://www.gamesradar.com/games/the-witcher/the-witcher-3-remastered-did-not-in-fact-change-the-rpgs-hilarious-low-poly-pigeons-much-to-fans-delight-glory-to-low-poly/",
+            file: "/editions/42/pokemon-spam-gift-sets.jpg",
+            alt: "Three Pokémon Spam gift sets in orange Charmander, teal Snorlax and purple Ditto packaging, each box holding five tins",
+            credit: "eBay seller dokkaebi_tcg, via Antique Trader",
+            from: "https://www.antiquetrader.com/pokemon-spam-goes-from-grocery-shelves-to-ebay-sales",
           },
         },
         {
-          slug: "castlevania-40-free-on-mobile",
-          slot: "brief",
-          kicker: "Free game",
-          headline: "Castlevania turns 40 and Konami is giving the original away on phones",
-          dek: "Claim it by 24 October and it stays yours.",
+          slug: "station-casinos-anniversary-bonus",
+          kicker: "Many happy returns",
+          headline: "Company marks its 50th birthday with $1,000 per employee per year served",
+          dek: "Nearly 10,000 staff at Station Casinos shared $70 million in company stock.",
           body: [
-            "Konami is marking 40 years of Castlevania, whose anniversary fell on 26 September, by giving away the original NES game on the App Store and Google Play until 24 October. Anyone who grabs the 1986 vampire-whipper in time can keep playing it after the offer ends. The series now runs to more than 30 games.",
+            "Station Casinos, whose story began with the Bingo Palace in 1976, marked its 50th anniversary by giving each of its nearly 10,000 team members $1,000 in company stock for every year they have worked there. The bill came to $70 million. Seven employees have been there 45 years or more, and Ida Johnson, who joined in 1977, received $49,000.",
           ],
-          source: "Shacknews",
+          source: "Good News Network",
           sourceUrl:
-            "https://www.shacknews.com/article/150820/konami-castlevania-free-ios-android-40th-anniversary",
-        },
-        {
-          slug: "valheim-cheaters-confession-code",
-          slot: "brief",
-          kicker: "Honesty policy",
-          headline:
-            "Valheim lets cheaters earn achievements again, if they type a confession first",
-          dek: "Iron Gate Studio has left the final judgement to a Norse god.",
-          body: [
-            "Viking survival game Valheim has reached version 1.0 with 50 new achievements, and Iron Gate Studio has softened its rule locking them for anyone who used developer commands. To opt back in, type “yesiuseddevcommandsbutiwantmyachievementsanyway”. The patch notes leave it to your conscience: “Oden will surely know if you use it dishonourably.”",
-          ],
-          source: "GamesRadar+",
-          sourceUrl:
-            "https://www.gamesradar.com/games/survival/valheim-1-0-lets-cheaters-earn-achievements-by-admitting-their-crimes-and-then-cheating-even-harder-oden-will-surely-know-if-you-use-it-dishonourably/",
+            "https://www.goodnewsnetwork.org/1000-bonus-for-every-year-at-the-company-casino-employees-shocked-at-companys-50th-anniversary/",
+          image: {
+            file: "/editions/42/station-casinos-anniversary-bonus.jpg",
+            alt: "Staff cheer with raised arms at the anniversary celebration",
+            credit: "Good News Network",
+            from: "https://www.goodnewsnetwork.org/1000-bonus-for-every-year-at-the-company-casino-employees-shocked-at-companys-50th-anniversary/",
+          },
         },
       ],
     },
@@ -269,7 +583,6 @@ export const issue42: SeedEdition = {
         },
         {
           slug: "easdale-stone-skimming-new-champions",
-          slot: "feature",
           kicker: "Stone skimming",
           headline: "A Kiwi and a Carolinian take world skimming titles on a 60-person island",
           dek: "Stones must pass through the Ring of Truth and leave from the Skim of Destiny, naturally.",
@@ -287,10 +600,35 @@ export const issue42: SeedEdition = {
             credit: "Tim Hamlet / BBC",
             from: "https://www.bbc.co.uk/news/articles/cgqd7n9x179o",
           },
+          more: [
+            {
+              file: "/editions/42/easdale-stone-skimming-new-champions-2.jpg",
+              alt: "A thrower lets fly as the crowd packed on the quarry bank watches",
+              credit: "BBC",
+              from: "https://www.bbc.co.uk/news/articles/cgqd7n9x179o",
+            },
+            {
+              file: "/editions/42/easdale-stone-skimming-new-champions-3.jpg",
+              alt: "Men’s champion Liam Knight lifts his trophy in front of the flooded quarry",
+              credit: "BBC",
+              from: "https://www.bbc.co.uk/news/articles/cgqd7n9x179o",
+            },
+            {
+              file: "/editions/42/easdale-stone-skimming-new-champions-4.jpg",
+              alt: "Easdale from the air: a green island pocked with flooded slate quarries",
+              credit: "BBC",
+              from: "https://www.bbc.co.uk/news/articles/cgqd7n9x179o",
+            },
+            {
+              file: "/editions/42/easdale-stone-skimming-new-champions-5.jpg",
+              alt: "A stack of smooth Easdale stones passes through the Ring of Truth",
+              credit: "BBC",
+              from: "https://www.bbc.co.uk/news/articles/cgqd7n9x179o",
+            },
+          ],
         },
         {
           slug: "asian-games-cricket-baseball-park-tents",
-          slot: "brief",
           kicker: "Cricket",
           headline: "Asian Games cricket moves into a baseball park, with tents for dressing rooms",
           dek: "Air-conditioned tents, to be fair.",
@@ -300,10 +638,15 @@ export const issue42: SeedEdition = {
           source: "RevSportz",
           sourceUrl:
             "https://revsportz.in/short-boundaries-tent-dressing-rooms-crickets-unusual-home-at-the-asian-games/",
+          image: {
+            file: "/editions/42/asian-games-cricket-baseball-park-tents.jpg",
+            alt: "Cricket under way in a baseball park, spectators in the stands",
+            credit: "Sports News Portal | Revsportz",
+            from: "https://revsportz.in/short-boundaries-tent-dressing-rooms-crickets-unusual-home-at-the-asian-games/",
+          },
         },
         {
           slug: "darts-final-basketball-next-door",
-          slot: "brief",
           kicker: "Darts",
           headline: "Dutch darts final gets a surprise soundtrack from basketball next door",
           dek: "The oche and the hoop, separated by one wall.",
@@ -313,157 +656,17 @@ export const issue42: SeedEdition = {
           source: "talkSPORT",
           sourceUrl:
             "https://talksport.com/darts/4599902/gian-van-veen-referee-players-championship/",
+          image: {
+            file: "/editions/42/darts-final-basketball-next-door.jpg",
+            alt: "Gian van Veen in his glasses and black playing shirt, looking up during a match",
+            credit: "talkSPORT",
+            from: "https://talksport.com/darts/4599902/gian-van-veen-referee-players-championship/",
+          },
         },
       ],
     },
     {
-      section: "tech",
-      stories: [
-        {
-          slug: "doom-ported-to-sql",
-          kicker: "Database games",
-          headline: "Database engineer rebuilds all of 1993’s Doom in SQL, and it plays",
-          dek: "The game logic takes about 5,900 lines of queries, fewer than the original C, and a four-player deathmatch came almost free.",
-          body: [
-            "Most databases spend their days tallying invoices. At the database company CedarDB, one has been fighting demons. Engineer Lukas Vogel has rebuilt the original 1993 Doom so that both the game’s rules and its pictures are produced by SQL queries running inside the database.",
-            "He set himself strict rules. A small Python script may only read the keyboard, keep time and put the finished picture on screen. Everything else, from opening doors to rockets in flight, lives in tables. The game ticks at its original 35 times a second, and the renderer turns out a full 320-by-200 frame up to 60 times a second on Vogel’s laptop.",
-            "Drawing one frame takes about 1,300 lines of SQL spread over 89 steps known as common table expressions. The game logic runs to roughly 5,900 lines, which Vogel points out is shorter than the original C code at about 9,000. “To be honest, I was surprised how easy it is to express pretty complicated game logic in SQL,” he wrote.",
-            "Keeping everything as data has perks. The shotgun is a single row in a table, so when Vogel felt underpowered he edited it to fire 500 pellets at once. And because a database already handles logins, permissions and lots of users at the same time, multiplayer came almost for nothing: up to four people can join a public deathmatch, and anyone waiting in the queue can query the live match.",
-            "This is his second attempt. Last year’s DOOMQL drew ASCII art that people pointed out looked more like Wolfenstein 3D. The new version looks like the real thing, and Vogel credits the original’s designer in a section titled “John Carmack was a genius.”",
-            "Somewhere, a spreadsheet is feeling nervous.",
-          ],
-          source: "CedarDB",
-          sourceUrl: "https://cedardb.com/blog/sqldoom/",
-          image: {
-            file: "/editions/42/doom-ported-to-sql.jpg",
-            alt: "A frame of Doom rendered by SQL, with a live chart of frames per second beside it and the query along the bottom",
-            credit: "Lukas Vogel / CedarDB",
-            from: "https://cedardb.com/blog/sqldoom/",
-          },
-          sticker: "It runs!",
-        },
-        {
-          slug: "center-pivot-lawn-mower",
-          slot: "feature",
-          kicker: "Garden robotics",
-          headline: "YouTuber builds a tiny farm irrigation rig that mows his lawn in circles",
-          dek: "It keeps its long arm straight using the same trick giant crop sprinklers use.",
-          body: [
-            "Fly over parts of the United States or Australia and the farmland is dotted with huge green circles, drawn by centre-pivot irrigation rigs sweeping slowly round a fixed point. The maker behind the YouTube channel rctestflight has built a small one for his garden and swapped the water for blades.",
-            "Like the real thing, his rig is a chain of loosely jointed sections, each on its own wheels. The outermost wheels roll at a steady pace, and each inner section catches up whenever the joint beside it bends too far. At first simple limit switches did the job; later a smoother potentiometer-based controller took over. A carriage carrying a pair of motor-driven knives shuttles back and forth along one arm, trimming as the whole thing turns.",
-            "His damp Pacific Northwest garden fought back with rust, mud and fast-growing plants. Luckily the circle was already worn in, from earlier experiments to see how much punishment RC cars could take.",
-            "The result is the tidiest crop circle on the street.",
-          ],
-          source: "Hackaday",
-          sourceUrl: "https://hackaday.com/2026/09/27/center-pivot-system-modified-to-mow-lawn/",
-          image: {
-            file: "/editions/42/center-pivot-lawn-mower.jpg",
-            alt: "Aerial view of a lawn cut into concentric circles by a miniature centre-pivot rig with four wheeled towers",
-            credit: "rctestflight via Hackaday",
-            from: "https://hackaday.com/2026/09/27/center-pivot-system-modified-to-mow-lawn/",
-          },
-        },
-        {
-          slug: "pico-8-handheld-made-real",
-          slot: "brief",
-          kicker: "Pocket games",
-          headline: "Maker gives the make-believe PICO-8 games console a real, square body",
-          dek: "A 720-by-720 screen matches the virtual machine’s square picture exactly.",
-          body: [
-            "PICO-8 is a “fantasy console”: a pretend 8-bit games machine that exists only as software. A builder known as UncleStem has made it solid, with a Game Boy-style handheld built around a Raspberry Pi Zero 2 W and a square 720-by-720 screen to match PICO-8’s square picture. The case began as a 3D print, then was milled from aluminium by a professional once his own attempt stalled.",
-          ],
-          source: "Hackaday",
-          sourceUrl: "https://hackaday.com/2026/09/28/this-pico-8-handheld-is-no-fantasy/",
-        },
-        {
-          slug: "postmarketos-renamed-nura",
-          slot: "brief",
-          kicker: "New name",
-          headline: "Phone Linux project postmarketOS picks a new name from 300 suggestions",
-          dek: "The winner comes from Sardinian stone towers that have stood for thousands of years.",
-          body: [
-            "The open-source project that keeps old phones useful by running Linux on them is now called Nura. The name is short for nuraghe, granite towers in Sardinia built 5,000 or more years ago, many of which still stand. The old name, the team said, was hard to say. Community member Davide Depau suggested the winner, which was picked from more than 300 ideas and revealed at the project’s own conference.",
-          ],
-          source: "Nura",
-          sourceUrl: "https://nura.eco/blog/2026/09/27/nura-rename/",
-        },
-      ],
-    },
-    {
-      section: "money",
-      stories: [
-        {
-          slug: "craigslist-bob-ross-paintings",
-          kicker: "Happy accident",
-          headline: "Two Bob Ross paintings bought on Craigslist sell for $165,000",
-          dek: "Both were signed to a friend called Jan, and came with photos of Ross painting them in front of fans in 1987.",
-          body: [
-            "About ten years ago, someone scrolling Craigslist bought two landscape paintings by Bob Ross. On 15 September they went under the hammer at Caza Sikes, a gallery and auction house in Cincinnati, and made $65,000 and $100,000. Happy little trees, happier little bank balance.",
-            "It was not a steal at the time. Will Sikes, a partner at the firm, told the Cincinnati radio station WVXU that the consignor paid what “was probably a fair price”, though “far less than they are worth now.” Each painting carried a pre-sale estimate of $50,000 to $75,000, which the auction house itself called conservative, and “Mountain Landscape” sailed straight past it.",
-            "Both canvases date from 1987, and they are not the pictures Ross painted for his television show or his instruction books. Each is inscribed on the back to “Jan”, who is believed to have run an art shop in Dayton, Ohio, where Ross gave a demonstration. The lots came with photographs of the day: Ross mid-painting, smiling for the camera, and one fan in a Bob Ross T-shirt. Bob Ross, Inc. authenticated both.",
-            "“Ross was an important figure during so many people’s formative years,” said the principal auctioneer, Graydon Sikes. “He’s transcended the world of art and television and become a pop culture phenomenon.”",
-            "Somewhere, a Craigslist buyer is quietly admiring a very happy accident.",
-          ],
-          source: "Antique Trader",
-          sourceUrl:
-            "https://www.antiquetrader.com/bob-ross-paintings-bought-before-the-boom-sell-at-auction",
-          image: {
-            file: "/editions/42/craigslist-bob-ross-paintings.jpg",
-            alt: "Bob Ross’s ‘Mountain Landscape’: a snowy peak above a turquoise stream, framed by tall trees, in an ornate gold frame",
-            credit: "Caza Sikes, via Antique Trader",
-            from: "https://www.antiquetrader.com/bob-ross-paintings-bought-before-the-boom-sell-at-auction",
-          },
-          sticker: "$165k",
-        },
-        {
-          slug: "pokemon-spam-gift-sets",
-          slot: "feature",
-          kicker: "Resale",
-          headline: "Pokémon-themed Spam tins sell on eBay for nearly double the shop price",
-          dek: "The South Korean gift sets come with lunch-box stickers, and the free keychain of Snorlax holding a bowl of Spam is worth more than the meat.",
-          body: [
-            "Pokémon has turned cards, cereal and snacks into collectables. In its 30th year, it has done the same for tinned meat. In South Korea, where Spam gift sets are a traditional present for the Chuseok harvest festival, the franchise released three themed bundles on 9 September: one each for Charmander, Snorlax and Ditto.",
-            "Each set holds five 200g tins and a sheet of stickers (lunch-box decoration is the suggested use) and costs 19,900 won, or about $15. Two days after launch, a trio of unopened sets sold on eBay for $88 plus shipping, almost twice what they cost in the shops. The real prize is the free gift for buying all three: a fuzzy Ditto or Snorlax keychain clutching a plush bowl of rice and Spam. One Snorlax went for $126, and a Ditto for $149.99.",
-            "Gotta can ’em all.",
-          ],
-          source: "Antique Trader",
-          sourceUrl:
-            "https://www.antiquetrader.com/pokemon-spam-goes-from-grocery-shelves-to-ebay-sales",
-          image: {
-            file: "/editions/42/pokemon-spam-gift-sets.jpg",
-            alt: "Three Pokémon Spam gift sets in orange Charmander, teal Snorlax and purple Ditto packaging, each box holding five tins",
-            credit: "eBay seller dokkaebi_tcg, via Antique Trader",
-            from: "https://www.antiquetrader.com/pokemon-spam-goes-from-grocery-shelves-to-ebay-sales",
-          },
-        },
-        {
-          slug: "wonky-veg-price-bands",
-          slot: "brief",
-          kicker: "Markets",
-          headline: "Farmers’ market prices its wonkiest vegetables by how strange they look",
-          dek: "A carrot with legs costs almost nothing; a potato shaped like a duck is free.",
-          body: [
-            "Stallholders at the Saturday market in Kerrowdale now sort their misshapen vegetables into four bands, from “slightly odd” to “has a personality”. The stranger the veg, the lower the price. Sales of wonky produce have tripled, and a tomato resembling a small, grumpy owl was photographed 400 times before anyone bought it.",
-          ],
-          source: "Market Gazette (sample)",
-        },
-        {
-          slug: "station-casinos-anniversary-bonus",
-          slot: "brief",
-          kicker: "Many happy returns",
-          headline: "Company marks its 50th birthday with $1,000 per employee per year served",
-          dek: "Nearly 10,000 staff at Station Casinos shared $70 million in company stock.",
-          body: [
-            "Station Casinos, whose story began with the Bingo Palace in 1976, marked its 50th anniversary by giving each of its nearly 10,000 team members $1,000 in company stock for every year they have worked there. The bill came to $70 million. Seven employees have been there 45 years or more, and Ida Johnson, who joined in 1977, received $49,000.",
-          ],
-          source: "Good News Network",
-          sourceUrl:
-            "https://www.goodnewsnetwork.org/1000-bonus-for-every-year-at-the-company-casino-employees-shocked-at-companys-50th-anniversary/",
-        },
-      ],
-    },
-    {
-      section: "internet-and-culture",
+      section: "internet",
       stories: [
         {
           slug: "sea-shanty-bands-uk",
@@ -491,22 +694,29 @@ export const issue42: SeedEdition = {
           sticker: "Yo ho!",
         },
         {
-          slug: "tiny-wins-thread",
-          slot: "feature",
-          kicker: "Small victories",
-          headline: "An online thread of ‘tiny wins’ passes a million upvotes and keeps going",
-          dek: "Top post: “I remembered why I walked into the kitchen.”",
+          slug: "lego-world-map-speed-record",
+          kicker: "Brick by brick",
+          headline:
+            "Two friends build Lego’s 11,695-piece World Map in under five hours for a record",
+          dek: "Their secret: work one colour at a time, and bring your inner kid.",
           body: [
-            "It began with one post from a user called parallel_paulina: “Parked perfectly first time. Nobody saw. Needed to tell someone.” Eleven months later the thread has 84,000 replies and more than a million upvotes.",
-            "The rules, enforced by volunteer moderators, are strict: the win must be small, it must be yours and it must actually have happened. “Got promoted” is gently removed. “Opened a jar on the first try” stays.",
-            "The most-upvoted entry reads, in full: “I remembered why I walked into the kitchen.” Moderator Deshawn Okoro, who reads every submission before breakfast, says the thread works because nothing in it can be topped. “You can’t out-do someone else’s perfectly toasted crumpet,” he said. “You can only add yours.”",
+            "The Lego World Map is the largest 2D Lego set you can buy, with 11,695 pieces. Athena Leong, from Singapore, and Sevy Swift, from the US, built one in 4 hours, 59 minutes and 51 seconds, and Guinness World Records has confirmed it as the fastest time for a team of two.",
+            "The pair met a year before the attempt and bonded over Lego. They bought the set, practised for about a month and sharpened their plan the week before. On 12 April, at Brick by Brick Toys, a secondhand Lego shop in Hayward, California, they put on headphones and got going while shoppers watched. Guinness had set them a target of five and a half hours; they beat it comfortably, and beat the solo record of 7 hours, 9 minutes and 41 seconds too.",
+            "“We realized one color at a time actually speeds you up a lot,” Swift said. He also called it a way to share his inner kid with Leong’s inner kid.",
           ],
-          source: "Around the Web (sample)",
-          photo: "stickyNotes",
+          source: "Guinness World Records",
+          sourceUrl:
+            "https://www.guinnessworldrecords.com/news/2026/9/two-friends-in-california-unite-their-inner-kids-to-conquer-lego-world-map-speed-record",
+          image: {
+            file: "/editions/42/lego-world-map-speed-record.jpg",
+            alt: "Sevy Swift and Athena Leong hold up their finished Lego World Map beside a timer reading 4:59:51",
+            credit: "Guinness World Records",
+            from: "https://www.guinnessworldrecords.com/news/2026/9/two-friends-in-california-unite-their-inner-kids-to-conquer-lego-world-map-speed-record",
+          },
+          sticker: "4:59:51",
         },
         {
           slug: "side-neck-emu-devon",
-          slot: "brief",
           kicker: "Bird brain",
           headline: "Escaped emu flattens its would-be captor, then lets itself back in",
           dek: "A Devon driver filmed Side Neck winning a roadside tussle before strolling home past an alpaca.",
@@ -517,22 +727,147 @@ export const issue42: SeedEdition = {
           source: "UPI",
           sourceUrl:
             "https://www.upi.com/Odd_News/2026/09/28/escaped-emu-wrestling-Devon-England/1651790611221/",
-        },
-        {
-          slug: "cold-side-of-the-pillow-glossary",
-          slot: "brief",
-          kicker: "Words",
-          headline: "Crowdsourced glossary collects 1,400 names for the cold side of the pillow",
-          dek: "The current favourite is ‘the second chance’.",
-          body: [
-            "A shared online glossary started by a night-shift baker in Vellmouth asks one question: what do you call the cool side of the pillow? After six months it holds 1,400 answers in 31 languages. Front-runners include ‘the second chance’, ‘the fridge side’ and, from a seven-year-old, ‘the good bit’.",
-          ],
-          source: "Around the Web (sample)",
+          image: {
+            file: "/editions/42/side-neck-emu-devon.jpg",
+            alt: "Dashcam view of a man grappling with Side Neck the emu in the middle of a Devon country road",
+            credit: "James and Ro Barker via Kingsbridge Today",
+            from: "https://www.kingsbridge-today.co.uk/news/salcombeemu-959515",
+          },
         },
       ],
     },
     {
-      section: "food-and-words",
+      section: "discoveries",
+      stories: [
+        {
+          slug: "galapagos-yellow-turtles-stay-home",
+          kicker: "Homebodies",
+          headline:
+            "Galápagos yellow turtles were expected to roam the ocean, and chose to stay home",
+          dek: "Three years of satellite tags show the golden-shelled green turtles never left the islands’ marine reserve.",
+          body: [
+            "Sea turtles are famous travellers, crossing whole oceans between feeding grounds and nesting beaches. So when scientists stuck satellite tags on some unusual green turtles in the Galápagos, they expected to watch them head off across the Pacific. Instead, the turtles stayed put.",
+            "These are yellow-morph green turtles, a golden-looking form of Chelonia mydas found around the islands. Between 2015 and 2017, researchers caught nine adults, seven males and two females, near four different islands and fitted each with an electronic transmitter. Then they followed them for three years.",
+            "The results, published in Frontiers and reported by ScienceDaily, show a group of committed locals. The average turtle kept to a home range of 1,498 square kilometres. Five of the nine spent most of their time around a single island. Three did hop between islands, but only in the cooler months from April to October. Now and then one would swim 25 kilometres offshore, before heading back to the shallow coastal waters they clearly prefer.",
+            "“None of our satellite-tagged turtles even left the Galápagos Marine Reserve over the three years of our study,” said lead researcher Dr John W Rowe. The reserve covers 198,000 square kilometres, which is plenty of room for a turtle who knows what it likes.",
+            "The finding is useful as well as charming. Because some turtles rely on the waters around more than one island, the team says the best way to look after them is to keep coastal habitats healthy right across the archipelago, not just at one favourite feeding spot. Home, for these turtles, is the whole neighbourhood.",
+          ],
+          source: "ScienceDaily",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260927225032.htm",
+          image: {
+            file: "/editions/42/galapagos-yellow-turtles-stay-home.jpg",
+            alt: "A yellow-morph green turtle swimming in clear Galápagos water",
+            credit: "Juan Pablo Muñoz-Pérez via ScienceDaily",
+            from: "https://www.sciencedaily.com/releases/2026/09/260927225032.htm",
+          },
+          sticker: "Staying in",
+        },
+        {
+          slug: "curiosity-5000-sols-postcard",
+          kicker: "Wish you were here",
+          headline: "NASA’s Curiosity rover marks 5,000 days on Mars by sending home a postcard",
+          dek: "Morning and afternoon views from a sandy ridge called Chocolatal, stitched together in blue and gold.",
+          body: [
+            "NASA’s Curiosity rover has now spent 5,000 Martian days, or sols, on the Red Planet, and it marked the occasion the way any traveller would: with a postcard.",
+            "The panorama was shot from a sandy ridge nicknamed Chocolatal, in the lower foothills of Mount Sharp, a mountain rising 3 miles (5 kilometres) inside Gale Crater. It joins two views, one taken at 9:56 a.m. Mars time on sol 5,000 and another at 5:39 p.m. on sol 5,003, and on Earth the team tinted them blue for morning and yellow for afternoon. Looking downhill, you can see the crater floor, with the far rim just visible on the horizon.",
+            "Curiosity makes a cameo too. Its cylindrical UHF antenna, which talks to spacecraft orbiting Mars, and its finned nuclear power source sit in the foreground, with the rover’s tracks trailing away across the ground. Five thousand days in, it still takes a good holiday snap.",
+          ],
+          source: "ScienceDaily",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260928100556.htm",
+          image: {
+            file: "/editions/42/curiosity-5000-sols-postcard.jpg",
+            alt: "Curiosity’s own deck and antenna in the foreground of a blue and gold Martian panorama looking down towards Gale Crater",
+            credit: "NASA/JPL-Caltech via ScienceDaily",
+            from: "https://www.sciencedaily.com/releases/2026/09/260928100556.htm",
+          },
+        },
+        {
+          slug: "amazon-frog-slow-call",
+          kicker: "New croak",
+          headline:
+            "A new Amazon frog gave itself away with a short, slow and very particular call",
+          dek: "It looks like its cousins, but its song and its DNA say otherwise.",
+          body: [
+            "Scientists have named a new frog, Adenomera varcena, from the seasonally flooded forests of the Upper Juruá River in western Acre, Brazil. It looks almost exactly like its relatives, but DNA, a missing dark spot on the forearm and its call, a short sound at a slow rhythm, marked it out. The team, led by Célio F. B. Haddad and Thiago R. Carvalho, described it in Ichthyology & Herpetology.",
+          ],
+          source: "ScienceDaily",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260917003737.htm",
+          image: {
+            file: "/editions/42/amazon-frog-slow-call.jpg",
+            alt: "A small brown frog with a dark eye sitting on a leaf",
+            credit: "CBioClima via ScienceDaily",
+            from: "https://www.sciencedaily.com/releases/2026/09/260917003737.htm",
+          },
+        },
+      ],
+    },
+    {
+      section: "word-nerd",
+      stories: [
+        {
+          slug: "bermuda-words-oed",
+          kicker: "Hey, hamma",
+          headline: "Oxford English Dictionary adds Bermuda’s word for chorizo, via the Azores",
+          dek: "Four new Bermudian entries arrive through a partnership with the island’s spelling bee for 9- to 13-year-olds.",
+          body: [
+            "If you want chorizo in Bermuda, ask for shadeesh. As of this month, the Oxford English Dictionary will back you up.",
+            "The word is one of four Bermudian English terms in the OED’s September update, and its family tree is a small sea voyage. It comes from the Portuguese chouriço, but the spelling copies how that word sounds in the Azores, the Atlantic islands many of Bermuda’s Portuguese-speaking settlers came from. The dictionary’s earliest example dates from 2010.",
+            "Joining it is hamma, Bermudian for a friend since at least 1980, which doubles as a greeting. The OED’s evidence includes a line from Vanessa Fox’s 1994 mystery novel Bermuda: “Hey, hamma. It’s a beautiful day.” It sounds like hammer and is sometimes spelled that way, but its origin is officially unknown. So is that of bimpert, a Bermudian word for a foolish person, first spotted in 2009.",
+            "The additions came through a new partnership with the Bermuda Spelling Bee, a contest for 9- to 13-year-olds now in its third year. Every September schools receive a study booklet of around 2,000 words, and this year’s uses the OED as its key source. Because Bermuda spells the British and the American way, the bee accepts both, which should save a lot of arguments about colour.",
+            "An Oxford Languages spokesperson called the tie-up with the spelling bee “a valuable new collaboration”. The island’s first batch, 14 words added in March 2021, brought in aceboy, Gombey and greeze. Now they have a friend in the dictionary: a hamma.",
+          ],
+          source: "Bernews",
+          sourceUrl: "https://bernews.com/2026/09/oxford-dictionary-adds-more-bermuda-words/",
+          image: {
+            file: "/editions/42/bermuda-words-oed.jpg",
+            alt: "Graphic of a stack of books whose spines read bimpert, hamma, shadeesh and to cut someone’s tail",
+            credit: "Bernews",
+            from: "https://bernews.com/2026/09/oxford-dictionary-adds-more-bermuda-words/",
+          },
+        },
+        {
+          slug: "merriam-webster-1400-words",
+          kicker: "Glow-up",
+          headline: "Merriam-Webster welcomes 1,400 new words, from cuffing season to vibe coding",
+          dek: "Compute is now officially a verb for when something makes sense.",
+          body: [
+            "Merriam-Webster has given its dictionary a thorough freshen-up, adding 1,400 new words and definitions in one go. The list reads like a year of group chats: parasocial, for a one-sided bond with someone famous; looksmaxxing; meme coin; shapewear; superfood; and vibe coding.",
+            "There is cuffing season too, which the dictionary defines as the time of year when single people start looking for a short-term partner to see them through the colder months. Uncanny valley makes the cut for that creepy feeling when something artificial looks almost, but not quite, human. And compute gains a new sense as a verb meaning to make sense, as in: it does not compute.",
+            "The dictionary says new entries must show frequent, widespread and meaningful use, and that together they offer a window into the world today. Consider these words officially computed.",
+          ],
+          source: "NBC News",
+          sourceUrl:
+            "https://www.nbcnews.com/news/us-news/merriam-webster-gives-dictionary-glow-1400-new-words-definitions-rcna598097",
+          image: {
+            file: "/editions/42/merriam-webster-1400-words.jpg",
+            alt: "A copy of Merriam-Webster’s Collegiate Dictionary standing behind an open dictionary, in front of a shelf of reference books",
+            credit: "Noah1806 / Wikimedia Commons (CC BY-SA 4.0)",
+            from: "https://commons.wikimedia.org/wiki/File:Collegiate_Dictionary.jpg",
+          },
+        },
+        {
+          slug: "oed-mountweazel-september",
+          kicker: "Fake news, officially",
+          headline:
+            "The Oxford English Dictionary adds mountweazel, a word for a dictionary’s own fake entries",
+          dek: "Fantabulosa and will-they-won’t-they arrived in the same update.",
+          body: [
+            "The OED’s September update adds more than 400 new words, phrases and senses, and one of them is about dictionaries themselves. A mountweazel is an invented entry slipped into a reference work, usually so the publisher can spot anyone copying it. Also new: fantabulosa, will-they-won’t-they, auto-reply, overnight oats and cafezinho, a Brazilian coffee.",
+          ],
+          source: "Oxford University Press",
+          sourceUrl:
+            "https://corp.oup.com/news/new-to-the-oxford-english-dictionary-september-2026/",
+          image: {
+            file: "/editions/42/oed-mountweazel-september.jpg",
+            alt: "A row of the dark blue volumes of the Oxford English Dictionary, second edition",
+            credit: "Dan (mrpolyonymous) / Wikimedia Commons (CC BY 2.0)",
+            from: "https://commons.wikimedia.org/wiki/File:OED2_volumes.jpg",
+          },
+        },
+      ],
+    },
+    {
+      section: "food-and-drink",
       stories: [
         {
           slug: "malvern-tallest-cucumber",
@@ -558,30 +893,25 @@ export const issue42: SeedEdition = {
           sticker: "7.598 m",
         },
         {
-          slug: "bermuda-words-oed",
-          slot: "feature",
-          kicker: "Hey, hamma",
-          headline: "Oxford English Dictionary adds Bermuda’s word for chorizo, via the Azores",
-          dek: "Four new Bermudian entries arrive through a partnership with the island’s spelling bee for 9- to 13-year-olds.",
+          slug: "pink-baja-blast-olivia-rodrigo",
+          kicker: "Think pink",
+          headline: "Olivia Rodrigo gets her own pink Baja Blast, and it is now at every Taco Bell",
+          dek: "Tropical lime meets pink lemonade in a drink named after her latest album.",
           body: [
-            "If you want chorizo in Bermuda, ask for shadeesh. As of this month, the Oxford English Dictionary will back you up.",
-            "The word is one of four Bermudian English terms in the OED’s September update, and its family tree is a small sea voyage. It comes from the Portuguese chouriço, but the spelling copies how that word sounds in the Azores, the Atlantic islands many of Bermuda’s Portuguese-speaking settlers came from. The dictionary’s earliest example dates from 2010.",
-            "Joining it is hamma, Bermudian for a friend since at least 1980, which doubles as a greeting. The OED’s evidence includes a line from Vanessa Fox’s 1994 mystery novel Bermuda: “Hey, hamma. It’s a beautiful day.” It sounds like hammer and is sometimes spelled that way, but its origin is officially unknown. So is that of bimpert, a Bermudian word for a foolish person, first spotted in 2009.",
-            "The additions came through a new partnership with the Bermuda Spelling Bee, a contest for 9- to 13-year-olds now in its third year. Every September schools receive a study booklet of around 2,000 words, and this year’s uses the OED as its key source. Because Bermuda spells the British and the American way, the bee accepts both, which should save a lot of arguments about colour.",
-            "The island’s first batch, added in 2021, brought in Gombey and greeze. Now they have a friend in the dictionary: a hamma.",
+            "Taco Bell’s You Seem Pretty Pink for a Baja Blast, a nod to Olivia Rodrigo’s album You Seem Pretty Sad for a Girl So in Love, reached restaurants across the US on 24 September. It mixes the drink’s tropical lime with pink lemonade. “I genuinely cannot believe You Seem Pretty Pink for a Baja Blast is real,” said Rodrigo, a longtime fan.",
+            "The drink first appeared on 29 August at Taco Bell’s Live Más Cafés in California, Las Vegas, Dallas and Houston, where a small costs $2.99 and there is a frozen version too, and at Rodrigo’s own Daisy Chain Fields Festival. Puerto Rico followed on 26 September and Canada gets it from 1 October. On 29 September, Taco Bell Rewards members could grab one of 300 Pretty Pink Picnic Kits. Pack a pink blanket.",
           ],
-          source: "Bernews",
-          sourceUrl: "https://bernews.com/2026/09/oxford-dictionary-adds-more-bermuda-words/",
+          source: "Taco Bell",
+          sourceUrl: "https://www.tacobell.com/newsroom/olivia-rodrigo-baja-blast",
           image: {
-            file: "/editions/42/bermuda-words-oed.jpg",
-            alt: "Graphic of a stack of books whose spines read bimpert, hamma, shadeesh and to cut someone’s tail",
-            credit: "Bernews",
-            from: "https://bernews.com/2026/09/oxford-dictionary-adds-more-bermuda-words/",
+            file: "/editions/42/pink-baja-blast-olivia-rodrigo.jpg",
+            alt: "Olivia Rodrigo sipping a pink Baja Blast at a Taco Bell counter between two pink menu screens",
+            credit: "Taco Bell",
+            from: "https://www.tacobell.com/newsroom/olivia-rodrigo-baja-blast",
           },
         },
         {
           slug: "electrified-cold-brew",
-          slot: "brief",
           kicker: "Charged up",
           headline: "Massachusetts roaster runs its cold brew past electrodes to wake the flavour",
           dek: "A low-voltage current is meant to undo what brewing flattens.",
@@ -591,6 +921,12 @@ export const issue42: SeedEdition = {
           source: "Daily Coffee News",
           sourceUrl:
             "https://dailycoffeenews.com/2026/09/23/atomic-coffee-and-overpotential-combine-for-electrified-cold-brew/",
+          image: {
+            file: "/editions/42/electrified-cold-brew.jpg",
+            alt: "The first cans of electrified cold brew coming off the line",
+            credit: "Daily Coffee News by Roast Magazine",
+            from: "https://dailycoffeenews.com/2026/09/23/atomic-coffee-and-overpotential-combine-for-electrified-cold-brew/",
+          },
         },
       ],
     },
@@ -682,21 +1018,5 @@ export const issue42: SeedEdition = {
       },
     },
     { type: "sign_off", content: { text: "You're done for today. See you tomorrow." } },
-  ],
-
-  puzzles: [
-    mini(
-      [
-        ["HEART", "Organ that does the ‘aww’"],
-        ["PLANT", "Green housemate, or what you do with a seed"],
-        ["YODEL", "Sing like a cheerful Alpine goatherd"],
-      ],
-      [
-        ["HAPPY", "How this paper hopes you feel"],
-        ["TOTAL", "The sum of it all"],
-      ],
-    ),
-    ladder(["SAD", "SAY", "SOY", "JOY"]),
-    riddle("What has keys but can't open a single door?", "A piano"),
   ],
 };

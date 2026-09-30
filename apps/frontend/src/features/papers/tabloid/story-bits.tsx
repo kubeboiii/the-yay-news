@@ -1,6 +1,7 @@
 import type { StoryItem } from "@repo/shared";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
+import { BriefArt, BriefBand, planBriefs } from "../brief-art";
 import type { Area, Place } from "./compose";
 import { host } from "./edition-data";
 import { Bars, Body, Photo, Sticker, Tape, fit } from "./parts";
@@ -115,18 +116,27 @@ export function MainPhoto({
   onPhoto,
   priority,
   sizes,
+  single,
 }: {
   story: StoryItem;
   href: string;
   measure: number;
   onPhoto?: boolean;
+  /** Print only the first picture (the page runs the rest elsewhere). */
+  single?: boolean;
   priority?: boolean;
   sizes: string;
 }) {
   const image = story.images[0];
   if (!image) return null;
   return (
-    <Photo image={image} sizes={sizes} className="tb-fill tb-photo--open" priority={priority}>
+    <Photo
+      image={image}
+      sizes={sizes}
+      className="tb-fill tb-photo--open"
+      priority={priority}
+      plates={single ? undefined : story}
+    >
       {story.sticker ? (
         <Sticker text={story.sticker} plate="b" className="tb-splash-sticker" />
       ) : null}
@@ -148,8 +158,10 @@ export function MainPhoto({
 function SecondPicture({ story, slug }: { story: StoryItem; slug: string }) {
   const image = story.images[0];
   if (!image) return null;
-  const photo = <Photo image={image} sizes="(max-width: 760px) 100vw, 380px" width={900} />;
-  if (slug === "screen-and-sound") {
+  const photo = (
+    <Photo image={image} sizes="(max-width: 760px) 100vw, 380px" width={900} plates={story} />
+  );
+  if (slug === "screen") {
     const holes = Array.from({ length: 12 }, (_, i) => <i key={i} />);
     return (
       <div className="tb-filmstrip tb-second-pic">
@@ -163,7 +175,7 @@ function SecondPicture({ story, slug }: { story: StoryItem; slug: string }) {
       </div>
     );
   }
-  if (slug === "gaming") {
+  if (slug === "play") {
     return (
       <div className="tb-cart tb-cart--pic tb-second-pic">
         <div className="tb-cart-grip" aria-hidden>
@@ -225,16 +237,28 @@ export function Briefs({
   span: number;
 }) {
   if (!stories.length) return null;
+  const plan = planBriefs(stories, {
+    measure: span >= 2 ? "wide" : "narrow",
+    flavour: "loud",
+    seed: stories.map((s) => s.slug).join("|"),
+  });
   return (
     <>
       <h2 className="tb-briefs-head tb-cond">In brief</h2>
+      {plan.band ? <BriefBand stories={stories} /> : null}
       <ol className={`tb-briefs tb-briefs--${span >= 3 ? "strip" : span === 2 ? "pair" : "rail"}`}>
-        {stories.map((s) => (
-          <li key={s.slug} className="tb-brief">
-            <p className="tb-kicker">{s.kicker}:</p>
-            <h3 className="tb-cond tb-brief-head">
-              <Link href={storyHref(s.slug)}>{s.headline}</Link>
-            </h3>
+        {stories.map((s, i) => (
+          <li key={s.slug} className="tb-brief" data-art={plan.arts[i]}>
+            <BriefArt
+              story={s}
+              art={plan.arts[i]!}
+              keyNo={plan.band ? i + 1 : undefined}
+              kicker={<p className="tb-kicker">{s.kicker}:</p>}
+            >
+              <h3 className="tb-cond tb-brief-head">
+                <Link href={storyHref(s.slug)}>{s.headline}</Link>
+              </h3>
+            </BriefArt>
             {s.dek ? <p className="tb-brief-dek">{s.dek}</p> : null}
             <Body paragraphs={s.body} />
             <Source story={s} />

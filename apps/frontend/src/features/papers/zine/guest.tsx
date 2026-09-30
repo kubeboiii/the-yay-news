@@ -1,3 +1,4 @@
+import { SectionDress, dressed } from "../dress";
 import type { PageProps } from "../types";
 import { Briefs, StoryBlock } from "./blocks";
 import { balance, briefMM, guestComposition, storyMM } from "./compose";
@@ -52,6 +53,15 @@ export function Guest({ edition, page, reading }: PageProps) {
           size={fitSize(name, 146, 16, 8.6)}
           wrap
         />
+        {dressed(slug, edition.issueNumber, page.order) ? (
+          <SectionDress
+            slug={slug}
+            stories={page.stories}
+            issue={edition.issueNumber}
+            page={page.order}
+            date={edition.date}
+          />
+        ) : null}
         {first ? (
           <StoryBlock
             story={first}

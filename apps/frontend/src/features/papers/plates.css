@@ -1,0 +1,238 @@
+/* Plates: multi-picture groups shared by every design (see plates.tsx). Sizes are in the sheet's
+ * own millimetres (--u) and colours are the design's --ink, --paper and accent (--plate-accent,
+ * which each design points at its loudest ink), so a plate prints like the rest of its page. */
+
+.pl-cell {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.pl-cell img {
+  mix-blend-mode: multiply;
+  filter: saturate(0.95) contrast(1.03);
+}
+
+/* A picture mounted over another is printed as it is: multiplied onto the picture beneath it, a
+ * dark frame would sink to black. */
+.pl-fill--inset .pl-sub img,
+.pl-fill--inset .pl-sub {
+  mix-blend-mode: normal;
+}
+.pl-fill--inset .pl-sub {
+  background: var(--paper, #fbf8f1);
+}
+
+/* ——— Fill arrangements: inside a photo slot the design has already sized ——— */
+
+.pl-fill {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  gap: calc(var(--u) * 1.4);
+}
+
+/* Main picture with one or two smaller ones mounted on paper over its corner. */
+.pl-fill--inset {
+  display: block;
+}
+.pl-fill--inset .pl-main {
+  position: absolute;
+  inset: 0;
+}
+.pl-fill--inset .pl-sub {
+  position: absolute;
+  right: calc(var(--u) * 3);
+  bottom: calc(var(--u) * 3);
+  width: 34%;
+  aspect-ratio: 4 / 3;
+  border: calc(var(--u) * 1.3) solid var(--paper, #fbf8f1);
+  box-shadow: 0 calc(var(--u) * 0.4) calc(var(--u) * 1.4) rgb(0 0 0 / 0.25);
+}
+.pl-fill--inset .pl-sub-2 {
+  right: auto;
+  left: calc(var(--u) * 3);
+}
+
+.pl-fill--diptych {
+  grid-template-columns: 1fr 1fr;
+}
+
+.pl-fill--mosaic {
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.pl-fill--mosaic .pl-main {
+  grid-row: 1 / 3;
+}
+
+.pl-fill--strip {
+  grid-template-columns: repeat(var(--n), 1fr);
+  grid-template-rows: 3fr 1fr;
+}
+.pl-fill--strip .pl-main {
+  grid-column: 1 / -1;
+}
+
+/* ——— Bands: set their own height ——— */
+
+.pl-band {
+  position: relative;
+  min-width: 0;
+}
+
+.pl-frames {
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: calc(var(--u) * 1.6);
+}
+
+.pl-frame {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+}
+.pl-frame .pl-cell {
+  aspect-ratio: 3 / 2;
+}
+
+.pl-frame-no {
+  display: block;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: calc(var(--u) * 2.4);
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+.pl-frame-label {
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.25;
+  margin-top: calc(var(--u) * 0.6);
+}
+
+/* Filmstrip: the frames on black stock between two rows of sprocket holes. */
+.pl-band--filmstrip {
+  background: #151311;
+  color: #efe6c8;
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 2);
+}
+.pl-band--filmstrip .pl-cell img {
+  mix-blend-mode: normal;
+}
+.pl-band--filmstrip .pl-frames {
+  gap: calc(var(--u) * 2.2);
+}
+.pl-sprockets {
+  display: block;
+  height: calc(var(--u) * 2.6);
+  background: repeating-linear-gradient(
+      90deg,
+      transparent 0 calc(var(--u) * 1.6),
+      #efe6c8 calc(var(--u) * 1.6) calc(var(--u) * 3.6),
+      transparent calc(var(--u) * 3.6) calc(var(--u) * 5.2)
+    )
+    center / 100% 55% no-repeat;
+  opacity: 0.85;
+}
+.pl-band--filmstrip .pl-frame-no {
+  color: #f2b705;
+}
+
+/* Contact sheet: frames printed small, numbered, the pick ringed in grease pencil. */
+.pl-band--contact {
+  border-block: calc(var(--u) * 0.5) solid var(--ink);
+  padding-block: calc(var(--u) * 2);
+}
+.pl-band--contact .pl-frame .pl-cell {
+  aspect-ratio: 1 / 1;
+}
+.pl-frame--pick::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--u) * -1.4) calc(var(--u) * -1.2) auto;
+  aspect-ratio: 1 / 1;
+  border: calc(var(--u) * 0.8) solid var(--plate-accent, #e8175d);
+  border-radius: 48% 52% 45% 55% / 55% 45% 52% 48%;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+/* Grid: plain picture grid. Five pictures double the first; fewer sit in one row. */
+.pl-band--grid .pl-frames {
+  grid-template-columns: repeat(min(var(--n), 4), minmax(0, 1fr));
+}
+.pl-band--grid[data-lead] .pl-frame:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.pl-band--grid .pl-frame:first-child .pl-cell {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: calc(var(--u) * 40);
+}
+
+/* ——— Captions ——— */
+
+.pl-cap + .pl-cap::before {
+  content: " · ";
+}
+.pl-cap-where {
+  font-weight: 700;
+}
+.pl-credit {
+  opacity: 0.75;
+}
+
+/* ——— Story-page gallery ——— */
+
+.pl-gallery {
+  margin-block: calc(var(--u) * 5);
+}
+.pl-gallery-head {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: calc(var(--u) * 2.8);
+  border-bottom: calc(var(--u) * 0.5) solid var(--ink);
+  padding-bottom: calc(var(--u) * 1.2);
+  margin-bottom: calc(var(--u) * 3);
+}
+.pl-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--u) * 4);
+}
+.pl-plate {
+  margin: 0;
+  min-width: 0;
+}
+.pl-plate .pl-cell {
+  aspect-ratio: 4 / 3;
+}
+.pl-plate--wide {
+  grid-column: 1 / -1;
+}
+.pl-plate--wide .pl-cell {
+  aspect-ratio: 16 / 9;
+}
+.pl-plate figcaption {
+  margin-top: calc(var(--u) * 1.2);
+}
+
+@media (max-width: 760px) {
+  .pl-band--grid .pl-frames {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pl-band--contact .pl-frames,
+  .pl-band--filmstrip .pl-frames {
+    grid-template-columns: repeat(min(var(--n), 3), minmax(0, 1fr));
+  }
+  .pl-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* A brief with a floated picture contains it, so it never spills into the next brief. (Zero
+ * specificity: a design that lays the brief out as grid or flex keeps its own display.) */

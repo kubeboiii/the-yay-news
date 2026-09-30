@@ -1,0 +1,225 @@
+/* The review desk for the habits work. Plain on purpose, around the made things. */
+
+.hr {
+  min-height: 100vh;
+  padding: 32px 16px 120px;
+  background: #e4ded3;
+  color: #1d1a17;
+  overflow-x: clip;
+}
+
+.hr-head,
+.hr-sec {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hr-sec {
+  padding: 34px 0;
+  border-top: 1px dashed rgb(29 26 23 / 0.3);
+}
+
+.hr-kicker {
+  margin: 0;
+  font-family: var(--hb-stamp), monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hr-title {
+  margin: 4px 0 12px;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: clamp(44px, 9vw, 80px);
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.hr-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 14px;
+}
+
+.hr-switch small {
+  opacity: 0.7;
+}
+
+.hr-h {
+  margin: 0 0 18px;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.hr-note {
+  max-width: 70ch;
+  margin: 0 0 12px;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.hr-link {
+  margin: 0 10px 4px 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--hb-hand), cursive;
+  font-size: 18px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.hr-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+}
+
+.hr-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 22px;
+  margin-top: 30px;
+  padding: 26px;
+  background: #ead6ae url("/mockup/inserts/tex-card.jpg") center / 520px;
+  background-blend-mode: multiply;
+}
+
+.hr-gallery__item {
+  margin: 0;
+  text-align: center;
+  font-family: var(--hb-hand), cursive;
+  font-size: 16px;
+}
+
+.hr-gallery__stamp {
+  width: 100%;
+  max-width: 170px;
+  margin: 0 auto 6px;
+}
+
+.hr-samples {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.hr-sample {
+  padding: 14px;
+  min-height: 120px;
+  background: #f3eee2 url("/mockup/press/newsprint.jpg") center / 600px;
+  background-blend-mode: multiply;
+  font-family: var(--hb-serif), Georgia, serif;
+}
+
+.hr-sample__folio {
+  margin: 0;
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.hr-sample__title {
+  margin: 4px 0;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.hr-sample__state {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 18px;
+}
+
+.hr-stickers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .hr-stickers {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hr-paper {
+  position: relative;
+  min-height: 420px;
+  padding: 22px 22px 28px;
+  background: #f3eee2;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.08),
+    0 10px 30px -10px rgb(0 0 0 / 0.3);
+  isolation: isolate;
+}
+
+.hr-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / 100% 100%;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hr-paper--short {
+  min-height: 0;
+}
+
+.hr-paper__mast {
+  margin: 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 54px;
+  line-height: 0.9;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.hr-paper__rule {
+  margin: 6px 0 14px;
+  padding: 3px 0;
+  border-top: 2px solid #1d1a17;
+  border-bottom: 1px solid #1d1a17;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.hr-paper__kicker {
+  margin: 0;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-style: italic;
+}
+
+.hr-paper__head {
+  margin: 0 0 12px;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.hr-paper__cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  height: 220px;
+}
+
+.hr-paper__cols span {
+  background: repeating-linear-gradient(to bottom, rgb(29 26 23 / 0.5) 0 2px, transparent 2px 9px);
+}

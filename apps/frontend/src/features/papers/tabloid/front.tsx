@@ -2,6 +2,7 @@ import type { StoryItem } from "@repo/shared";
 import Link from "next/link";
 import { Mark } from "@/features/print/mark";
 import type { PageProps } from "../types";
+import { WeekInPictures, editionName } from "../weekend";
 import { type Area, frontComposition, gridStyle, places } from "./compose";
 import {
   capitalise,
@@ -52,7 +53,7 @@ export function Front({ edition, page, reading }: PageProps) {
     <Sheet theme="front" label={`The Yay News, ${longDate(edition.date)}`}>
       <Masthead
         title="The Yay News"
-        specTitle="Good news only"
+        specTitle={editionName(edition.date) ?? "Good news only"}
         spec={[
           ["Date", date],
           ["Issue", issueLine(edition)],
@@ -176,6 +177,8 @@ export function Front({ edition, page, reading }: PageProps) {
           ) : null}
         </AreaBox>
       </div>
+
+      <WeekInPictures edition={edition} reading={reading} className="tb-desk" />
 
       <Folio page={page.order} section="Front page" date={date} next={reading.next} />
     </Sheet>

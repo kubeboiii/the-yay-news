@@ -1,6 +1,16 @@
-import type { Puzzle, SolvedPuzzle } from "@repo/shared";
+import type { SolvedPuzzle } from "@repo/shared";
 import { Fragment, type ReactNode } from "react";
+import {
+  Crossword,
+  CrosswordAnswers,
+  FortuneTeller,
+  type PlayInks,
+  Riddle,
+  WordLadder,
+  WordSearch,
+} from "@/features/play";
 import { Mark } from "@/features/print/mark";
+import { BackKeepsakes, backPlay } from "../back-play";
 import type { PageProps } from "../types";
 import { backComposition } from "./compose";
 import { Folio, Head, Page, Ring, RunningHead, Spread, Tape, Zig } from "./parts";
@@ -11,24 +21,28 @@ import { byOrder, feature, features, folios, shortDate, signOffLines } from "./t
  * features and sign-off on page 2) and "comic-left" (the strip and features first, then the
  * puzzles and sign-off).
  *
- * The back route prints the last spread. Left: the puzzles, printed not interactive (the Mini
- * crossword from `rows`/`numbers` with its clues, the word ladder and the riddle). Right: the comic
+ * The back route prints the last spread. Left: the puzzles, played in pencil (the Mini crossword,
+ * the word ladder, the riddle with yesterday's under its folded corner, the word search and the
+ * fortune teller). Right: the comic
  * (a drawn strip: the edition carries its lines, not pictures), yesterday's answers, then whichever
  * of corrections, classifieds, letters, word of the day and the quote the edition has, and the
  * sign-off.
  */
 
-type Crossword = Extract<Puzzle, { type: "crossword" }>["data"];
-type Ladder = Extract<Puzzle, { type: "word_ladder" }>["data"];
-type Riddle = Extract<Puzzle, { type: "riddle" }>["data"];
+/** The reader's pencil and marker on the zine's pastel grounds. */
+const INKS: PlayInks = {
+  ink: "var(--ink)",
+  print: "var(--ink)",
+  paper: "var(--paper)",
+  highlight: "var(--deepmint)",
+  mark: "var(--rosetype)",
+};
 
 export function Back({ edition, page, reading }: PageProps) {
   const [lf, rf] = folios(reading, page.order);
   const date = shortDate(edition.date);
-  const puzzles = byOrder(edition.puzzles);
-  const crossword = puzzles.find((p) => p.type === "crossword")?.data as Crossword | undefined;
-  const ladder = puzzles.find((p) => p.type === "word_ladder")?.data as Ladder | undefined;
-  const riddle = puzzles.find((p) => p.type === "riddle")?.data as Riddle | undefined;
+  const play = backPlay(edition);
+  const { issue, crossword, ladder, riddle, search, fortune } = play;
 
   const comic = feature(edition, "comic");
   const corrections = features(edition, "correction");
@@ -149,22 +163,67 @@ export function Back({ edition, page, reading }: PageProps) {
   const puzzlesHead = (
     <Head as="h1" top="Pencils out, it’s the back page" bottom="Puzzles" size={18} />
   );
-  const crosswordNode = crossword ? <CrosswordBlock data={crossword} /> : null;
-  const smallPuzzles =
-    ladder || riddle ? (
-      <div className="z-puzz">
-        {ladder ? <LadderBlock data={ladder} /> : <div />}
-        {riddle ? (
-          <section className="z-riddle" aria-labelledby="riddle">
-            <h2 className="z-h3" id="riddle">
-              {riddle.title}
-            </h2>
-            <p className="z-riddle__q">{riddle.question}</p>
-            <p className="z-yday">Answers to today’s puzzles are printed in tomorrow’s zine.</p>
-          </section>
-        ) : null}
+  const crosswordNode = crossword ? (
+    <Crossword
+      issue={issue}
+      data={crossword.data}
+      inks={INKS}
+      headingLevel={2}
+      className="yn-play zb-pz"
+    />
+  ) : null;
+  const ladderNode = ladder ? (
+    <WordLadder
+      issue={issue}
+      data={ladder.data}
+      inks={INKS}
+      headingLevel={2}
+      className="yn-play zb-pz"
+    />
+  ) : null;
+  const riddleNode = riddle ? (
+    <Riddle
+      issue={issue}
+      data={riddle.data}
+      yesterday={play.yesterday?.riddle}
+      inks={INKS}
+      headingLevel={2}
+      className="yn-play zb-pz"
+    />
+  ) : null;
+  const searchNode = search ? (
+    <WordSearch
+      issue={issue}
+      data={search.data}
+      inks={INKS}
+      headingLevel={2}
+      className="yn-play zb-pz zb-pz--wide"
+    />
+  ) : null;
+  const fortuneNode = fortune ? (
+    <FortuneTeller
+      issue={issue}
+      data={fortune.data}
+      inks={INKS}
+      headingLevel={2}
+      className="yn-play zb-pz"
+    />
+  ) : null;
+  /**
+   * The small puzzles two to a row (the word search runs on the other page, where there's room);
+   * `beside` fills the cell next to the word ladder.
+   */
+  const puzzGrid = (beside: ReactNode) =>
+    ladder || riddle || search || fortune ? (
+      <div className="z-puzz zb-puzz">
+        {ladderNode}
+        {beside ? <div className="zb-puzz__beside">{beside}</div> : null}
+        {fortuneNode}
+        {riddleNode}
       </div>
-    ) : null;
+    ) : (
+      beside
+    );
   const comicNode = comic ? (
     <section aria-labelledby="comic" className="zb-comic">
       <div className="z-comic__head">
@@ -197,16 +256,19 @@ export function Back({ edition, page, reading }: PageProps) {
       </div>
     </section>
   ) : null;
+  // Each column in a block of its own, so either can cross the fold on its own (balance.tsx).
   const lowerNode = (
-    <div className="z-back__lower zb-lower">
+    <>
       {columns.map((col, i) => (
-        <div className="zb-col" key={i}>
-          {col.map((b) => (
-            <Fragment key={b.key}>{b.node}</Fragment>
-          ))}
+        <div className="z-back__lower zb-lower" key={i}>
+          <div className="zb-col">
+            {col.map((b) => (
+              <Fragment key={b.key}>{b.node}</Fragment>
+            ))}
+          </div>
         </div>
       ))}
-    </div>
+    </>
   );
   const quoteNode = quote ? (
     <figure className="z-pull zb-quote">
@@ -220,14 +282,19 @@ export function Back({ edition, page, reading }: PageProps) {
     </figure>
   ) : null;
   const signoffNode = (
-    <div className="z-signoff">
-      <p>
-        <SignOff text={signBig} />
-      </p>
-      {signRest ? <p>{signRest}</p> : null}
-    </div>
+    <>
+      <BackKeepsakes edition={edition} className="zb-keepsakes" />
+      <div className="z-signoff">
+        <p>
+          <SignOff text={signBig} />
+        </p>
+        {signRest ? <p>{signRest}</p> : null}
+      </div>
+    </>
   );
   const comp = backComposition(edition);
+  // The pieces at the fold may cross it (balance.tsx) so the two pages end level.
+  const flowId = `zb:${issue}`;
 
   if (comp === "comic-left") {
     // The strip and the paper's short features open the spread; the puzzles and the sign-off close it.
@@ -235,18 +302,30 @@ export function Back({ edition, page, reading }: PageProps) {
       <Spread label="Back page spread">
         <Page ground="lilac" side="left" composition={comp}>
           <RunningHead>The Yay Zine · The back page</RunningHead>
-          {comicNode}
-          {yesterdayNode}
-          {lowerNode}
-          {quoteNode}
+          <div className="zb-flow" data-sp-flow={flowId} data-half={0}>
+            {comicNode}
+            <div className="zb-flow">
+              {puzzlesHead}
+              {/* Yesterday's answers and the quote share the cell beside the word ladder: either
+                  alone is much shorter than the ladder and would leave bare paper under it. */}
+              {puzzGrid(
+                <>
+                  {yesterdayNode}
+                  {quoteNode}
+                </>,
+              )}
+            </div>
+            {lowerNode}
+          </div>
           <Folio n={lf} date={date} />
         </Page>
         <Page ground="butter" side="right">
           <RunningHead>The Yay Zine · The back page</RunningHead>
-          {puzzlesHead}
-          {crosswordNode}
-          {smallPuzzles}
-          {signoffNode}
+          <div className="zb-flow" data-sp-flow={flowId} data-half={1}>
+            {crosswordNode}
+            {searchNode}
+            {signoffNode}
+          </div>
           <Folio n={rf} date={date} />
         </Page>
       </Spread>
@@ -257,18 +336,22 @@ export function Back({ edition, page, reading }: PageProps) {
     <Spread label="Back page spread">
       <Page ground="butter" side="left" composition={comp}>
         <RunningHead>The Yay Zine · The back page</RunningHead>
-        {puzzlesHead}
-        {crosswordNode}
-        {smallPuzzles}
-        {yesterdayNode}
+        <div className="zb-flow" data-sp-flow={flowId} data-half={0}>
+          {puzzlesHead}
+          {crosswordNode}
+          {puzzGrid(yesterdayNode)}
+        </div>
         <Folio n={lf} date={date} />
       </Page>
       <Page ground="peach" side="right">
         <RunningHead>The Yay Zine · The back page</RunningHead>
-        {comicNode}
-        {lowerNode}
-        {quoteNode}
-        {signoffNode}
+        <div className="zb-flow" data-sp-flow={flowId} data-half={1}>
+          {searchNode}
+          {comicNode}
+          {lowerNode}
+          {quoteNode}
+          {signoffNode}
+        </div>
         <Folio n={rf} date={date} />
       </Page>
     </Spread>
@@ -299,105 +382,6 @@ function SignOff({ text }: { text: string }) {
   );
 }
 
-function CrosswordBlock({ data }: { data: Crossword }) {
-  const rows = data.rows;
-  const cols = Math.max(...rows.map((r) => r.length), 1);
-  const numbers = new Map(data.numbers.map((n) => [`${n.row},${n.col}`, n.n]));
-  const blacks = rows
-    .join("")
-    .split("")
-    .filter((c) => c === "#").length;
-  const words = data.title.split(" ");
-  const the = words[0]?.toLowerCase() === "the" ? words.shift() : null;
-  return (
-    <section aria-labelledby="xw-title">
-      <div className="z-xw zb-xw z-offset-block">
-        <h2 className="z-xw__side" id="xw-title">
-          <span>{the ?? ""}</span>
-          <span>{words.join(" ")}</span>
-          <span>Crossword</span>
-        </h2>
-        <div
-          className="z-grid zb-grid"
-          role="img"
-          aria-label={`A ${cols} by ${rows.length} crossword grid with ${blacks} black squares`}
-          style={{ ["--cols" as string]: cols, ["--rows" as string]: rows.length }}
-        >
-          {rows.flatMap((row, r) =>
-            [...row.padEnd(cols, "#")].map((ch, c) => {
-              const n = numbers.get(`${r},${c}`);
-              return (
-                <div
-                  key={`${r}-${c}`}
-                  className={`z-grid__cell ${ch === "#" ? "z-grid__cell--black" : ""}`}
-                >
-                  {n ? <sup>{n}</sup> : null}
-                </div>
-              );
-            }),
-          )}
-        </div>
-      </div>
-
-      <div className="z-clues">
-        {(["across", "down"] as const).map((dir) => (
-          <div key={dir}>
-            <h3 className="z-label">{dir === "across" ? "Across" : "Down"}</h3>
-            <ol>
-              {data[dir].map((c) => (
-                <li key={c.n}>
-                  <b>{c.n}</b>
-                  <span>
-                    {c.clue} ({c.length})
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function LadderBlock({ data }: { data: Ladder }) {
-  const width = Math.max(data.start.length, data.end.length);
-  const rungs = data.steps + 2;
-  const cell = Math.min(7, Math.max(4.4, 40 / rungs));
-  return (
-    <section aria-labelledby="ladder">
-      <h2 className="z-h3" id="ladder">
-        {data.title}
-      </h2>
-      <p className="zb-ladder__how">{data.instructions}</p>
-      <div
-        className="z-ladder"
-        role="img"
-        aria-label={`${data.start}, then ${data.steps} blank ${data.steps === 1 ? "rung" : "rungs"}, then ${data.end}`}
-        style={{ ["--cell" as string]: cell }}
-      >
-        <div className="z-ladder__row z-ladder__row--given">
-          {[...data.start].map((l, i) => (
-            <span key={`s${i}`}>{l}</span>
-          ))}
-        </div>
-        {Array.from({ length: data.steps }, (_, r) => (
-          <div className="z-ladder__row" key={`r${r}`}>
-            {Array.from({ length: width }, (_, i) => (
-              <span key={`b${r}${i}`} />
-            ))}
-          </div>
-        ))}
-        <div className="z-ladder__row z-ladder__row--given">
-          {[...data.end].map((l, i) => (
-            <span key={`e${i}`}>{l}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Yesterday({ issue, puzzles }: { issue: number; puzzles: SolvedPuzzle[] }) {
   return (
     <section className="zb-yday" aria-labelledby="yday">
@@ -406,33 +390,15 @@ function Yesterday({ issue, puzzles }: { issue: number; puzzles: SolvedPuzzle[] 
       </h2>
       {puzzles.map((p) => {
         if (p.type === "crossword") {
-          const cols = Math.max(...p.solution.grid.map((r) => r.length), 1);
           return (
-            <div className="zb-yday__xw" key="xw">
-              <div
-                className="zb-mini"
-                role="img"
-                aria-label={`Yesterday's crossword, solved: across ${p.solution.across
-                  .map((a) => `${a.n} ${a.answer}`)
-                  .join(
-                    ", ",
-                  )}; down ${p.solution.down.map((a) => `${a.n} ${a.answer}`).join(", ")}`}
-                style={{ ["--cols" as string]: cols }}
-              >
-                {p.solution.grid.flatMap((row, r) =>
-                  [...row.padEnd(cols, "#")].map((ch, c) => (
-                    <span key={`${r}-${c}`} className={ch === "#" ? "zb-mini--black" : undefined}>
-                      {ch === "#" ? "" : ch}
-                    </span>
-                  )),
-                )}
-              </div>
-              <p className="zb-yday__list">
-                <b>Across</b> {p.solution.across.map((a) => `${a.n} ${a.answer}`).join(" · ")}
-                <br />
-                <b>Down</b> {p.solution.down.map((a) => `${a.n} ${a.answer}`).join(" · ")}
-              </p>
-            </div>
+            <CrosswordAnswers
+              key="xw"
+              data={p.data}
+              solution={p.solution}
+              inks={INKS}
+              hideTitle
+              className="yn-play zb-answers"
+            />
           );
         }
         if (p.type === "word_ladder") {
@@ -442,11 +408,14 @@ function Yesterday({ issue, puzzles }: { issue: number; puzzles: SolvedPuzzle[] 
             </p>
           );
         }
-        return (
-          <p className="zb-yday__line" key="riddle">
-            <b>{p.data.title}:</b> {p.data.question} <i>{p.solution.answer}.</i>
-          </p>
-        );
+        if (p.type === "riddle") {
+          return (
+            <p className="zb-yday__line" key="riddle">
+              <b>{p.data.title}:</b> lift the corner of today’s riddle.
+            </p>
+          );
+        }
+        return null;
       })}
     </section>
   );

@@ -1,0 +1,191 @@
+/* The emergency desk: plain and functional, in the paper's gothic and serif. */
+
+.adm {
+  min-height: 100vh;
+  padding: 40px 16px 96px;
+  background: #f4efe4;
+  color: #1d1a17;
+  font-family: var(--hb-serif), Georgia, serif;
+}
+
+.adm__head,
+.adm__login,
+.adm__desk {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.adm__head {
+  margin-bottom: 28px;
+  border-bottom: 3px double #1d1a17;
+  padding-bottom: 12px;
+}
+
+.adm__kicker {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.adm__title {
+  margin: 4px 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: clamp(2.6rem, 8vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.adm__note,
+.adm__meta {
+  color: #4f4840;
+  font-size: 0.9rem;
+}
+
+.adm__meta {
+  display: block;
+}
+
+.adm button,
+.adm input {
+  font: inherit;
+}
+
+.adm button {
+  border: 2px solid #1d1a17;
+  background: #fffdf8;
+  color: #1d1a17;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.adm button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.adm button:focus-visible,
+.adm input:focus-visible {
+  outline: 3px solid #2f5bff;
+  outline-offset: 2px;
+}
+
+.adm .adm__danger {
+  background: #b3261e;
+  border-color: #b3261e;
+  color: #fff;
+}
+
+.adm__login {
+  display: grid;
+  gap: 8px;
+  max-width: 360px;
+}
+
+.adm__login input {
+  border: 2px solid #1d1a17;
+  padding: 8px;
+  background: #fffdf8;
+}
+
+.adm__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.adm__flash {
+  border-left: 6px solid;
+  padding: 8px 12px;
+  background: #fffdf8;
+}
+
+.adm__flash--ok {
+  border-color: #1f7a3f;
+}
+
+.adm__flash--bad {
+  border-color: #b3261e;
+}
+
+.adm__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.adm__edition {
+  border-top: 1px solid #1d1a17;
+  padding: 10px 0;
+}
+
+.adm__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adm .adm__toggle {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  border: 0;
+  background: none;
+  padding: 4px 0;
+  text-align: left;
+}
+
+.adm__issue {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 1.5rem;
+}
+
+.adm__status,
+.adm__tag {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  padding: 0 6px;
+}
+
+.adm__status--pulled {
+  color: #b3261e;
+}
+
+.adm__status--published,
+.adm__status--scheduled {
+  color: #1f7a3f;
+}
+
+.adm__stories {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.adm__stories th,
+.adm__stories td {
+  border-bottom: 1px solid #cfc6b6;
+  padding: 6px 4px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.adm__stories td:last-child {
+  text-align: right;
+}
+
+.adm__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

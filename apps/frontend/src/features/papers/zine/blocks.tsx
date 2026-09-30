@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Burst } from "@/features/print/burst";
 import { Mark } from "@/features/print/mark";
+import { BriefArt, BriefBand, planBriefs } from "../brief-art";
 import { Body, Byline, Head, Photo, Print, printNote, ReadOn, Ringed, Tape, Zig } from "./parts";
 import { headSize } from "./text";
 
@@ -19,8 +20,8 @@ export type StoryVariant =
   | "rail" // kicker, head and standfirst in a narrow rail beside the picture and text
   | "boxed" // the whole story on a block of the page's deep ink
   | "clip" // the story on white stock, torn out and taped on
-  | "cart" // Gaming: a cartridge label carries the head, the print taped over its edge
-  | "film"; // Screen & Sound: the picture on a strip of film above the head
+  | "cart" // Play: a cartridge label carries the head, the print taped over its edge
+  | "film"; // Screen: the picture on a strip of film above the head
 
 export type HeadSize = "xl" | "l" | "m" | "s";
 
@@ -108,6 +109,7 @@ export function StoryBlock({
     <div className={`zc-print ${cls ?? ""}`}>
       <Print
         photo={img}
+        plates={img === image ? story : undefined}
         ratio={ratio}
         sizes="(max-width: 900px) 100vw, 620px"
         rotate={rotate}
@@ -132,11 +134,10 @@ export function StoryBlock({
           {headline}
           {dek}
           {byline}
+          {/* The print goes down the rail under the head, so the rail runs as deep as the text. */}
+          {image ? print(image, "3 / 4", side === "right" ? -1.4 : 1.6) : null}
         </div>
-        <div className="zc-rail__main">
-          {image ? print(image, "4 / 3", side === "right" ? -1.4 : 1.6) : null}
-          {text()}
-        </div>
+        <div className="zc-rail__main">{text()}</div>
       </article>
     );
   }
@@ -176,7 +177,12 @@ export function StoryBlock({
           <p className="z-drop">{first}</p>
           {image ? (
             <div className="zc-flat z-offset-block">
-              <Photo photo={image} ratio="16 / 9" sizes="(max-width: 900px) 100vw, 620px" />
+              <Photo
+                photo={image}
+                plates={story}
+                ratio="16 / 9"
+                sizes="(max-width: 900px) 100vw, 620px"
+              />
               {burst}
             </div>
           ) : null}
@@ -200,7 +206,12 @@ export function StoryBlock({
         {text(
           image ? (
             <figure className={`zc-float zc-float--${side} zc-float--flat`}>
-              <Photo photo={image} ratio="1 / 1" sizes="(max-width: 900px) 100vw, 260px" />
+              <Photo
+                photo={image}
+                plates={story}
+                ratio="1 / 1"
+                sizes="(max-width: 900px) 100vw, 260px"
+              />
             </figure>
           ) : null,
         )}
@@ -218,7 +229,12 @@ export function StoryBlock({
         <div className="zc-clip__paper">
           {image ? (
             <div className="zc-clip__photo">
-              <Photo photo={image} ratio="2 / 1" sizes="(max-width: 900px) 100vw, 560px" />
+              <Photo
+                photo={image}
+                plates={story}
+                ratio="2 / 1"
+                sizes="(max-width: 900px) 100vw, 560px"
+              />
             </div>
           ) : null}
           {headline}
@@ -238,6 +254,7 @@ export function StoryBlock({
           {image ? (
             <Print
               photo={image}
+              plates={story}
               ratio="4 / 5"
               sizes="(max-width: 900px) 70vw, 220px"
               rotate={-4}
@@ -273,6 +290,7 @@ export function StoryBlock({
             <div className="z-film__frames zs-film__one zs-film__wide">
               <Photo
                 photo={image}
+                plates={story}
                 ratio="5 / 2"
                 sizes="(max-width: 900px) 100vw, 620px"
                 priority={priority}
@@ -325,6 +343,11 @@ export function Briefs({
 }) {
   if (!stories.length) return null;
   const id = `brief-${stories[0]!.slug}`;
+  const plan = planBriefs(stories, {
+    measure: variant === "band" ? "wide" : "narrow",
+    flavour: "scrappy",
+    seed: stories.map((s) => s.slug).join("|"),
+  });
   return (
     <section className={`zc-briefs zc-briefs--${variant}`} aria-labelledby={id}>
       {variant === "box" ? <Tape at="t" /> : null}
@@ -337,21 +360,28 @@ export function Briefs({
           <Mark name={mark} ink="var(--ink)" className="zc-briefs__mark" />
         ) : null}
       </div>
+      {plan.band ? <BriefBand stories={stories} /> : null}
       <ol>
         {stories.map((s, i) => (
-          <li key={s.slug}>
-            {variant === "numbered" ? (
+          <li key={s.slug} data-art={plan.arts[i]}>
+            {variant === "numbered" && !plan.band ? (
               <span className="zc-briefs__n" aria-hidden>
                 {from + i + 1}
               </span>
             ) : null}
             <div>
-              <p className="z-kicker">{s.kicker}</p>
-              <h3 className="zc-briefs__head">
-                <Link href={storyHref(s.slug)} className="z-link-head">
-                  {s.headline}
-                </Link>
-              </h3>
+              <BriefArt
+                story={s}
+                art={plan.arts[i]!}
+                keyNo={plan.band ? from + i + 1 : undefined}
+                kicker={<p className="z-kicker">{s.kicker}</p>}
+              >
+                <h3 className="zc-briefs__head">
+                  <Link href={storyHref(s.slug)} className="z-link-head">
+                    {s.headline}
+                  </Link>
+                </h3>
+              </BriefArt>
               <p className="zc-briefs__dek">{s.dek}</p>
               <div className="zc-body zc-briefs__body">
                 {s.body.map((p, j) => (

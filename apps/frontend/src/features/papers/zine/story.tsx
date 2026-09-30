@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Burst } from "@/features/print/burst";
 import { Mark } from "@/features/print/mark";
+import { Gallery } from "../plates";
 import type { StoryProps } from "../types";
 import { pageLabel } from "../reading";
 import { Body, Byline, doodleFor, Page, Print, printNote, Ringed, RunningHead } from "./parts";
@@ -98,6 +99,7 @@ export function Story({ data, links }: StoryProps) {
             {!image && story.body.join("").length < 700 ? (
               <Mark name={doodleFor(story.section.slug)} ink="var(--ink)" className="zt-doodle" />
             ) : null}
+            <Gallery story={story} className="zt-gallery" captionClass="zt-credit" />
             <nav className="zt-nav" aria-label="More from this edition">
               {links.prev ? (
                 <Link href={links.prev.href} className="zt-nav__card" rel="prev">

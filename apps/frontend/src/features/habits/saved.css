@@ -1,0 +1,193 @@
+/* Kept stories: newsprint clippings, torn and taped. */
+
+.hb-desk {
+  min-height: 100vh;
+  padding: 40px 16px 96px;
+  background: #e4ded3;
+  color: #1d1a17;
+  overflow-x: clip;
+}
+
+.hb-desk__head {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.hb-desk__kicker {
+  margin: 0;
+  font-family: var(--hb-stamp), monospace;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hb-desk__title {
+  margin: 4px 0 6px;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: clamp(54px, 12vw, 96px);
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.hb-desk__note {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.hb-desk__note a {
+  color: inherit;
+}
+
+.hb-saved__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 30px 26px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.hb-saved__empty {
+  max-width: 420px;
+  margin: 30px auto;
+  font-family: var(--hb-hand), cursive;
+  font-size: 22px;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.hb-clip {
+  position: relative;
+  padding: 22px 20px 16px;
+  background: #f1ece0;
+  rotate: var(--tilt);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.1),
+    0 6px 14px -8px rgb(40 30 20 / 0.45);
+  /* Torn with scissors, not a guillotine: slightly ragged sides. */
+  clip-path: polygon(
+    0.6% 1.2%,
+    22% 0,
+    48% 0.9%,
+    76% 0.2%,
+    99.4% 1%,
+    100% 34%,
+    99.2% 67%,
+    100% 98.6%,
+    72% 100%,
+    41% 99.1%,
+    14% 100%,
+    0 98.8%,
+    0.9% 63%,
+    0 31%
+  );
+}
+
+.hb-clip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / 700px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.hb-clip__tape {
+  position: absolute;
+  top: -2px;
+  left: var(--tape-x);
+  width: 84px;
+  height: 22px;
+  translate: -50% 0;
+  rotate: var(--tape);
+  background: url("/mockup/fx/tape.png") center / 100% 100%;
+  opacity: 0.85;
+  z-index: 2;
+}
+
+.hb-clip__meta {
+  position: relative;
+  margin: 0 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(29 26 23 / 0.6);
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hb-clip__kicker {
+  position: relative;
+  margin: 0 0 2px;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.hb-clip__head {
+  position: relative;
+  margin: 0 0 12px;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.hb-clip__head a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hb-clip__head a:hover {
+  text-decoration: underline;
+}
+
+.hb-clip__foot {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 19px;
+}
+
+.hb-clip__read {
+  color: inherit;
+  text-decoration: underline wavy rgb(29 26 23 / 0.5);
+  text-underline-offset: 4px;
+}
+
+.hb-clip__drop {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.hb-clip__drop:hover {
+  opacity: 1;
+  text-decoration: line-through;
+}
+
+.hb-clip a:focus-visible,
+.hb-clip__drop:focus-visible {
+  outline: 2px dashed #1d1a17;
+  outline-offset: 2px;
+}
+
+.hb-desk__corner {
+  display: flex;
+  justify-content: center;
+  margin: 28px 0 0;
+}

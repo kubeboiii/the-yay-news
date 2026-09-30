@@ -1,0 +1,106 @@
+/* The sound switch: a scrap of card with a pencilled speaker, taped at one corner. */
+
+.snd {
+  --snd-ink: #2b2620;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 6px;
+  border: 0;
+  background: #f4ecdb;
+  color: var(--snd-ink);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  /* A hand-cut edge rather than a rounded button. */
+  clip-path: polygon(
+    1% 6%,
+    34% 0,
+    71% 4%,
+    99% 1%,
+    100% 52%,
+    98% 96%,
+    62% 100%,
+    27% 97%,
+    0 100%,
+    2% 48%
+  );
+  box-shadow: inset 0 0 0 1px rgb(60 45 25 / 0.08);
+  transform: rotate(-1.5deg);
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.snd::after {
+  /* Paper grain. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/press/newsprint.jpg") center / 240px;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.snd:hover {
+  transform: rotate(0.5deg) translateY(-1px);
+}
+
+.snd:focus-visible {
+  outline: 2px dashed var(--snd-ink);
+  outline-offset: 3px;
+}
+
+.snd__art {
+  width: 34px;
+  height: 23px;
+  flex: none;
+  overflow: visible;
+}
+
+.snd__art path {
+  fill: none;
+  stroke: var(--snd-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.snd__art .snd__line {
+  fill: rgb(43 38 32 / 0.12);
+}
+
+.snd__wave {
+  opacity: 0.25;
+  transition: opacity 0.2s;
+}
+
+.snd.is-on .snd__wave {
+  opacity: 1;
+}
+
+.snd__scribble {
+  stroke-width: 2.4 !important;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.35s ease-out;
+}
+
+.snd.is-on .snd__scribble {
+  stroke-dashoffset: 60;
+}
+
+.snd__word {
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snd,
+  .snd__scribble,
+  .snd__wave {
+    transition: none;
+  }
+}

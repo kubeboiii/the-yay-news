@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build", "^db:generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "env": ["BACKEND_URL", "DATABASE_URL", "PORT", "CORS_ORIGIN"],
+      "env": ["BACKEND_URL", "DATABASE_URL", "PORT", "CORS_ORIGIN", "ADMIN_PASSWORD"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", "dist/**"]
     },
     "lint": {
@@ -37,8 +37,23 @@
       "cache": false,
       "persistent": true
     },
+    "edition": {
+      "cache": false,
+      "env": [
+        "NEWSROOM_MODEL",
+        "NEWSROOM_MODEL_FALLBACK",
+        "NEWSROOM_CLAUDE_BIN",
+        "NEWSROOM_TIMEOUT_MS",
+        "GEMINI_API_KEY",
+        "GEMINI_MODEL",
+        "GEMINI_CHEAP_MODEL",
+        "NASA_API_KEY",
+        "NEWSROOM_SITE_URL"
+      ]
+    },
     "test": {
       "dependsOn": ["^db:generate"],
+      "env": ["ADMIN_PASSWORD"],
       "outputs": []
     }
   },

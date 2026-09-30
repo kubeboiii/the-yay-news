@@ -1,5 +1,6 @@
 import type { Edition, Feature, Puzzle, SolvedPuzzle } from "@repo/shared";
 import type { EditionPage, Reading, StoryItem } from "../types";
+import { SPECIALS, type SpecialKind, fitsSpecial } from "../spreads";
 
 // Everything the broadsheet reads out of an edition: dates set the way the paper prints them,
 // the features and puzzles by type, and the section inks each page is printed in.
@@ -71,20 +72,32 @@ export const isLong = (paragraphs: string[]) => paragraphs.join(" ").length > 65
 
 // ——— Section inks ———
 // Each page prints in a pair of the six fluoro tokens: --pop (the loud one) and --pop2. The front,
-// Screen & Sound, Gaming and the back page keep the mockup's pairs; the other sections get their
+// Screen, Play and the back page keep the mockup's pairs; the other sections get their
 // own pair from the same set, so every colourway still gives each page one family of inks.
 
 export type Theme =
-  "screen" | "gaming" | "sports" | "tech" | "discoveries" | "money" | "internet" | "guest" | "back";
+  | "screen"
+  | "play"
+  | "startups"
+  | "music"
+  | "sports"
+  | "tech"
+  | "discoveries"
+  | "money"
+  | "internet"
+  | "guest"
+  | "back";
 
 const THEMES: Record<string, Theme> = {
-  "screen-and-sound": "screen",
-  gaming: "gaming",
+  screen: "screen",
+  play: "play",
+  startups: "startups",
+  music: "music",
   sports: "sports",
   tech: "tech",
   discoveries: "discoveries",
   money: "money",
-  "internet-and-culture": "internet",
+  internet: "internet",
 };
 
 export const themeFor = (page: Pick<EditionPage, "layout" | "section">): Theme =>
@@ -117,16 +130,28 @@ const hash = (s: string) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >
 export const FRONT_COMPS = ["classic", "headline", "rail", "split", "poster"] as const;
 export type FrontComp = (typeof FRONT_COMPS)[number];
 
+/**
+ * The broadsheet's compositions are fully random, day to day: every composition is ranked by a seed
+ * from the issue and the page (so an issue always prints the same way), and a page takes the first
+ * its stories suit that the edition hasn't used and that yesterday's page for the same section
+ * wasn't likely to have taken (the head of yesterday's ranking).
+ */
+function ranking<T extends string>(all: readonly T[], issue: number, key: string): T[] {
+  return [...all].sort((a, b) => hash(`${issue}:${key}:${a}`) - hash(`${issue}:${key}:${b}`));
+}
+
+/** How many of yesterday's first choices today's page stays clear of. */
+const YESTERDAY = 5;
+
 /** The front page's composition: a different one each day, among those the lead suits. */
 export function frontComp(edition: Edition, page: EditionPage): FrontComp {
   const { main } = storiesOf(page.stories);
   const photo = Boolean(main?.images[0]);
   const needsPhoto: FrontComp[] = ["classic", "split"];
-  for (let k = 0; k < FRONT_COMPS.length; k++) {
-    const c = FRONT_COMPS[(edition.issueNumber + k) % FRONT_COMPS.length]!;
-    if (photo || !needsPhoto.includes(c)) return c;
-  }
-  return "poster";
+  const fits = (c: FrontComp) => photo || !needsPhoto.includes(c);
+  const yesterday = ranking(FRONT_COMPS, edition.issueNumber - 1, "front").slice(0, 2);
+  const order = ranking(FRONT_COMPS, edition.issueNumber, "front");
+  return order.find((c) => fits(c) && !yesterday.includes(c)) ?? order.find(fits) ?? "poster";
 }
 
 export const SECTION_COMPS = [
@@ -137,15 +162,25 @@ export const SECTION_COMPS = [
   "picture",
   "ticker",
   "poster",
+  "album",
+  "contact",
+  ...SPECIALS,
 ] as const;
 export type SectionComp = (typeof SECTION_COMPS)[number];
 
+export const isSpecial = (c: SectionComp): c is SpecialKind =>
+  (SPECIALS as readonly string[]).includes(c);
+
 function fitsSection(c: SectionComp, page: EditionPage) {
+  if (isSpecial(c)) return fitsSpecial(c, page.stories);
   const { main, second, briefs } = storiesOf(page.stories);
   const photo = Boolean(main?.images[0]);
   if (c === "picture" || c === "side") return photo;
   if (c === "ticker") return briefs.length >= 2;
   if (c === "boxed") return Boolean(second);
+  // Picture-led pages need the pictures: a page of photographs, or a contact sheet of the lead's.
+  if (c === "album") return page.stories.filter((s) => s.images[0]).length >= 4;
+  if (c === "contact") return (main?.images.length ?? 0) >= 3;
   return true;
 }
 
@@ -156,17 +191,19 @@ export function sectionComps(edition: Edition): Map<number, SectionComp> {
     .sort((a, b) => a.order - b.order);
   const used = new Set<SectionComp>();
   const out = new Map<number, SectionComp>();
-  const n = SECTION_COMPS.length;
-  inside.forEach((p, i) => {
-    const start = (edition.issueNumber * 3 + i * 2 + hash(p.section?.slug ?? "")) % n;
-    const order = SECTION_COMPS.map((_, k) => SECTION_COMPS[(start + k) % n]!);
+  for (const p of inside) {
+    const key = p.section?.slug ?? String(p.order);
+    const yesterday = ranking(SECTION_COMPS, edition.issueNumber - 1, key).slice(0, YESTERDAY);
+    const order = ranking(SECTION_COMPS, edition.issueNumber, key);
+    const fits = (c: SectionComp) => fitsSection(c, p);
     const pick =
-      order.find((c) => !used.has(c) && fitsSection(c, p)) ??
-      order.find((c) => !used.has(c)) ??
-      order[0]!;
+      order.find((c) => fits(c) && !used.has(c) && !yesterday.includes(c)) ??
+      order.find((c) => fits(c) && !used.has(c)) ??
+      order.find(fits) ??
+      "rail";
     used.add(pick);
     out.set(p.order, pick);
-  });
+  }
   return out;
 }
 

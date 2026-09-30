@@ -13,11 +13,26 @@
   --pop2-ink: var(--paper);
 }
 
-.yn-theme-gaming {
+.yn-theme-play {
   --pop: var(--neon-green);
   --pop-ink: var(--ink);
   --pop2: var(--neon-violet);
   --pop2-ink: var(--ink);
+}
+
+/* Startups and Music print in their own section inks (cyan, red), which no colourway re-inks. */
+.yn-theme-startups {
+  --pop: var(--neon-cyan, #00c2c7);
+  --pop-ink: var(--ink);
+  --pop2: var(--neon-yellow);
+  --pop2-ink: var(--ink);
+}
+
+.yn-theme-music {
+  --pop: var(--neon-red, #ff2e4d);
+  --pop-ink: var(--ink);
+  --pop2: var(--neon-blue);
+  --pop2-ink: var(--paper);
 }
 
 .yn-theme-back {
@@ -234,7 +249,7 @@
 }
 
 /* ================================================================
-   Screen & Sound — neon pink with electric blue
+   Screen — neon pink with electric blue
    ================================================================ */
 
 .ss-top {
@@ -662,7 +677,7 @@
 }
 
 /* ================================================================
-   Gaming — neon green with violet
+   Play — neon green with violet
    ================================================================ */
 
 /* The arcade HUD across the top of the page, set in bitmap letters built from inked squares. */
@@ -936,7 +951,7 @@
   font-size: calc(var(--u) * 3);
 }
 
-/* The gaming page's lower rows carry bigger heads than elsewhere, so each item reads as one
+/* The Play page's lower rows carry bigger heads than elsewhere, so each item reads as one
  * element on the sheet rather than a block of small print. */
 .gm-mid h2,
 .gm-row .yn-hed-sm {

@@ -1,7 +1,6 @@
 // Issue 43, Thursday 1 October 2026. Scheduled: it exists, but is not served until it is published.
 // Real good-news stories, rewritten in the paper's own voice, each with its source article; images
 // fetched with apps/frontend/scripts/fetch_image.py.
-import { ladder, mini, riddle } from "../puzzles.ts";
 import type { SeedEdition } from "../types.ts";
 
 export const issue43: SeedEdition = {
@@ -87,7 +86,146 @@ export const issue43: SeedEdition = {
 
   inside: [
     {
-      section: "screen-and-sound",
+      section: "tech",
+      stories: [
+        {
+          slug: "flip-dot-fluid-display",
+          kicker: "Mechanical pixels",
+          headline: "Engineer pours a simulated liquid across thousands of clattering flip dots",
+          dek: "Built for the Electromagnetic Field festival, the display sloshes audibly as visitors steer gravity with a joystick, and the pun came first.",
+          body: [
+            "Flip-dot displays, the little discs that click from black to yellow on old bus signs, make a noise every time they change. The engineer known as mitxela realised that made them ideal for showing water: a fluid simulation that actually sounds as if it is sloshing.",
+            "There was a second reason. The simulation method he uses is called FLIP, short for Fluid Implicit Particle. “Yes, the primary motivation behind doing this was the wordplay,” he wrote.",
+            "New flip-dot displays are very expensive, so the dots came from a donated heap at the obsolete-technology museum run by Sam, better known as Look Mum No Computer. Mitxela designed his own driver boards so the panels could be tiled and refreshed quickly. He then prepared eight panels, each 13 dots by 28, with about 400 joints to solder on every one. A fast STM32 chip runs the physics. Altogether the display has 2,912 dots, and the whole installation cost under £500.",
+            "The finished display stood in the festival’s lounge tent in England. Visitors used a joystick to choose which way gravity pointed and watched the yellow liquid pour. It ran for all four days without a fault, and the joystick got so much use that it wore a grimy patch.",
+            "Next he hopes to adapt the design for the rest of the donated panels, which come in other sizes, and recruit volunteers for the soldering. “The length of this writeup conveys only a fraction of the tedium in all that soldering,” he noted.",
+            "Every splash comes with its own percussion section.",
+          ],
+          source: "mitxela.com",
+          sourceUrl: "https://mitxela.com/projects/flipflip",
+          image: {
+            file: "/editions/43/flip-dot-fluid-display.jpg",
+            alt: "A large flip-dot panel labelled ‘FLIP Fluid on Flip Dots’ showing yellow dots splashing like liquid, with a hand on a joystick beside it",
+            credit: "mitxela",
+            from: "https://mitxela.com/projects/flipflip",
+          },
+          sticker: "Splash!",
+        },
+        {
+          slug: "student-solar-cars-cross-country",
+          slot: "feature",
+          kicker: "Sun racers",
+          headline: "Student solar cars cross 1,500 miles of America, and two finish minutes apart",
+          dek: "Belgium’s KU Leuven beat TU Delft by under four minutes after more than 62 hours on the road.",
+          body: [
+            "Fourteen student-built cars powered only by sunshine rolled into Amarillo, Texas, on 5 August to finish the 2026 Electrek American Solar Challenge. Eighteen had set off, and the 1,547-mile route crossed eight states. The route ran south from the Minneapolis area and followed stretches of historic Route 66.",
+            "In the single-seater class, KU Leuven of Belgium covered 2,671.2 official miles in 62 hours, 7 minutes and 2 seconds. TU Delft of the Netherlands matched its 43.4mph average and crossed less than four minutes behind, with penalties deciding the gap.",
+            "The multi-passenger class is scored on distance, energy efficiency and practicality. Appalachian State University won it with 92.7 points, even though Polytechnique Montréal drove further and took second on 88.8, ahead of Georgia Tech. Organiser Gail Lueck called it “a record setting year for the event.”",
+            "Not bad for cars whose fuel tank is the sky.",
+          ],
+          source: "American Solar Challenge",
+          sourceUrl:
+            "http://www.americansolarchallenge.org/news/2026/08/appalachian-state-and-ku-leuven-win-2026-electrek-american-solar-challenge-as-student-solar-cars-complete-cross-country-journey/",
+          image: {
+            file: "/editions/43/student-solar-cars-cross-country.jpg",
+            alt: "Appalachian State University’s solar car crosses the finish line under a Route 66 arch as team members cheer",
+            credit: "American Solar Challenge, IEF",
+            from: "https://www.pv-magazine.com/2026/08/07/students-steer-solar-powered-racing-cars-to-glory-in-american-solar-challenge/",
+          },
+        },
+        {
+          slug: "cern-colibri-fpga-library",
+          slot: "brief",
+          kicker: "Open hardware",
+          headline: "CERN gives away colibri, a free toolbox of over 100 chip-design parts",
+          dek: "The particle-physics lab built it in house so it would never be tied to one supplier.",
+          body: [
+            "CERN has open-sourced colibri, a library of more than 100 VHDL components, functions and procedures for programming FPGA chips, under the CERN Open Hardware Licence. Built to speed up the lab’s own gateway devices, it works with chips from any maker, comes with self-checking tests and covers everyday protocols such as SPI and I2C. It is free to download from GitLab.",
+          ],
+          source: "Hackaday",
+          sourceUrl:
+            "https://hackaday.com/2026/09/24/fpga-for-all-cern-releases-colibri-vhdl-library/",
+          image: {
+            file: "/editions/43/cern-colibri-fpga-library.jpg",
+            alt: "The Colibri library's logo over a circuit board",
+            credit: "Hackaday",
+            from: "https://hackaday.com/2026/09/24/fpga-for-all-cern-releases-colibri-vhdl-library/",
+          },
+        },
+      ],
+    },
+    {
+      section: "startups",
+      stories: [
+        {
+          slug: "space-king-kickstarter-millions",
+          kicker: "Crowdfunding",
+          headline:
+            "An animation studio asks Kickstarter for $50,000 and gets more than $3 million",
+          dek: "Flashgitz turned its cartoon Space King into a board game, and backers poured in more than $2 million on the first day.",
+          body: [
+            "Most crowdfunding campaigns spend their first day nervously refreshing the page. Space King: The Board Game spent its first day raising 40 times its target. The Kickstarter from Flashgitz, an independent animation studio, asked for $50,000 when it launched on 30 August, the same day the studio released the fifth Space King cartoon.",
+            "Flashgitz is the work of Tom Hinchliffe and Don Greger, an English-American pair who met through the animation website Newgrounds. Their YouTube channel, known for gleefully cheeky parodies of games, films and internet culture, has more than 5 million subscribers, and a good number of them turned out to own a wallet.",
+            "The game is for two to four players, who control Psycho Warriors fighting aliens while quietly undermining one another, which makes it semi-cooperative. It comes with big PVC miniatures: the warriors stand about 50mm tall and the bosses top 100mm. The campaign passed $2 million in under 24 hours, some 40 times its goal.",
+            "The pledge levels went well beyond the $99 base game. At $699 came a metal box and a medal signed by the creators; at $1,999, a custom audio message. The top tier, called Globulus Maximus, cost $7,777 and promised an appearance in a future Space King episode. All 15 places sold out. More than 5,500 backers chose the $299 Psycho Warrior tier, which adds two expansions and a lore book.",
+            "Before long it had passed $3 million from around 8,000 backers, who pledged just over $375 each on average, far more than the price of the base game.",
+            "Somewhere, a very small plastic warrior is preparing for a very large shelf.",
+          ],
+          source: "Tabletop Sentinel",
+          sourceUrl:
+            "https://www.tabletopsentinel.com/news/scifi/from-warhammer-parody-to-3-million-phenomenon",
+          image: {
+            file: "/editions/43/space-king-kickstarter-millions.jpg",
+            alt: "The box for Space King: The Board Game, showing armoured warriors in battle, set against a smoky backdrop",
+            credit: "Flashgitz via Tabletop Sentinel",
+            from: "https://www.tabletopsentinel.com/news/scifi/from-warhammer-parody-to-3-million-phenomenon",
+          },
+          sticker: "40x",
+        },
+        {
+          slug: "livia-student-startup-award",
+          slot: "feature",
+          kicker: "Young founders",
+          headline:
+            "Cypriot students’ crop-watching drone startup is crowned Europe’s innovation of the year",
+          dek: "LIVIA went from a school-style company competition in April to the top prize at Europe’s largest entrepreneurship festival.",
+          body: [
+            "A team of students from Cyprus has flown home from Riga with the biggest prize at Gen-E 2026, Europe’s largest entrepreneurship festival. Their startup, LIVIA, was named European Innovation of the Year and also picked up the FedEx Access Signature Award.",
+            "LIVIA helps farmers look after their fields from above, combining AI, autonomous drones, satellite pictures and Earth observation data to track crop health and irrigation needs and keep costs down. The team is Christos Charalambous, the chief executive; Theofanis Orfanou, the technology chief; Ariadni Pashouli, who leads on biology; and Antreas Leonidou, who handles machine learning.",
+            "They qualified by winning JA Cyprus Company of the Year in April. Charalambous said the difference was “our ability to move beyond just having an idea”. JA Cyprus chief executive Antigoni Komodiki said the win showed young people from the island can “compete and lead at the highest European level”.",
+          ],
+          source: "Cyprus Mail",
+          sourceUrl:
+            "https://cyprus-mail.com/2026/07/14/cypriot-student-startup-wins-european-innovation-award",
+          image: {
+            file: "/editions/43/livia-student-startup-award.jpg",
+            alt: "The LIVIA team on stage at Gen-E 2026 holding a Cyprus flag and a first-place certificate",
+            credit: "Cyprus Mail",
+            from: "https://cyprus-mail.com/2026/07/14/cypriot-student-startup-wins-european-innovation-award",
+          },
+        },
+        {
+          slug: "lofi-cities-pixel-music",
+          slot: "brief",
+          kicker: "Fresh launch",
+          headline: "Lofi Cities plays fresh background music composed live inside your browser",
+          dek: "Sixteen pixel-art cities, nine music styles and no account needed.",
+          body: [
+            "Maker Safa Elmali has launched Lofi Cities on Product Hunt: animated pixel-art cityscapes with lofi music that is composed as you listen, not played from recordings. “The Web Audio API synthesizes the instruments as you listen,” he explained. There are 16 cities, nine music styles, weather effects, focus and sleep timers, and shared lanterns to release with other visitors. It is free and keeps working offline.",
+          ],
+          source: "Product Hunt",
+          sourceUrl: "https://www.producthunt.com/products/lofi-cities",
+          image: {
+            file: "/editions/43/lofi-cities-pixel-music.jpg",
+            alt: "A pixel-art Munich Christmas market at night in the snow, with the Lofi Cities music controls along the bottom",
+            credit: "Safa Elmali / Lofi Cities",
+            from: "https://www.producthunt.com/products/lofi-cities",
+          },
+        },
+      ],
+    },
+    {
+      section: "screen",
       stories: [
         {
           slug: "nigella-joins-bake-off-tent",
@@ -98,8 +236,8 @@ export const issue43: SeedEdition = {
             "The Great British Bake Off has a new judge, and she arrived blowing a kiss. Nigella Lawson joined Paul Hollywood at the judging table for the show’s 17th series, which opened on Channel 4 on Tuesday 22 September, taking the seat Prue Leith held for nine years.",
             "Before the episode aired, Lawson posted on Instagram: “I can’t pretend I’m not nervous about tonight but I’m excited, too.” She called it “a huge honour to be part of something as cherished (and rightly so) as Bake Off”.",
             "Cake Week handed the twelve new bakers a chocolate stout cake, a coffee and walnut technical and a self-portrait showstopper. Mo, a 21-year-old law student and the youngest in the tent, took Star Baker with a peanut and caramel chocolate stout cake. Gabe’s self-portrait hid a drag persona beneath a breakable mirror, which is more than most of us can manage with fondant.",
-            "The critics approved. The Telegraph said she “brings glamour, intelligence and poise. And, of course, a hefty dollop of innuendo.” The Times called her the “icing on the cake”, and The Independent decided that by the end of her first day “she feels part of the fabric”.",
-            "With Alison Hammond and Noel Fielding still hosting, the tent carries on every Tuesday at 8pm. Paul Hollywood’s handshake now has competition.",
+            "The critics approved. The Telegraph said she “brings glamour, intelligence and poise. And, of course, a hefty dollop of innuendo.” The Times called her the “icing on the cake”, and The Independent decided that by the end of her first day “she feels part of the fabric”. Metro gave the episode four stars for “the obvious fit with everything Bake Off stands for”, while The Guardian gave it five and found her “a much quieter, more soothing presence”.",
+            "With Alison Hammond and Noel Fielding still hosting, the tent carries on every Tuesday at 8pm. Paul Hollywood’s famous handshake now has serious competition.",
           ],
           source: "HuffPost UK",
           sourceUrl:
@@ -110,6 +248,14 @@ export const issue43: SeedEdition = {
             credit: "Patch Dolan/Channel 4",
             from: "https://www.huffingtonpost.co.uk/entry/great-british-bake-off-nigella-lawson-reviews_uk_6ab391e2e4b085277b54b9bb",
           },
+          more: [
+            {
+              file: "/editions/43/nigella-joins-bake-off-tent-2.jpg",
+              alt: "Nigella Lawson with her new co-stars and the bakers on the first day in the tent",
+              credit: "HuffPost UK",
+              from: "https://www.huffingtonpost.co.uk/entry/great-british-bake-off-nigella-lawson-reviews_uk_6ab391e2e4b085277b54b9bb",
+            },
+          ],
           sticker: "Star judge",
         },
         {
@@ -134,50 +280,28 @@ export const issue43: SeedEdition = {
           },
         },
         {
-          slug: "stevie-wonder-key-of-life-ep",
+          slug: "richard-e-grant-oxfam-coat",
           slot: "brief",
-          kicker: "Fresh keys",
-          headline: "Stevie Wonder releases four unheard tracks from Songs in the Key of Life",
-          dek: "He chose the outtakes himself, ahead of a tour playing the 1976 album in full.",
+          kicker: "Charity shop chic",
+          headline: "Richard E Grant credits a secondhand Oxfam coat with his big break",
+          dek: "He wore it, soaking wet, to his 1986 audition for ‘Withnail & I’.",
           body: [
-            "Fifty years on from Songs in the Key of Life, Stevie Wonder has released Songs in the Key of Life: The EP, four tracks from the original sessions: It’s Easier, My Life Story of Love, I Can See the Sun in Late December and I’m Into Livin’.",
-            "“We’ve lived with Songs in the Key of Life for fifty years, but there’s still more to hear,” he said.",
+            "Richard E Grant is fronting Oxfam’s Second Hand September this year, and his credentials are impeccable. “My life-changing career break happened because I was wearing a second hand coat I bought in an Oxfam shop,” he said. It was a pre-loved Burberry trench, worn to his rain-soaked 1986 audition for Withnail & I. Oxfam has more than 500 shops, should anyone else fancy their chances.",
           ],
-          source: "Euronews",
+          source: "Positive News",
           sourceUrl:
-            "https://www.euronews.com/2026/09/29/stevie-wonder-celebrates-50-years-of-songs-in-the-key-of-life-with-four-unreleased-songs",
-        },
-        {
-          slug: "steve-reich-90-southbank-wander",
-          slot: "brief",
-          kicker: "Pulse check",
-          headline:
-            "Steve Reich’s 90th birthday concert lets the audience wander among the players",
-          dek: "Paraorchestra swapped fixed seats for podiums, a dance floor and a spot of line dancing.",
-          body: [
-            "London’s Southbank Centre marked two birthdays at once: Steve Reich turns 90 on 3 October, and his Music for 18 Musicians turns 50 this year. Paraorchestra played it with musicians dotted on podiums around the Clore Ballroom, while dancers coaxed children and grandparents into a groove in the middle. Radiohead’s Jonny Greenwood followed in the Festival Hall with the London Sinfonietta. Minimalism, maximal grins.",
-          ],
-          source: "The Guardian",
-          sourceUrl:
-            "https://www.theguardian.com/music/2026/sep/28/paraorchestra-sinfonietta-greenwood-steve-reich-at-90-review-southbank-london",
-        },
-        {
-          slug: "porthcawl-elvis-festival",
-          slot: "brief",
-          kicker: "All shook up",
-          headline: "Porthcawl fills with Elvises again, including one who came from Australia",
-          dek: "The Welsh seaside town hosts Europe’s largest gathering of Elvis fans every September.",
-          body: [
-            "Europe’s largest gathering of Elvis fans has taken over Porthcawl in south Wales again, with a Cadillac parked by the beach and Elvis flags across town. Maria Phillips, known as Platinum Elvis, came from Australia; she started impersonating him at the age of three. Paul Dumayne, a plumber for 50 years, was at his tenth festival. The King, as ever, has not left the building.",
-          ],
-          source: "The Guardian",
-          sourceUrl:
-            "https://www.theguardian.com/music/gallery/2026/sep/28/porthcawl-elvis-festival-in-pictures",
+            "https://www.positive.news/society/richard-e-grant-fronts-second-hand-september-as-britons-try-to-buy-fewer-clothes/",
+          image: {
+            file: "/editions/43/richard-e-grant-oxfam-coat.jpg",
+            alt: "Richard E. Grant in a yellow waistcoat holding books",
+            credit: "Positive News",
+            from: "https://www.positive.news/society/richard-e-grant-fronts-second-hand-september-as-britons-try-to-buy-fewer-clothes/",
+          },
         },
       ],
     },
     {
-      section: "gaming",
+      section: "play",
       stories: [
         {
           slug: "dressmaker-steam-hit",
@@ -190,7 +314,7 @@ export const issue43: SeedEdition = {
             "Then the players got ambitious. Placing beads one at a time, they have stitched The Starry Night onto a gown, turned the Mona Lisa and Pokémon into dresses, and made a monarch butterfly frock, traditional Balkan wear and a suit of “dress armour”. Under one showpiece, a fan replied: “We aren’t even playing the same game.”",
             "Ruan Rothmann, the game’s programmer, took it well. “I used to be worried that I peaked way too early in my career. Now it seems I may have peaked with a dressmaking game,” he wrote, adding: “Dressmaker is awesome and I couldn’t be more proud.”",
             "The next update will hide the pins of other trims while you work on one. As for the studio’s next game, a fan asked for a horse game; Rothmann declined: “I dont trust horses or horse people sorry.”",
-            "Measure twice, cut once, and budget an afternoon for the Mona Lisa.",
+            "Measure twice, cut once, and budget a whole afternoon for the Mona Lisa and her smile.",
           ],
           source: "GamesRadar+",
           sourceUrl:
@@ -201,6 +325,20 @@ export const issue43: SeedEdition = {
             credit: "Cozy Lives / Free Lives via GamesRadar+",
             from: "https://www.gamesradar.com/games/simulation/new-steam-indie-hit-reaches-crucial-cozy-game-milestone-fans-wondering-if-theyre-even-playing-the-same-thing-as-geniuses-make-it-all-from-the-mona-lisa-to-pokemon-in-dress-form/",
           },
+          more: [
+            {
+              file: "/editions/43/dressmaker-steam-hit-2.jpg",
+              alt: "An enormous blue ball gown fills the frame in Dressmaker’s painted style",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/simulation/new-steam-indie-hit-reaches-crucial-cozy-game-milestone-fans-wondering-if-theyre-even-playing-the-same-thing-as-geniuses-make-it-all-from-the-mona-lisa-to-pokemon-in-dress-form/",
+            },
+            {
+              file: "/editions/43/dressmaker-steam-hit-3.jpg",
+              alt: "A pink gown on a mannequin at the foot of a grand double staircase",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/simulation/new-steam-indie-hit-reaches-crucial-cozy-game-milestone-fans-wondering-if-theyre-even-playing-the-same-thing-as-geniuses-make-it-all-from-the-mona-lisa-to-pokemon-in-dress-form/",
+            },
+          ],
           sticker: "98% positive",
         },
         {
@@ -225,6 +363,14 @@ export const issue43: SeedEdition = {
             credit: "GamesRadar+",
             from: "https://www.gamesradar.com/games/valve-boss-gabe-newell-admits-his-mongolian-throat-singing-phase-was-annoying-and-hes-apparently-not-very-good-at-it-either-i-am-entirely-self-taught-and-it-shows/",
           },
+          more: [
+            {
+              file: "/editions/43/gabe-newell-throat-singing-2.jpg",
+              alt: "Gabe Newell leans back in a pink shirt, grinning",
+              credit: "GamesRadar+",
+              from: "https://www.gamesradar.com/games/valve-boss-gabe-newell-admits-his-mongolian-throat-singing-phase-was-annoying-and-hes-apparently-not-very-good-at-it-either-i-am-entirely-self-taught-and-it-shows/",
+            },
+          ],
         },
         {
           slug: "yoshida-hair-removal-salon-simulator",
@@ -239,6 +385,12 @@ export const issue43: SeedEdition = {
           source: "GamesRadar+",
           sourceUrl:
             "https://www.gamesradar.com/games/simulation/former-playstation-boss-shuhei-yoshidas-highlights-of-tokyo-game-show-include-sonics-new-indie-spinoff-and-a-game-about-removing-hair/",
+          image: {
+            file: "/editions/43/yoshida-hair-removal-salon-simulator.jpg",
+            alt: "A laser at work on a customer's face in the salon simulator",
+            credit: "GamesRadar+",
+            from: "https://www.gamesradar.com/games/simulation/former-playstation-boss-shuhei-yoshidas-highlights-of-tokyo-game-show-include-sonics-new-indie-spinoff-and-a-game-about-removing-hair/",
+          },
         },
         {
           slug: "tcg-card-shop-simulator-1-0",
@@ -252,19 +404,148 @@ export const issue43: SeedEdition = {
           source: "GamesRadar+",
           sourceUrl:
             "https://www.gamesradar.com/games/simulation/tcg-card-shop-simulator-finally-hits-1-0-on-steam-after-4-million-players-96-percent-positive-reviews-and-2-years-in-early-access/",
+          image: {
+            file: "/editions/43/tcg-card-shop-simulator-1-0.jpg",
+            alt: "The shopkeeper throws his arms up among the card shop's shelves",
+            credit: "GamesRadar+",
+            from: "https://www.gamesradar.com/games/simulation/tcg-card-shop-simulator-finally-hits-1-0-on-steam-after-4-million-players-96-percent-positive-reviews-and-2-years-in-early-access/",
+          },
+        },
+      ],
+    },
+    {
+      section: "music",
+      stories: [
+        {
+          slug: "stevie-wonder-key-of-life-ep",
+          kicker: "Fresh keys",
+          headline: "Stevie Wonder releases four unheard tracks from Songs in the Key of Life",
+          dek: "He chose the outtakes himself, ahead of a tour playing the 1976 album in full.",
+          body: [
+            "Fifty years after Songs in the Key of Life, Stevie Wonder has opened the vault. Songs in the Key of Life: The EP collects four tracks from the original sessions that never made it onto the 1976 double album: It’s Easier, My Life Story of Love, I Can See the Sun in Late December and I’m Into Livin’. All four are out now.",
+            "“We’ve lived with Songs in the Key of Life for fifty years, but there’s still more to hear,” he said. “We didn’t add these songs to the album, but they were part of what I was feeling and discovering as we made it.”",
+            "Wonder wrote and produced all four. My Life Story of Love shares a writing credit with Susaye Greene, formerly of the Supremes, and I’m Into Livin’ has background vocals from Shirley Brewer, Thelma Houston and Deniece Williams. Engineers from the original sessions, John Fischbach among them, came back to remix the tracks for release.",
+            "The album they belong with hardly needs an introduction. It gave the world Sir Duke, As and I Wish, won Wonder his third Grammy for Album of the Year and sits in the US Library of Congress’s National Recording Registry.",
+            "It is also going back on the road. Wonder’s 50th-anniversary tour opens in Birmingham on 13 October and plays major European cities until 11 November in Glasgow, with every show performing the original album from start to finish.",
+            "Fifty years on, the key of life clearly still has a few notes left in it.",
+          ],
+          source: "Euronews",
+          sourceUrl:
+            "https://www.euronews.com/2026/09/29/stevie-wonder-celebrates-50-years-of-songs-in-the-key-of-life-with-four-unreleased-songs",
+          image: {
+            file: "/editions/43/stevie-wonder-key-of-life-ep.jpg",
+            alt: "Stevie Wonder singing into a studio microphone",
+            credit: "Motown Records / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Stevie_Wonder_1973.JPG",
+          },
         },
         {
-          slug: "tornekos-mystery-dungeon-english",
-          slot: "brief",
-          kicker: "Lost in translation",
-          headline: "Dragon Quest’s Torneko finally gets an English release after 33 years",
-          dek: "The roguelike that launched the Mystery Dungeon games arrives at last.",
+          slug: "steve-reich-90-southbank-wander",
+          slot: "feature",
+          kicker: "Pulse check",
+          headline:
+            "Steve Reich’s 90th birthday concert lets the audience wander among the players",
+          dek: "Paraorchestra swapped fixed seats for podiums, a dance floor and a spot of line dancing.",
           body: [
-            "Torneko’s Mystery Dungeon, the Super Famicom roguelike that laid the blueprint for the whole Mystery Dungeon family, Pokémon’s included, is out in English for the first time in 33 years. The Classic HD version costs $25 on Switch, Switch 2, PS5, Xbox Series X|S and PC, and on Steam free extra content lets stream viewers set off “mysterious events”.",
+            "London’s Southbank Centre marked two birthdays at once. Steve Reich turns 90 on 3 October, and his Music for 18 Musicians turns 50 this year. Paraorchestra, Charles Hazlewood’s collective of disabled and non-disabled musicians, played it with the players dotted on podiums around the Clore Ballroom, so the audience could wander between them like visitors at an exhibition, marvelling at the marimba players up close.",
+            "In the middle, a quintet of dancers coaxed children and grandparents into a groove, with line dancing and disco lights thrown in. The Guardian’s reviewer called the performance “immaculate and exhilarating”.",
+            "Upstairs in the Festival Hall, the London Sinfonietta and Radiohead’s Jonny Greenwood followed with Pulse, Radio Rewrite, which riffs on two Radiohead songs, and Electric Counterpoint, with Greenwood playing live guitar against his own recording. Minimalism, maximal grins.",
           ],
-          source: "GamesRadar+",
+          source: "The Guardian",
           sourceUrl:
-            "https://www.gamesradar.com/games/roguelike/after-33-years-japans-most-beloved-dragon-quest-spin-off-and-the-progenitor-of-the-entire-roguelike-mystery-dungeon-series-is-out-in-english-for-the-first-time/",
+            "https://www.theguardian.com/music/2026/sep/28/paraorchestra-sinfonietta-greenwood-steve-reich-at-90-review-southbank-london",
+          image: {
+            file: "/editions/43/steve-reich-90-southbank-wander.jpg",
+            alt: "The audience in the Southbank hall under blue stage lights",
+            credit: "the Guardian",
+            from: "https://www.theguardian.com/music/2026/sep/28/paraorchestra-sinfonietta-greenwood-steve-reich-at-90-review-southbank-london",
+          },
+        },
+        {
+          slug: "porthcawl-elvis-festival",
+          slot: "brief",
+          kicker: "All shook up",
+          headline: "Porthcawl fills with Elvises again, including one who came from Australia",
+          dek: "The Welsh seaside town hosts Europe’s largest gathering of Elvis fans every September.",
+          body: [
+            "Europe’s largest gathering of Elvis fans has taken over Porthcawl in south Wales again, with a Cadillac parked by the beach and Elvis flags across town. Maria Phillips, known as Platinum Elvis, came from Australia; she started impersonating him at the age of three. Paul Dumayne, a plumber for 50 years, was at his tenth festival. The King, as ever, has not left the building.",
+          ],
+          source: "The Guardian",
+          sourceUrl:
+            "https://www.theguardian.com/music/gallery/2026/sep/28/porthcawl-elvis-festival-in-pictures",
+          image: {
+            file: "/editions/43/porthcawl-elvis-festival.jpg",
+            alt: "An Elvis tribute act with a guitar in a doorway at Porthcawl",
+            credit: "the Guardian",
+            from: "https://www.theguardian.com/music/gallery/2026/sep/28/porthcawl-elvis-festival-in-pictures",
+          },
+        },
+      ],
+    },
+    {
+      section: "money",
+      stories: [
+        {
+          slug: "patek-philippe-jewellery-box-watch",
+          kicker: "Time well kept",
+          headline: "Watch from a Cornish jewellery box ticks its way to £59,000",
+          dek: "Estimated at up to £10,000, the 1930s Patek Philippe drew bidders from New York, Japan and China.",
+          body: [
+            "For years, a small steel wristwatch sat among the necklaces in a family jewellery box in Camborne, Cornwall. Its owner always said she had a valuable watch, and even mentioned an expensive timepiece in her 2011 diary. On 25 August, a saleroom full of bidders agreed with her, loudly.",
+            "It is a Patek Philippe Calatrava Reference 448 from around the 1930s, 28mm across and cased in stainless steel. That last detail makes collectors sit up, because the Swiss maker produced very few steel watches at the time. It came down the family from the vendor’s grandfather, a solicitor’s clerk in Bodmin, though relatives now wonder whether his wife, who loved designer clothes and luxury things, bought it for him as a gift.",
+            "Darren Ashley, senior valuer at Hansons Cornwall, was taken by more than its rarity. “This was a watch dating back around 90 years which had spent decades within the same Cornish family and, when it was placed in my hands, it was still finely ticking away,” he said.",
+            "Hansons entered it in its August sale at £5,000 to £10,000, and interest arrived from America, Japan, China, Saudi Arabia and the UK. A New York collector stayed in until about £52,000, leaving an internet bidder in Japan to duel a telephone bidder in China. China won, at a hammer price of £59,000, almost six times the top estimate.",
+            "Three family members watched from the saleroom while others followed live on laptops and phones at work, keeping a closer eye on the time than usual. The watch is now heading to a new home in Hong Kong.",
+          ],
+          source: "Hansons Auctioneers",
+          sourceUrl:
+            "https://hansonsauctioneers.co.uk/jewellery-box-watch-valued-at-5000-10000-sparks-global-bidding-battle-to-sell-for-59000/",
+          image: {
+            file: "/editions/43/patek-philippe-jewellery-box-watch.jpg",
+            alt: "Three views of the 1930s Patek Philippe Calatrava: its cream dial, its gold-toned movement, and the watch on a black leather strap held in an open hand",
+            credit: "Hansons Auctioneers",
+            from: "https://hansonsauctioneers.co.uk/jewellery-box-watch-valued-at-5000-10000-sparks-global-bidding-battle-to-sell-for-59000/",
+          },
+          sticker: "Tick tock",
+        },
+        {
+          slug: "jurassic-park-mosquito-prop",
+          slot: "feature",
+          kicker: "Spared no expense",
+          headline: "Jurassic Park’s amber mosquito prop sells for $403,200, double its estimate",
+          dek: "Propstore proved it was the very one from the film’s close-up by matching the bubbles in the resin.",
+          body: [
+            "The tiny bug that started the whole dinosaur business has fetched a sum fit for a T. rex. The mosquito-in-amber prop from the opening of Steven Spielberg’s 1993 film Jurassic Park sold for $403,200, including buyer’s premium, at Propstore’s summer memorabilia auction in Los Angeles on 26 August. It was estimated at $100,000 to $200,000 and had never been offered at public auction before.",
+            "The 4-by-6-inch prop is resin painted to look like amber set in stone. Propstore matched it to the on-screen close-up using its bubbles, the angle of the mosquito and the line where amber meets rock. Elsewhere in the four-day sale, Doc Brown’s OUTATIME number plate from Back to the Future reached $69,300 and a Golden Snitch from Harry Potter fluttered to $63,000.",
+            "The park’s founder did say to spare no expense.",
+          ],
+          source: "Antique Trader",
+          sourceUrl: "https://www.antiquetrader.com/a-403200-bite-of-jurassic-park-history",
+          image: {
+            file: "/editions/43/jurassic-park-mosquito-prop.jpg",
+            alt: "The Jurassic Park prop: a craggy lump of painted resin ‘stone’ with a window of yellow amber holding a small mosquito",
+            credit: "Propstore Auction, via Antique Trader",
+            from: "https://www.antiquetrader.com/a-403200-bite-of-jurassic-park-history",
+          },
+        },
+        {
+          slug: "corticeira-amorim-cork",
+          slot: "brief",
+          kicker: "Pop goes the cork",
+          headline: "A 150-year-old cork company now makes parts for spacecraft",
+          dek: "Portugal’s Corticeira Amorim turns tree bark into ship decks, football pitches and heat shields.",
+          body: [
+            "Portugal’s Corticeira Amorim has been in the cork business for 150 years, and its bark now travels a long way. Its 4,000 staff make about 30 cork-based products, including ship decking, 3D-printer filament and a heat shield for the European Space Agency’s IXV re-entry vehicle. Real Madrid trains on pitches filled with its cork, and each cork oak can be stripped nine times in its life.",
+          ],
+          source: "Good News Network",
+          sourceUrl:
+            "https://www.goodnewsnetwork.org/portuguese-company-turns-cork-wood-into-limitless-material-even-to-insulate-spacecraft/",
+          image: {
+            file: "/editions/43/corticeira-amorim-cork.jpg",
+            alt: "Stacks of harvested cork oak bark drying outdoors",
+            credit: "Good News Network",
+            from: "https://www.goodnewsnetwork.org/portuguese-company-turns-cork-wood-into-limitless-material-even-to-insulate-spacecraft/",
+          },
         },
       ],
     },
@@ -316,19 +597,32 @@ export const issue43: SeedEdition = {
             credit: "Kenny Brown / Manchester Evening News",
             from: "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/i-drove-three-half-hours-34547002",
           },
-        },
-        {
-          slug: "myanmar-wins-first-teqball-gold",
-          slot: "brief",
-          kicker: "Teqball",
-          headline: "Myanmar wins the first ever Asian Games teqball gold as Puyol watches",
-          dek: "Football, table tennis and a curved table walk into the Asian Games.",
-          body: [
-            "Myanmar’s Wai Khin Hnin became the first Asian Games teqball champion, coming from a set down to beat Indonesia’s Sumaya 2–1 as Barcelona great Carles Puyol watched. Teqball, invented in a Hungarian garage 14 years ago, is football played over a curved table. Japan’s entrant, 40-year-old comedian Takahiro Nodomi, said he had released some “old guy power”.",
+          more: [
+            {
+              file: "/editions/43/gravy-wrestling-moves-to-the-cricket-club-2.jpg",
+              alt: "A wrestler in spotty pyjamas flies feet-first across the gravy pit",
+              credit: "Manchester Evening News",
+              from: "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/i-drove-three-half-hours-34547002",
+            },
+            {
+              file: "/editions/43/gravy-wrestling-moves-to-the-cricket-club-3.jpg",
+              alt: "The referee pours a jug of fresh gravy over a wrestler’s head",
+              credit: "Manchester Evening News",
+              from: "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/i-drove-three-half-hours-34547002",
+            },
+            {
+              file: "/editions/43/gravy-wrestling-moves-to-the-cricket-club-4.jpg",
+              alt: "Two wrestlers raise their arms with the referee after a bout",
+              credit: "Manchester Evening News",
+              from: "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/i-drove-three-half-hours-34547002",
+            },
+            {
+              file: "/editions/43/gravy-wrestling-moves-to-the-cricket-club-5.jpg",
+              alt: "A wrestler lifts his opponent clean off the canvas in front of the moors",
+              credit: "Manchester Evening News",
+              from: "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/i-drove-three-half-hours-34547002",
+            },
           ],
-          source: "AFP",
-          sourceUrl:
-            "https://www.msn.com/en-us/sports/general/myanmar-win-first-asian-games-teqball-gold-as-spain-great-puyol-watches/ar-AA2cBtEu",
         },
         {
           slug: "lawn-mower-racing-blades-off",
@@ -341,6 +635,12 @@ export const issue43: SeedEdition = {
           ],
           source: "BBC News",
           sourceUrl: "https://www.bbc.co.uk/news/articles/c39ep822217o",
+          image: {
+            file: "/editions/43/lawn-mower-racing-blades-off.jpg",
+            alt: "A lawn mower racer in helmet and goggles in the pits",
+            credit: "BBC News",
+            from: "https://www.bbc.co.uk/news/articles/c39ep822217o",
+          },
         },
         {
           slug: "lacroix-hole-in-one-wins-bmw",
@@ -354,184 +654,17 @@ export const issue43: SeedEdition = {
           source: "BimmerToday",
           sourceUrl:
             "https://www.bimmertoday.de/2026/09/20/hole-in-one-frederic-lacroix-gewinnt-mit-perfektem-schlag-neuen-bmw-ix5/",
+          image: {
+            file: "/editions/43/lacroix-hole-in-one-wins-bmw.jpg",
+            alt: "Frederic Lacroix at the wheel of the BMW he won",
+            credit: "BimmerToday Deutschland",
+            from: "https://www.bimmertoday.de/2026/09/20/hole-in-one-frederic-lacroix-gewinnt-mit-perfektem-schlag-neuen-bmw-ix5/",
+          },
         },
       ],
     },
     {
-      section: "tech",
-      stories: [
-        {
-          slug: "flip-dot-fluid-display",
-          kicker: "Mechanical pixels",
-          headline: "Engineer pours a simulated liquid across thousands of clattering flip dots",
-          dek: "Built for the Electromagnetic Field festival, the display sloshes audibly as visitors steer gravity with a joystick, and the pun came first.",
-          body: [
-            "Flip-dot displays, the little discs that click from black to yellow on old bus signs, make a noise every time they change. The engineer known as mitxela realised that made them ideal for showing water: a fluid simulation that actually sounds as if it is sloshing.",
-            "There was a second reason. The simulation method he uses is called FLIP, short for Fluid Implicit Particle. “Yes, the primary motivation behind doing this was the wordplay,” he wrote.",
-            "New flip-dot displays are very expensive, so the dots came from a donated heap at the obsolete-technology museum run by Sam, better known as Look Mum No Computer. Mitxela designed his own driver boards so the panels could be tiled and refreshed quickly. He then prepared eight panels, each 13 dots by 28, with about 400 joints to solder on every one. A fast STM32 chip runs the physics.",
-            "The finished display stood in the festival’s lounge tent in England. Visitors used a joystick to choose which way gravity pointed and watched the yellow liquid pour. It ran for all four days without a fault, and the joystick got so much use that it wore a grimy patch.",
-            "Next he hopes to adapt the design for the rest of the donated panels, which come in other sizes, and recruit volunteers for the soldering. “The length of this writeup conveys only a fraction of the tedium in all that soldering,” he noted.",
-            "Every splash comes with its own percussion section.",
-          ],
-          source: "mitxela.com",
-          sourceUrl: "https://mitxela.com/projects/flipflip",
-          image: {
-            file: "/editions/43/flip-dot-fluid-display.jpg",
-            alt: "A large flip-dot panel labelled ‘FLIP Fluid on Flip Dots’ showing yellow dots splashing like liquid, with a hand on a joystick beside it",
-            credit: "mitxela",
-            from: "https://mitxela.com/projects/flipflip",
-          },
-          sticker: "Splash!",
-        },
-        {
-          slug: "student-solar-cars-cross-country",
-          slot: "feature",
-          kicker: "Sun racers",
-          headline: "Student solar cars cross 1,500 miles of America, and two finish minutes apart",
-          dek: "Belgium’s KU Leuven beat TU Delft by under four minutes after more than 62 hours on the road.",
-          body: [
-            "Fourteen student-built cars powered only by sunshine rolled into Amarillo, Texas, in early August to finish the 2026 Electrek American Solar Challenge. The route ran south from the Minneapolis area and followed stretches of historic Route 66.",
-            "In the single-seater class, KU Leuven of Belgium covered 2,671.2 official miles in 62 hours, 7 minutes and 2 seconds. TU Delft of the Netherlands matched its 43.4mph average and crossed less than four minutes behind, with penalties deciding the gap.",
-            "The multi-passenger class is scored on distance, energy efficiency and practicality. Appalachian State University won it with 92.7 points, even though Polytechnique Montréal drove further. Organiser Gail Lueck called it “a record setting year for the event.”",
-            "Not bad for cars whose fuel tank is the sky.",
-          ],
-          source: "American Solar Challenge",
-          sourceUrl:
-            "http://www.americansolarchallenge.org/news/2026/08/appalachian-state-and-ku-leuven-win-2026-electrek-american-solar-challenge-as-student-solar-cars-complete-cross-country-journey/",
-          image: {
-            file: "/editions/43/student-solar-cars-cross-country.jpg",
-            alt: "Appalachian State University’s solar car crosses the finish line under a Route 66 arch as team members cheer",
-            credit: "American Solar Challenge, IEF",
-            from: "https://www.pv-magazine.com/2026/08/07/students-steer-solar-powered-racing-cars-to-glory-in-american-solar-challenge/",
-          },
-        },
-        {
-          slug: "pocket-pico-packet-radio",
-          slot: "brief",
-          kicker: "On the air",
-          headline: "Raspberry Pi Pico brings a 1980s pocket radio modem back on the air",
-          dek: "It runs the original box’s own firmware on an emulated Z80.",
-          body: [
-            "Radio hobbyist btech has recreated the Heathkit HK-21 Pocket Packet, a late-1980s box for sending data over amateur radio. His Pocket Pico runs the original firmware on a Z80 processor emulated inside a Raspberry Pi Pico. The Pico also generates the 1200-baud audio tones itself, so old packet-radio software works with it, and it even includes a mini bulletin board where other stations can leave messages.",
-          ],
-          source: "Hackaday",
-          sourceUrl:
-            "https://hackaday.com/2026/09/25/pi-pico-recreates-the-heathkit-pocket-packet/",
-        },
-        {
-          slug: "cern-colibri-fpga-library",
-          slot: "brief",
-          kicker: "Open hardware",
-          headline: "CERN gives away colibri, a free toolbox of over 100 chip-design parts",
-          dek: "The particle-physics lab built it in house so it would never be tied to one supplier.",
-          body: [
-            "CERN has open-sourced colibri, a library of more than 100 VHDL components, functions and procedures for programming FPGA chips, under the CERN Open Hardware Licence. Built to speed up the lab’s own gateway devices, it works with chips from any maker, comes with self-checking tests and covers everyday protocols such as SPI and I2C. It is free to download from GitLab.",
-          ],
-          source: "Hackaday",
-          sourceUrl:
-            "https://hackaday.com/2026/09/24/fpga-for-all-cern-releases-colibri-vhdl-library/",
-        },
-        {
-          slug: "kite-powered-island-cinema",
-          slot: "brief",
-          kicker: "Clever engineering",
-          headline: "An island’s monthly cinema night now runs on a kite flying 200 metres up",
-          dek: "The projectionist spends each film outside, watching the kite.",
-          body: [
-            "On Inishcarrow, the island school’s physics class built a 12-square-metre kite wing that pulls on a winch and spins a generator. On a breezy evening it powers the projector, the speakers and the popcorn machine in the old net loft. Projectionist Colm Ó Briain keeps watch outside with a torch. “People tell me the endings in the pub,” he said.",
-          ],
-          source: "Open Tech Digest (sample)",
-        },
-      ],
-    },
-    {
-      section: "money",
-      stories: [
-        {
-          slug: "patek-philippe-jewellery-box-watch",
-          kicker: "Time well kept",
-          headline: "Watch from a Cornish jewellery box ticks its way to £59,000",
-          dek: "Estimated at up to £10,000, the 1930s Patek Philippe drew bidders from New York, Japan and China.",
-          body: [
-            "For years, a small steel wristwatch sat among the necklaces in a family jewellery box in Camborne, Cornwall. Its owner always said she had a valuable watch, and even mentioned an expensive timepiece in her 2011 diary. On 25 August, a saleroom full of bidders agreed with her, loudly.",
-            "It is a Patek Philippe Calatrava Reference 448 from around the 1930s, 28mm across and cased in stainless steel. That last detail makes collectors sit up, because the Swiss maker produced very few steel watches at the time. It came down the family from the vendor’s grandfather, a solicitor’s clerk in Bodmin, though relatives now wonder whether his wife, who loved designer clothes and luxury things, bought it for him as a gift.",
-            "Darren Ashley, senior valuer at Hansons Cornwall, was taken by more than its rarity. “This was a watch dating back around 90 years which had spent decades within the same Cornish family and, when it was placed in my hands, it was still finely ticking away,” he said.",
-            "Hansons entered it in its August sale at £5,000 to £10,000, and interest arrived from America, Japan, China, Saudi Arabia and the UK. A New York collector stayed in until about £52,000, leaving an internet bidder in Japan to duel a telephone bidder in China. China won, at a hammer price of £59,000, almost six times the top estimate.",
-            "Three family members watched from the saleroom while others followed live on laptops and phones at work, keeping a closer eye on the time than usual. The watch is now heading to a new home in Hong Kong.",
-          ],
-          source: "Hansons Auctioneers",
-          sourceUrl:
-            "https://hansonsauctioneers.co.uk/jewellery-box-watch-valued-at-5000-10000-sparks-global-bidding-battle-to-sell-for-59000/",
-          image: {
-            file: "/editions/43/patek-philippe-jewellery-box-watch.jpg",
-            alt: "Three views of the 1930s Patek Philippe Calatrava: its cream dial, its gold-toned movement, and the watch on a black leather strap held in an open hand",
-            credit: "Hansons Auctioneers",
-            from: "https://hansonsauctioneers.co.uk/jewellery-box-watch-valued-at-5000-10000-sparks-global-bidding-battle-to-sell-for-59000/",
-          },
-          sticker: "Tick tock",
-        },
-        {
-          slug: "jurassic-park-mosquito-prop",
-          slot: "feature",
-          kicker: "Spared no expense",
-          headline: "Jurassic Park’s amber mosquito prop sells for $403,200, double its estimate",
-          dek: "Propstore proved it was the very one from the film’s close-up by matching the bubbles in the resin.",
-          body: [
-            "The tiny bug that started the whole dinosaur business has fetched a sum fit for a T. rex. The mosquito-in-amber prop from the opening of Steven Spielberg’s 1993 film Jurassic Park sold for $403,200, including buyer’s premium, at Propstore’s summer memorabilia auction in Los Angeles on 26 August. It was estimated at $100,000 to $200,000 and had never been offered at public auction before.",
-            "The 4-by-6-inch prop is resin painted to look like amber set in stone. Propstore matched it to the on-screen close-up using its bubbles, the angle of the mosquito and the line where amber meets rock. Elsewhere in the four-day sale, Doc Brown’s OUTATIME number plate from Back to the Future reached $69,300 and a Golden Snitch from Harry Potter fluttered to $63,000.",
-            "The park’s founder did say to spare no expense.",
-          ],
-          source: "Antique Trader",
-          sourceUrl: "https://www.antiquetrader.com/a-403200-bite-of-jurassic-park-history",
-          image: {
-            file: "/editions/43/jurassic-park-mosquito-prop.jpg",
-            alt: "The Jurassic Park prop: a craggy lump of painted resin ‘stone’ with a window of yellow amber holding a small mosquito",
-            credit: "Propstore Auction, via Antique Trader",
-            from: "https://www.antiquetrader.com/a-403200-bite-of-jurassic-park-history",
-          },
-        },
-        {
-          slug: "richard-e-grant-oxfam-coat",
-          slot: "brief",
-          kicker: "Charity shop chic",
-          headline: "Richard E Grant credits a secondhand Oxfam coat with his big break",
-          dek: "He wore it, soaking wet, to his 1986 audition for ‘Withnail & I’.",
-          body: [
-            "Richard E Grant is fronting Oxfam’s Second Hand September this year, and his credentials are impeccable. “My life-changing career break happened because I was wearing a second hand coat I bought in an Oxfam shop,” he said. It was a pre-loved Burberry trench, worn to his rain-soaked 1986 audition for Withnail & I. Oxfam has more than 500 shops, should anyone else fancy their chances.",
-          ],
-          source: "Positive News",
-          sourceUrl:
-            "https://www.positive.news/society/richard-e-grant-fronts-second-hand-september-as-britons-try-to-buy-fewer-clothes/",
-        },
-        {
-          slug: "corticeira-amorim-cork",
-          slot: "brief",
-          kicker: "Pop goes the cork",
-          headline: "A 150-year-old cork company now makes parts for spacecraft",
-          dek: "Portugal’s Corticeira Amorim turns tree bark into ship decks, football pitches and heat shields.",
-          body: [
-            "Portugal’s Corticeira Amorim has been in the cork business for 150 years, and its bark now travels a long way. Its 4,000 staff make about 30 cork-based products, including ship decking, 3D-printer filament and a heat shield for the European Space Agency’s IXV re-entry vehicle. Real Madrid trains on pitches filled with its cork, and each cork oak can be stripped nine times in its life.",
-          ],
-          source: "Good News Network",
-          sourceUrl:
-            "https://www.goodnewsnetwork.org/portuguese-company-turns-cork-wood-into-limitless-material-even-to-insulate-spacecraft/",
-        },
-        {
-          slug: "knitting-circle-minibus",
-          slot: "brief",
-          kicker: "Purl of wisdom",
-          headline:
-            "Knitting circle’s scarf stall saves up long enough to buy the village a minibus",
-          dek: "It took 25 winters, about 9,000 scarves and one unchanging price.",
-          body: [
-            "The Tuesday Knitters of Glenrossie have sold hand-knitted scarves at the winter market since 2001, at a price that has never gone up, and banked every penny in an account labelled ‘Minibus’. This month they handed over the keys to a 16-seat bus for the village football team, walking group and choir. They offered to knit it a cover; the garage advised against it.",
-          ],
-          source: "Village Post (sample)",
-        },
-      ],
-    },
-    {
-      section: "internet-and-culture",
+      section: "internet",
       stories: [
         {
           slug: "seattle-inconvenience-store",
@@ -558,55 +691,249 @@ export const issue43: SeedEdition = {
           sticker: "Open late-ish",
         },
         {
-          slug: "accidental-rhymes-billboard",
+          slug: "fat-dogs-of-delhi-contest",
           slot: "feature",
-          kicker: "Found poetry",
+          kicker: "Chonk election",
           headline:
-            "Poet’s inbox of 9,000 accidental rhymes becomes a daily line on a station billboard",
-          dek: "Recent favourite: “I’ll grab a pear and meet you there.”",
+            "Delhi votes for its roundest street dog, and an Instagram page gains 94,000 followers",
+          dek: "Sixty-four well-fed neighbourhood dogs, one knockout tournament and a final with polling stations.",
           body: [
-            "Last year the poet Salome Nwachukwu noticed she had rhymed while ordering lunch (“the brie on rye for me, and a tea”) and asked online whether anyone else did this. She included an email address. Her inbox has since received more than 9,000 accidental rhymes, each one said out loud, in real life, without meaning to.",
-            "Every morning she picks one for a digital billboard above the ticket barriers at Carrow Street station, where about 30,000 commuters pass beneath it. Recent choices include “I’ll grab a pear and meet you there” and, from a nine-year-old, “I’m not a snake, I’m just awake”.",
-            "“It turns out people are writing poetry all day by accident,” said Nwachukwu, “mostly in queues.” Station staff say commuters now stop under the board and try to rhyme back.",
-          ],
-          source: "Around the Web (sample)",
-          photo: "microphone",
-        },
-        {
-          slug: "jigsaw-by-post",
-          slot: "brief",
-          kicker: "Puzzles",
-          headline: "A 1,000-piece jigsaw finishes after travelling between 400 strangers by post",
-          dek: "Each member added a few pieces and a line in a notebook, then posted the box on.",
-          body: [
-            "The puzzle, a painting of an old harbour, left Lucia Ferrante’s kitchen in Vallombra two years ago in a flat box with a notebook. Every member of her online jigsaw club placed a few pieces, wrote a line and posted it on. It reached its 41st country last month, and the final piece went in on Sunday, back in the same kitchen.",
-          ],
-          source: "Around the Web (sample)",
-        },
-        {
-          slug: "garden-wildlife-documentary",
-          slot: "brief",
-          kicker: "Video",
-          headline: "Retired teacher narrates her garden like a wildlife documentary, in a whisper",
-          dek: "Her most-watched episode follows a snail across a patio for four hours.",
-          body: [
-            "Winifred Castellane, 79, films her back garden in Tully Bridge and narrates in a hushed, dramatic whisper. Episodes cover the robin’s daily inspection of the bird table, a long-running dispute between two blackbirds over one worm and, most popular of all, the snail. Her grandson edits; she allows no music, only “the sound of nature, and me”.",
-          ],
-          source: "Around the Web (sample)",
-        },
-        {
-          slug: "burlington-sheep-school-visit",
-          slot: "brief",
-          kicker: "Flock to school",
-          headline: "Escaped sheep drop by Burlington’s new high school for an early tour",
-          dek: "The school district took the visit as a compliment.",
-          body: [
-            "A group of sheep slipped out of their enclosure at a nearby Episcopal Diocese property in Burlington, Vermont, and wandered onto the grounds of the new Burlington High School and Burlington Technical Center. Staff rounded them up and took them home.",
-            "“It seems EVERYONE wants to get a look at the new Burlington High School and Burlington Technical Center,” the school district posted.",
+            "Delhi has been gripped by an election, and every candidate is a very good, very round dog. An Instagram account called Fat Dogs of Delhi launched a knockout contest on 24 September with 64 plump pooches nominated by its followers, pitting them against each other two at a time.",
+            "The page was run by a Delhi University journalism student who asked to stay anonymous, and it had about 1,500 followers when the contest began. It soon had more than 96,000. Many of the candidates are community dogs, looked after by the residents and shopkeepers of their neighbourhoods rather than a single owner, so whole streets have been campaigning.",
+            "The final added online votes to in-person voting at three spots around the city, with the winner due to be crowned on 1 October. The organiser said she hopes it will “raise money and awareness for stray dogs in Delhi”. It lands neatly in the same week as Katmai National Park’s Fat Bear Week and America’s National Dog Week.",
           ],
           source: "UPI",
           sourceUrl:
-            "https://www.upi.com/Odd_News/2026/09/23/Burlington-High-School-sheep-Vermont/2081790176220/",
+            "https://www.upi.com/Odd_News/2026/09/29/india-fat-dogs-of-delhi-contest/1711790704060/",
+          image: {
+            file: "/editions/43/fat-dogs-of-delhi-contest.jpg",
+            alt: "Four of the contest’s plump street dogs arranged around a red heart on a pink background",
+            credit: "Fat Dogs of Delhi via The Nod Mag",
+            from: "https://thenodmag.com/content/fat-dogs-of-delhi-instagram-competition",
+          },
+        },
+        {
+          slug: "moriyama-emu-two-hour-chase",
+          slot: "brief",
+          kicker: "On the loose",
+          headline:
+            "Young emu slips out of a Japanese mobile zoo and leads police on a two-hour chase",
+          dek: "A passer-by reported an ostrich. It was not an ostrich.",
+          body: [
+            "At about 6.45am, a passer-by in Moriyama, Shiga Prefecture, reported that “an ostrich ran by”. It was an emu, hatched last year and about 1.8 metres tall, that had squeezed past a gate at Horii Zoo’s mobile zoo. Police followed it for two hours before it was cornered, unhurt, at an apartment complex.",
+          ],
+          source: "The Star (Kyodo News)",
+          sourceUrl:
+            "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/09/23/emu-briefly-escapes-from-mobile-zoo-in-western-japan-no-injuries",
+          image: {
+            file: "/editions/43/moriyama-emu-two-hour-chase.jpg",
+            alt: "The young emu standing on a paved path between bird cages at Horii Zoo",
+            credit: "Kyodo News / ANN via The Star",
+            from: "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/09/23/emu-briefly-escapes-from-mobile-zoo-in-western-japan-no-injuries",
+          },
+        },
+      ],
+    },
+    {
+      section: "discoveries",
+      stories: [
+        {
+          slug: "blacktip-sharks-hear-from-afar",
+          kicker: "Good listeners",
+          headline:
+            "Blacktip sharks can hear a sound from 243 feet away and tell where it came from",
+          dek: "A drifting speaker, a drone and a crowd of wild sharks off Florida gave scientists the first measured proof.",
+          body: [
+            "Sharks have a reputation for their sense of smell, but it turns out they are rather good listeners too. A study from Florida Atlantic University has found that wild blacktip sharks can pick up low sounds from as far as 74 metres, or 243 feet, away, and turn sharply away from where they came from.",
+            "Blacktips were ideal volunteers. Large numbers of them gather along the Palm Beach County coast every winter, in clear, shallow water that can be watched from above. The team anchored a boat, let an underwater speaker drift up to 19 metres away on the current, and played three bands of low-frequency sound, plus a high 10 kilohertz tone that sharks are not known to hear. A drone hovering 40 to 50 metres up filmed the results, which the scientists then went through frame by frame.",
+            "The sharks reacted to all three low bands and ignored the control. More than 70% of the reactions came in what physicists call the acoustic far field, well away from the speaker, and the sharks often turned sharply away, showing they knew the direction of the sound as well as hearing it. That is impressive for an animal with no swim bladder, the air-filled organ that helps many fish sense sound.",
+            "“Trying to do hearing experiments in a tank results in the sound bouncing off the walls which causes complex and confusing signals — it is like being in a house of mirrors,” said lead author Caroline Sullivan, who did the work for her master’s degree.",
+            "“The ocean is an acoustic environment, and sharks are clearly tuned into it in ways we are only beginning to understand,” said senior author Stephen Kajiura. The study is published in Integrative Organismal Biology.",
+          ],
+          source: "ScienceDaily (Florida Atlantic University)",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260929053536.htm",
+          image: {
+            file: "/editions/43/blacktip-sharks-hear-from-afar.jpg",
+            alt: "A blacktip shark glides through deep blue water off Florida",
+            credit: "Stephen Kajiura / Florida Atlantic University",
+            from: "https://www.sciencedaily.com/releases/2026/09/260929053536.htm",
+          },
+          sticker: "Ears on",
+        },
+        {
+          slug: "webb-tiniest-brown-dwarfs-ic-348",
+          slot: "feature",
+          kicker: "Space",
+          headline: "Webb spots brown dwarfs only twice as heavy as Jupiter in a starry nursery",
+          dek: "One of the telescope’s biggest pictures yet sets a new low for these not-quite-stars.",
+          body: [
+            "Brown dwarfs are the in-betweeners of space: too heavy to be planets, too light to shine like proper stars. Astronomers using the James Webb Space Telescope have now found some of the smallest ones ever, in IC 348, a star-forming region about 1,000 light-years away in the constellation Perseus.",
+            "The newly found brown dwarfs weigh as little as twice the mass of Jupiter, or 0.19% of the mass of the Sun, which the team says makes them the least massive brown dwarfs known. In 2022 the same group had found ones three to four times Jupiter’s mass in the same patch of sky.",
+            "Webb’s near-infrared camera took the pictures in 2024 and its spectrograph checked the candidates in 2025. The resulting panorama, released on 15 September, is one of the largest Webb images made public so far. Its upper-right corner holds young stars blowing jets, including one with a propeller-shaped outflow called HH 211.",
+          ],
+          source: "ESA/Webb",
+          sourceUrl: "https://esawebb.org/news/weic2619/",
+          image: {
+            file: "/editions/43/webb-tiniest-brown-dwarfs-ic-348.jpg",
+            alt: "Glowing orange and blue clouds of gas and dust studded with bright stars in the star-forming region IC 348",
+            credit: "ESA/Webb, NASA & CSA",
+            from: "https://esawebb.org/news/weic2619/",
+          },
+        },
+        {
+          slug: "sundarbans-captive-crocodiles-stay-put",
+          slot: "brief",
+          kicker: "Settling in",
+          headline: "Crocodiles raised in captivity move to the mangroves and happily stay put",
+          dek: "Satellite tags showed three released females made themselves at home in the Sundarbans.",
+          body: [
+            "Scientists tracked five saltwater crocodiles by satellite in Bangladesh’s Sundarbans mangroves, including three females that had spent between 8 and 22 years in a breeding centre. None tried to head back. Instead they “settled into small, well-defined areas and moved in much the same way as the local wild crocodile.” The team, led by Ru Somaweera of Murdoch University, says grown-up crocodiles could help boost wild numbers. The study is in Wildlife Research.",
+          ],
+          source: "ScienceDaily (Murdoch University)",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260913081913.htm",
+          image: {
+            file: "/editions/43/sundarbans-captive-crocodiles-stay-put.jpg",
+            alt: "Researchers in blue gloves fix a satellite tracker to the back of a saltwater crocodile in the Sundarbans",
+            credit: "Murdoch University",
+            from: "https://www.murdoch.edu.au/news/articles/do-saltwater-crocodiles-raised-in-captivity-go-home-after-being-released-into-the-wild",
+          },
+        },
+      ],
+    },
+    {
+      section: "nostalgia",
+      stories: [
+        {
+          slug: "tornekos-mystery-dungeon-english",
+          kicker: "Lost in translation",
+          headline: "Dragon Quest’s Torneko finally gets an English release after 33 years",
+          dek: "The roguelike that launched the Mystery Dungeon games arrives at last.",
+          body: [
+            "Some games take the long way round. Torneko’s Mystery Dungeon came out on the Super Famicom in 1993, the first spin-off ever made from the Dragon Quest series, published by Square Enix, and it has taken 33 years to be released in English. Torneko’s Mystery Dungeon: Classic HD is now out on modern consoles and PC, after an announcement at a Nintendo Direct in September.",
+            "Its hero is Torneko, the cheerful merchant from Dragon Quest IV, who heads into a labyrinth whose layout and treasure are shuffled every time he goes in. Each attempt starts afresh, which is the core of what players now call a roguelike, and it was a big part of why the game was such a hit in Japan.",
+            "That success started a whole family. Its developer, now called Spike Chunsoft, went on to make Shiren the Wanderer, and later worked with Nintendo and Game Freak on Pokémon Mystery Dungeon, which Kotaku calls one of the Pokémon franchise’s most beloved spin-offs. Plenty of today’s younger players first met the idea through Pikachu without ever knowing Torneko came first.",
+            "The new version is more than a straight port. The sprites and pixel art have been remastered for widescreen, there are quality-of-life tweaks and difficulty options, and a streamer mode designed for content creators lets people watching online vote on effects that shake up the game.",
+            "For those who spent the 1990s staring enviously at import shelves, the mysterious dungeon door is finally, officially open to them in English.",
+          ],
+          source: "Kotaku",
+          sourceUrl:
+            "https://kotaku.com/torneko-mystery-dungeon-classic-hd-pokemon-shiren-wanderer-roguelike-2000733006",
+          image: {
+            file: "/editions/43/tornekos-mystery-dungeon-english.jpg",
+            alt: "Torneko and friends in the game's hand-painted art",
+            credit: "GamesRadar+",
+            from: "https://www.gamesradar.com/games/roguelike/after-33-years-japans-most-beloved-dragon-quest-spin-off-and-the-progenitor-of-the-entire-roguelike-mystery-dungeon-series-is-out-in-english-for-the-first-time/",
+          },
+        },
+        {
+          slug: "roblox-20-hunt-classic-theme",
+          slot: "feature",
+          kicker: "Happy birthday",
+          headline: "Roblox turns 20 and sends players back through a game from every year",
+          dek: "The Hunt: Roblox 20 travels back to 2006 and brings back the old logo for a spell.",
+          body: [
+            "Roblox launched in 2006, and for its 20th birthday it built a time machine. The Hunt: Roblox 20, which ran from 17 to 28 September, took players through 20 games, one for each year of the platform’s history, including Lumber Tycoon 2, Jailbreak, Adopt Me! and Grow a Garden.",
+            "Finishing a year’s quest unlocked the next one and a limited virtual item. Clearing all 20 opened Year Infinity, with 20 more games for 2026 and beyond. For anyone feeling wistful, a limited-time throwback app theme brought back the original Roblox logo, colours and fonts. Roblox Plus subscribers got in early, at 9am Pacific time on 17 September, and get to keep the classic look afterwards.",
+            "“What I love about Roblox is that anyone can come and build a game that reaches millions of players,” said asimo3089 and badcc, the creators of Jailbreak.",
+          ],
+          source: "Roblox",
+          sourceUrl: "https://about.roblox.com/newsroom/2026/09/join-the-hunt-roblox-20",
+          image: {
+            file: "/editions/43/roblox-20-hunt-classic-theme.jpg",
+            alt: "Roblox avatars skydive through a blue sky around the title The Hunt: Roblox 20",
+            credit: "Roblox",
+            from: "https://about.roblox.com/newsroom/2026/09/join-the-hunt-roblox-20",
+          },
+        },
+        {
+          slug: "pocket-pico-packet-radio",
+          slot: "brief",
+          kicker: "On the air",
+          headline: "Raspberry Pi Pico brings a 1980s pocket radio modem back on the air",
+          dek: "It runs the original box’s own firmware on an emulated Z80.",
+          body: [
+            "Radio hobbyist btech has recreated the Heathkit HK-21 Pocket Packet, a late-1980s box for sending data over amateur radio. His Pocket Pico runs the original firmware on a Z80 processor emulated inside a Raspberry Pi Pico. The Pico also generates the 1200-baud audio tones itself, so old packet-radio software works with it, and it even includes a mini bulletin board where other stations can leave messages.",
+          ],
+          source: "Hackaday",
+          sourceUrl:
+            "https://hackaday.com/2026/09/25/pi-pico-recreates-the-heathkit-pocket-packet/",
+          image: {
+            file: "/editions/43/pocket-pico-packet-radio.jpg",
+            alt: "The packet radio board with its Raspberry Pi Pico and jacks",
+            credit: "Hackaday",
+            from: "https://hackaday.com/2026/09/25/pi-pico-recreates-the-heathkit-pocket-packet/",
+          },
+        },
+      ],
+    },
+    {
+      section: "good-humans",
+      stories: [
+        {
+          slug: "everett-students-push-stalled-car",
+          kicker: "Everyday heroes",
+          headline: "High school basketball players push a stranger’s stalled car to safety",
+          dek: "They pushed her out of the traffic on Revere Beach Parkway, then turned down her money.",
+          body: [
+            "Robin Gay had just finished a Friday evening volunteering at the Phunk Phenomenon Dance Complex when things went wrong. “When I pulled out of the parking lot, my car just died,” she said. It died on Revere Beach Parkway, in heavy traffic. She had spent the evening volunteering, and suddenly needed a few volunteers of her own.",
+            "“Cars were literally flying, so I kind of went into a panic state, and my biggest fear was that someone was going to hit me,” she said.",
+            "Help arrived in the shape of the Everett High School boys basketball team. The players got behind her car and pushed it out of the way of the oncoming traffic and into a parking lot next to the road.",
+            "Gay offered them money for their trouble. They turned it down. “We are taught here at this high school that it doesn’t matter if we don’t know the person – if you see somebody in trouble, go help them,” said Emanuel Lerbot.",
+            "His teammate Gerardo Cubias was plainly glad he had stopped. “You feel great after doing something good. It was amazing to help her,” he said. Senior captain Jayden Alsaindor kept his advice simple: “Regardless of who you are, just be you and just show kindness and to whoever needs help, just help and that’s it.”",
+            "The story went on to Boston’s WCVB-TV Channel 5, where reporter Peter Eliopoulos covered it and anchor Ed Harding praised the group on air. The team, it seems, is already good at assists.",
+          ],
+          source: "Everett Independent",
+          sourceUrl:
+            "https://everettindependent.com/2026/09/23/champions-of-kindness-everett-high-basketball-players-aid-motorist-on-revere-beach-parkway/",
+          image: {
+            file: "/editions/43/everett-students-push-stalled-car.jpg",
+            alt: "Everett High School students push Robin Gay’s stalled car across the road at dusk",
+            credit: "WCVB via Sunny Skyz",
+            from: "https://www.sunnyskyz.com/good-news/6314/-It-Was-Unbelievable-High-School-Students-Help-Woman-Stranded-In-Middle-Of-Busy-Highway",
+          },
+          sticker: "Assist",
+        },
+        {
+          slug: "christian-bale-foster-village-siblings",
+          slot: "feature",
+          kicker: "Home together",
+          headline:
+            "Christian Bale opens a village of 12 homes where foster siblings can stay together",
+          dek: "Together California in Palmdale is the first place of its kind in the state.",
+          body: [
+            "Christian Bale has swapped the film set for a building site, and the result has just opened its doors. Together California, in Palmdale, is an 11,000-square-foot community of 12 furnished homes built so that brothers and sisters in foster care can grow up together rather than being split between different families. It is the first village of its kind in California.",
+            "The Austrian American Council West raised nearly $9 million for the project, and the first residents are due to move in next month. Executive director Tim McCormick described it as “a place where everyone is welcomed, a place that keeps families together, a place that creates community”.",
+            "Los Angeles County Supervisor Kathryn Barger was confident: “I guarantee you this project is going to change the trajectory of each and every child.”",
+          ],
+          source: "ABC7 Los Angeles",
+          sourceUrl:
+            "https://abc7.com/post/actor-christian-bale-opens-together-california-foster-care-village-palmdale-aimed-keeping-siblings/19816433/",
+          image: {
+            file: "/editions/43/christian-bale-foster-village-siblings.jpg",
+            alt: "Christian Bale with supporters in front of a Together California banner at the opening",
+            credit: "ABC7",
+            from: "https://abc7.com/post/actor-christian-bale-opens-together-california-foster-care-village-palmdale-aimed-keeping-siblings/19816433/",
+          },
+        },
+        {
+          slug: "jalen-hurts-school-air-conditioning",
+          slot: "brief",
+          kicker: "Cool move",
+          headline:
+            "Jalen Hurts gives $600,000 so a Philadelphia high school can finally cool down",
+          dek: "The Eagles quarterback surprised more than 1,000 students, teachers and staff.",
+          body: [
+            "Philadelphia Eagles quarterback Jalen Hurts has donated $600,000 to upgrade the heating and cooling system at Northeast High School in Rhawnhurst, the biggest gift yet from his foundation. More than 1,000 students, teachers and staff came to the announcement. “Growing up in the South, I was very blown away about school being canceled not for snow, but for lack of AC,” he said.",
+          ],
+          source: "6abc Philadelphia",
+          sourceUrl:
+            "https://6abc.com/post/philadelphia-eagles-quarterback-jalen-hurts-donates-600000-upgrade-hvac-system-northeast-high-school/19835937/",
+          image: {
+            file: "/editions/43/jalen-hurts-school-air-conditioning.jpg",
+            alt: "Jalen Hurts speaks at a lectern crowded with microphones at Northeast High School",
+            credit: "6abc",
+            from: "https://6abc.com/post/philadelphia-eagles-quarterback-jalen-hurts-donates-600000-upgrade-hvac-system-northeast-high-school/19835937/",
+          },
         },
       ],
     },
@@ -662,21 +989,5 @@ export const issue43: SeedEdition = {
       },
     },
     { type: "sign_off", content: { text: "You're done for today. See you tomorrow." } },
-  ],
-
-  puzzles: [
-    mini(
-      [
-        ["TUNES", "What a seaside brass band plays"],
-        ["SCONE", "Jam first or cream first?"],
-        ["YACHT", "A boat that's fancier than a dinghy"],
-      ],
-      [
-        ["TASTY", "How a peanut and caramel stout cake turns out, ideally"],
-        ["SWEET", "Like this paper, and like most puddings"],
-      ],
-    ),
-    ladder(["LEAD", "LOAD", "GOAD", "GOLD"]),
-    riddle("What runs but never walks, and has a mouth but never talks?", "A river"),
   ],
 };

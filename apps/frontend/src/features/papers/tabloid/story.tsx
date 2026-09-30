@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mark } from "@/features/print/mark";
 import { pageHref } from "../reading";
+import { Gallery } from "../plates";
 import type { StoryProps } from "../types";
 import { folioDate, issueLine, longDate } from "./edition-data";
 import {
@@ -89,6 +90,8 @@ export function Story({ data, links }: StoryProps) {
           </div>
         </div>
       </section>
+
+      <Gallery story={story} className="tb-cut-gallery" captionClass="tb-caption" />
 
       <nav className="tb-cut-turn" aria-label="More stories">
         {links.prev ? (

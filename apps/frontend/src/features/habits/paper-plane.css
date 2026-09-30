@@ -1,0 +1,266 @@
+/* The paper aeroplane ending. */
+
+.pp {
+  --ink: #1f1b17;
+  position: relative;
+  padding: 10px 0 8px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.pp__title {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: clamp(30px, 7vw, 46px);
+  font-weight: 400;
+  line-height: 1;
+  rotate: -2deg;
+}
+
+.pp__stage {
+  --pp-scale: 0.88;
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: calc(280px * var(--pp-scale) + 40px);
+  margin: 6px auto 0;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 700px) {
+  .pp__stage {
+    --pp-scale: 1.1;
+  }
+}
+
+.pp__stage.is-ready {
+  cursor: grab;
+}
+
+.pp__stage.is-ready:active {
+  cursor: grabbing;
+}
+
+.pp__stage.is-away .pp-hold {
+  opacity: 0;
+  transition: none;
+}
+
+.pp-hold {
+  transition: transform 0.25s ease-out;
+}
+
+.pp-model {
+  position: relative;
+  scale: var(--pp-scale);
+}
+
+.pp-face {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  background: #f4efe4 url("/mockup/press/newsprint-bright.jpg") center / 200px 280px;
+  background-blend-mode: multiply;
+  overflow: hidden;
+}
+
+/* The light: each facet is shaded by how it faces the lamp, so the creases read as folds. */
+.pp-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(35 25 15);
+  opacity: var(--shade, 0);
+  pointer-events: none;
+}
+
+/* The reverse of the sheet: the next page showing faintly through. */
+.pp-face--back {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 5px, rgb(30 30 30 / 0.07) 5px 6.5px) 18px
+      70px / 164px 190px no-repeat,
+    #f0eadd url("/mockup/press/newsprint-bright.jpg") center / 200px 280px;
+}
+
+.pp-print {
+  position: absolute;
+  inset: 0;
+  padding: 16px 14px;
+  color: #1f1b17;
+  text-align: center;
+  mix-blend-mode: multiply;
+}
+
+.pp-print__mast {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 34px;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.pp-print__rule {
+  margin: 4px 0 8px;
+  padding: 2px 0;
+  border-top: 1.5px solid #1f1b17;
+  border-bottom: 0.8px solid #1f1b17;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 6.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pp-print__head {
+  height: 12px;
+  margin: 0 6px 4px;
+  background: #1f1b17;
+  opacity: 0.85;
+}
+
+.pp-print__head--2 {
+  margin-right: 40px;
+  margin-bottom: 8px;
+}
+
+.pp-print__cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  height: 70px;
+}
+
+.pp-print__cols--low {
+  height: 56px;
+}
+
+.pp-print__cols span {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(31 27 23 / 0.55) 0 1.4px,
+    transparent 1.4px 4.4px
+  );
+}
+
+.pp-print__block {
+  height: 44px;
+  margin: 8px 0;
+  background: #ff7a8a;
+  opacity: 0.85;
+}
+
+.pp__hint {
+  margin: 4px 0 6px;
+  font-family: var(--hb-hand), cursive;
+  font-size: 20px;
+  min-height: 1.2em;
+}
+
+.pp__actions {
+  min-height: 40px;
+}
+
+.pp__btn {
+  position: relative;
+  padding: 6px 16px 8px;
+  border: 0;
+  background: #fbf6e8;
+  color: var(--ink);
+  font-family: var(--hb-hand), cursive;
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  clip-path: polygon(0 6%, 50% 0, 100% 5%, 98% 94%, 55% 100%, 2% 96%);
+  rotate: 1deg;
+}
+
+.pp__btn:hover {
+  background: #fff4c9;
+}
+
+.pp__btn:focus-visible {
+  outline: 2px dashed var(--ink);
+  outline-offset: 3px;
+}
+
+.pp__after {
+  min-height: calc(280px * 0.95 + 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: pp-note-in 0.6s ease-out;
+}
+
+@keyframes pp-note-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) rotate(2deg);
+  }
+}
+
+.pp__note {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: clamp(28px, 7vw, 40px);
+  line-height: 1.05;
+  rotate: -3deg;
+  max-width: 14ch;
+}
+
+.pp__trail {
+  width: min(260px, 70vw);
+  margin: 6px 0 10px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 6 7;
+  opacity: 0.6;
+}
+
+.pp__again {
+  padding: 2px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--hb-hand), cursive;
+  font-size: 19px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: 0.8;
+}
+
+.pp__again:focus-visible {
+  outline: 2px dashed var(--ink);
+}
+
+/* The copy that actually flies, above everything on the page. */
+.pp-flight {
+  position: fixed;
+  z-index: 95;
+  width: 200px;
+  height: 280px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.pp-flight__scale {
+  --pp-scale: 0.88;
+}
+
+@media (min-width: 700px) {
+  .pp-flight__scale {
+    --pp-scale: 1.1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp__after {
+    animation: none;
+  }
+}

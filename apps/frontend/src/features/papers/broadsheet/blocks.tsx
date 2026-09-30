@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Reading } from "../types";
 import type { Theme } from "./lib";
+import { FillPlates, PlatesCaption } from "../plates";
+import { BriefArt, BriefBand, type BriefArtKind, planBriefs } from "../brief-art";
 import { Body, Photo, Sticker, byline } from "./parts";
 
 // The pieces every composition is set from: a story's head, its full text in columns, its
@@ -66,9 +68,9 @@ export function Copy({
 
 export type Frame = "print" | "film" | "cart" | "flat";
 
-/** The frame a section prints its main picture in: Screen & Sound's film, Gaming's cartridge. */
+/** The frame a section prints its main picture in: Screen's film, Play's cartridge. */
 export const frameFor = (theme: Theme, fallback: Frame = "print"): Frame =>
-  theme === "screen" ? "film" : theme === "gaming" ? "cart" : fallback;
+  theme === "screen" ? "film" : theme === "play" ? "cart" : fallback;
 
 /**
  * A story's picture, printed once: taped on as a print, in a strip of film, on a cartridge label,
@@ -93,7 +95,14 @@ export function Media({
 }) {
   const image = story.images[0];
   if (!image) return null;
-  const photo = <Photo image={image} sizes={sizes} priority={priority} className="bs-pic" />;
+  const multi = story.images.length > 1;
+  const photo = multi ? (
+    <div className="yn-photo bs-pic bs-pic--plates">
+      <FillPlates story={story} sizes={sizes} priority={priority} />
+    </div>
+  ) : (
+    <Photo image={image} sizes={sizes} priority={priority} className="bs-pic" />
+  );
   return (
     <figure className={`bs-media bs-media--${frame} ${className ?? ""}`}>
       {frame === "film" ? (
@@ -126,7 +135,9 @@ export function Media({
       ) : (
         <div className="bs-flat">{photo}</div>
       )}
-      {caption && image.alt ? (
+      {caption && multi ? (
+        <PlatesCaption story={story} className="yn-caption bs-cap" />
+      ) : caption && image.alt ? (
         <figcaption className="yn-caption bs-cap">{image.alt}</figcaption>
       ) : null}
       {sticker && story.sticker ? (
@@ -136,22 +147,40 @@ export function Media({
   );
 }
 
-/** One short news item for the "In brief" column. */
-export function Brief({ story, reading, n }: { story: StoryItem; reading: Reading; n?: number }) {
+/** One short news item for the "In brief" column, its picture in the treatment its spot suits. */
+export function Brief({
+  story,
+  reading,
+  n,
+  art = "plain",
+  keyNo,
+}: {
+  story: StoryItem;
+  reading: Reading;
+  n?: number;
+  art?: BriefArtKind;
+  keyNo?: number;
+}) {
   return (
-    <article className="bs-brief">
+    <article className="bs-brief" data-art={art}>
       {n ? (
         <span className="yn-fat bs-brief-n" aria-hidden>
           {n}
         </span>
       ) : null}
       <div className="bs-brief-body">
-        <p className="yn-kicker bs-kick">{story.kicker}</p>
-        <h3 className="yn-chunk bs-hed bs-hed--brief">
-          <Link href={reading.storyHref(story.slug)} className="bs-link">
-            {story.headline}
-          </Link>
-        </h3>
+        <BriefArt
+          story={story}
+          art={art}
+          keyNo={keyNo}
+          kicker={<p className="yn-kicker bs-kick">{story.kicker}</p>}
+        >
+          <h3 className="yn-chunk bs-hed bs-hed--brief">
+            <Link href={reading.storyHref(story.slug)} className="bs-link">
+              {story.headline}
+            </Link>
+          </h3>
+        </BriefArt>
         <p className="bs-brief-dek">{story.dek}</p>
         <Body paragraphs={story.body} className="bs-copy bs-copy--1" />
       </div>
@@ -165,23 +194,37 @@ export function Briefs({
   reading,
   variant,
   className,
+  thumbs = true,
 }: {
   stories: StoryItem[];
   reading: Reading;
   variant: "rail" | "numbered" | "strip" | "ink";
   className?: string;
+  thumbs?: boolean;
 }) {
   if (!stories.length) return null;
+  const plan = planBriefs(stories, {
+    measure: variant === "strip" || variant === "ink" ? "wide" : "narrow",
+    flavour: "news",
+    seed: stories.map((s) => s.slug).join("|"),
+  });
+  const band = thumbs && plan.band;
   return (
-    <section className={`bs-briefs bs-briefs--${variant} ${className ?? ""}`} aria-label="In brief">
+    <section
+      className={`bs-briefs bs-briefs--${variant} ${band ? "bs-briefs--band" : ""} ${className ?? ""}`}
+      aria-label="In brief"
+    >
       <h2 className="yn-label bs-briefs-title">In brief</h2>
+      {band ? <BriefBand stories={stories} /> : null}
       <div className="bs-briefs-list" style={{ ["--n" as string]: stories.length }}>
         {stories.map((s, i) => (
           <Brief
             key={s.slug}
             story={s}
             reading={reading}
-            n={variant === "numbered" ? i + 1 : undefined}
+            n={variant === "numbered" && !band ? i + 1 : undefined}
+            art={thumbs ? plan.arts[i] : "plain"}
+            keyNo={band ? i + 1 : undefined}
           />
         ))}
       </div>
@@ -212,6 +255,7 @@ export function StoryBlock({
   mediaFirst = false,
   className,
   dropcap,
+  pictures = true,
 }: {
   story: StoryItem;
   reading: Reading;
@@ -221,8 +265,12 @@ export function StoryBlock({
   mediaFirst?: boolean;
   className?: string;
   dropcap?: boolean;
+  /** False when the page has already printed the story's pictures elsewhere. */
+  pictures?: boolean;
 }) {
-  const media = <Media story={story} frame={frame} sizes="(max-width: 760px) 100vw, 480px" />;
+  const media = !pictures ? null : (
+    <Media story={story} frame={frame} sizes="(max-width: 760px) 100vw, 480px" />
+  );
   return (
     <article className={`bs-story-block ${className ?? ""}`}>
       {mediaFirst ? media : null}

@@ -63,13 +63,33 @@ describe("editions routes", () => {
       expect(data.pages.map((p) => p.layout)).toEqual(["front", "section", "back"]);
       expect(data.lead?.slug).toBe("lead-42");
       expect(data.lead?.image?.licence).toBe("Unsplash License");
-      expect(data.guestSection?.slug).toBe("food-and-words");
+      expect(data.guestSection?.slug).toBe("word-nerd");
       expect(data.features.map((f) => f.type)).toEqual(["number_of_day", "weather"]);
-      expect(data.puzzles).toEqual([
-        { type: "riddle", order: 0, data: { title: "The Riddle", question: "Riddle number 42?" } },
-      ]);
+      expect(data.puzzles.map((p) => p.type)).toEqual(["riddle", "word_search", "fortune_teller"]);
+      expect(data.puzzles[0]).toEqual({
+        type: "riddle",
+        order: 0,
+        data: { title: "The Riddle", question: "Riddle number 42?" },
+      });
+      expect(data.puzzles.some((p) => "solution" in p)).toBe(false);
+      expect(data.puzzles[2]).toMatchObject({
+        data: { fortunes: expect.arrayContaining(["Fortune 42.1"]) },
+      });
       expect(data.yesterday?.issueNumber).toBe(41);
-      expect(data.yesterday?.puzzles[0]).toMatchObject({ solution: { answer: "Answer 41" } });
+      expect(data.yesterday?.puzzles.map((p) => [p.type, p.solution])).toEqual([
+        ["riddle", { answer: "Answer 41" }],
+        [
+          "word_search",
+          {
+            placements: [
+              { word: "CAT", start: [0, 0], end: [0, 2] },
+              { word: "DOG", start: [1, 1], end: [1, 3] },
+              { word: "XXXXX", start: [4, 0], end: [4, 4] },
+            ],
+          },
+        ],
+        ["fortune_teller", {}],
+      ]);
     });
 
     it("caches briefly and varies by timezone", async () => {
@@ -157,7 +177,7 @@ describe("editions routes", () => {
       expect(data.items[0]).toMatchObject({
         date: "2026-09-30",
         lead: { slug: "lead-42", headline: "Headline for lead-42" },
-        guestSection: { slug: "food-and-words" },
+        guestSection: { slug: "word-nerd" },
       });
       expect(data.nextCursor).toBeNull();
       expect(res.headers.get("vary")).toContain("x-timezone");

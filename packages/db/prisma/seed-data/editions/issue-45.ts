@@ -1,7 +1,6 @@
-// Issue 45, Saturday 3 October 2026. Scheduled. A weekend zine: relaxed, featurey and pastry-forward.
-// Stories with a sourceUrl are real, rewritten in our own words from the linked article. The rest
-// are invented and marked "(sample)": their people, places, sources and numbers are made up.
-import { ladder, mini, riddle } from "../puzzles.ts";
+// Issue 45, Saturday 3 October 2026. Scheduled. A weekend zine: relaxed and featurey.
+// A Saturday "Big Weekend" edition. Every story is real, rewritten in our own words from the linked
+// article; the Week in 10 retells the best stories of issues 40-44.
 import type { SeedEdition } from "../types.ts";
 
 export const issue45: SeedEdition = {
@@ -14,7 +13,7 @@ export const issue45: SeedEdition = {
   front: [
     {
       slug: "pastor-college-football",
-      section: "sports",
+      section: "sports-weekend",
       slot: "lead",
       kicker: "Weekend warriors",
       headline: "At 47, a pastor and father of three finally plays college football",
@@ -41,23 +40,31 @@ export const issue45: SeedEdition = {
       },
     },
     {
-      slug: "croissant-relay",
-      section: "internet-and-culture",
+      slug: "dadar-beach-students",
+      section: "india-desk",
       slot: "feature",
-      kicker: "Weekend",
-      headline: "One croissant tours eleven bakeries on a high street, gaining something at each",
-      dek: "It started plain. It finished with jam, custard, almonds, a paper crown and a birthday candle.",
+      kicker: "Mumbai",
+      headline:
+        "After Ganpati Visarjan, more than 150 students stay on to tidy Mumbai's Dadar beach",
+      dek: "K.P.B. Hinduja College has been cleaning this shoreline for more than 25 years.",
       body: [
-        "At nine o'clock last Saturday, a single plain croissant left the bakery at the bottom of Merrow's high street in a glass cake box, carried by a nine-year-old in oven gloves. The rules of the Merrow Croissant Relay, pinned in each shop window, were simple: every bakery adds one finishing touch, and nobody takes anything off.",
-        "It gained apricot glaze, then raspberry jam, then cinnamon, custard, a sesame tuile ‘for architecture’, toasted almonds, a paper crown and a tiny flag. “We had a long meeting about whether the flag counted as food,” said baker Hélène Aubry. “It was decided that it counted as morale.” The eleventh baker, Sevim Demir, added a birthday candle. “It had been through a lot,” she said.",
-        "The croissant was then cut into forty pieces for the 300 people who had followed it. Next year: a doughnut.",
+        "When the Ganpati Visarjan celebrations ended at Dadar Chowpatty in Mumbai, more than 150 students from K.P.B. Hinduja College of Commerce rolled up their sleeves, pulled on gloves and got to work, gathering the flowers, plastic, cloth and decorations left on the sand.",
+        "The college has been doing this for more than 25 years, and its National Service Scheme unit runs three or four beach-cleaning drives a year with the University of Mumbai, the city corporation, the state of Maharashtra and the Coast Guard.",
+        "“You can talk about the environment all day, but nothing hits like picking up that waste yourself,” said Ritika Kanojiya, a second-year student. First-year volunteer Prajakta Kulkarni agreed that a clean shore belongs to everyone, not only to the city's cleaning workers. The beach looked all the better for it.",
       ],
-      source: "Merrow Mercury (sample)",
-      photo: ["picnic", 1],
+      source: "The Better India",
+      sourceUrl:
+        "https://thebetterindia.com/changemakers/ganpati-beach-cleanup-dadar-chowpatty-hinduja-college-students-mumbai-india-12590553",
+      image: {
+        file: "/editions/45/dadar-beach-students.jpg",
+        alt: "College students in white T-shirts and blue gloves filling green sacks on Dadar beach, with the Mumbai sea link behind",
+        credit: "The Better India",
+        from: "https://thebetterindia.com/changemakers/ganpati-beach-cleanup-dadar-chowpatty-hinduja-college-students-mumbai-india-12590553",
+      },
     },
     {
       slug: "gorilla-maze",
-      section: "internet-and-culture",
+      section: "postcards",
       slot: "feature",
       kicker: "Mazes",
       headline: "Farm cuts a giant gorilla into its maize for David Attenborough's 100th birthday",
@@ -76,52 +83,370 @@ export const issue45: SeedEdition = {
         credit: "Tom Maddick / SWNS",
         from: "https://www.goodnewsnetwork.org/giant-gorilla-maze-celebrates-sir-david-attenboroughs-100th-birthday/",
       },
+      more: [
+        {
+          file: "/editions/45/gorilla-maze-2.jpg",
+          alt: "From the air, the maze field at Wistow with its mountain gorilla cut into the maize",
+          credit: "Tom Maddick / SWNS",
+          from: "https://www.goodnewsnetwork.org/giant-gorilla-maze-celebrates-sir-david-attenboroughs-100th-birthday/",
+        },
+      ],
     },
   ],
 
   inside: [
     {
-      section: "screen-and-sound",
+      section: "week-in-10",
       stories: [
         {
-          slug: "horse-album",
-          slot: "feature",
-          kicker: "Music",
-          headline: "A singer's new album features an unusual session musician: her horse, Yupia",
-          dek: "He plays guitar and harp strings with his nose and mouth, and nobody taught him how.",
+          slug: "wk-mozart-notebook-found-in-paris",
+          kicker: "Monday · Music",
+          headline: "A retiring librarian in Paris finds a notebook Mozart wrote at 22",
+          dek: "Forty-four pages of harp lessons, recognised by their rounded, forward-leaning treble clefs.",
           body: [
-            "Most musicians find their bandmates at school, at gigs or through an advert. Mikayla Khramov, a singer-songwriter based in Los Angeles, found hers at a horse rescue in Moorpark, California. He is called Yupia, he is seven years old and Kentucky-bred, and he is about to appear on her first album.",
-            "Khramov began volunteering at the rescue in 2023. Yupia was wary of people, and she spent nine months getting to know him, often by playing music in his company. “Music was the tool to help build trust,” she said.",
-            "Then something unexpected happened. Yupia began wandering over while she played, nuzzling and chomping at the strings of her guitar and harp, and making sounds of his own. “He comes over and is participating with me,” she said. “I didn't give him treats or anything. It was kind of a miracle how it happened.”",
-            "Those sounds are now part of the record, which blends folk and electronic music with Portuguese musicians and, of course, one horse. She was aiming to have it finished this autumn.",
-            "Working with Yupia has changed how she feels about her job. “(Yupia) has inspired me to love music again and not treat it like a job or just a way to make money,” she said. She also told USA Today: “This is what music should be about. And I don't want to do anything without my horse now.”",
-            "Yupia has not yet given any interviews, though he is said to be very open to carrots.",
+            "Before leaving France's National Library, François-Pierre Goy worked through one last pile of neglected papers and found a 44-page notebook in Mozart's hand. It dates from 1778, when the 22-year-old composer was teaching the harp in Paris to the Duke of Guines's daughter, and holds her daily exercises plus seven flute-and-harp pieces. The Mozarteum Foundation in Salzburg confirmed it in April. “I never imagined what I was about to find,” said Goy.",
           ],
-          source: "Good News Network",
+          source: "Classic FM",
           sourceUrl:
-            "https://www.goodnewsnetwork.org/a-real-rockin-horse-rescue-foal-learns-to-play-instruments-for-album-debut/",
+            "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
           image: {
-            file: "/editions/45/horse-album.jpg",
-            alt: "A horse nosing the strings of a guitar held by Mikayla Khramov",
-            credit: "Mikayla Khramov",
-            from: "https://www.goodnewsnetwork.org/a-real-rockin-horse-rescue-foal-learns-to-play-instruments-for-album-debut/",
+            file: "/editions/40/mozart-notebook-paris.jpg",
+            alt: "A portrait of Mozart beside the open handwritten notebook of music exercises",
+            credit: "Classic FM",
+            from: "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
           },
         },
         {
-          slug: "jurassic-grasshopper-songs",
-          slot: "feature",
-          kicker: "Ancient sounds",
-          headline:
-            "Scientists recreate the songs of grasshoppers that chirped 165 million years ago",
-          dek: "They are the oldest sounds anyone has reproduced, and one species sang too high for us to hear.",
+          slug: "wk-athens-airport-becomes-park",
+          kicker: "Monday · Places",
+          headline: "Athens is turning its old seaside airport into one of Europe's biggest parks",
+          dek: "Thirty thousand trees, three million plants and runways built for picnics.",
           body: [
-            "The Middle Jurassic was not a quiet place. A team led by Thorin Jonsson of the University of Graz, working with colleagues in Lincoln, Bristol, Beijing and Tempe, has rebuilt the mating calls of nine grasshopper species that lived in what is now Inner Mongolia about 165 million years ago.",
-            "Using the fine detail preserved in fossilised wings, the parts the insects rubbed together to sing, and computer modelling, they worked out what each one sounded like. The results, published in PNAS, are the oldest sounds ever reproduced.",
-            "“Our findings reveal a wide variety of call frequencies. Several species produced pure, low-pitched sounds like modern crickets,” said Jonsson. One, Sigmaboilus peregrinus, sang at 20 to 22 kilohertz, above what most human ears can hear. The dinosaurs had the best seats in the house.",
+            "The runways of Ellinikon, Athens's old airport by the sea, are becoming Ellinikon Park: more than 400 acres of green, and the second-largest city park in Europe. The plan calls for 30,000 trees and three million smaller plants from over 520 species. Planners used air-flow simulations to place every path and plant, aiming for a park about 4°C cooler than the streets around it, with misters and fountains fed by collected rain.",
           ],
           source: "Good News Network",
           sourceUrl:
-            "https://www.goodnewsnetwork.org/scientists-recreated-chirps-of-jurassic-insects-simulating-a-165-million-yo-soundscape-listen/",
+            "https://www.goodnewsnetwork.org/athens-is-turning-its-old-airport-into-one-of-europes-largest-parks/",
+          image: {
+            file: "/editions/40/athens-airport-becomes-park.jpg",
+            alt: "A design drawing of green parkland and a beach along the coast at Ellinikon, Athens",
+            credit: "The Ellinikon",
+            from: "https://www.goodnewsnetwork.org/athens-is-turning-its-old-airport-into-one-of-europes-largest-parks/",
+          },
+        },
+        {
+          slug: "wk-teacher-finds-t-rex-trackway",
+          kicker: "Tuesday · Discoveries",
+          headline:
+            "A science teacher on a volunteer dig finds the first trail left by an adult T. rex",
+          dek: "Four metre-long footprints show a Tyrannosaurus out for a brisk walk.",
+          body: [
+            "Kent Hups, who teaches science at a Colorado high school, spotted the trackway in North Dakota's Hell Creek Formation: four three-toed prints, each about three feet long, laid down some 66.5 million years ago. Single T. rex prints are known, but never a sequence. From the stride, researchers reckon it was walking at 3.5 to 4.5 miles an hour. “It's the closest you get to a time machine,” said Hups.",
+          ],
+          source: "Good News Network",
+          sourceUrl:
+            "https://www.goodnewsnetwork.org/massive-footprints-reveal-first-ever-adult-t-rex-trackway/",
+          image: {
+            file: "/editions/41/teacher-finds-t-rex-trackway.jpg",
+            alt: "Kent Hups and fellow researchers kneeling beside giant T. rex footprints in the rock",
+            credit: "Tyler Lyson / Denver Museum of Nature & Science",
+            from: "https://www.goodnewsnetwork.org/massive-footprints-reveal-first-ever-adult-t-rex-trackway/",
+          },
+        },
+        {
+          slug: "wk-oulu-haparanda-trains-return",
+          kicker: "Tuesday · Tech",
+          headline:
+            "Passenger trains cross the border between Finland and Sweden again after 30 years",
+          dek: "A twice-daily service links Oulu with Haparanda, where a split bridge handles two gauges.",
+          body: [
+            "For the first time in three decades, you can take a train from Finland to Sweden. The new service runs twice a day from Oulu to the border town of Haparanda, where a divided bridge lets trains of both countries' track gauges arrive and depart, and regional trains carry on towards Luleå. “We are creating new opportunities for people to travel, work, study and visit one another across the border,” said Joakim Berg of the operator Norrtåg.",
+          ],
+          source: "Good News Network",
+          sourceUrl:
+            "https://www.goodnewsnetwork.org/after-30-years-of-estranged-trains-sweden-and-finland-re-connect-their-railway-lines/",
+          image: {
+            file: "/editions/41/oulu-haparanda-trains-return.jpg",
+            alt: "Smiling passengers, one holding a Finnish flag, aboard the first Oulu to Haparanda train",
+            credit: "Aapo Riihimäki / Prime Minister's Office of Finland",
+            from: "https://www.goodnewsnetwork.org/after-30-years-of-estranged-trains-sweden-and-finland-re-connect-their-railway-lines/",
+          },
+        },
+        {
+          slug: "wk-goblin-shark-filmed-at-home",
+          kicker: "Wednesday · Discoveries",
+          headline:
+            "The goblin shark, the deep sea's oddest face, is finally filmed going about its day",
+          dek: "One clip sat unnoticed in a video archive for six years.",
+          body: [
+            "Every living goblin shark seen before had come up by accident on a fishing line. Now scientists have described two swimming freely in the central Pacific: one filmed in 2019 by the robot submersible Hercules, spotted in the archive only in 2025, and one that glided past a baited camera in the Tonga Trench at 1,997 metres, a depth record. “A unique honor,” said the lead author, Aaron Judah.",
+          ],
+          source: "ScienceDaily (University of Hawaiʻi at Mānoa)",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/07/260708022208.htm",
+          image: {
+            file: "/editions/42/goblin-shark-filmed-alive-deep-pacific.jpg",
+            alt: "A pale goblin shark with its long flat snout swims low over a pebbly seabed",
+            credit: "Minderoo-UWA Deep-Sea Research Centre and Inkfish",
+            from: "https://gizmodo.com/watch-a-rare-goblin-shark-filmed-alive-in-its-natural-habitat-for-the-first-time-2000771259",
+          },
+        },
+        {
+          slug: "wk-u2-bewleys-balcony-50th",
+          kicker: "Wednesday · Music",
+          headline:
+            "U2 celebrate fifty years by playing their old school, then a Dublin café balcony",
+          dek: "Thousands on Grafton Street sang Happy Birthday back at them.",
+          body: [
+            "Fifty years after Larry Mullen pinned a note to a school noticeboard looking for bandmates, U2 went back to Mount Temple Comprehensive, where they last played in 1978. “We escaped from the lab,” Bono told the pupils. That evening they played from the balcony of Bewley's on Grafton Street, opening with I Will Follow. “The buskers have really upped their game,” said Bono.",
+          ],
+          source: "The Irish Times",
+          sourceUrl:
+            "https://www.irishtimes.com/culture/music/2026/09/25/u2-play-special-gigs-at-mount-temple-comprehensive-and-grafton-street-to-mark-50th-anniversary/",
+          image: {
+            file: "/editions/42/u2-bewleys-balcony-50th.jpg",
+            alt: "The Edge and Bono laughing together as they lean on the balcony rail at Bewley's on Grafton Street",
+            credit: "Rich Fury/U2/LHP/PA Wire via The Irish Times",
+            from: "https://www.irishtimes.com/culture/music/2026/09/25/u2-fans-gather-in-dublin-city-centre-for-surprise-appearance-by-the-band/",
+          },
+        },
+        {
+          slug: "wk-nigella-joins-bake-off-tent",
+          kicker: "Thursday · Screen",
+          headline:
+            "Nigella Lawson takes her seat in the Bake Off tent, and the critics are smitten",
+          dek: "She admitted to nerves before her first episode. Nobody could tell.",
+          body: [
+            "The Great British Bake Off's 17th series opened with a new judge beside Paul Hollywood: Nigella Lawson, who called joining the show “a huge honour”. Cake Week brought a chocolate stout cake, a coffee and walnut technical and self-portrait showstoppers, and Mo, a 21-year-old law student, took Star Baker. The Times called Lawson the “icing on the cake”. The tent is open every Tuesday at 8pm.",
+          ],
+          source: "HuffPost UK",
+          sourceUrl:
+            "https://www.huffingtonpost.co.uk/entry/great-british-bake-off-nigella-lawson-reviews_uk_6ab391e2e4b085277b54b9bb",
+          image: {
+            file: "/editions/43/nigella-joins-bake-off-tent.jpg",
+            alt: "Nigella Lawson smiling and holding a chocolate cake topped with raspberries",
+            credit: "Patch Dolan/Channel 4",
+            from: "https://www.huffingtonpost.co.uk/entry/great-british-bake-off-nigella-lawson-reviews_uk_6ab391e2e4b085277b54b9bb",
+          },
+        },
+        {
+          slug: "wk-van-ar-chy-found-in-sendai",
+          kicker: "Thursday · Screen",
+          headline: "A lost 1919 comedy from New Hampshire turns up in a Japanese antique shop",
+          dek: "A film student in Sendai bought the reels while researching the word ‘anarchy’.",
+          body: [
+            "Kohei Okita, a student in Sendai, bought some old film reels and found a comedy starring someone he did not recognise. An archivist, John Tariot, identified it as Van-ar-chy, shot around Lake Sunapee by the vaudeville entertainer Billy B Van. The film goes home for a screening at the Newport Opera House on 1 November. “We're seeing the world in which he made them,” said Tariot.",
+          ],
+          source: "The Guardian",
+          sourceUrl:
+            "https://www.theguardian.com/film/2026/sep/28/century-old-silent-comedy-new-hampshire-found-japan",
+          image: {
+            file: "/editions/43/van-ar-chy-found-in-sendai.jpg",
+            alt: "Black-and-white still from the 1919 silent comedy Van-ar-chy, with a young man in a bow tie between two bearded men",
+            credit: "Film Video Digital via YouTube / The Guardian",
+            from: "https://www.theguardian.com/film/2026/sep/28/century-old-silent-comedy-new-hampshire-found-japan",
+          },
+        },
+        {
+          slug: "wk-tilcayo-tiger-cat",
+          kicker: "Friday · Discoveries",
+          headline:
+            "The first new wild cat species in a century turns out to be smaller than a house cat",
+          dek: "Meet the tilcayo, a spotted cat from Bolivia that weighs about as much as a pineapple.",
+          body: [
+            "For the first time since 1923 the cat family has a new member: Leopardus tilcayo, from Bolivia's misty Yungas forests, at about 1.4 kilos. The species was described in Current Biology by a team led by Paola Nogales-Ascarrunz, whose star specimen is Tigrino, a small male living at the Senda Verde refuge. “He really is tiny,” she said. Local people have called the cat the tilcayo for generations.",
+          ],
+          source: "PBS News",
+          sourceUrl:
+            "https://www.pbs.org/newshour/science/meet-earths-newest-wild-cat-species-living-in-bolivia-and-the-first-named-in-over-a-century",
+          image: {
+            file: "/editions/44/tilcayo-tiger-cat.jpg",
+            alt: "A small spotted wild cat, the tilcayo, looking at the camera",
+            credit: "Reuters",
+            from: "https://www.pbs.org/newshour/science/meet-earths-newest-wild-cat-species-living-in-bolivia-and-the-first-named-in-over-a-century",
+          },
+        },
+        {
+          slug: "wk-asteroid-alyankovic",
+          kicker: "Friday · Space",
+          headline:
+            "An asteroid between Mars and Jupiter is now officially named after ‘Weird Al’ Yankovic",
+          dek: "He called it perhaps the greatest honour he has ever received.",
+          body: [
+            "The rock known since 1981 as 1981 EC26, about two kilometres across, is now (14331) Alyankovic, approved by the International Astronomical Union. The campaign was led by the Arizona State University planetary scientists Allison McGraw and Steve Desch, and the citation credits his comic songs, including ‘White and Nerdy’, with inspiring generations of scientists. “This is perhaps the greatest honor I've ever received,” said Yankovic.",
+          ],
+          source: "Consequence",
+          sourceUrl: "https://consequence.net/2026/09/weird-al-yankovic-asteroid/",
+          image: {
+            file: "/editions/44/asteroid-alyankovic.jpg",
+            alt: "‘Weird Al’ Yankovic alongside an illustration of an asteroid",
+            credit: "Consequence",
+            from: "https://consequence.net/2026/09/weird-al-yankovic-asteroid/",
+          },
+        },
+      ],
+    },
+    {
+      section: "weekend-guide",
+      stories: [
+        {
+          slug: "rubber-soul-special-edition",
+          kicker: "Listen",
+          headline:
+            "The Beatles' Rubber Soul comes back remixed, with a Lennon song nobody knew existed",
+          dek: "Out on Friday: new stereo and Dolby Atmos mixes, 20 unreleased takes and a mystery called Little Girl.",
+          body: [
+            "If your weekend needs a soundtrack, the Beatles have one ready. Rubber Soul arrived in shops on Friday 2 October in a new Special Edition, and it is the sort of reissue that rewards a comfy chair and a good pair of headphones.",
+            "The album has been freshly mixed by the producer Giles Martin and the engineer Sam Okell, who used de-mixing technology from WingNut Films to pull the original recordings apart and put them back together more clearly. There are new stereo and Dolby Atmos mixes, and for purists the original mono mix and the Capitol US version of the album are included too.",
+            "The biggest boxes turn the original 14 songs into a much longer listen. The Super Deluxe editions add 24 extra recordings, among them 20 takes that have never been released and three home demos. One of those is the real treat: Little Girl, which the Beatles' own announcement describes as a John Lennon song outline “never before released or even rumoured”.",
+            "There is more to hold, too. The box sets come with an 88-page hardback book featuring a new introduction by Paul McCartney, a foreword pieced together from Lennon's own words over the decades, rare photographs and notes on every track. The double A-side single of the time, Day Tripper and We Can Work It Out, is in there as well, along with the promotional films made for both.",
+            "The formats run from a single CD or LP all the way up to a four-CD set and a five-LP box, plus a Blu-ray for the Atmos mix, a limited orange vinyl and a zoetrope vinyl edition.",
+            "Put the kettle on, press play and see if you can hear the difference. Rubber Soul still sounds like a very good Saturday.",
+          ],
+          source: "The Beatles",
+          sourceUrl: "https://www.thebeatles.com/rubber-soul-new-special-edition-out-2nd-october",
+          image: {
+            file: "/editions/45/rubber-soul-special-edition.jpg",
+            alt: "The Rubber Soul Special Edition box set laid out with its CDs and open hardback book of photographs",
+            credit: "Apple Corps via The Beatles Bible",
+            from: "https://www.beatlesbible.com/2026/07/29/beatles-announce-rubber-soul-expanded-reissues/",
+          },
+        },
+        {
+          slug: "japan-matsuri-trafalgar",
+          kicker: "Go",
+          headline:
+            "Japan Matsuri fills Trafalgar Square with performers, martial arts and food stalls on Sunday",
+          dek: "It is free, it runs from ten until eight, and the food stalls surround the fountains.",
+          body: [
+            "The UK's biggest yearly festival of Japanese culture and food returns to Trafalgar Square on Sunday 4 October, from 10am to 8pm, and it is free to get in.",
+            "Japan Matsuri has been running since 2009 and has made its home in Trafalgar Square since 2012. This year's programme has Matsuri performers on the main stage and martial arts demonstrations, along with stalls and an information centre. The food stalls sit in the middle of the square, either side of the famous fountains, with a mix of old favourites and new vendors.",
+            "It is organised by the Japan Society, the Japan Association UK, the Japanese Chamber of Commerce and Industry UK and the Nippon Club UK. A few house rules: leave big bags, bikes and scooters at home, and once the square is full a one in, one out policy applies. Come early, and come hungry.",
+          ],
+          source: "Japan Matsuri",
+          sourceUrl: "https://japanmatsuri.com/",
+          image: {
+            file: "/editions/45/japan-matsuri-trafalgar.jpg",
+            alt: "A smiling woman in a Japan Matsuri T-shirt shades her eyes in Trafalgar Square",
+            credit: "Garry Knight / Wikimedia Commons (CC BY 2.0)",
+            from: "https://commons.wikimedia.org/wiki/File:Japan_Matsuri_2012_-_28_(8124452823).jpg",
+          },
+        },
+        {
+          slug: "ranma-season-three",
+          kicker: "Stream",
+          headline:
+            "Ranma 1/2 returns for a third season on Saturday, with even more wild characters",
+          dek: "MAPPA's remake returns with new characters and new voices.",
+          body: [
+            "Saturday brings the third season of MAPPA's Ranma 1/2, which debuts on Netflix around the world on 3 October, the same day as its premiere in Japan. Konosuke Uda is directing again, and the new season promises “even more wild characters” and more romantic comedy shenanigans. Joining the cast are Masako Nozawa as the Grand Master, Jun Fukuyama and Minami Tanaka. The opening theme, Sunao Miman, is sung by Fumino.",
+          ],
+          source: "ComicBook.com",
+          sourceUrl:
+            "https://comicbook.com/anime/news/mappas-ranma-1-2-season-3-sets-netflix-release-date-with-new-trailer-watch/",
+          image: {
+            file: "/editions/45/ranma-season-three.jpg",
+            alt: "Key art for Ranma 1/2 season 3, with its characters leaping into action",
+            credit:
+              "Rumiko Takahashi, Shogakukan / Ranma 1/2 Production Committee via ComicBook.com",
+            from: "https://comicbook.com/anime/news/mappas-ranma-1-2-season-3-sets-netflix-release-date-with-new-trailer-watch/",
+          },
+        },
+      ],
+    },
+    {
+      section: "sports-weekend",
+      stories: [
+        {
+          slug: "ufc-332-silva-wang",
+          kicker: "UFC",
+          headline:
+            "Natália Silva and Wang Cong meet for the flyweight title as the UFC makes its CBS debut",
+          dek: "Saturday's UFC 332 in Salt Lake City is the first numbered UFC main card to air on CBS.",
+          body: [
+            "The UFC is heading to Salt Lake City this Saturday, 3 October, and it is bringing a little history with it. UFC 332, at the Delta Center, is the first UFC event whose complete main card goes out on CBS, with Paramount+ streaming it too. The main card begins at 8pm Eastern time.",
+            "At the top of the bill is a fight for the women's flyweight championship. Natália Silva, a 29-year-old Brazilian, arrives on a 14-fight winning streak and is a perfect eight from eight since her UFC debut in 2022. She is a high-volume striker, which is a polite way of saying she rarely stops throwing things.",
+            "Across the Octagon is Wang Cong, 34, from China, a technical counterpuncher with a famous line on her record: back in 2015, in kickboxing, she beat Valentina Shevchenko, who holds the UFC women's record of nine title defences. One of them will leave Utah wearing the belt.",
+            "The co-main event pairs Payton Talbott, 28, of Las Vegas, who is 5-1 since his 2023 debut and beat Henry Cejudo on points in December, with the former two-time flyweight champion Deiveson Figueiredo at bantamweight. Further down the card, 40-year-old King Green makes his 32nd walk to the Octagon on a run of four straight finishes, and the Croatian striker Roberto Soldić, 31, makes his UFC welterweight debut after winning titles in two divisions in KSW.",
+            "Keep an eye, too, on the 24-year-olds: Ateba Gautier, the 6ft 4in ‘Silent Assassin’ from Cameroon, and Damian Pinas, known as ‘Baby Yaga’, from Aruba. Between them they have 18 knockout wins.",
+          ],
+          source: "CBS Sports",
+          sourceUrl:
+            "https://www.cbssports.com/ufc/news/ufc-332-fight-card-natalia-silva-vs-wang-cong-storylines/",
+          image: {
+            file: "/editions/45/ufc-332-silva-wang.jpg",
+            alt: "Natália Silva and Wang Cong, side by side, each celebrating a win in the Octagon",
+            credit: "UFC",
+            from: "https://www.ufc.com/news/fight-fight-preview-ufc-332-silva-vs-wang-salt-lake-city",
+          },
+        },
+        {
+          slug: "asian-games-final-weekend",
+          kicker: "Asian Games",
+          headline:
+            "The Asian Games in Aichi-Nagoya reach their final weekend, with a closing party on Sunday",
+          dek: "After 469 medal events in 43 sports, the Games wrap up on 4 October.",
+          body: [
+            "The 2026 Asian Games in Aichi-Nagoya are nearly done. They opened at the Paloma Mizuho Stadium on 19 September, with some events getting under way as early as the 10th, and they finish with the closing ceremony on Sunday 4 October.",
+            "It has been a Games of new things. Freestyle BMX, MMA, padel, surfing, teqball and virtual taekwondo all joined the programme, spread across 54 venues in the region, with 469 sets of medals to be won in 43 sports.",
+            "There is still some sport left before the final bow: the archery medal matches wrap up this weekend. India alone sent 499 athletes to compete in at least 37 sports, with 79 of them in athletics, the country's biggest group. Then it is time for the closing party, and for everyone to start dreaming about the next one.",
+          ],
+          source: "ESPN",
+          sourceUrl:
+            "https://www.espn.com/espn/story/_/id/49963172/asian-games-all-need-know-schedule-fixtures-medals-timings-aichi-nagoya-2026",
+          image: {
+            file: "/editions/45/asian-games-final-weekend.jpg",
+            alt: "The red-and-white mascot of the 2026 Asian Games waving on a sunny plaza in Nagoya",
+            credit: "eli fessler / Wikimedia Commons (CC BY-SA 4.0)",
+            from: "https://commons.wikimedia.org/wiki/File:2026_Asian_Games_mascot_Honohon.jpg",
+          },
+        },
+        {
+          slug: "nfl-london-colts-commanders",
+          kicker: "NFL in London",
+          headline:
+            "The NFL's London season kicks off on Sunday with the Colts meeting the Commanders",
+          dek: "Tottenham Hotspur Stadium hosts the game, with Jason Kelce in the commentary box.",
+          body: [
+            "American football is back in north London. On Sunday 4 October the Washington Commanders take on the Indianapolis Colts at Tottenham Hotspur Stadium, kicking off at 9.30am Eastern time. NFL Network has the game, with Dave Pasch, Kurt Warner and the former centre Jason Kelce calling the action and Molly McGrath on the sideline. The two sides have met 32 times before, and Washington last played overseas in 2017.",
+          ],
+          source: "Washington Commanders",
+          sourceUrl: "https://www.commanders.com/news/commanders-colts-preview-2026-week-4",
+          image: {
+            file: "/editions/45/nfl-london-colts-commanders.jpg",
+            alt: "An NFL game under way on the pitch inside a packed Tottenham Hotspur Stadium",
+            credit: "Tottenham Hotspur Stadium",
+            from: "https://www.tottenhamhotspurstadium.com/events/1069172/nfl-2026",
+          },
+        },
+      ],
+    },
+    {
+      section: "deep-dive",
+      stories: [
+        {
+          slug: "jurassic-grasshopper-songs",
+          kicker: "Ancient sounds",
+          headline:
+            "What did the Jurassic sound like? Scientists have rebuilt its insect songs from fossil wings",
+          dek: "Nine species of cricket relatives, 165 million years old, sing again, and one of them sang too high for us to hear.",
+          readMinutes: 5,
+          body: [
+            "Picture a warm evening in the Middle Jurassic, about 165 million years ago, in what is now Inner Mongolia. The dinosaurs are there, of course, but close your eyes and listen. The air is full of song: low, pure chirps, higher whirring notes, and one voice you cannot hear at all.",
+            "For the first time, scientists have been able to recreate that soundscape. A team led by Thorin Jonsson of the University of Graz in Austria, working with colleagues at the universities of Lincoln and Bristol in the UK, in Beijing and in Tempe, Arizona, has rebuilt the mating calls of nine insect species from the Jurassic. Their paper, published in PNAS with Jun-Jie Gu of Sichuan Agricultural University as lead author, describes what are the oldest sounds anyone has ever reproduced.",
+            "“What we're hearing just now were basically the sounds we recreated of bush crickets or katydids that lived 165 million years ago,” Jonsson said on the WBUR programme On Point, as the reconstructed chirps played. To modern ears they sound rather like a summer evening in a meadow, which is exactly what they were.",
+            "The singers were ensiferans, the group that includes today's crickets and katydids, or bush crickets. Seven of the nine species belonged to a family called Prophalangopsidae and two to the Haglidae. Their fossils come from the Jiulongshan Formation, rocks so finely grained that about 20 of the insects were preserved with their wings intact.",
+            "That detail is what made the whole project possible. Crickets and their relatives sing by stridulation: they rub one wing against the other, dragging a hard edge across a ridge lined with tiny teeth, a bit like running a fingernail along a comb. The number of teeth, how closely they are spaced and the shape of the wing all decide the pitch and rhythm of the song. “These fossils were so well preserved that we could really count these tiny teeth on them and do measurements and compare with wings of living katydids,” Jonsson told the programme.",
+            "Counting teeth was only the start. The researchers built a family tree of nearly 100 living species, measured how real insect wings vibrate using laser vibrometry, and ran computer simulations of how the fossil wings would have moved. The wings do more than make the noise: they are shaped to resonate at the same frequency as the song, which amplifies it and helps it carry. “The wings which create the songs and which vibrate then amplify the vibrations they produce, they are evolved to have resonance at exactly the same frequencies,” Jonsson explained.",
+            "To work out how fast each insect repeated its chirps, the team turned to machine learning, training models on decades of recordings of modern katydids. “We have this incredible database of modern species and we can take the length of the stridulatory file, the pitch of their song, and the duration of their song syllables,” said Charlie Woodrow, an entomologist and co-author. He was keen to point out that this was careful science rather than chatbot guesswork: “The kind of AI approach we used was not like ChatGPT where we just input a prompt and get a response.” Instead, the models learned the link between the shape of a wing and the rhythm of a song from real, living insects, and then applied it to the fossils.",
+            "The result is a surprisingly varied choir. Most of the nine species sang low, pure tones of around 5 kilohertz, much like modern crickets. “Our findings reveal a wide variety of call frequencies,” said Jonsson. “Several species produced pure, low-pitched sounds like modern crickets, whilst others produced higher frequencies, similar to our native leafhoppers.” The team concluded that the Jurassic was acoustically far richer and more diverse than anyone had thought.",
+            "Then there is the soloist. One species, Sigmaboilus peregrinus, a relative of the katydids, sang at between 20 and 22 kilohertz. That is ultrasound, above the range of most human ears, so if you had been standing in that Jurassic forest you would have seen it singing without hearing a note.",
+            "It is also the oldest known example of any animal communicating with ultrasound, by a very long way. Scientists had long assumed that insects only took up these high frequencies around 50 million years ago, once bats arrived. The fossils push the date back to about 165 million years, some 100 million years before bats appeared. “There's been this long-standing hypothesis that insects didn't really need to hear or produce ultrasound until about 50 million years ago,” said Woodrow. The fossils suggest they were chatting up there far earlier. Plenty of insects still do it: about 70 per cent of katydid species today sing in ultrasound, and they hear it with ears on their front legs. Those ears work much like ours, complete with eardrums, resonance chambers and organs that sort sounds by frequency.",
+            "Reconstructing the songs of the dinosaurs themselves is a different sort of puzzle, with no teeth to count. Thomas Land, a zoologist who worked on the sounds for Netflix's series The Dinosaurs, built them from the calls of the dinosaurs' living relatives. “Birds still exist. Birds are dinosaurs,” he said, so the team listened to emus, cassowaries, rheas, ostriches and sandhill cranes, along with crocodiles. The katydid team had one big advantage over the dinosaur sound designers: their singers left behind the actual instruments, preserved in stone, down to the last tiny tooth.",
+            "The insect work is part of a project at Graz called Small Wings, Loud Songs, funded by the Austrian Science Fund. The recordings are now online for anyone to play. Turn the volume up, pour a drink and open a window: it is the oldest evening chorus on Earth, and it has been waiting 165 million years for an audience.",
+          ],
+          source: "University of Graz, Sci.News, WBUR On Point and Good News Network",
+          sourceUrl:
+            "https://www.uni-graz.at/en/news/jurassic-sounds-biologe-rekonstruiert-insekten-gesaenge-vor-165-millionen-jahren",
           image: {
             file: "/editions/45/jurassic-grasshopper-songs.jpg",
             alt: "A fossilised Jurassic grasshopper wing with its sound-making veins",
@@ -129,401 +454,140 @@ export const issue45: SeedEdition = {
             from: "https://www.goodnewsnetwork.org/scientists-recreated-chirps-of-jurassic-insects-simulating-a-165-million-yo-soundscape-listen/",
           },
         },
+      ],
+    },
+    {
+      section: "postcards",
+      stories: [
         {
-          slug: "confetti-cannon-encore",
-          slot: "brief",
-          kicker: "Gigs",
+          slug: "cotaland-opens",
+          kicker: "Theme parks",
           headline:
-            "Band's confetti cannon fires backwards, covering only the band, who play on regardless",
-          dek: "The crowd, entirely confetti-free, called it the encore of the summer.",
+            "Austin's Formula 1 track opens a theme park next door, with a coaster that stalls upside down",
+          dek: "COTALAND has 30-odd rides, five roller coasters and hot laps of the real Grand Prix circuit.",
           body: [
-            "A helpful stagehand had turned the cannon round ‘out of the way’. When drummer Obi Castellanos of the Paper Moons stamped the pedal, nine kilos of purple tissue buried all four members. They finished the song. “We're going to have to do it on purpose now,” said singer Marisol Quaye. The stagehand has been promoted to Head of Cannon.",
+            "For years, the Circuit of The Americas in Austin, Texas, has been where Formula 1 cars come to go very fast. As of last Saturday it is also where families come to go very fast, very high and, now and then, upside down. COTALAND, a new 30-acre amusement park at the circuit, opened on 26 September.",
+            "Opening day ran from 4pm to 10pm, with a ribbon-cutting, food and drink included in the $99 ticket, and fireworks to finish. Sunday followed with a second day of fun from 10am to 7pm, at $65 a head. Visitors found more than 30 rides, including five roller coasters.",
+            "Top of many lists is Circuit Breaker, Texas's first tilt coaster. Then there is Palindrome, the country's first infinity shuttle coaster, which features a zero-g stall. For anyone who prefers their thrills a little calmer, there is the Victory Wheel, a Ferris wheel; the Soggy Logger, a log flume; a pirate ride called Smuggler's Curse; the giant Cloud Flyer swing; and rides with names like Retro Rambler, Cosmic Glider and Spin Out.",
+            "Not everything involves a queue for a coaster. There is go-karting, mini golf and a zip line, too.",
+            "And because this is a racetrack, there is one treat you will not find at most theme parks. For $175, visitors can ride shotgun with a professional driver for a high-speed hot lap of the official F1 track at the Circuit of The Americas, the same tarmac the world's best drivers race on.",
+            "COTALAND is open at weekends and on selected dates for the rest of the year. Pick a coaster, hold on to your hat and enjoy the view from the top.",
           ],
-          source: "Music Notes (sample)",
+          source: "Austin Monthly",
+          sourceUrl: "https://www.austinmonthly.com/exclusive-photos-cotaland/",
+          image: {
+            file: "/editions/45/cotaland-opens.jpg",
+            alt: "Crowds cheering beneath the colourful COTALAND entrance arch on opening day",
+            credit: "Kursza / COTALAND",
+            from: "https://www.austinmonthly.com/exclusive-photos-cotaland/",
+          },
         },
         {
-          slug: "saturday-cartoon-club",
-          slot: "brief",
-          kicker: "Cinema",
+          slug: "hermanus-whale-festival",
+          kicker: "Festivals",
           headline:
-            "Town cinema revives its Saturday-morning cartoon club, and the parents outnumber the children",
-          dek: "Tickets cost one coin, the toast is free, and the adults do most of the cheering.",
+            "South Africa's Hermanus celebrates its whales with a parade, a treasure hunt and cliff-top watching",
+          dek: "The 35th Hermanus Whale Festival runs from Friday 2 to Sunday 4 October.",
           body: [
-            "The Palace Picturehouse in Quillan Quay ran a cartoon club from 1958 to 1989. Its new owner, Dev Ramaswamy, has brought it back: two hours of old cartoons from 9am. The first morning drew 212 people, only 71 of them children. One man brought his ticket stub from 1986.",
+            "Every year, southern right whales return to the waters off Hermanus on South Africa's Cape Whale Coast, and every year the town throws them a party. This weekend is the 35th Hermanus Whale Festival, which calls itself the world's only eco-marine festival.",
+            "The best seats are on the cliff path, where visitors can watch the whales right from the shore. In town, the Eco-Marine Village has hands-on exhibitions about the ‘Marine Big 5’, which are whales, dolphins, penguins, seals and sharks. There is a street parade, live music at Gearing's Point, a Harbour-to-Harbour fun run, beach volleyball at Grotto Beach and a Pirates and Mermaids treasure hunt for children.",
+            "Add craft markets, food stalls and a classic car show called Whales and Wheels at Sandbaai, and it is a festival that has thought of everyone, including the whales.",
           ],
-          source: "Screen Times (sample)",
+          source: "Hermanus Whale Festival",
+          sourceUrl: "https://hermanuswhalefestival.co.za/",
+          image: {
+            file: "/editions/45/hermanus-whale-festival.jpg",
+            alt: "Families gather in the festival tent beside a costumed festival mascot",
+            credit: "Hermanus Whale Festival",
+            from: "https://hermanuswhalefestival.co.za/",
+          },
+        },
+        {
+          slug: "oktoberfest-final-weekend",
+          kicker: "Festivals",
+          headline:
+            "Munich's Oktoberfest heads into its last weekend, with pretzels still going strong",
+          dek: "The 191st edition runs until Sunday 4 October.",
+          body: [
+            "Munich's mayor, Dominik Krause, opened the 191st Oktoberfest on 19 September by tapping the first keg in just two strokes and crying “O'zapft is”, or “It's been tapped”. Since then the Theresienwiese fairground has been full of dirndls, lederhosen, brass bands, singing and swaying, plus pretzels, pork roast and sausages. Some 6 million visitors are expected over the 16 days, which end this Sunday.",
+          ],
+          source: "Associated Press via WTOP",
+          sourceUrl:
+            "https://wtop.com/world/2026/09/munichs-oktoberfest-roars-to-life-as-the-mayor-taps-the-first-keg",
+          image: {
+            file: "/editions/45/oktoberfest-final-weekend.jpg",
+            alt: "People in traditional Bavarian costume in the Oktoberfest parade in Munich",
+            credit: "AP Photo / Matthias Schrader",
+            from: "https://wtop.com/world/2026/09/munichs-oktoberfest-roars-to-life-as-the-mayor-taps-the-first-keg",
+          },
         },
       ],
     },
     {
-      section: "gaming",
+      section: "india-desk",
       stories: [
         {
-          slug: "weekend-picnic-game",
-          slot: "feature",
-          kicker: "Indie",
+          slug: "drishti-fog-reader",
+          kicker: "Science",
           headline:
-            "A puzzle game about packing the perfect picnic basket is this weekend's favourite download",
-          dek: "There are 80 levels. The watermelon never fits.",
+            "A Bengaluru scientist built Drishti, the home-grown system that tells pilots how far they can see",
+          dek: "Dr Shubha Iyengar's invention now watches the skies at more than 100 airports and air bases.",
           body: [
-            "‘Hamper’ gives you a wicker basket, a gingham blanket and a pile of food, and asks you to get everything in. Sandwiches stack. Grapes squash if you put the flask on them. The cake must stay upright. The watermelon, famously, does not fit, and the game's designers say it never will.",
-            "It was made by Tomasz and Aroha Wiśniewski-Parata, a married couple in the harbour town of Otamira Bay, who say they argued about picnic packing every summer for fifteen years before realising the argument was a game. “He's a stacker, I'm a squeezer,” said Aroha. “We built both styles in. The game is basically our marriage, but with scones.”",
-            "Since its release last Saturday, ‘Hamper’ has been downloaded 1.3 million times, and weekend forums are full of people posting their solutions to level 44, which involves a trifle. The most popular answer puts the trifle in first and builds everything else around it, like a very anxious castle.",
-            "Players who pack a flask in every basket for a week unlock a secret level. The developers will only say that it contains ‘a very good view’. Those who have found it describe a clifftop, a sunset and a tartan rug, with nothing to pack at all.",
-            "There is no timer and no score, just a small satisfied sigh from the basket when the lid closes. The couple say they have finally stopped arguing about real picnics. They now argue about the sequel, which is about loading a dishwasher.",
+            "When a pilot lines up on a runway in the mist, one number matters a great deal: how far ahead can you see? At more than 100 airports and air bases across India, the answer now comes from Drishti, a system created by Dr Shubha Venkatesha Iyengar and her colleagues at CSIR-National Aerospace Laboratories in Bengaluru.",
+            "Drishti works by placing a transmitter and a receiver about 30 metres apart and measuring how much of the light between them is scattered or absorbed by particles in the air. From that it can calculate visibility from under 25 metres, in the thickest fog, to more than 2,000 metres on a clear day, and send the figure in real time to pilots and air traffic controllers.",
+            "It was first installed around 2014 at Delhi, Kolkata and Lucknow. By early 2026 it was in place at more than 100 locations, civilian airports and Indian Air Force bases alike, and Delhi's Indira Gandhi International Airport became the first to have the Indian-made system on every runway. Before Drishti, airports relied on imported instruments; the home-grown version costs much less, and it can be serviced locally.",
+            "The system is the result of a long career. Dr Shubha, the youngest of nine siblings, topped her BSc and MSc at Central College before earning a PhD, and joined the laboratories in 1974. She went on to lead the Airport Instrumentation division and became a Distinguished Scientist, working on the technology over four decades.",
+            "This year she received the Padma Shri. Every foggy morning, somewhere in India, a pilot is quietly benefiting from her work.",
           ],
-          source: "Indie Arcade (sample)",
-          photo: ["picnic", 0],
+          source: "The Better India",
+          sourceUrl:
+            "https://thebetterindia.com/technology/indian-scientist-dr-shubha-iyengar-runway-visibility-system-12583548",
+          image: {
+            file: "/editions/45/drishti-fog-reader.jpg",
+            alt: "Dr Shubha Iyengar in a green sari beside a misty runway lined with visibility sensors as a plane lands",
+            credit: "The Better India",
+            from: "https://thebetterindia.com/technology/indian-scientist-dr-shubha-iyengar-runway-visibility-system-12583548",
+          },
         },
         {
-          slug: "laundrette-arcade",
-          slot: "feature",
-          kicker: "Arcades",
-          headline: "Laundrette plugs in an old arcade cabinet, and Saturday washes boom",
-          dek: "One wash takes 38 minutes. The high score takes longer.",
-          body: [
-            "When Farida Osei took over the Suds & Spin laundrette in Cranmoor, she found a 1980s arcade cabinet under a dust sheet in the back room. She had it repaired and plugged it in between the dryers. It plays one game, about a penguin delivering parcels across an ice floe.",
-            "Saturday mornings now bring a queue. Customers time their washes around their games, and the high-score board is covered in initials from people who are, technically, only there for their socks. “I've had people bring in one towel,” said Osei. “One. They're not here for the towel.”",
-            "The current champion, a retired bus driver known only as GUS, sets a new score most weeks, then folds his laundry very neatly.",
-          ],
-          source: "Coin-Op Chronicle (sample)",
-          photo: ["arcade", 1],
-        },
-        {
-          slug: "crowd-designed-level",
-          slot: "brief",
+          slug: "zemithang-sunday-sorting",
           kicker: "Community",
-          headline: "Players design a puzzle game's final level by voting one tile at a time",
-          dek: "It took eleven weeks and features a surprising number of ducks.",
-          body: [
-            "The makers of ‘Tilewright’ let their community pick every square of the last level, one daily vote at a time. The finished level, released on Friday, is fiendish, beautiful and contains 14 decorative ducks, which were never on the ballot. The developers have decided not to ask.",
-          ],
-          source: "Save State (sample)",
-        },
-        {
-          slug: "handheld-club-in-the-park",
-          slot: "brief",
-          kicker: "Clubs",
-          headline: "Handheld-console club meets by the boating lake every Saturday to swap games",
-          dek: "Members bring their oldest machine and a spare pair of batteries.",
-          body: [
-            "The Pocket Players of Lindenbrook started with four friends and a bench in 2023. Now about sixty people turn up each week with old handhelds, trading cartridges and tips. The club's oldest member is 81 and holds its top score on a game about stacking falling blocks.",
-          ],
-          source: "Save State (sample)",
-        },
-      ],
-    },
-    {
-      section: "sports",
-      stories: [
-        {
-          slug: "parkrun-in-pyjamas",
-          slot: "feature",
-          kicker: "Running",
-          headline: "Saturday-morning fun run held in pyjamas draws its biggest field in 15 years",
-          dek: "The winner wore slippers. Organisers are reviewing the rules, though not very seriously.",
-          body: [
-            "Every October, the weekly five-kilometre run around Oakhollow Park has a pyjama day. Most weeks it attracts about 250 runners in proper kit. Last Saturday 740 turned up in nightwear: flannel, silk, onesies, a dinosaur, three families in matching sets and one man in a full-length nightshirt and cap, carrying a candle in a holder (unlit; the marshals checked).",
-            "The run was won in 19 minutes 40 seconds by Kwame Asante-Byrne, 34, in striped pyjamas and sheepskin slippers. He insists the slippers were not a gimmick. “I've been training in them all summer,” he said. “They're grippier than you'd think, and my feet were very happy.”",
-            "The first woman home, Freya Lindahl, 52, ran in a dressing gown with the belt tied twice. The youngest finisher was four, and completed the course on her father's shoulders, asleep for most of it, which the organisers ruled was entirely in the spirit of the event.",
-            "Race director Tunde Okafor says there is only one rule: you must look as though you have just got out of bed. “We don't check,” he said. “But you can tell.” Marshals wore bed-head wigs, and the finish funnel was lined with pillows for anyone who wanted a lie-down afterwards. About forty people did.",
-            "The post-race cocoa, served from a trestle table by the bandstand, ran out in eleven minutes. Organisers have ordered double for next year, and are considering a separate category for slippers.",
-          ],
-          source: "Finish Line (sample)",
-        },
-        {
-          slug: "jimothy-salmon-race",
-          slot: "feature",
-          kicker: "Baseball",
-          headline: "Jimothy the raccoon gatecrashes the Mariners' salmon race and wins it",
-          dek: "Since the raccoon took the field, Seattle have scored 18 runs and let in five.",
-          body: [
-            "In July, a raccoon filmed wandering around Seattle's Ballard neighbourhood became a national star within days. The woman who filmed him named him Jimothy, because, she said, he “just looked like a Jimothy to me.”",
-            "The Seattle Mariners noticed. During the fourth inning of their game against the Giants at T-Mobile Park, a raccoon mascot joined the ballpark's regular Salmon Run, a race between four costumed fish called King, Silver, Sockeye and Humpy. The salmon got tangled up at the turn. Jimothy took the chequered flag to a roar from the crowd, while the scoreboard told everyone to make noise for him.",
-            "The team had scored no runs at all in their first 12 innings after the All-Star break. Since Jimothy's win, they have outscored their opponents 18–5 and won three in a row.",
-          ],
-          source: "MLB.com",
-          sourceUrl: "https://www.mlb.com/news/jimothy-the-raccoon-wins-mariners-salmon-race",
-          image: {
-            file: "/editions/45/jimothy-salmon-race.jpg",
-            alt: "A raccoon mascot breaking the finishing tape ahead of costumed salmon at T-Mobile Park",
-            credit: "MLB.com",
-            from: "https://www.mlb.com/news/jimothy-the-raccoon-wins-mariners-salmon-race",
-          },
-        },
-        {
-          slug: "beach-volleyball-seagull",
-          slot: "brief",
-          kicker: "Beach",
-          headline: "Beach volleyball final paused when a seagull steals the ball for a go",
-          dek: "Both teams agreed the gull had a nice touch.",
-          body: [
-            "The Selkie Bay Open final was level at 19–19 when a herring gull picked up the ball by its valve and walked off. The umpire checked the rulebook, which does not mention gulls. The bird bounced the ball twice with its beak and left it by a sandcastle. The point was replayed, to applause.",
-          ],
-          source: "Sunday League Weekly (sample)",
-        },
-        {
-          slug: "crazy-golf-champion",
-          slot: "brief",
-          kicker: "Golf, sort of",
           headline:
-            "Nine-year-old wins the seaside crazy-golf championship with a charity-shop putter",
-          dek: "It cost her two coins and has a small dent she calls ‘lucky’.",
+            "Every Sunday, 27 Himalayan villages in Arunachal sort their rubbish into 22 kinds",
+          dek: "About 6,000 people in Zemithang have recovered nearly 90 tonnes for recycling.",
           body: [
-            "Ada Okwuosa beat 180 players, including four-time champion Bernard Fisk, at the Pebble Point Crazy Golf Classic. She went round all 18 holes, including the windmill, the volcano and the notoriously sloping pirate ship, in 31 shots. Fisk shook her hand and asked where she had got the putter.",
+            "In Zemithang, high in Arunachal Pradesh, Sunday is Swachhata Diwas, or cleanliness day. Families in 27 villages wash, dry and separate their waste at home into 22 categories, from plastics to glass and metal, before it is collected. Women riders then carry the sorted materials to recycling centres.",
+            "The scheme began as a pilot in Chullyu village and is run by Merwyn Coutinho and Rajiv Rathod of the Further and Beyond Foundation, as part of their Himalayan Fringes project. Each household chips in 50 rupees, and around 6,000 people take part.",
+            "Sorting at home is what makes it work in mountains where door-to-door collection is nearly impossible. So far the villages have recovered nearly 90 tonnes, including 1,479 kg in August alone. Across the wider Himalayan Fringes project, more than 20,000 people now take part, and Sunday has become the tidiest day of the week.",
           ],
-          source: "Finish Line (sample)",
-        },
-      ],
-    },
-    {
-      section: "discoveries",
-      stories: [
-        {
-          slug: "kansas-sea-monster-fossil",
-          slot: "feature",
-          kicker: "Fossils",
-          headline: "Twelve-year-old on a field trip says ‘whoa’ and finds a 15-foot sea monster",
-          dek: "The Tylosaurus swam over Kansas about 85 million years ago, when the state was under the sea.",
-          body: [
-            "Kansas is about as far from the ocean as you can get in the United States. But around 85 million years ago it lay under a warm, shallow sea, and one of the biggest things swimming in it was Tylosaurus, a marine reptile with a long snout and a powerful tail that could grow longer than a minibus.",
-            "Corbin Bullard, 12, from Sedgwick County, found one. He was on a field trip to Jewell County with his 4-H geology club when he drifted away from the group. “I wandered off, and I saw the vertebra sticking out of the ground,” he said. His mother, Wendy Bullard, remembers the moment: “He just looked down, and he said, ‘Whoa.’”",
-            "At first they could see seven or eight large vertebrae. Getting the rest out took three more trips, each a three-hour drive each way. “Luckily, the rest of it was there,” said Wendy. “By the third trip, we found the skull.” Laid out, the skeleton measures more than 15 feet.",
-            "Corbin wants to be a palaeontologist, and he has already started behaving like one, giving talks about the find at his local library and showing it off at the county fair.",
-            "His mother is clear about who deserves the credit. “The whole reason any of this is possible is because of the 4-H club,” she said. The club is now planning more field trips.",
-          ],
-          source: "FOX Weather",
+          source: "The Better India",
           sourceUrl:
-            "https://www.foxweather.com/lifestyle/kansas-boy-80-million-year-old-fossil-field-trip",
+            "https://thebetterindia.com/changemakers/community-waste-management-zemithang-arunachal-himalayan-fringes-villages-segregation-12593936",
           image: {
-            file: "/editions/45/kansas-sea-monster-fossil.jpg",
-            alt: "Corbin Bullard beside the Tylosaurus fossil he found in Kansas",
-            credit: "Wendy Bullard / FOX Weather",
-            from: "https://www.foxweather.com/lifestyle/kansas-boy-80-million-year-old-fossil-field-trip",
+            file: "/editions/45/zemithang-sunday-sorting.jpg",
+            alt: "Villagers in gloves sorting bags of recycling outdoors with mountains behind them",
+            credit: "The Better India",
+            from: "https://thebetterindia.com/changemakers/community-waste-management-zemithang-arunachal-himalayan-fringes-villages-segregation-12593936",
           },
         },
         {
-          slug: "otters-kitchen-table-rock",
-          slot: "feature",
-          kicker: "Animals",
-          headline: "Sea otters in one cove have shared the same shell-cracking rock for 40 years",
-          dek: "Researchers think mothers show it to their pups, like the good tin opener in the drawer.",
-          body: [
-            "On the shore of Kelpie Cove there is a flat grey rock the size of a coffee table. Marine biologist Dr Nia Tawhiri and her students have spent three years watching the cove's 60 or so otters queue, politely, to crack clams on it; its surface is worn into a shallow dip. A local fishing family's photos show otters using it in 1984.",
-            "“Every pup we've watched has been brought to the rock by its mum,” said Tawhiri. The students have named it the Kitchen Table. Up to eleven otters have been seen waiting their turn offshore, floating in a raft and holding paws. The council has agreed to mark it on the local map, though the otters clearly already know where it is.",
-          ],
-          source: "Coastal Notes (sample)",
-          photo: "otters",
-        },
-        {
-          slug: "black-eye-galaxy",
-          slot: "brief",
-          kicker: "Space",
-          headline: "The James Webb telescope takes a close look at the Black Eye Galaxy",
-          dek: "Its inside and outside spin in opposite directions, and stars are born where they meet.",
-          body: [
-            "Galaxy M64 is nicknamed for the dark band of dust across its bright centre. In Webb's new infrared picture, that dust glows red, warmed by newborn stars. Its inner and outer gas turn in opposite directions, probably the result of swallowing a smaller galaxy long ago, and new stars form where the two currents meet.",
-          ],
-          source: "NASA Astronomy Picture of the Day",
-          sourceUrl: "https://apod.nasa.gov/apod/ap260916.html",
-        },
-        {
-          slug: "bee-bus-shelters",
-          slot: "brief",
-          kicker: "Bees",
-          headline: "Town's plant-roofed bus shelters now host 31 species of wild bee",
-          dek: "The number 7 stop is the most popular. It has the most clover.",
-          body: [
-            "Five years ago, Veldhaven planted wildflowers on the roofs of its 42 bus shelters. Volunteers counted 31 species of wild bee using them this summer, up from nine. The busiest roof, at the stop outside the primary school, had so many visitors that the printed timetable now includes a small drawing of a bee.",
-          ],
-          source: "Field Notes (sample)",
-        },
-      ],
-    },
-    {
-      section: "tech",
-      stories: [
-        {
-          slug: "doorbell-plays-guess-the-tune",
-          slot: "feature",
-          kicker: "Makers",
+          slug: "goa-teen-beetle-watcher",
+          kicker: "Young naturalists",
           headline:
-            "Teenager's homemade doorbell plays a mystery tune, and visitors guess it to come in",
-          dek: "The postman is on a nine-day winning streak. The grandparents are struggling.",
+            "A 17-year-old in Goa spends his spare time watching beetles, and wants to film them",
+          dek: "Ethan Xavier has loved insects since the age of five, starting with garden snails.",
           body: [
-            "Press the doorbell at 14 Juniper Close in Wexby and a small speaker in the porch plays five seconds of a song. Guess it correctly through the letterbox and a green light comes on above the door. Guess wrong and you are still let in, but the light turns a disappointed orange.",
-            "The bell was built over the summer holidays by Nadia Ferrand, 15, from a small single-board computer, a salvaged speaker, a microphone and a free library of 4,000 old tunes that are out of copyright. It took her six weeks, and one very long weekend of teaching the microphone to understand her grandad's accent.",
-            "“I just wanted the doorbell to be less boring,” she said. “Now everyone who comes to the house is a contestant. The man who reads the water meter gets really into it.”",
-            "The family keep a scoreboard on the fridge. The postman, Jamal Whitcombe, is on a nine-day streak and has started humming on the garden path to warm up. Nadia's grandmother, who visits every Saturday, has not got one right yet, though she did once identify a tune as ‘something with a trumpet’, which the family allowed.",
-            "Nadia has shared her code online, and says around 200 people have built their own. Her next project is a letterbox that tells a joke when the post arrives.",
+            "Ethan Xavier, a Class 12 science student at Don Bosco School in Goa, has built and catalogued his own insect collection, spotted rare silk-spinning webspinners, and once watched a pill millipede roll down a slope. He also plays in a band. After school he plans to study entomology and, like Sir David Attenborough, film insects for people at home. “I feel calm when watching insects,” he said.",
           ],
-          source: "Maker Monthly (sample)",
-        },
-        {
-          slug: "pocket-fish-tank",
-          slot: "feature",
-          kicker: "Gadgets",
-          headline: "A maker built a digital fish tank small enough to carry in your pocket",
-          dek: "No water, no wet hands, and the fish decide for themselves what to do next.",
-          body: [
-            "The Pocket Tank, by a maker who goes by StratoBuilds, is a virtual aquarium on a small ESP32-S3 board with a bright 1.8-inch touchscreen, in a plastic case about the size of a matchbox.",
-            "The fish glide around at 25 to 30 frames a second, and their choices are made by a tiny custom language model that runs on the chip itself. It watches the tank and changes each fish's goals as it goes, so one might go exploring while another hangs about near the plants.",
-            "Like the pocket pets of the 1990s, it needs looking after: you feed the fish and clean the tank. The design files are free on GitHub, so anyone can build a tank of their own.",
-          ],
-          source: "Hackaday",
-          sourceUrl: "https://hackaday.com/2026/09/26/a-pocket-sized-digital-fish-tank/",
-          image: {
-            file: "/editions/45/pocket-fish-tank.jpg",
-            alt: "A small touchscreen gadget showing a colourful virtual aquarium",
-            credit: "StratoBuilds, via Hackaday",
-            from: "https://hackaday.com/2026/09/26/a-pocket-sized-digital-fish-tank/",
-          },
-        },
-        {
-          slug: "freewheel-hill-app",
-          slot: "brief",
-          kicker: "Apps",
-          headline: "Free app ranks city hills by how long you can freewheel down them",
-          dek: "The winner is 1.4 kilometres, with an ice-cream kiosk at the bottom.",
-          body: [
-            "‘Wheee’, built by two cycle couriers in Montaval, uses riders' shared GPS traces to rank descents by coasting time. Top of the list is Via Serena: nearly three minutes without pedalling. The couriers say the app is for weekend rides only, a rule they admit they made mostly for themselves.",
-          ],
-          source: "Maker Monthly (sample)",
-        },
-        {
-          slug: "is-it-the-weekend-display",
-          slot: "brief",
-          kicker: "Gadgets",
-          headline: "A tiny e-ink screen answers just one question: is it the weekend yet?",
-          dek: "Today it says YES, in very large letters.",
-          body: [
-            "Hobbyist Marcus Oyelowo of Tern Harbour built the fridge-magnet-sized gadget from a spare display and a coin battery that should last three years. From Monday to Friday it reads NO, with a small daily note on how far off Saturday is. This morning it says YES. He has sold 600 kits.",
-          ],
-          source: "Maker Monthly (sample)",
-        },
-      ],
-    },
-    {
-      section: "money",
-      stories: [
-        {
-          slug: "stamp-card-no-reward",
-          slot: "feature",
-          kicker: "Small business",
-          headline:
-            "Coffee kiosk's loyalty card has no reward, just stamps, and everyone is collecting them",
-          dek: "There is a new design every week. People swap them on the tram.",
-          body: [
-            "Most loyalty cards promise a free coffee after ten. The card at Kiosk Número Nueve, a coffee hatch by the tram stop in Alcaraz Viejo, promises nothing at all. You buy a coffee, you get a stamp. That is it: no points, no tiers, no app.",
-            "The stamps are the point. Owner Rosa Etxeberria carves a new rubber stamp every Sunday evening at her kitchen table (a tiny sun, a cat in a hat, a tram, a lemon, a very small and cross-looking pigeon) and uses it only for that week. After three years there are 150 designs, and the tram stop has become a trading floor.",
-            "“People swap them on the tram,” said Etxeberria. “A man once offered me a bicycle for the pigeon. I said no. The stamp isn't mine to sell, it's the customer's.”",
-            "Regulars plan their week around the reveal on Monday mornings, and one retired teacher has not missed a stamp in 156 weeks. Collectors keep their cards in albums, and the local school runs a stamp-spotting quiz. A complete year's set sold at the town's summer fair for 210, more than most regulars spend on a year of coffee.",
-            "She has been asked many times why the card has no reward. The question has never quite made sense to her. “You got a coffee,” she said. “And a lemon.”",
-          ],
-          source: "High Street News (sample)",
-          photo: ["coffee", 0],
-        },
-        {
-          slug: "raincoat-pikachu-card",
-          slot: "feature",
-          kicker: "Collectibles",
-          headline: "A card of Pikachu in a raincoat sells for $8.4 million",
-          dek: "Only 100 copies were ever printed, and none of them were sold in shops.",
-          body: [
-            "In the winter of 2014, the Pokémon Art Academy ran an illustration contest. One of its categories was ‘Dress-Up Pikachu’, and the winner, an artist named Y. Fujishima, drew the little yellow creature in a red raincoat and cap, holding an umbrella in a thunderstorm.",
-            "The winning picture was printed as a trading card, but only 100 copies were made, and all of them went to the artist. None were ever sold to the public. On 27 September, one in perfect condition, graded PSA 10, sold through Fanatics Collect for $8,400,000 after 64 bids.",
-            "That makes it the second most expensive Pokémon card ever sold. The most expensive, the Pikachu Illustrator card, went for $16.4 million earlier this year. Both, it turns out, are drawings of Pikachu. He is doing very well.",
-          ],
-          source: "CBR",
-          sourceUrl: "https://www.cbr.com/pokemon-tcg-second-highest-sale-fujishima-pikachu/",
-        },
-        {
-          slug: "single-item-market",
-          slot: "brief",
-          kicker: "Markets",
-          headline: "At this Saturday flea market, every stall may sell exactly one thing",
-          dek: "It makes for very short browsing and very long conversations.",
-          body: [
-            "Kettleby's Single Item Market has 60 stalls, each with one object on it (a lamp, a tuba, a jar of buttons, a surprisingly good armchair) and a seller whose job is to tell you its story. Most things sell by lunchtime. The tuba is on its fourth month, and is said to be close.",
-          ],
-          source: "High Street News (sample)",
-        },
-        {
-          slug: "sticker-interest-bank",
-          slot: "brief",
-          kicker: "Banking",
-          headline: "Pupil-run pocket-money bank pays its savers interest in stickers",
-          dek: "This term's rate is one sparkly star per ten coins, per month.",
-          body: [
-            "The oldest pupils at Fernhill School in Brookmere run a savings scheme for younger ones, with a ledger, a locked tin and a weekly ‘bank manager’ chosen by rota. Deposits have reached 1,480 in coins. The sticker interest has proved so popular that the head teacher has asked to open an account.",
-          ],
-          source: "Pocket Money Times (sample)",
-        },
-      ],
-    },
-    {
-      section: "internet-and-culture",
-      stories: [
-        {
-          slug: "tidy-shelf-videos",
-          slot: "feature",
-          kicker: "Video",
-          headline:
-            "Hour-long videos of one woman tidying a single shelf have become the internet's lullaby",
-          dek: "No talking, no music, just the soft click of books being straightened.",
-          body: [
-            "Each video begins the same way: a slightly untidy bookshelf in a flat in Harrowgate Quay, filmed from the front in warm lamplight. Over the next hour, a pair of hands takes everything off one shelf, dusts it, and puts it all back, better.",
-            "There is no talking and no music. You hear the tap of a spine being squared up, the soft drag of a cloth and the small click of a bookend. Sometimes a teacup appears at the edge of the frame. Once, a cat walked through, and the comments talked about nothing else for a week.",
-            "The channel, Shelf Life, belongs to Imke Vandersloot, 38, a picture framer who started filming two years ago to help herself concentrate. It now has 900,000 subscribers, and the average viewer, she says, watches about 22 minutes before falling asleep.",
-            "“At first I thought that was bad,” she said. “Then people started writing to say it was the only thing that worked for them, and now I think of it as the goal. If you get to the end, I haven't done my job.”",
-            "Viewers now send her photos of their own shelves to tidy, and the waiting list is 4,000 long. The most requested is a shelf of cookery books with a single sock on it, which she says she is saving for winter.",
-          ],
-          source: "Around the Web (sample)",
-        },
-        {
-          slug: "security-guard-rhinos",
-          slot: "feature",
-          kicker: "Crafts",
-          headline:
-            "Security guard's tiny 3D-printed rhino trophies are the most wanted prize backstage",
-          dek: "Staff guess each show's crowd size, and the closest wins a rhino made for the occasion.",
-          body: [
-            "Bryan Newton works security at Virginia Tech's Center for the Arts, a 1,274-seat hall, for a company called Rhino Sports and Entertainment Services. So when he started a game among the staff, the prize was always going to be a rhino.",
-            "Before each event, colleagues guess the size of the audience, using game-show rules: the closest guess without going over wins. The winner gets a small 3D-printed rhino themed for the night, a warrior rhino for a wrestling event or a dancing one for a dance show. Each takes Newton anything from a few hours to twelve to make.",
-            "“It brings joy. And it's fun,” he said. “Going through the process and either picking or designing it, it's a nice creative outreach for me.”",
-          ],
-          source: "Good News Network",
+          source: "The Better India",
           sourceUrl:
-            "https://www.goodnewsnetwork.org/guard-becomes-celebrity-making-mini-statues-for-each-event-at-virginia-tech-as-free-giveaways/",
+            "https://thebetterindia.com/young-achievers/goa-teen-ethan-xavier-insects-entomologist-nature-conservation-12590827",
           image: {
-            file: "/editions/45/security-guard-rhinos.jpg",
-            alt: "A row of small 3D-printed rhino statues in different costumes",
-            credit: "Bryan Newton, courtesy of Virginia Tech",
-            from: "https://www.goodnewsnetwork.org/guard-becomes-celebrity-making-mini-statues-for-each-event-at-virginia-tech-as-free-giveaways/",
+            file: "/editions/45/goa-teen-beetle-watcher.jpg",
+            alt: "Ethan Xavier studying a winged insect, surrounded by pictures of beetles and butterflies",
+            credit: "The Better India",
+            from: "https://thebetterindia.com/young-achievers/goa-teen-ethan-xavier-insects-entomologist-nature-conservation-12590827",
           },
-        },
-        {
-          slug: "yellow-door-project",
-          slot: "brief",
-          kicker: "Photo trends",
-          headline: "An online map of cheerful yellow front doors now has 20,000 pins",
-          dek: "It began with one freshly painted door and the caption ‘this door has made my week’.",
-          body: [
-            "Kalani Mahoe posted a neighbour's sunflower-yellow door in June. Someone replied with one from their street, then someone else did. The map now covers 97 countries, with yellow doors on houseboats and mountain huts. The most-visited pin is a yellow door standing on its own in a field.",
-          ],
-          source: "Around the Web (sample)",
-        },
-        {
-          slug: "shopping-list-reviews",
-          slot: "brief",
-          kicker: "Accounts",
-          headline:
-            "An account that reviews shopping lists left in trolleys awards its first five stars",
-          dek: "The list said: ‘eggs, flour, sugar, good attitude’.",
-          body: [
-            "Found Lists, run anonymously from somewhere in Wexmouth, has reviewed 800 abandoned shopping lists in four years, scoring each for handwriting, ambition and plot. The first five-star list, posted this week, was praised for its structure and for crossing off ‘good attitude’ first.",
-          ],
-          source: "Around the Web (sample)",
         },
       ],
     },
@@ -562,14 +626,14 @@ export const issue45: SeedEdition = {
       type: "classified",
       content: {
         heading: "WANTED",
-        text: "A doughnut willing to be passed along eleven bakeries. Must be brave. Jam optional.",
+        text: "A good seat on the cliff path at Hermanus. Whale-watching experience preferred; binoculars provided.",
       },
     },
     {
       type: "classified",
       content: {
         heading: "FOR SALE",
-        text: "One tuba. Fourth month on the stall. Excellent story. Ask at the Single Item Market, Kettleby.",
+        text: "A kettle, well travelled, for Ranma 1/2 watch parties. Hot water on request, pandas at your own risk.",
       },
     },
     {
@@ -577,7 +641,7 @@ export const issue45: SeedEdition = {
       content: {
         title: "Pip & Pigeon",
         panels: [
-          "PIP: Want to share a croissant?",
+          "PIP: Want to share some mochi at the Matsuri?",
           "PIGEON: How much of it?",
           "PIP: Half?",
           "PIGEON: I was hoping you'd say crumbs. I love crumbs.",
@@ -588,21 +652,5 @@ export const issue45: SeedEdition = {
       type: "sign_off",
       content: { text: "You're done for today. Go and have a lovely Saturday." },
     },
-  ],
-
-  puzzles: [
-    mini(
-      [
-        ["TREES", "Where the conkers come from"],
-        ["COCOA", "Hot drink after a pyjama fun run"],
-        ["SMILE", "What we hope this paper leaves on your face"],
-      ],
-      [
-        ["TACOS", "Folded food, best eaten over a plate"],
-        ["STAGE", "Where the confetti ended up, by mistake"],
-      ],
-    ),
-    ladder(["FOUR", "FOUL", "FOOL", "FOOT", "FORT", "FORE", "FIRE", "FIVE"]),
-    riddle("What has one eye but can't see?", "A needle"),
   ],
 };

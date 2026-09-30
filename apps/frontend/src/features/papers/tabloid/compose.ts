@@ -11,7 +11,8 @@ import { ordered } from "./edition-data";
 // always prints the same way, consecutive fronts differ and no two inside pages of an edition
 // share a composition.
 
-export type Area = "head" | "photo" | "body" | "second" | "briefs" | "rail" | "f1" | "f2" | "extra";
+export type Area =
+  "head" | "photo" | "body" | "second" | "briefs" | "rail" | "f1" | "f2" | "extra" | "pics";
 
 export type Composition = {
   /** "across", "across/m" (mirrored)… — what the report and the page's data attribute call it. */
@@ -24,6 +25,11 @@ export type Composition = {
   onPhoto?: boolean;
   /** The second story is set in a tinted box. */
   boxed?: boolean;
+  /**
+   * The main story's further pictures run as a band of their own in the "pics" area: frames on
+   * a filmstrip, or off the contact sheet.
+   */
+  pics?: "filmstrip" | "contact";
 };
 
 /** Where an area sits: its first row and column and how many columns it spans. */
@@ -77,6 +83,26 @@ const INSIDE_PHOTO: Composition[] = [
   },
 ];
 
+/**
+ * Picture-led compositions, offered only when the main story has three or more photographs: the
+ * best one set big, the rest printed as a band of frames beneath it.
+ */
+const INSIDE_PICS: Composition[] = [
+  {
+    name: "reel",
+    areas: ["photo photo photo", "pics pics pics", "body body briefs", "second second briefs"],
+    grow: 0,
+    onPhoto: true,
+    pics: "filmstrip",
+  },
+  {
+    name: "contact",
+    areas: ["head head head", "photo photo body", "pics pics body", "second briefs briefs"],
+    grow: 1,
+    pics: "contact",
+  },
+];
+
 /** Compositions for a main story without one: type-led pages. */
 const INSIDE_TYPE: Composition[] = [
   { name: "across", areas: ["head head head", "body body body", "second second briefs"] },
@@ -116,7 +142,8 @@ export function insideCompositions(edition: Edition): Map<number, Composition> {
   for (const p of pages) {
     const [main, second] = ordered(p.stories);
     const photo = Boolean(main?.images.length);
-    const pool = withMirrors(photo ? INSIDE_PHOTO : INSIDE_TYPE);
+    const pics = (main?.images.length ?? 0) >= 3;
+    const pool = withMirrors(photo ? [...INSIDE_PHOTO, ...(pics ? INSIDE_PICS : [])] : INSIDE_TYPE);
     // The content's shape nudges the choice: a long headline reads better across the page than
     // on a photograph, and a second story with its own picture suits being boxed or run wide.
     const bias = (c: Composition) =>
@@ -158,10 +185,14 @@ export function balanced(c: Composition, page: EditionPage): Composition {
   const feats = all.filter((s) => s.slot !== "brief");
   const second = feats.slice(1, 2);
   const briefs = [...feats.slice(2), ...all.filter((s) => s.slot === "brief")];
+  if (!second.length) return { ...c, areas: withoutSecond(c.areas) };
   const areas = c.areas.map((row) => {
     const cells = row.split(" ");
     if (cells.length !== 3 || !cells.every((x) => x === "second" || x === "briefs")) return row;
     if (!cells.includes("second") || !cells.includes("briefs")) return row;
+    // Only a row the two have to themselves: an area that also runs through another row must keep
+    // its columns, or the grid's areas stop being rectangles.
+    if (c.areas.some((r) => r !== row && /\b(second|briefs)\b/.test(r))) return row;
     const secondFirst = cells[0] === "second";
     const ws = weight(second);
     const wb = weight(briefs);
@@ -173,6 +204,56 @@ export function balanced(c: Composition, page: EditionPage): Composition {
     return (secondFirst ? out : out.reverse()).join(" ");
   });
   return { ...c, areas };
+}
+
+/** Whether every area of a grid is a rectangle (grid-template-areas' own rule). */
+function rectangular(rows: string[][]): boolean {
+  const names = new Set(rows.flat());
+  for (const name of names) {
+    const at = rows.flatMap((r, y) => r.flatMap((x, i) => (x === name ? [[y, i] as const] : [])));
+    const ys = at.map(([y]) => y);
+    const xs = at.map(([, i]) => i);
+    const h = Math.max(...ys) - Math.min(...ys) + 1;
+    const w = Math.max(...xs) - Math.min(...xs) + 1;
+    if (h * w !== at.length) return false;
+  }
+  return true;
+}
+
+/**
+ * A page with no second story: its area would be a stretch of bare paper, so a neighbouring
+ * area takes its cells over — the one beside it in its row, or the one above or below — whichever
+ * keeps every area a rectangle.
+ */
+function withoutSecond(areas: string[]): string[] {
+  const rows = areas.map((r) => r.split(" "));
+  // Briefs down a column beside the story's text would run on far below it: the briefs go across
+  // the foot instead, and the story's areas widen into their columns.
+  const across = rows
+    .map((r) => {
+      const keep = r.filter((x) => x !== "second" && x !== "briefs");
+      return keep.length ? r.map((x) => (x === "second" || x === "briefs" ? keep[0]! : x)) : null;
+    })
+    .filter((r): r is string[] => r !== null);
+  if (rows.flat().includes("briefs") && across.length) {
+    const trial = [...across, ["briefs", "briefs", "briefs"]];
+    if (rectangular(trial)) return trial.map((r) => r.join(" "));
+  }
+  for (let y = 0; y < rows.length; y++) {
+    if (!rows[y]!.includes("second")) continue;
+    const row = rows[y]!;
+    const others = [...new Set(row.filter((x) => x !== "second"))];
+    const candidates = [
+      ...others,
+      ...(y > 0 ? rows[y - 1]!.filter((x) => x !== "second") : []),
+      ...(y < rows.length - 1 ? rows[y + 1]!.filter((x) => x !== "second") : []),
+    ];
+    for (const name of new Set(candidates)) {
+      const trial = rows.map((r) => r.map((x) => (x === "second" ? name : x)));
+      if (rectangular(trial)) return trial.map((r) => r.join(" "));
+    }
+  }
+  return areas;
 }
 
 export function insideComposition(edition: Edition, page: EditionPage): Composition {
@@ -195,7 +276,9 @@ const FRONT: Composition[] = [
   },
   {
     name: "side",
-    areas: ["rail head head", "rail photo photo", "rail body body", "f1 f1 f2"],
+    // The rail stands beside the head and the picture only (the picture fills its depth); the
+    // text runs across under both, so the rail never ends in bare paper above the story's foot.
+    areas: ["rail head head", "rail photo photo", "body body body", "f1 f1 f2"],
     grow: 1,
   },
 ];
@@ -244,6 +327,7 @@ export const backComposition = (edition: Edition) =>
 const PHONE_ORDER: Area[] = [
   "head",
   "photo",
+  "pics",
   "body",
   "rail",
   "f1",
@@ -257,7 +341,9 @@ const PHONE_ORDER: Area[] = [
 export function gridStyle(c: Composition, present: Area[]): CSSProperties {
   const tall = c.onPhoto ? 150 : 100;
   const rows = c.areas.map((_, i) =>
-    i === c.grow ? `minmax(calc(var(--u) * ${tall}), auto)` : "auto",
+    // The growing row is flexible, so an area running down beside it (a rail) deepens that row,
+    // the picture's, rather than opening space under a headline.
+    i === c.grow ? `minmax(calc(var(--u) * ${tall}), 1fr)` : "auto",
   );
   const phone = PHONE_ORDER.filter(
     (a) => present.includes(a) && c.areas.some((r) => r.includes(a)),

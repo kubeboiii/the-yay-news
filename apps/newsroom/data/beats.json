@@ -1,0 +1,252 @@
+{
+  "$comment": "Beats within each section, with weights (higher = picked more often when stories are otherwise equal). The classifier tags every candidate with one; selection spreads a page across beats and rotates beats not seen lately. Edit freely: this is data.",
+  "tech": {
+    "gadgets": 3,
+    "ai": 2,
+    "software": 2,
+    "internet-infra": 1,
+    "robots": 2
+  },
+  "startups": {
+    "funding": 2,
+    "launches": 3,
+    "founders": 2,
+    "india-startups": 2
+  },
+  "screen": {
+    "movies": 3,
+    "tv": 3,
+    "anime": 2,
+    "trailers": 2,
+    "streaming": 1
+  },
+  "play": {
+    "console": 3,
+    "pc": 2,
+    "mobile": 1,
+    "indie": 2,
+    "esports-fun": 1,
+    "comics": 2
+  },
+  "music": {
+    "albums": 3,
+    "singles": 2,
+    "tours": 2,
+    "festivals": 2,
+    "artists": 2,
+    "india-music": 2
+  },
+  "money": {
+    "markets": 1,
+    "economy": 1,
+    "personal-finance-fun": 2,
+    "business-oddities": 3
+  },
+  "sports": {
+    "football": 4,
+    "ufc-mma": 2,
+    "boxing": 1,
+    "f1": 2,
+    "tennis": 2,
+    "cricket": 2,
+    "basketball": 1,
+    "running": 1,
+    "olympics": 1,
+    "odd-sports": 2
+  },
+  "internet": {
+    "memes": 2,
+    "social": 1,
+    "creators": 2,
+    "viral": 2,
+    "odd-news": 3,
+    "lifestyle": 1
+  },
+  "discoveries": {
+    "space": 3,
+    "animals": 3,
+    "plants": 1,
+    "physics": 1,
+    "chemistry": 1,
+    "biology": 1,
+    "earth": 1,
+    "oceans": 2
+  },
+  "brain-snacks": {
+    "fun-facts": 2,
+    "general-knowledge": 2,
+    "social-science": 2
+  },
+  "time-machine": {
+    "on-this-day": 3,
+    "100-years-ago": 2,
+    "odd-history": 2
+  },
+  "dig-site": {
+    "archaeology": 3,
+    "ancient-mysteries": 2,
+    "lost-and-found": 2
+  },
+  "tiny-science": {
+    "physics": 1,
+    "chemistry": 1,
+    "psychology": 2,
+    "social-science": 2
+  },
+  "word-nerd": {
+    "word-of-the-day": 2,
+    "etymology": 2,
+    "slang": 2,
+    "languages": 1
+  },
+  "food-and-drink": {
+    "food-news": 2,
+    "flavours": 2,
+    "recipes": 2,
+    "drinks": 1
+  },
+  "art-and-design": {
+    "galleries": 2,
+    "design": 2,
+    "street-art": 1,
+    "architecture": 2
+  },
+  "shelf": {
+    "books": 3,
+    "comics": 2,
+    "adaptations": 2,
+    "bestsellers": 1
+  },
+  "drops": {
+    "sneakers": 3,
+    "collabs": 2,
+    "runway": 1
+  },
+  "postcards": {
+    "travel": 2,
+    "strange-places": 2,
+    "festivals": 2
+  },
+  "good-humans": {
+    "kindness": 3,
+    "community": 2,
+    "heroes": 2
+  },
+  "india-desk": {
+    "india-people": 2,
+    "india-places": 2,
+    "india-firsts": 2
+  },
+  "planet-wins": {
+    "rewilding": 2,
+    "clean-energy": 2,
+    "nature-recovery": 2
+  },
+  "animal-kingdom": {
+    "zoo-births": 2,
+    "wild-animals": 3,
+    "animal-antics": 2
+  },
+  "world-records": {
+    "biggest": 2,
+    "fastest": 2,
+    "strangest": 2
+  },
+  "nostalgia": {
+    "old-games": 3,
+    "old-tech": 2,
+    "pop-culture": 2
+  },
+  "myth-busters": {
+    "myths": 3,
+    "actually": 2
+  },
+  "future-stuff": {
+    "concept-tech": 2,
+    "missions": 2,
+    "sci-fi-real": 2
+  },
+  "your-small-wins": {
+    "small-wins": 1
+  },
+  "letters-and-classifieds": {
+    "letters": 1,
+    "classifieds": 1
+  },
+  "feel-good-health": {
+    "sleep": 2,
+    "wellbeing": 2,
+    "movement": 2
+  },
+  "wheels": {
+    "cars": 2,
+    "evs": 2,
+    "trains": 2,
+    "planes": 1,
+    "weird-vehicles": 2
+  },
+  "creators": {
+    "youtubers": 2,
+    "streamers": 2,
+    "india-creators": 2
+  },
+  "pets-corner": {
+    "dogs": 3,
+    "cats": 3,
+    "other-pets": 1
+  },
+  "weird-local": {
+    "odd-councils": 2,
+    "animal-officials": 2,
+    "local-rules": 2
+  },
+  "kids-and-schools": {
+    "kid-inventors": 2,
+    "school-wins": 2,
+    "young-champions": 2
+  },
+  "weird-jobs": {
+    "unusual-careers": 2,
+    "career-switches": 2,
+    "internships": 1
+  },
+  "homes": {
+    "tiny-houses": 2,
+    "treehouses": 1,
+    "weird-buildings": 2,
+    "interiors": 2
+  },
+  "weekend-guide": {
+    "watch": 3,
+    "stream": 2,
+    "listen": 2,
+    "gigs-and-festivals": 2
+  },
+  "sports-weekend": {
+    "football": 3,
+    "fights": 2,
+    "races": 2,
+    "other-sports": 1
+  },
+  "deep-dive": {
+    "science": 1,
+    "culture": 1,
+    "tech": 1
+  },
+  "slow-read": {
+    "history": 1,
+    "nature": 1,
+    "profile": 1
+  },
+  "make-and-do": {
+    "recipe": 2,
+    "diy": 2,
+    "playlist": 1,
+    "doodle": 1
+  },
+  "next-week": {
+    "releases": 3,
+    "launches": 2,
+    "events": 2
+  }
+}

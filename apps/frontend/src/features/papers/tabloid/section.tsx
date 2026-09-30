@@ -1,5 +1,9 @@
 import type { StoryItem } from "@repo/shared";
+import { SectionDress, dressed } from "../dress";
+import { Band } from "../plates";
+import { Special, specialPages, specialParts } from "../spreads";
 import type { PageProps } from "../types";
+import { Weekend, weekendKind } from "../weekend";
 import { type Area, gridStyle, insideComposition, places } from "./compose";
 import { folioDate, ordered, pad2 } from "./edition-data";
 import { Folio, Masthead, MiniMark, PixelType, Sheet, themeFor, type Theme } from "./parts";
@@ -41,6 +45,7 @@ export function StoriesGrid({
   const present: Area[] = [
     ...(main ? (["head", "body"] as Area[]) : []),
     ...(main?.images.length ? (["photo"] as Area[]) : []),
+    ...(composition.pics && (main?.images.length ?? 0) > 1 ? (["pics"] as Area[]) : []),
     ...(second ? (["second"] as Area[]) : []),
     ...(briefs.length ? (["briefs"] as Area[]) : []),
   ];
@@ -65,10 +70,25 @@ export function StoriesGrid({
               href={href(main)}
               measure={measureOf(at.photo?.span ?? 3) - 24}
               onPhoto={onPhoto}
+              single={Boolean(composition.pics)}
               priority
               sizes="(max-width: 760px) 100vw, 740px"
             />
           </AreaBox>
+          {composition.pics && main.images.length > 1 ? (
+            <AreaBox area="pics" place={at.pics}>
+              <Band
+                arrangement={composition.pics}
+                images={main.images.slice(1, 5)}
+                labels={
+                  composition.pics === "contact"
+                    ? main.images.slice(1, 5).map((i) => i.alt)
+                    : undefined
+                }
+                className="tb-pics"
+              />
+            </AreaBox>
+          ) : null}
           <AreaBox area="body" place={at.body}>
             {onPhoto ? <p className="tb-dek">{main.dek}</p> : null}
             <StoryText story={main} dropcap />
@@ -99,9 +119,18 @@ export function Section({ edition, page, reading }: PageProps) {
   const section = page.section;
   const slug = section?.slug ?? "";
   const name = section?.name ?? reading.current.label;
-  const theme: Theme = slug === "gaming" ? "gaming" : themeFor(page.order);
+  const theme: Theme = slug === "play" ? "play" : themeFor(page.order, slug);
   const date = folioDate(edition.date);
   const composition = insideComposition(edition, page);
+  // Now and then the grid goes for the day: a special page (see spreads.tsx).
+  const weekend = weekendKind(slug);
+  const special = specialPages(edition.issueNumber, edition.pages, "bigpicture").get(page.order);
+  const parts = specialParts(
+    page.stories,
+    reading.storyHref,
+    "loud",
+    `${edition.issueNumber}:${page.order}`,
+  );
 
   return (
     <Sheet theme={theme} label={`${name}, page ${page.order}`}>
@@ -112,10 +141,10 @@ export function Section({ edition, page, reading }: PageProps) {
           </MiniMark>
         }
         title={name}
-        size={{ measure: 158, max: slug === "gaming" ? 24 : 17.5 }}
+        size={{ measure: 158, max: slug === "play" ? 24 : 17.5 }}
         aside={section ? <p className="tb-mast-tagline">{section.tagline}.</p> : undefined}
         box={
-          slug === "gaming" ? (
+          slug === "play" ? (
             <>
               <PixelType text={pad2(page.order)} />
               <span className="tb-box-words">
@@ -135,7 +164,26 @@ export function Section({ edition, page, reading }: PageProps) {
         }
       />
 
-      <StoriesGrid page={page} reading={reading} composition={composition} slug={slug} />
+      {section && !weekend && dressed(slug, edition.issueNumber, page.order) ? (
+        <SectionDress
+          slug={slug}
+          stories={page.stories}
+          issue={edition.issueNumber}
+          page={page.order}
+          date={edition.date}
+        />
+      ) : null}
+      {weekend ? (
+        <div className="tb-special" data-composition={`weekend-${weekend}`}>
+          <Weekend kind={weekend} edition={edition} page={page} reading={reading} flavour="loud" />
+        </div>
+      ) : special && parts ? (
+        <div className="tb-special" data-composition={special}>
+          <Special kind={special} parts={parts} />
+        </div>
+      ) : (
+        <StoriesGrid page={page} reading={reading} composition={composition} slug={slug} />
+      )}
 
       <Folio page={page.order} section={name} date={date} next={reading.next} />
     </Sheet>

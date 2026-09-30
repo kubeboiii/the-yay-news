@@ -336,6 +336,8 @@
 
 .z-cover__stamp {
   justify-self: start;
+  /* Centred against the ledger beside it, so its spare depth is shared above and below. */
+  align-self: center;
   margin-top: calc(var(--u) * 6) !important;
   rotate: -9deg;
   color: var(--ink);
@@ -646,7 +648,7 @@
 }
 
 /* ===================================================================================== */
-/* Screen & Sound (pink + lilac) */
+/* Screen (pink + lilac) */
 /* ===================================================================================== */
 
 /* A strip of film: black stock with sprocket holes punched along both edges. */
@@ -895,7 +897,7 @@
 }
 
 /* ===================================================================================== */
-/* Gaming (powder blue + butter) */
+/* Play (powder blue + butter) */
 /* ===================================================================================== */
 
 .z-player {
@@ -1890,7 +1892,7 @@
   letter-spacing: 0;
 }
 
-/* ---------- Gaming, pasted up ---------- */
+/* ---------- Play, pasted up ---------- */
 
 .z-player {
   letter-spacing: 0;

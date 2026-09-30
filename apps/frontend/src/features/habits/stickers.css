@@ -1,0 +1,413 @@
+/* Stickers: glossy vinyl, die-cut with a white margin, on a backing sheet or stuck on newsprint. */
+
+/* ——— Faces ——— */
+
+.hb-vinyl {
+  display: block;
+  width: 100%;
+  height: 100%;
+  container-type: inline-size;
+  /* The white vinyl margin round the printed shape, and the faint line where the die cut it. */
+  filter: drop-shadow(2.5px 0 0 #fffefb) drop-shadow(-2.5px 0 0 #fffefb)
+    drop-shadow(0 2.5px 0 #fffefb) drop-shadow(0 -2.5px 0 #fffefb)
+    drop-shadow(0 0 0.6px rgb(0 0 0 / 0.45));
+}
+
+.hb-vinyl > * {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hb-st-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hb-st-pill {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.hb-st-label {
+  display: flex !important;
+  align-items: center;
+  gap: 5%;
+  padding: 0 8%;
+  border-radius: 10cqw;
+  background: #fffdf8;
+  border: 1cqw solid #1d1a17;
+  box-sizing: border-box;
+}
+
+.hb-st-label__star {
+  flex: 0 0 26%;
+  aspect-ratio: 1;
+  height: auto;
+}
+
+.hb-st-dot {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.hb-st-dot__mark {
+  width: 74%;
+  height: 74%;
+}
+
+.hb-st-dot__mark--hi {
+  width: 62%;
+  height: 62%;
+}
+
+.hb-st-rainbow {
+  position: relative;
+  display: block;
+  border-radius: 50% 50% 12% 12% / 70% 70% 12% 12%;
+  overflow: hidden;
+}
+
+.hb-st-rainbow__band {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  aspect-ratio: 1;
+}
+
+.hb-st-rainbow__band--1 {
+  top: 10%;
+  width: 92%;
+}
+
+.hb-st-rainbow__band--2 {
+  top: 24%;
+  width: 70%;
+}
+
+.hb-st-rainbow__band--3 {
+  top: 38%;
+  width: 48%;
+}
+
+.hb-st-rainbow__cloud {
+  position: absolute;
+  bottom: -8%;
+  left: -4%;
+  width: 44%;
+  aspect-ratio: 1;
+}
+
+/* ——— The sheet ——— */
+
+.hb-sheet {
+  position: relative;
+  padding: 16px 18px 20px;
+  background: #f7f7f2;
+  color: #1d1a17;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.12),
+    0 10px 24px -12px rgb(30 30 40 / 0.4);
+  rotate: -0.8deg;
+  isolation: isolate;
+}
+
+/* Glossy siliconised backing: faint grid printed on the release liner. */
+.hb-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgb(120 150 190 / 0.1) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, rgb(120 150 190 / 0.1) 0 1px, transparent 1px 22px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hb-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgb(255 255 255 / 0.55) 32%,
+    transparent 44%,
+    transparent 70%,
+    rgb(255 255 255 / 0.35) 78%,
+    transparent 86%
+  );
+  pointer-events: none;
+}
+
+.hb-sheet__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed rgb(29 26 23 / 0.35);
+}
+
+.hb-sheet__title {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.hb-sheet__sub {
+  font-family: var(--hb-hand), cursive;
+  font-size: 17px;
+  line-height: 1.1;
+}
+
+.hb-sheet__grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px 18px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+}
+
+.hb-sheet__cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 70px;
+}
+
+.hb-sheet__kiss,
+.hb-sheet__ghost {
+  grid-area: 1 / 1;
+  max-width: 132px;
+  display: block;
+}
+
+/* Where a sticker was: the kiss-cut outline left in the liner. */
+.hb-sheet__kiss {
+  outline: 1px solid rgb(29 26 23 / 0.1);
+  outline-offset: 3px;
+  border-radius: 40%;
+  opacity: 0.7;
+}
+
+.hb-sheet__ghost {
+  opacity: 0.13;
+  filter: grayscale(1);
+  container-type: inline-size;
+}
+
+.hb-sheet__earn {
+  grid-area: 1 / 1;
+  align-self: end;
+  font-family: var(--hb-hand), cursive;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  max-width: 90px;
+  translate: 0 12px;
+  color: rgb(29 26 23 / 0.7);
+}
+
+.hb-sheet__sticker {
+  grid-area: 1 / 1;
+  position: relative;
+  max-width: 132px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  transform: rotate(var(--st-rot));
+  filter: drop-shadow(0 0.5px 0.4px rgb(0 0 0 / 0.25));
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hb-sheet__sticker:hover {
+  transform: rotate(var(--st-rot)) translateY(-1px);
+}
+
+.hb-sheet__sticker:focus-visible {
+  outline: 2px dashed #1d1a17;
+  outline-offset: 5px;
+}
+
+/* Peeling: one corner lifts and curls away from the liner. */
+.hb-sheet__sticker.is-peeling {
+  animation: hb-peel-up 0.26s ease-out forwards;
+}
+
+.hb-sheet__sticker.is-held {
+  opacity: 0.18;
+}
+
+@keyframes hb-peel-up {
+  0% {
+    transform: rotate(var(--st-rot));
+  }
+  100% {
+    transform: rotate(calc(var(--st-rot) - 6deg)) perspective(300px) rotateX(18deg) rotateY(-22deg)
+      translateY(-6px) scale(1.06);
+    filter: drop-shadow(4px 8px 6px rgb(0 0 0 / 0.3));
+  }
+}
+
+.hb-sheet__empty {
+  margin: 8px 0 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 17px;
+  text-align: center;
+}
+
+/* ——— The sticker in your hand ——— */
+
+.hb-hand {
+  position: fixed;
+  z-index: 90;
+  max-width: 132px;
+  pointer-events: none;
+  translate: -50% -60%;
+  transform: rotate(calc(var(--st-rot) - 6deg)) scale(1.08);
+  filter: drop-shadow(3px 10px 8px rgb(0 0 0 / 0.3));
+}
+
+.hb-hand.is-waiting {
+  animation: hb-bob 1.4s ease-in-out infinite;
+}
+
+@keyframes hb-bob {
+  50% {
+    transform: rotate(calc(var(--st-rot) - 3deg)) scale(1.1) translateY(-4px);
+  }
+}
+
+/* ——— Stuck on the paper ——— */
+
+.hb-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+}
+
+.hb-layer.is-accepting {
+  pointer-events: auto;
+  cursor: copy;
+  outline: 2px dashed rgb(29 26 23 / 0.35);
+  outline-offset: -6px;
+}
+
+.hb-layer.is-accepting:focus-visible {
+  outline-color: #1d1a17;
+}
+
+.hb-stuck {
+  position: absolute;
+  max-width: 150px;
+  transform: translate(-50%, -50%) rotate(var(--st-rot));
+  transition: transform 0.2s;
+}
+
+.hb-stuck__face {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  /* Vinyl on newsprint: almost flat, with the faintest lift at its edge. */
+  filter: drop-shadow(0 1px 0.6px rgb(0 0 0 / 0.28)) drop-shadow(0 3px 4px rgb(40 30 20 / 0.16));
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hb-stuck__face:focus-visible {
+  outline: 2px dashed #1d1a17;
+  outline-offset: 4px;
+}
+
+.hb-stuck.is-moving {
+  transform: translate(-50%, -50%) rotate(var(--st-rot)) scale(1.05);
+  transition: none;
+}
+
+.hb-stuck.is-moving .hb-stuck__face {
+  cursor: grabbing;
+  filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.3));
+}
+
+.hb-stuck.is-peeling {
+  animation: hb-peel-off 0.42s cubic-bezier(0.5, 0, 0.8, 0.4) forwards;
+}
+
+@keyframes hb-peel-off {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--st-rot));
+  }
+  35% {
+    transform: translate(-50%, -58%) rotate(calc(var(--st-rot) - 8deg)) perspective(300px)
+      rotateX(24deg) rotateY(-18deg) scale(1.08);
+  }
+  100% {
+    transform: translate(-30%, -120%) rotate(calc(var(--st-rot) - 30deg)) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* A handwritten tab to peel it off again. */
+.hb-stuck__peel {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  translate: -50% 6px;
+  rotate: calc(var(--st-rot) * -1);
+  padding: 2px 8px 3px;
+  border: 0;
+  background: #fffdf5;
+  color: #1d1a17;
+  font-family: var(--hb-hand), cursive;
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  clip-path: polygon(0 8%, 100% 0, 97% 100%, 3% 92%);
+}
+
+.hb-stuck__peel:focus-visible {
+  outline: 2px dashed #1d1a17;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-sheet__sticker.is-peeling,
+  .hb-hand.is-waiting,
+  .hb-stuck.is-peeling {
+    animation: none;
+  }
+  .hb-stuck.is-peeling {
+    opacity: 0;
+  }
+}

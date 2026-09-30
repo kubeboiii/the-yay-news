@@ -1,0 +1,175 @@
+/* The mood doodle: pencil faces on newsprint. Pencil is graphite, not ink: grey, a little
+   shiny, never solid black, and lighter where the hand was light. */
+
+.hb-mood {
+  --pencil: #4a4744;
+  --pencil-dark: #2a2826;
+  color: var(--pencil-dark);
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.hb-mood__q {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 5.4vw, 30px);
+  font-weight: 400;
+  line-height: 1.1;
+  rotate: -1deg;
+}
+
+.hb-mood__row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(2px, 1.5vw, 14px);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+@media (max-width: 420px) {
+  .hb-mood__row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 300px;
+    row-gap: 6px;
+  }
+}
+
+.hb-mood__pick {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 2px 2px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hb-mood__pick:focus-visible {
+  outline: 2px dashed var(--pencil);
+  outline-offset: 2px;
+}
+
+.hb-face {
+  display: block;
+  width: 100%;
+  max-width: 96px;
+  aspect-ratio: 1;
+  overflow: visible;
+}
+
+.hb-face__stroke {
+  fill: none;
+  stroke: var(--pencil);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.72;
+}
+
+.hb-face__dot {
+  fill: var(--pencil);
+  stroke: var(--pencil);
+  stroke-width: 1 !important;
+  opacity: 0.8;
+}
+
+.hb-mood__pick:hover .hb-face__stroke {
+  opacity: 0.95;
+}
+
+.hb-face.is-faint .hb-face__stroke,
+.hb-face.is-faint .hb-face__dot {
+  opacity: 0.38;
+}
+
+.hb-mood__pick.is-on .hb-face__stroke,
+.hb-mood__pick.is-on .hb-face__dot {
+  stroke: var(--pencil-dark);
+  opacity: 1;
+}
+
+.hb-mood__pick.is-on .hb-face__dot {
+  fill: var(--pencil-dark);
+}
+
+/* Drawn in: every stroke goes down in turn, like a pencil going over it. */
+.hb-face.is-drawn .hb-face__stroke,
+.hb-face.is-drawn .hb-face__dot {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hb-draw 0.32s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+.hb-face.is-drawn .hb-face__dot {
+  fill-opacity: 0;
+  animation-name: hb-draw, hb-dot;
+}
+
+@keyframes hb-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hb-dot {
+  to {
+    fill-opacity: 1;
+  }
+}
+
+.hb-mood__ring {
+  position: absolute;
+  top: -4%;
+  left: 50%;
+  width: 104%;
+  max-width: 94px;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hb-mood__ring path {
+  fill: none;
+  stroke: var(--pencil-dark);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.hb-mood__ring.is-fresh path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hb-draw 0.5s 0.55s ease-out forwards;
+}
+
+.hb-mood__label {
+  margin-top: 2px;
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.hb-mood__pick.is-on .hb-mood__label {
+  opacity: 1;
+  text-decoration: underline wavy rgb(42 40 38 / 0.5);
+  text-underline-offset: 3px;
+}
+
+.hb-mood__note {
+  min-height: 1.3em;
+  margin: 8px 0 0;
+  font-size: 17px;
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-face.is-drawn .hb-face__stroke,
+  .hb-face.is-drawn .hb-face__dot,
+  .hb-mood__ring path {
+    animation: none;
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}

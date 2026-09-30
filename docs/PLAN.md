@@ -33,53 +33,74 @@ These settle arguments later. When a feature conflicts with one, the principle w
 
 ## 3. Decisions made
 
-| Topic              | Decision                                                                           |
-| ------------------ | ---------------------------------------------------------------------------------- |
-| Name               | **The Yay News**                                                                   |
-| Audience           | Global, English                                                                    |
-| Content production | **Fully automated** pipeline, with an emergency pull/replace control               |
-| AI provider        | Decide later — behind one provider-neutral interface                               |
-| Reading format     | Newspaper pages: front page → inside pages → back page, stacked on mobile          |
-| Release time       | 07:00 in each reader's local timezone; same edition for everyone                   |
-| Edition size       | A full paper: ~30 items, ~15 minutes (revised 2026-09-30; ~15 read too thin)       |
-| Voice              | Mix, varying by section (see §5)                                                   |
-| Content edges      | None allowed: no serious topics at all, including "constructive" ones              |
-| Images             | Openly licensed photos first, generated illustrations as fallback                  |
-| Visual direction   | **Loud poster zine** (Newspaper Club-led), with readable body text                 |
-| Designs            | **Broadsheet on weekdays**; at weekends one of Tabloid, Mini Zine or Midi Magazine |
-| Goal               | Grow an audience                                                                   |
-| Features           | Puzzles, newsletter, shareable clippings + PDF, native share flows                 |
-| Accounts           | None at launch; Google sign-in later, merging on-device history                    |
-| Mobile app         | **Web only**                                                                       |
-| Extra sections     | A rotating guest section every other day                                           |
-| Hosting            | Vercel (frontend) + small container host (backend, pipeline) + managed Postgres    |
-| Budget             | **Under $25/month** at launch                                                      |
-| First milestone    | **Reader first**, on hand-made sample editions                                     |
+| Topic              | Decision                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| Name               | **The Yay News**                                                                           |
+| Audience           | Global, English                                                                            |
+| Content production | **Fully automated** pipeline, with an emergency pull/replace control                       |
+| AI provider        | **Claude Code CLI** (subscription) primary, **Gemini Flash free tier** fallback            |
+| Reading format     | Newspaper pages: front page → inside pages → back page, stacked on mobile                  |
+| Release time       | 07:00 in each reader's local timezone; same edition for everyone                           |
+| Edition size       | A full paper: ~30 items, ~15 minutes (revised 2026-09-30; ~15 read too thin)               |
+| Voice              | Mix, varying by section (see §5)                                                           |
+| Content edges      | None allowed: no serious topics at all, including "constructive" ones                      |
+| Images             | Openly licensed photos first, generated illustrations as fallback                          |
+| Visual direction   | **Loud poster zine** (Newspaper Club-led), with readable body text                         |
+| Designs            | **Broadsheet on weekdays**; at weekends one of Tabloid, Mini Zine or Midi Magazine         |
+| Goal               | Grow an audience                                                                           |
+| Features           | Puzzles, newsletter, shareable clippings + PDF, native share flows                         |
+| Accounts           | None at launch; Google sign-in later, merging on-device history                            |
+| Mobile app         | **Web only**                                                                               |
+| Daily lineup       | Front, Tech, Startups, Screen, Play, Music, Money, Sports, Internet, Discoveries (2026-10) |
+| Guest sections     | 28 guests, **two a day**, seeded by date: each once per 14-day cycle (2026-10)             |
+| Weekends           | Saturday "The Big Weekend" and Sunday "The Scrapbook" lineups (2026-10)                    |
+| Beats              | Each section has weighted beats; a page spreads across them and rotates (2026-10)          |
+| Hosting            | Vercel (frontend) + small container host (backend, pipeline) + managed Postgres            |
+| Budget             | **Under $25/month** at launch                                                              |
+| First milestone    | **Reader first**, on hand-made sample editions                                             |
 
 ## 4. Sections
 
-### Core sections (appear most days)
+### Daily sections (every weekday, in this order)
 
-| Section                | What goes in                                                                  | Notes                                                                                 |
-| ---------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| **Screen & Sound**     | Shows, movies, trailers, casting, releases, concerts, albums                  | Trailers embedded, never re-hosted                                                    |
-| **Gaming**             | PC and console releases, indie gems, big updates, gaming culture              | Press-kit images are usable for coverage                                              |
-| **Sports**             | Standout moments from F1, cricket, football, MMA and others                   | Not every sport every day; results only when the _story_ is fun                       |
-| **Tech**               | Cool products, AI, startups, open-source projects, clever engineering         | Balance rule stops it becoming an AI section                                          |
-| **Discoveries**        | Space, animals, plants, science finds                                         | NASA and similar sources are public-domain-friendly for images                        |
-| **Money**              | Only clearly fun economics & finance: records, quirky economics, big launches | No market moves, no downturns, no fear. Rejected if it isn't unambiguously delightful |
-| **Internet & Culture** | Great posts, Substacks, blogs, Reddit finds, viral moments                    | Posts are **embedded** (oEmbed), not copied                                           |
+| Section         | What goes in                                                                   | Beats (data/beats.json)                                                                   |
+| --------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **Tech**        | Gadgets, AI, software, science-tech, clever engineering                        | gadgets, ai, software, internet-infra, robots                                             |
+| **Startups**    | Launches, funding, founders, Product Hunt / Show HN finds, Indian startups     | funding, launches, founders, india-startups                                               |
+| **Screen**      | Films, TV, anime, trailers, streaming                                          | movies, tv, anime, trailers, streaming                                                    |
+| **Play**        | Games (console, PC, mobile, indie, fun esports) and comics                     | console, pc, mobile, indie, esports-fun, comics                                           |
+| **Music**       | Albums, singles, tours, concerts, festivals, artists                           | albums, singles, tours, festivals, artists, india-music                                   |
+| **Money**       | Finance, economy, markets, business: only the fun kind                         | markets, economy, personal-finance-fun, business-oddities                                 |
+| **Sports**      | Football first, then UFC/MMA, boxing, F1, tennis, cricket, basketball, running | football, ufc-mma, boxing, f1, tennis, cricket, basketball, running, olympics, odd-sports |
+| **Internet**    | Memes, creators, viral moments, lifestyle, and odd news                        | memes, social, creators, viral, odd-news, lifestyle                                       |
+| **Discoveries** | Space, animals, plants, physics, chemistry, biology, the Earth, the oceans     | space, animals, plants, physics, chemistry, biology, earth, oceans                        |
 
-### Rotating guest sections (one, every other day)
+Every daily page runs with at least three stories (main, second, brief). A page short of stories pulls
+from its sources' secondary sections, then bends the edition-wide topic and source caps for itself.
+Posts are embedded (oEmbed), never copied; trailers are embedded, never re-hosted.
 
-- **Food & Words** — a weird food or recipe of the day; word of the day, odd etymologies, untranslatable words
-- **On This Day & 100 Years Ago** — fun firsts, odd inventions and patents, strange century-old headlines
-- **Art, Design & Books** — a poster, building, typeface or clever ad; one book or long-read worth your time
-- **Reader-made** — Small Wins, Letters to the Editor, Classifieds (needs submissions; see Phase 6)
+**Beats.** The classifier tags each candidate with a section and a beat in the same batched call.
+Within a section the select stage diversifies beats first (no second story from a beat while another
+beat still has a candidate), lifts beats unseen in the last seven days of editions (read back from
+each run's log, since stories have no beat column), and gives weighted beats a small nudge.
 
-**Rotation rule:** on alternating issues, one guest section takes a slot. The order is a seeded shuffle
-of the list per cycle, keyed by issue number, so it _feels_ random but each section appears once per
-cycle, never twice in a row, and any given issue always gets the same one.
+### Rotating guest sections (two a day)
+
+Brain Snacks (fun facts, GK, how things work) · Time Machine (on this day, 100 years ago) · Dig Site
+(archaeology, lost things found) · Tiny Science (small studies, fun results) · Word Nerd (word of the
+day, etymology, slang) · Food & Drink · Art & Design · Books & Comics Shelf · Fashion & Sneakers ·
+Postcards (travel, strange places, festivals) · Good Humans · India Desk · Planet Wins (nature and
+clean-energy good news) · Animal Kingdom (zoos, wild animals) · World Records · Nostalgia Corner
+(2000s/2010s) · Myth Busters · Future Stuff · Your Small Wins (real small-win stories, labelled; reader
+submissions later) · Letters & Classifieds (clearly playful) · Feel Good Health (no illness framing) ·
+Wheels · Creator Economy · Pets Corner · Weird Laws & Local · Kids & Schools · Weird Jobs · Homes &
+Buildings.
+
+**Rotation rule:** two guest pages a day, between Discoveries (or the weekend pages) and the back
+page. The order is a seeded shuffle of all 28 per 14-day cycle, keyed by date, so each guest appears
+exactly once per cycle; a cycle never opens with the guest that closed the last one, nor repeats any
+of the previous cycle's pairs in the same order. A guest that cannot fill three stories gives way to
+the next guest in its cycle.
 
 ### Recurring features (fixed slots)
 
@@ -105,18 +126,34 @@ believe"), headline patterns, brief length (60–120 words), and examples of eac
 
 ## 6. Edition structure
 
-About 30 items and 4,000 words, arranged as pages. Each inside page carries a main story, a second
-story and a column of short briefs; every story appears once, and the only page-to-page index is the
-front page's "Inside today".
+About 35–45 items, arranged as pages. Each inside page carries a main story, a second story and a
+column of short briefs; every story appears once, and the only page-to-page index is the front page's
+"Inside today".
 
-| Page                  | Contents                                                                                                   |
-| --------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Front page**        | Masthead, date, `Vol. 1 · No. 42`, lead story, Number of the Day, Weather Report, "Inside today" index     |
-| **Inside pages (≈6)** | Core sections, 1–3 stories each depending on the day; a guest section every other day                      |
-| **Back page**         | Puzzles, Corrections, Classifieds, comic, and the sign-off: _"You're done for today. See you tomorrow ☀️"_ |
+**Weekdays (broadsheet), 13 pages:**
 
-- **Weekly rhythm (later):** a rotating focus day (e.g. Monday tech deep-dive, Friday gaming and
-  weekend plans). Sunday stays the same size at launch; a bigger Sunday edition is a later option.
+| Page                | Contents                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Front page**      | Masthead, date, `Vol. 1 · No. 42`, lead story, Number of the Day, Weather Report, "Inside today" index     |
+| **Daily pages (9)** | Tech · Startups · Screen · Play · Music · Money · Sports · Internet · Discoveries, ≥3 stories each         |
+| **Guest pages (2)** | Two of the 28 guests (§4)                                                                                  |
+| **Back page**       | Puzzles, Corrections, Classifieds, comic, and the sign-off: _"You're done for today. See you tomorrow ☀️"_ |
+
+**Saturday, "The Big Weekend"** (tabloid, zine or midi): front (a big photo splash) · The Week in 10
+(ten short re-tellings of the best stories from Monday to Friday, each linking to its original story
+and reusing its picture) · Weekend Guide (what to watch, stream and hear; gigs and festivals) · Sports
+Weekend (the weekend's matches, fights and races previewed; never odds or betting) · Deep Dive (one
+five-minute feature written from several outlets, all named in its credit; every other story takes its facts from its one source) · two guest pages · back page (puzzles).
+
+**Sunday, "The Scrapbook"**: front ("The Week in Pictures") · Photo Album (the week's best pictures,
+one per story, linking to the stories) · Hall of Fame (the week's best animal, human hero, weird record
+and internet moment) · Slow Read (a relaxed long read) · Make & Do (a recipe, a make, a playlist, a
+doodle prompt) · Next Week (releases, launches and events coming up) · two guest pages · back page with
+the 9×9 Sunday crossword.
+
+At weekends the daily sections' sources feed the weekend pages (newsroom `WEEKEND_FEEDS`); the Week
+in 10, Photo Album and Hall of Fame are built from the past week's editions in the database.
+
 - **Issue numbers** run continuously from launch and never reset.
 - **Back issues:** past editions stay browsable by date in an archive laid out like a newsstand rack.
 - **Every story has its own URL**, so it can be shared and indexed, and every page links back into the
@@ -243,6 +280,10 @@ edition can be explained afterwards.
 
 **Model use:** the provider is swappable behind one interface. Cheap models do filtering and
 classification; a better model writes the briefs. Batch the day's work into as few calls as possible.
+Decided in Phase 4 (2026-09-30): the primary provider is the local **Claude Code CLI** in print mode
+(Haiku for the cheap tier, Sonnet for the writer), which runs on the existing subscription with no API
+key or per-call cost; the fallback is **Google Gemini Flash on the free tier** over REST. A failing
+provider hands each call to the next automatically, and a deterministic fake model serves tests.
 
 **Sources to be careful with:**
 
@@ -365,6 +406,21 @@ browse back issues, and share any story to each platform's composer.
 
 **Done when:** each sample edition has a playable back page, and a streak survives a reload.
 
+**Status (2026-09-30): built on sample editions.**
+
+- Puzzles generated per date by `packages/puzzles` (mini crossword, word ladder, riddle, word search
+  from the day's headlines, fortune teller); the API serves today's without answers and yesterday's
+  with them.
+- Every design's back page plays them in pencil (`apps/frontend/src/features/play`), in that
+  design's inks and layout, with yesterday's answers (the riddle's under today's folded corner).
+  Solving one earns its sticker; they print as blank grids.
+- On-device habits (`features/habits`, one mergeable event log): reading tracked on every page, a
+  stamp and streak when a paper's finished (`/stamps`), stickers to stick on any page, the mood
+  faces and the paper-plane sign-off, and kept stories (`/saved`). Paper sounds switch in the page
+  bar.
+- Still to do: the stamp book's current streak uses the device's date, not a preview `?now=`; merge
+  the log into an account when sign-in lands.
+
 ### Phase 4 — The automated newsroom
 
 - `apps/newsroom` with the eight stages in §9
@@ -374,6 +430,26 @@ browse back issues, and share any story to each platform's composer.
 
 **Done when:** a full week of editions publishes on schedule with no human action, every image has a
 recorded licence, and a planted grim story is rejected by the delight check.
+
+**Status (2026-09-30): the pipeline is built; the week-long unattended run is still to come.**
+
+- `apps/newsroom` runs the eight stages of §9 (`pnpm --filter newsroom run edition -- --date D`),
+  records every candidate's decision in `Candidate` and each stage's log in `PipelineRun`, and files
+  the edition as `scheduled`. It is idempotent per date (`--replace` to rebuild).
+- Allowlist of about 40 sources (RSS/Atom, Reddit JSON, NASA APOD, Spaceflight News, Wikipedia On
+  This Day), synced into `Source`. The delight check runs a blocklist over the headline and the full
+  text, then a batched classifier; uncertain means rejected. A planted grim story is rejected in tests.
+- Dedup covers the last 14 days and the day's batch. Selection applies section quotas, a topic cap
+  of 3, source caps and a strong lead, and keeps reserves. Stories are written from source text
+  only, then fact-checked (numbers and proper nouns must appear in the source), with one rewrite
+  before a reserve takes over. Source images are pressed into `apps/frontend/public/editions/<issue>/`
+  with credit and licence. Design and colourway follow the weekday.
+- AI provider: the Claude Code CLI is primary and Gemini's free tier is the fallback (§9). Falls back
+  to the Slow News Day edition when the day cannot fill a paper.
+- Scheduling: a launchd plist in `apps/newsroom/ops/` (not installed; see its README).
+- First real run (issue 46, 2026-10-04): 287 items gathered, 18 stories served. Still to do: fill
+  the Money and guest pages more reliably (more sources, looser text limits), make selection
+  stricter about tone (see open issues in the report), and run a full week unattended.
 
 ### Phase 5 — Newsletter
 
@@ -409,6 +485,7 @@ None of these block Phase 1.
 - Domain name and social handles
 - Analytics — a privacy-friendly option such as Plausible or Umami
 - The masthead lettering itself, and the mascot (if any)
-- AI provider (decided in Phase 4)
-- The exact source allowlist (drafted at the start of Phase 4)
-- Whether the rotating guest section ever gets its own fixed day
+- ~~AI provider~~ — decided in Phase 4: Claude Code CLI, with Gemini's free tier as fallback (§9)
+- ~~The exact source allowlist~~ — drafted in Phase 4 (`apps/newsroom/src/sources.ts`)
+- Whether any guest section ever gets its own fixed day
+- `Edition.guestSection` holds only the first of the day's two guests; the pages themselves (`layout: "guest"`) are the record. A list field would need a schema change (owner approval)

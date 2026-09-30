@@ -433,6 +433,33 @@
   text-decoration-thickness: from-font;
 }
 
+/* ---------- the playable puzzles ---------- */
+.m5b-pz {
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 2.4);
+}
+.m5b-pz .pl-title {
+  font-family: var(--f-display), "Didot", serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: calc(var(--u) * 6);
+  line-height: 1;
+}
+.m5b-row--play {
+  grid-template-columns: 1.3fr 1fr;
+}
+.m5b-answers {
+  max-width: calc(var(--u) * 40);
+}
+.m5b-keepsakes {
+  margin-top: calc(var(--u) * 10);
+  border-top: calc(var(--u) * 0.9) solid var(--ink);
+  padding-top: calc(var(--u) * 4);
+}
+.m5b-plane {
+  margin-top: calc(var(--u) * 8);
+}
+
 /* ---------- phone ---------- */
 
 @container (max-width: 760px) {
@@ -453,6 +480,12 @@
   }
   .m5b-small {
     font-size: 16px;
+  }
+  .m5b-pz .pl-title {
+    font-size: 26px;
+  }
+  .m5b-answers {
+    max-width: 160px;
   }
   .m5b-mini {
     display: block;
@@ -629,4 +662,14 @@
 /* When the puzzles are the right-hand page, their title keeps to the page. */
 .m5b-spread--puzzles-right .m5b-title {
   margin-left: calc(var(--u) * -4);
+}
+
+/* On the page that closes with the keepsakes, they take its spare depth: the sticker sheet runs
+   down it and the mood row and plane are spread evenly beside, rather than one stretch of bare
+   paper being left over the sign-off. */
+.m5b-page > .m5b-keepsakes {
+  flex: 1;
+}
+.m5b-keepsakes .yn-keepsakes-side {
+  align-content: space-evenly;
 }

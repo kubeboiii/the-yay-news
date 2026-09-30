@@ -61,9 +61,10 @@
   --pop2-ink: var(--ink);
 }
 
+/* A guest prints in its own pastel ink (the section's colour), which always carries black type. */
 .yn-theme-guest {
-  --pop: var(--neon-pink);
-  --pop-ink: var(--neon-pink-ink);
+  --pop: var(--section-colour, var(--neon-pink));
+  --pop-ink: var(--ink);
   --pop2: var(--neon-yellow);
   --pop2-ink: var(--ink);
 }

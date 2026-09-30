@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./sections": "./prisma/seed-data/sections.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",
@@ -19,6 +20,7 @@
     "@prisma/client": "7.10.0"
   },
   "devDependencies": {
+    "@repo/puzzles": "workspace:*",
     "@repo/shared": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "26.4.1",

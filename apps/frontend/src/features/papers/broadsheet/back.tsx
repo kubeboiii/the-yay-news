@@ -1,12 +1,22 @@
-import type { Edition, Image as EditionImage, Puzzle } from "@repo/shared";
+import type { Edition, Image as EditionImage } from "@repo/shared";
 import type { CSSProperties } from "react";
+import {
+  Crossword,
+  CrosswordAnswers,
+  FortuneTeller,
+  type PlayInks,
+  Riddle,
+  WordLadder,
+  WordSearch,
+} from "@/features/play";
 import { Mark } from "@/features/print/mark";
+import { BackKeepsakes, backPlay } from "../back-play";
 import type { PageProps } from "../types";
 import { WordCard, guestTakes } from "./guest";
-import { backComp, featureOf, featuresOf, fitSize, puzzleOf, solvedOf } from "./lib";
+import { backComp, featureOf, featuresOf, fitSize } from "./lib";
 import { Folio, Photo, RunningHead, Zigzag } from "./parts";
 
-// The back page: the comic, the puzzles with yesterday's answers, the small print (corrections,
+// The back page: the comic, the puzzles (played in pencil, printed blank) with yesterday's answers, the small print (corrections,
 // classifieds, letters, the quote and the word of the day, whichever the edition has) and the
 // sign-off, set too big for the sheet.
 
@@ -62,6 +72,22 @@ const CAST: Record<string, { photo: EditionImage; position: string }[]> = {
   ],
 };
 const EXTRAS = [...(CAST.PIP ?? []), ...(CAST.PIGEON ?? [])];
+
+/** The reader's pencil on newsprint; the marker is the colourway's pop. */
+const INKS: PlayInks = {
+  ink: "var(--ink)",
+  print: "var(--ink)",
+  paper: "var(--paper)",
+  highlight: "color-mix(in srgb, var(--pop), transparent 30%)",
+  mark: "var(--neon-pink-type)",
+};
+/** On the pop-coloured side panel, pencil and print take the panel's own ink. */
+const SIDE_INKS: PlayInks = {
+  ...INKS,
+  ink: "var(--pop-ink)",
+  print: "var(--pop-ink)",
+  highlight: "color-mix(in srgb, var(--pop2), transparent 20%)",
+};
 
 /** Splits a comic line like "PIP: Hello" into the speaker and what they said. */
 function splitLine(line: string) {
@@ -126,76 +152,35 @@ function Comic({ comic, grid }: { comic: { title: string; panels: string[] }; gr
   );
 }
 
-function Crossword({ data }: { data: Extract<Puzzle, { type: "crossword" }>["data"] }) {
-  const cols = Math.max(...data.rows.map((r) => r.length), 1);
-  const numbers = new Map(data.numbers.map((x) => [`${x.row},${x.col}`, x.n]));
-  return (
-    <div className="bk-xword-wrap">
-      <h2 className="yn-chunk bk-head">{data.title}</h2>
-      <div
-        className="yn-xword bs-xword"
-        role="img"
-        aria-label={`A ${cols} by ${data.rows.length} crossword grid`}
-        style={{
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-          aspectRatio: `${cols} / ${data.rows.length}`,
-        }}
-      >
-        {data.rows.flatMap((row, r) =>
-          [...row.padEnd(cols, "#")].map((ch, c) => {
-            const n = numbers.get(`${r},${c}`);
-            return (
-              <div key={`${r}-${c}`} className={ch === "#" ? "block" : undefined}>
-                {n ? <span>{n}</span> : null}
-              </div>
-            );
-          }),
-        )}
-      </div>
-    </div>
-  );
-}
-
 function Yesterday({ edition }: { edition: Edition }) {
-  const y = edition.yesterday;
-  if (!y || !y.puzzles.length) return null;
-  const xword = solvedOf(edition, "crossword");
-  const ladder = solvedOf(edition, "word_ladder");
-  const riddle = solvedOf(edition, "riddle");
+  const y = backPlay(edition).yesterday;
+  if (!y || (!y.crossword && !y.ladder && !y.riddle)) return null;
   return (
     <div className="bk-yesterday bs-yesterday">
-      <p className="yn-kicker">Yesterday&rsquo;s answers · No. {y.issueNumber}</p>
-      {xword ? (
+      <p className="yn-kicker">Yesterday&rsquo;s answers · No. {y.issue}</p>
+      {y.crossword ? (
         <div className="bs-y-xword">
-          <div
-            className="bs-mini"
-            aria-hidden
-            style={{
-              gridTemplateColumns: `repeat(${Math.max(...xword.solution.grid.map((r) => r.length), 1)}, 1fr)`,
-            }}
-          >
-            {xword.solution.grid.flatMap((row, r) =>
-              [...row].map((ch, c) => (
-                <span key={`${r}-${c}`} className={ch === "#" ? "block" : undefined}>
-                  {ch === "#" ? "" : ch}
-                </span>
-              )),
-            )}
-          </div>
+          <CrosswordAnswers
+            data={y.crossword.data}
+            solution={y.crossword.solution}
+            inks={INKS}
+            hideTitle
+            className="yn-play bs-y-grid"
+          />
           <p>
-            <b>Across</b> {xword.solution.across.map((a) => `${a.n} ${a.answer}`).join(", ")}.{" "}
-            <b>Down</b> {xword.solution.down.map((a) => `${a.n} ${a.answer}`).join(", ")}.
+            <b>Across</b> {y.crossword.solution.across.map((a) => `${a.n} ${a.answer}`).join(", ")}.{" "}
+            <b>Down</b> {y.crossword.solution.down.map((a) => `${a.n} ${a.answer}`).join(", ")}.
           </p>
         </div>
       ) : null}
-      {ladder ? (
+      {y.ladder ? (
         <p>
-          <b>{ladder.data.title}</b> {ladder.solution.ladder.join(" → ")}
+          <b>{y.ladder.data.title}</b> {y.ladder.solution.ladder.join(" → ")}
         </p>
       ) : null}
-      {riddle ? (
+      {y.riddle ? (
         <p>
-          <b>{riddle.data.title}</b> {riddle.data.question} <i>{riddle.solution.answer}.</i>
+          <b>The riddle</b> is under the folded corner of today&rsquo;s.
         </p>
       ) : null}
     </div>
@@ -203,15 +188,14 @@ function Yesterday({ edition }: { edition: Edition }) {
 }
 
 export function Back({ edition, reading }: PageProps) {
-  const crossword = puzzleOf(edition, "crossword");
-  const ladder = puzzleOf(edition, "word_ladder");
-  const riddle = puzzleOf(edition, "riddle");
+  const play = backPlay(edition);
+  const { issue, crossword, ladder, riddle, search, fortune } = play;
   const comic = featureOf(edition, "comic");
   const corrections = featuresOf(edition, "correction");
-  const classifieds = featuresOf(edition, "classified");
   const taken = guestTakes(edition);
-  const letters = taken === "letter" ? [] : featuresOf(edition, "letter");
-  const word = taken === "word_of_the_day" ? null : featureOf(edition, "word_of_the_day");
+  const classifieds = taken.includes("classified") ? [] : featuresOf(edition, "classified");
+  const letters = taken.includes("letter") ? [] : featuresOf(edition, "letter");
+  const word = taken.includes("word_of_the_day") ? null : featureOf(edition, "word_of_the_day");
   const quote = featureOf(edition, "quote");
   const signOff =
     featureOf(edition, "sign_off")?.text ?? "You're done for today. See you tomorrow.";
@@ -221,7 +205,7 @@ export function Back({ edition, reading }: PageProps) {
       ? ["You’re done for today.", signOff]
       : [signOff.slice(0, cut + 1), signOff.slice(cut + 2)];
   const bigSize = fitSize(signSecond, 350, 78, 0.29);
-  const hasPuzzles = crossword || ladder || riddle;
+  const hasPuzzles = crossword || ladder || riddle || search || fortune;
   const hasOdds = Boolean(letters.length || word || quote);
   const comp = backComp(edition);
   const odds = (
@@ -236,7 +220,20 @@ export function Back({ edition, reading }: PageProps) {
       {quote ? (
         <figure className="bs-odd bs-odd-quote">
           <p className="yn-label">Quote of the day</p>
-          <blockquote className="yn-pullquote">&ldquo;{quote.text}&rdquo;</blockquote>
+          <blockquote
+            className="yn-pullquote"
+            style={
+              // Beside the strip with nothing else in its column, the quote is set as big as the
+              // column's depth allows (about 145 × 190 sheet units), so it fills it.
+              comic && !letters.length && !word
+                ? {
+                    fontSize: `calc(var(--u) * ${Math.min(13, Math.sqrt(40_000 / Math.max(quote.text.length, 40))).toFixed(2)})`,
+                  }
+                : undefined
+            }
+          >
+            &ldquo;{quote.text}&rdquo;
+          </blockquote>
           <figcaption className="yn-pullquote-by">{quote.by}</figcaption>
         </figure>
       ) : null}
@@ -268,54 +265,64 @@ export function Back({ edition, reading }: PageProps) {
           <>
             <Zigzag word="puzzles" />
             <section
-              className={`bk-puzzles bs-puzzles ${crossword ? "" : "bs-puzzles--nogrid"}`}
+              className={`bk-puzzles bs-puzzles bs-puzzles--play ${crossword ? "" : "bs-puzzles--nogrid"}`}
               aria-label="Puzzles"
             >
-              {crossword ? <Crossword data={crossword.data} /> : null}
-
-              <div className="bk-clues">
-                {crossword ? (
-                  <>
-                    <h3>Across</h3>
-                    <ol>
-                      {crossword.data.across.map((c) => (
-                        <li key={`a${c.n}`}>
-                          <b>{c.n}</b>
-                          <span>
-                            {c.clue} ({c.length})
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
-                    <h3>Down</h3>
-                    <ol>
-                      {crossword.data.down.map((c) => (
-                        <li key={`d${c.n}`}>
-                          <b>{c.n}</b>
-                          <span>
-                            {c.clue} ({c.length})
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
-                  </>
-                ) : null}
-                <Yesterday edition={edition} />
-              </div>
+              {crossword ? (
+                <Crossword
+                  issue={issue}
+                  data={crossword.data}
+                  inks={INKS}
+                  headingLevel={2}
+                  className="yn-play bs-play bs-play-xw"
+                />
+              ) : null}
 
               {ladder || riddle ? (
                 <div className="bk-side">
                   <div className="bk-side-ink print-worn" aria-hidden />
-                  {ladder ? <Ladder data={ladder.data} /> : null}
+                  {ladder ? (
+                    <WordLadder
+                      issue={issue}
+                      data={ladder.data}
+                      inks={SIDE_INKS}
+                      headingLevel={2}
+                      className="yn-play bs-play"
+                    />
+                  ) : null}
                   {riddle ? (
-                    <div className="bk-riddle">
-                      <p className="yn-kicker">{riddle.data.title}</p>
-                      <p className="yn-chunk">{riddle.data.question}</p>
-                      <p className="yn-body">The answer is printed in tomorrow&rsquo;s paper.</p>
-                    </div>
+                    <Riddle
+                      issue={issue}
+                      data={riddle.data}
+                      yesterday={play.yesterday?.riddle}
+                      inks={SIDE_INKS}
+                      headingLevel={2}
+                      className="yn-play bs-play"
+                    />
                   ) : null}
                 </div>
               ) : null}
+            </section>
+            <section className="bs-play-row" aria-label="More puzzles">
+              {search ? (
+                <WordSearch
+                  issue={issue}
+                  data={search.data}
+                  inks={INKS}
+                  headingLevel={2}
+                  className="yn-play bs-play"
+                />
+              ) : null}
+              {fortune ? (
+                <FortuneTeller
+                  issue={issue}
+                  data={fortune.data}
+                  inks={INKS}
+                  headingLevel={2}
+                  className="yn-play bs-play"
+                />
+              ) : null}
+              <Yesterday edition={edition} />
             </section>
           </>
         ) : null}
@@ -372,6 +379,8 @@ export function Back({ edition, reading }: PageProps) {
 
         {comp === "strip-first" && hasOdds ? odds : null}
 
+        <BackKeepsakes edition={edition} className="bs-keepsakes" />
+
         <section className="bk-signoff" aria-label="Sign-off">
           <div className="bk-signoff-ink" aria-hidden />
           <p className="yn-chunk bk-signoff-small">{signFirst}</p>
@@ -386,26 +395,6 @@ export function Back({ edition, reading }: PageProps) {
 
         <Folio edition={edition} reading={reading} section="The back page" />
       </article>
-    </div>
-  );
-}
-
-function Ladder({ data }: { data: Extract<Puzzle, { type: "word_ladder" }>["data"] }) {
-  const width = Math.max(data.start.length, data.end.length);
-  const rungs = [data.start, ...Array.from({ length: data.steps }, () => ""), data.end];
-  return (
-    <div className="bk-ladder">
-      <h2 className="yn-chunk bk-head">{data.title}</h2>
-      <p className="yn-body">{data.instructions}</p>
-      <ol aria-label={`From ${data.start} to ${data.end} in ${data.steps} steps`}>
-        {rungs.map((word, i) => (
-          <li key={`rung-${i}`}>
-            {Array.from({ length: width }, (_, k) => (
-              <span key={k}>{word[k] ?? ""}</span>
-            ))}
-          </li>
-        ))}
-      </ol>
     </div>
   );
 }

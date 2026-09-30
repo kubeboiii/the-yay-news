@@ -42,7 +42,7 @@ describe("stories routes", () => {
     const { body: middle } = await get("/api/v1/editions/41/stories/game-a-41");
     expect(middle?.prev?.slug).toBe("lead-41");
     expect(middle?.next?.slug).toBe("game-b-41");
-    expect(middle?.page).toMatchObject({ order: 2, section: { slug: "gaming" } });
+    expect(middle?.page).toMatchObject({ order: 2, section: { slug: "play" } });
 
     const { body: last } = await get("/api/v1/editions/41/stories/game-b-41");
     expect(last?.prev?.slug).toBe("game-a-41");

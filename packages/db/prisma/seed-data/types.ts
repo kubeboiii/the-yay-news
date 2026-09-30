@@ -1,4 +1,4 @@
-import type { EditionDesign, Feature, SolvedPuzzle } from "@repo/shared";
+import type { EditionDesign, Feature } from "@repo/shared";
 import type { PhotoKey } from "./photos.ts";
 import type { SectionSlug } from "./sections.ts";
 
@@ -6,7 +6,8 @@ type WithoutOrder<T> = T extends unknown ? Omit<T, "order"> : never;
 
 /** A recurring feature; its order among features of the same type is its position in the list. */
 export type SeedFeature = WithoutOrder<Feature>;
-export type SeedPuzzle = WithoutOrder<SolvedPuzzle>;
+
+export type SeedImage = { file: string; alt: string; credit: string; from: string };
 
 export type SeedStory = {
   slug: string;
@@ -32,7 +33,9 @@ export type SeedStory = {
    * pressed copy under apps/frontend/public/editions/. `file` is its site path; `from` is the page
    * the image came from.
    */
-  image?: { file: string; alt: string; credit: string; from: string };
+  image?: SeedImage;
+  /** Further images for the story, printed after `image` in this order (fetched the same way). */
+  more?: SeedImage[];
   embedUrl?: string;
   reserve?: boolean;
 };
@@ -48,7 +51,6 @@ export type SeedEdition = {
   front: SeedStory[];
   /** Inside pages in order. A page in a guest section makes it the edition's guest section. */
   inside: { section: SectionSlug; stories: SeedStory[] }[];
-  /** Front-page and back-page features. */
+  /** Front-page and back-page features. The back-page puzzles are generated from the date. */
   features: SeedFeature[];
-  puzzles: SeedPuzzle[];
 };

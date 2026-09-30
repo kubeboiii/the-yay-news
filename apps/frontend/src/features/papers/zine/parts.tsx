@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { Mark } from "@/features/print/mark";
 import { printedPhoto } from "@/features/print/photo";
+import { FillPlates } from "../plates";
 import { pad2, ringSplit, type Ground } from "./text";
 
 // The zine's printed furniture, adapted from the approved mockup (v4) to take edition data.
@@ -128,6 +129,7 @@ export function Photo({
   position,
   className,
   priority,
+  plates,
 }: {
   photo: EditionImage;
   ratio: string;
@@ -135,7 +137,16 @@ export function Photo({
   position?: string;
   className?: string;
   priority?: boolean;
+  /** A story with more than one picture prints them all, as a group, in this photo's place. */
+  plates?: Pick<StoryItem, "slug" | "images">;
 }) {
+  if (plates && plates.images.length > 1) {
+    return (
+      <div className={`z-photo z-photo--plates ${className ?? ""}`} style={{ aspectRatio: ratio }}>
+        <FillPlates story={plates} sizes={sizes} priority={priority} />
+      </div>
+    );
+  }
   return (
     <div className={`z-photo ${className ?? ""}`} style={{ aspectRatio: ratio }}>
       <Image
@@ -174,7 +185,9 @@ export function Print({
   position,
   className,
   priority,
+  plates,
 }: {
+  plates?: Pick<StoryItem, "slug" | "images">;
   photo: EditionImage;
   ratio: string;
   sizes: string;
@@ -190,7 +203,14 @@ export function Print({
       className={`z-print print-print ${className ?? ""}`}
       style={{ margin: 0, ["--r" as string]: `${rotate}deg` }}
     >
-      <Photo photo={photo} ratio={ratio} sizes={sizes} position={position} priority={priority} />
+      <Photo
+        photo={photo}
+        ratio={ratio}
+        sizes={sizes}
+        position={position}
+        priority={priority}
+        plates={plates}
+      />
       {note ? (
         <figcaption className="z-print__cap" aria-hidden>
           {note}
@@ -302,16 +322,19 @@ export function ReadOn({ href, children }: { href: string; children?: ReactNode 
 // ——— The hand-drawn mark each section keeps for its furniture ———
 
 const DOODLE: Record<string, string> = {
-  "screen-and-sound": "sketch-24",
-  gaming: "stars-04",
+  screen: "sketch-24",
+  play: "stars-04",
+  startups: "sketch-40",
+  music: "stars-10",
   sports: "stars-21",
   tech: "sketch-11",
   discoveries: "sketch-28",
   money: "stars-17",
-  "internet-and-culture": "sketch-05",
+  internet: "sketch-05",
   "food-and-words": "sketch-15",
   "on-this-day": "sketch-47",
   "art-design-and-books": "doodles-02",
+  "brain-snacks": "sketch-34",
 };
 
 /** The hand-drawn mark a section uses beside its "In brief" label. */

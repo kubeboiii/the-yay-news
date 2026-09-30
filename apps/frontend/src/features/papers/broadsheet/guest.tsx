@@ -4,11 +4,13 @@ import type { PageProps } from "../types";
 import { Briefs, Copy, InkPull, Media, StoryBlock, StoryHead } from "./blocks";
 import { featureOf, featuresOf, fitSize, guestComp, longDate, storiesOf, weekday } from "./lib";
 import { Folio, Zigzag } from "./parts";
+import { SectionDress, dressed } from "../dress";
 
 // The rotating guest section: a supplement tucked into the paper for one day. It swaps the
 // running head for a full-width band of its own ink, and is composed one of two ways: a cover
 // (the main picture across the page with its head pasted on) or columns. It carries the
-// edition's word of the day (Food & Words) or letters (Reader-made) when it has them.
+// edition's word of the day (Word Nerd) or letters and classifieds (Letters & Classifieds) when it
+// has them.
 
 export function Guest({ edition, page, reading }: PageProps) {
   const section = page.section;
@@ -58,6 +60,15 @@ export function Guest({ edition, page, reading }: PageProps) {
         <Zigzag />
 
         <div className="bs-page">
+          {section && dressed(section.slug, edition.issueNumber, page.order) ? (
+            <SectionDress
+              slug={section.slug}
+              stories={page.stories}
+              issue={edition.issueNumber}
+              page={page.order}
+              date={edition.date}
+            />
+          ) : null}
           {main && comp === "cover" ? (
             <>
               <figure className="yn-hero bs-picture">
@@ -76,21 +87,26 @@ export function Guest({ edition, page, reading }: PageProps) {
                 {extraBox}
               </div>
               <Zigzag />
-              <div className="bs-grid bs-g-foot">
-                <div className="bs-stack">
-                  {more.map((s) => (
-                    <StoryBlock
-                      key={s.slug}
-                      story={s}
-                      reading={reading}
-                      size="lg"
-                      cols={2}
-                      className="bs-second-split"
-                    />
-                  ))}
+              {more.length ? (
+                <div className="bs-grid bs-g-foot">
+                  <div className="bs-stack">
+                    {more.map((s) => (
+                      <StoryBlock
+                        key={s.slug}
+                        story={s}
+                        reading={reading}
+                        size="lg"
+                        cols={2}
+                        className="bs-second-split"
+                      />
+                    ))}
+                  </div>
+                  <Briefs stories={briefs} reading={reading} variant="rail" />
                 </div>
-                <Briefs stories={briefs} reading={reading} variant="rail" />
-              </div>
+              ) : (
+                // Nothing to set beside the briefs: they run across the page instead.
+                <Briefs stories={briefs} reading={reading} variant="strip" />
+              )}
             </>
           ) : main ? (
             <div className="bs-grid bs-g-guestcols">
@@ -126,26 +142,40 @@ export function Guest({ edition, page, reading }: PageProps) {
 }
 
 /** Guest sections whose feature is taken off the back page and printed here instead. */
-export const guestTakes = (edition: Edition): "word_of_the_day" | "letter" | null =>
-  edition.guestSection?.slug === "food-and-words"
-    ? "word_of_the_day"
-    : edition.guestSection?.slug === "reader-made"
-      ? "letter"
-      : null;
+export function guestTakes(edition: Edition): ("word_of_the_day" | "letter" | "classified")[] {
+  const guests = new Set(
+    edition.pages.filter((p) => p.layout === "guest").map((p) => p.section?.slug),
+  );
+  const taken: ("word_of_the_day" | "letter" | "classified")[] = [];
+  if (guests.has("word-nerd") && featureOf(edition, "word_of_the_day"))
+    taken.push("word_of_the_day");
+  if (guests.has("letters-and-classifieds")) {
+    if (featuresOf(edition, "letter").length) taken.push("letter");
+    if (featuresOf(edition, "classified").length) taken.push("classified");
+  }
+  return taken;
+}
 
 function GuestExtra({ edition, slug }: { edition: Edition; slug: string }) {
   const word = featureOf(edition, "word_of_the_day");
   const letters = featuresOf(edition, "letter");
-  if (slug === "food-and-words" && word) return <WordCard word={word} />;
-  if (slug === "reader-made" && letters.length) {
+  const classifieds = featuresOf(edition, "classified");
+  if (slug === "word-nerd" && word) return <WordCard word={word} />;
+  if (slug === "letters-and-classifieds" && (letters.length || classifieds.length)) {
     return (
       <aside className="bs-extra bs-letters">
-        <h2 className="yn-label">Letters to the editor</h2>
+        {letters.length ? <h2 className="yn-label">Letters to the editor</h2> : null}
         {letters.map((l, i) => (
           <figure key={i} className="bs-letter">
             <blockquote className="yn-body bs-copy">{l.text}</blockquote>
             <figcaption className="yn-pullquote-by">— {l.from}</figcaption>
           </figure>
+        ))}
+        {classifieds.length ? <h2 className="yn-label">Classifieds</h2> : null}
+        {classifieds.map((c, i) => (
+          <p key={i} className="yn-body bs-copy bs-classified">
+            <b>{c.heading}.</b> {c.text}
+          </p>
         ))}
       </aside>
     );

@@ -1,6 +1,15 @@
-import type { Puzzle, SolvedPuzzle } from "@repo/shared";
 import type { CSSProperties } from "react";
+import {
+  Crossword,
+  CrosswordAnswers,
+  FortuneTeller,
+  type PlayInks,
+  Riddle,
+  WordLadder,
+  WordSearch,
+} from "@/features/play";
 import { Mark } from "@/features/print/mark";
+import { BackKeepsakes, backPlay } from "../back-play";
 import type { PageProps } from "../types";
 import {
   featureOf,
@@ -15,86 +24,18 @@ import { backComposition } from "./compose";
 import { Folio, Masthead, MiniMark, Sheet, fit } from "./parts";
 import { fs } from "./story-bits";
 
-// The back page: today's puzzles printed to be done in pencil (interactivity comes later),
-// yesterday's answers, the comic, the small print — corrections, classifieds, letters — and the
+// The back page: today's puzzles, played in pencil on the page (they print blank), yesterday's
+// answers (the riddle's under today's folded corner), the comic, the small print — corrections, classifieds, letters — and the
 // sign-off that tells you you're finished.
 
-type PuzzleOf<T extends Puzzle["type"]> = Extract<Puzzle, { type: T }>;
-type SolvedOf<T extends SolvedPuzzle["type"]> = Extract<SolvedPuzzle, { type: T }>;
-
-const puzzleOf = <T extends Puzzle["type"]>(list: Puzzle[], type: T) =>
-  (list.find((p) => p.type === type) as PuzzleOf<T> | undefined) ?? null;
-const solvedOf = <T extends SolvedPuzzle["type"]>(list: SolvedPuzzle[], type: T) =>
-  (list.find((p) => p.type === type) as SolvedOf<T> | undefined) ?? null;
-
-type Grid = PuzzleOf<"crossword">["data"];
-
-/** A crossword grid in ink: black squares, numbered squares, and (for answers) the letters. */
-function CrosswordGrid({ data, fill, small }: { data: Grid; fill?: string[]; small?: boolean }) {
-  const width = Math.max(...data.rows.map((r) => r.length), 1);
-  const number = new Map(data.numbers.map((n) => [`${n.row},${n.col}`, n.n]));
-  const blacks = data.rows.reduce((n, r) => n + [...r].filter((c) => c === "#").length, 0);
-  return (
-    <div
-      className={`tb-xw-grid ${small ? "tb-xw-grid--small" : ""}`}
-      style={{
-        gridTemplateColumns: `repeat(${width}, 1fr)`,
-        aspectRatio: `${width} / ${data.rows.length}`,
-      }}
-      role="img"
-      aria-label={
-        fill
-          ? `The solved grid: ${fill.map((r) => r.replace(/#/g, " ")).join(", ")}`
-          : `A ${width} by ${data.rows.length} crossword grid with ${blacks} black squares`
-      }
-    >
-      {data.rows.flatMap((row, r) =>
-        [...row.padEnd(width, "#")].map((ch, c) => {
-          const n = number.get(`${r},${c}`);
-          const letter = fill?.[r]?.[c];
-          return (
-            <div
-              key={`${r}-${c}`}
-              className={`tb-xw-cell ${ch === "#" ? "tb-xw-cell--black" : ""}`}
-            >
-              {n && !small ? <span>{n}</span> : null}
-              {letter && letter !== "#" ? <b>{letter}</b> : null}
-            </div>
-          );
-        }),
-      )}
-    </div>
-  );
-}
-
-function Clues({ data }: { data: Grid }) {
-  return (
-    <div className="tb-clues">
-      {(
-        [
-          ["Across", data.across],
-          ["Down", data.down],
-        ] as const
-      ).map(([label, clues]) =>
-        clues.length ? (
-          <div key={label}>
-            <h3>{label}</h3>
-            <ol>
-              {clues.map((c) => (
-                <li key={`${label}${c.n}`}>
-                  <b>{c.n}</b>
-                  <span>
-                    {c.clue} ({c.length})
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        ) : null,
-      )}
-    </div>
-  );
-}
+/** The reader's pencil in the tabloid's ink, the marker in its first spot colour. */
+const INKS: PlayInks = {
+  ink: "var(--ink)",
+  print: "var(--ink)",
+  paper: "var(--rev-paper, #fbfbf7)",
+  highlight: "color-mix(in oklab, var(--a), transparent 35%)",
+  mark: "var(--b-type)",
+};
 
 /** A comic character, drawn in ink: the pigeon, or a round little someone for anyone else. */
 function Character({ who, flip }: { who: string; flip?: boolean }) {
@@ -135,13 +76,11 @@ function Character({ who, flip }: { who: string; flip?: boolean }) {
 
 export function Back({ edition, page, reading }: PageProps) {
   const date = folioDate(edition.date);
-  const crossword = puzzleOf(edition.puzzles, "crossword");
-  const ladder = puzzleOf(edition.puzzles, "word_ladder");
-  const riddle = puzzleOf(edition.puzzles, "riddle");
-  const y = edition.yesterday;
-  const yCrossword = y ? solvedOf(y.puzzles, "crossword") : null;
-  const yLadder = y ? solvedOf(y.puzzles, "word_ladder") : null;
-  const yRiddle = y ? solvedOf(y.puzzles, "riddle") : null;
+  const play = backPlay(edition);
+  const { issue, crossword, ladder, riddle, search, fortune } = play;
+  const y = play.yesterday;
+  const yCrossword = y?.crossword ?? null;
+  const yLadder = y?.ladder ?? null;
   const comic = featureOf(edition, "comic");
   const corrections = featuresOf(edition, "correction");
   const classifieds = featuresOf(edition, "classified");
@@ -153,10 +92,11 @@ export function Back({ edition, page, reading }: PageProps) {
   const [signHead, signRest] = splitFirstSentence(signOff);
   const [boxed, ...plain] = [...classifieds].reverse();
   const puzzleCount = [crossword, ladder, riddle].filter(Boolean).length;
+  const hasPuzzles = puzzleCount || search || fortune;
   const order = backComposition(edition);
   const puzzlesBlock = (
     <>
-      {puzzleCount ? (
+      {hasPuzzles ? (
         <section
           data-composition={`back-${order}`}
           className={`tb-puzzles tb-puzzles--${puzzleCount}`}
@@ -167,10 +107,13 @@ export function Back({ edition, page, reading }: PageProps) {
               <h2 id="xw-title" className="tb-tile-head tb-cond">
                 {crossword.data.title}
               </h2>
-              <div className="tb-xw">
-                <CrosswordGrid data={crossword.data} />
-                <Clues data={crossword.data} />
-              </div>
+              <Crossword
+                issue={issue}
+                data={crossword.data}
+                inks={INKS}
+                hideTitle
+                className="yn-play tb-play"
+              />
             </article>
           ) : null}
 
@@ -179,37 +122,13 @@ export function Back({ edition, page, reading }: PageProps) {
               <h2 id="ladder-title" className="tb-tile-head tb-cond">
                 {ladder.data.title}
               </h2>
-              <p>{ladder.data.instructions}</p>
-              <ol
-                className="tb-ladder"
-                style={
-                  {
-                    "--rung": Math.max(ladder.data.start.length, ladder.data.end.length),
-                  } as CSSProperties
-                }
-              >
-                <li className="tb-rung tb-rung--end" aria-label={`From ${ladder.data.start}`}>
-                  {[...ladder.data.start].map((ch, i) => (
-                    <i key={`s${i}`}>{ch}</i>
-                  ))}
-                </li>
-                {Array.from({ length: ladder.data.steps }, (_, s) => (
-                  <li
-                    key={`step${s}`}
-                    className="tb-rung"
-                    aria-label={`Step ${s + 1}: ${ladder.data.start.length} empty letters`}
-                  >
-                    {Array.from({ length: ladder.data.start.length }, (_, i) => (
-                      <i key={i} />
-                    ))}
-                  </li>
-                ))}
-                <li className="tb-rung tb-rung--end" aria-label={`To ${ladder.data.end}`}>
-                  {[...ladder.data.end].map((ch, i) => (
-                    <i key={`e${i}`}>{ch}</i>
-                  ))}
-                </li>
-              </ol>
+              <WordLadder
+                issue={issue}
+                data={ladder.data}
+                inks={INKS}
+                hideTitle
+                className="yn-play tb-play"
+              />
             </article>
           ) : null}
 
@@ -218,30 +137,65 @@ export function Back({ edition, page, reading }: PageProps) {
               <h2 id="riddle-title" className="tb-tile-head tb-cond">
                 {riddle.data.title}
               </h2>
-              <p
-                className="tb-riddle-q tb-cond"
-                style={fs(
-                  fit(riddle.data.question, { max: 8, min: 4.6, measure: 62, lines: 5, em: 0.52 }),
-                )}
-              >
-                {riddle.data.question}
-              </p>
-              <p className="tb-riddle-foot">The answer is printed in tomorrow&rsquo;s paper.</p>
+              <Riddle
+                issue={issue}
+                data={riddle.data}
+                yesterday={y?.riddle}
+                inks={INKS}
+                hideTitle
+                className="yn-play tb-play"
+              />
+            </article>
+          ) : null}
+
+          {search ? (
+            <article className="tb-tile tb-tile--search" aria-labelledby="search-title">
+              <h2 id="search-title" className="tb-tile-head tb-cond">
+                {search.data.title}
+              </h2>
+              <WordSearch
+                issue={issue}
+                data={search.data}
+                inks={INKS}
+                hideTitle
+                className="yn-play tb-play"
+              />
+            </article>
+          ) : null}
+
+          {fortune ? (
+            <article className="tb-tile tb-tile--fortune" aria-labelledby="fortune-title">
+              <h2 id="fortune-title" className="tb-tile-head tb-cond">
+                {fortune.data.title}
+              </h2>
+              <FortuneTeller
+                issue={issue}
+                data={fortune.data}
+                inks={INKS}
+                hideTitle
+                className="yn-play tb-play"
+              />
             </article>
           ) : null}
         </section>
       ) : null}
 
-      {y && (yCrossword || yLadder || yRiddle) ? (
+      {y && (yCrossword || yLadder) ? (
         <section className="tb-yday" aria-labelledby="yday-title">
           <h2 id="yday-title" className="tb-cond tb-yday-head">
             Yesterday&rsquo;s answers
-            <small>from No. {y.issueNumber}</small>
+            <small>from No. {y.issue}</small>
           </h2>
           <div className="tb-yday-body">
             {yCrossword ? (
               <div className="tb-yday-xw">
-                <CrosswordGrid data={yCrossword.data} fill={yCrossword.solution.grid} small />
+                <CrosswordAnswers
+                  data={yCrossword.data}
+                  solution={yCrossword.solution}
+                  inks={INKS}
+                  hideTitle
+                  className="yn-play tb-yday-grid"
+                />
                 <p>
                   <span className="tb-runin">{yCrossword.data.title}. </span>
                   Across: {yCrossword.solution.across.map((a) => `${a.n} ${a.answer}`).join(", ")}.
@@ -260,13 +214,10 @@ export function Back({ edition, page, reading }: PageProps) {
                 ))}
               </p>
             ) : null}
-            {yRiddle ? (
+            {y.riddle ? (
               <p className="tb-yday-riddle">
-                <span className="tb-runin">{yRiddle.data.title}. </span>
-                {yRiddle.data.question}{" "}
-                <span className="tb-yday-flip" aria-label={`Answer: ${yRiddle.solution.answer}`}>
-                  <span aria-hidden>{yRiddle.solution.answer}</span>
-                </span>
+                <span className="tb-runin">The riddle. </span>
+                Yesterday&rsquo;s answer is under the folded corner of today&rsquo;s.
               </p>
             ) : null}
           </div>
@@ -408,6 +359,8 @@ export function Back({ edition, page, reading }: PageProps) {
           </aside>
         ) : null}
       </section>
+
+      <BackKeepsakes edition={edition} className="tb-keepsakes" />
 
       <section className="tb-signoff2 print-worn" aria-label="Sign-off">
         <p

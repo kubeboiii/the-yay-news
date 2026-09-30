@@ -1,0 +1,78 @@
+/* "Keep this one": a pencilled tick box in the margin. */
+
+.hb-keep {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 4px 2px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hb-keep:focus-visible {
+  outline: 2px dashed currentColor;
+  outline-offset: 3px;
+}
+
+.hb-keep__box {
+  width: 26px;
+  height: 24px;
+  flex: none;
+  overflow: visible;
+}
+
+.hb-keep__line,
+.hb-keep__tick {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hb-keep__line {
+  stroke-width: 1.5;
+  opacity: 0.75;
+}
+
+.hb-keep__tick {
+  stroke-width: 2.6;
+}
+
+.hb-keep__tick.is-fresh {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hb-keep-tick 0.35s cubic-bezier(0.5, 0, 0.3, 1) forwards;
+}
+
+@keyframes hb-keep-tick {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hb-keep__label {
+  translate: 0 1px;
+}
+
+.hb-keep:hover .hb-keep__line {
+  opacity: 1;
+}
+
+.hb-keep.is-kept .hb-keep__label {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-keep__tick.is-fresh {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

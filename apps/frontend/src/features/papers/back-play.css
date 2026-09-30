@@ -1,0 +1,111 @@
+/* The playable back page, shared by every design (see back-play.tsx). */
+
+/* Puzzles set their type in em, so give them the page's body size, never under 16px. */
+.yn-play {
+  font-size: max(1rem, var(--text, 1rem));
+  min-width: 0;
+}
+/* Clues, the current clue and the word lists are read like body text: 16px at the least. */
+.yn-play :where(.pl-xw-current, li, p) {
+  font-size: max(1rem, 0.92em);
+}
+
+.yn-keepsakes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+  font-size: max(1rem, var(--text, 1rem));
+}
+@container (max-width: 640px) {
+  .yn-keepsakes {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .yn-keepsakes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.yn-plane {
+  display: flex;
+  justify-content: center;
+  font-size: max(1rem, var(--text, 1rem));
+}
+
+/* On paper the stickers, the faces and the plane can't be used: leave them off the printout (and
+   off the print view, so PrintFit measures the page as it prints). */
+.yn-print-page .yn-keepsakes,
+.yn-print-page .yn-plane,
+.yn-print-page .yn-noprint {
+  display: none !important;
+}
+@media print {
+  .yn-keepsakes,
+  .yn-plane,
+  .yn-noprint {
+    display: none !important;
+  }
+}
+
+.yn-keepsakes {
+  align-items: stretch;
+}
+.yn-keepsakes > .yn-keepsakes-sheet {
+  height: 100%;
+}
+.yn-keepsakes-side {
+  display: grid;
+  gap: 1rem;
+  /* Centred against the sticker sheet, so any spare depth is shared above and below. */
+  align-content: center;
+  min-width: 0;
+}
+
+/* On a wide back page the plane sits beside its instructions rather than alone in the middle. */
+.yn-keepsakes-plane {
+  container-type: inline-size;
+}
+@container (min-width: 460px) {
+  .yn-keepsakes-plane .pp {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "stage title" "stage hint" "stage actions";
+    /* The instructions centred against the paper, spare depth shared above and below them. */
+    align-content: center;
+    column-gap: 1.5rem;
+    text-align: left;
+  }
+  .yn-keepsakes-plane .pp__title {
+    grid-area: title;
+    align-self: end;
+    font-size: clamp(40px, 9cqw, 64px);
+    margin-bottom: 0.2em;
+  }
+  .yn-keepsakes-plane .pp__stage {
+    grid-area: stage;
+    margin: 0;
+    height: calc(280px * var(--pp-scale) + 4px);
+  }
+  .yn-keepsakes-plane .pp__hint {
+    grid-area: hint;
+    font-size: 24px;
+  }
+  .yn-keepsakes-plane .pp__actions {
+    grid-area: actions;
+    align-self: start;
+  }
+}
+
+/* The tabloid's keepsakes column is wide and the plane's instructions short: the words are kept
+   to a measure and the pair centred, with the spare depth split above and below the words, so no
+   hand's width of bare paper pools beside the last line. */
+@container (min-width: 460px) {
+  .tb-keepsakes .yn-keepsakes-plane .pp {
+    grid-template-columns: auto minmax(0, 18em);
+    justify-content: center;
+    grid-template-areas: "stage ." "stage title" "stage hint" "stage actions" "stage .";
+    grid-template-rows: 1fr auto auto auto 1fr;
+  }
+}

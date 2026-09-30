@@ -46,6 +46,11 @@ export type InsideLeft = {
   size: HeadSize;
   dots?: boolean;
   side: "left" | "right";
+  /**
+   * Picture-led: the main story's first picture on top and its others as a band of frames under
+   * it. Only offered when the main story has three or more pictures.
+   */
+  pics?: "filmstrip" | "contact";
 };
 export type InsideRight = {
   name: string;
@@ -67,6 +72,20 @@ const LEFTS: InsideLeft[] = [
     side: "left",
   },
   { name: "head in a side rail", variant: "rail", size: "m", side: "left" },
+  {
+    name: "print on top, the rest of the roll on a filmstrip",
+    variant: "top",
+    size: "l",
+    side: "right",
+    pics: "filmstrip",
+  },
+  {
+    name: "contact sheet under the print",
+    variant: "top",
+    size: "xl",
+    side: "left",
+    pics: "contact",
+  },
 ];
 
 const RIGHTS: InsideRight[] = [
@@ -102,10 +121,6 @@ const INSIDE: InsideComposition[] = LEFTS.flatMap((left) =>
 /** The composition of a core section's spread. */
 export function insideComposition(edition: Edition, page: EditionPage): InsideComposition {
   const inside = byOrder(edition.pages).filter((p) => p.layout === "section");
-  const at = Math.max(
-    0,
-    inside.findIndex((p) => p.order === page.order),
-  );
   // The shape of the day: which inside pages lead with a picture, and how long their mains run.
   const shape = inside
     .map((p) => {
@@ -114,7 +129,24 @@ export function insideComposition(edition: Edition, page: EditionPage): InsideCo
     })
     .join(",");
   const order = shuffle(INSIDE, hash(`${edition.issueNumber}|${shape}`));
-  return order[at % order.length]!;
+  // Walk the pages in order so no two share a composition, skipping picture-led ones for a page
+  // whose main story hasn't the pictures for them.
+  const used = new Set<string>();
+  let pick = order[0]!;
+  inside.forEach((p, at) => {
+    const main = byOrder(p.stories).find((s) => s.slot !== "brief");
+    const pictures = main?.images.length ?? 0;
+    // Picture-led spreads need the pictures; a head in a side rail needs a print to run down the
+    // rail under it, or the rail stops short of the text beside it.
+    const fits = (c: InsideComposition) =>
+      (!c.left.pics || pictures >= 3) && (c.left.variant !== "rail" || pictures >= 1);
+    const rotation = [...order.slice(at % order.length), ...order.slice(0, at % order.length)];
+    const c =
+      rotation.find((x) => fits(x) && !used.has(x.name)) ?? rotation.find(fits) ?? order[0]!;
+    used.add(c.name);
+    if (p.order === page.order) pick = c;
+  });
+  return pick;
 }
 
 // ——— Fronts: three compositions, rotated by issue so consecutive days always differ ———
@@ -164,7 +196,7 @@ export function storyMM(story: Copy, variant: StoryVariant, size: HeadSize = "l"
     8;
   switch (variant) {
     case "rail":
-      return Math.max(head * 1.6, textMM(chars, 1.55) + (pic ? 72 : 0)) + 6;
+      return Math.max(head * 1.6 + (pic ? 90 : 0), textMM(chars, 1.55)) + 6;
     case "float":
       return head + textMM(chars) + (pic ? 26 : 0);
     case "boxed":

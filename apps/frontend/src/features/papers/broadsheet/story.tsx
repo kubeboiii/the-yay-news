@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { StoryProps } from "../types";
 import { isLong, longDate, shortDate, themeFor, weekday } from "./lib";
+import { Gallery } from "../plates";
 import { Body, Photo, Ringed, Sticker, Zigzag } from "./parts";
 
 // A story's own page: the story cut out of the paper and laid out on a sheet of its own, in the
@@ -145,6 +146,8 @@ export function Story({ data, links }: StoryProps) {
             </div>
           </aside>
         </section>
+
+        <Gallery story={story} className="bs-story-gallery" captionClass="yn-caption" />
 
         <Zigzag word="more stories" />
 

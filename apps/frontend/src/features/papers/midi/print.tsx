@@ -2,6 +2,7 @@ import type { Edition, Feature, Image as EditionImage } from "@repo/shared";
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { printedPhoto } from "@/features/print/photo";
+import { FillPlates } from "../plates";
 import type { PageLink, Reading, StoryItem } from "../types";
 
 // Shared furniture for the Midi Magazine: dates, folios, photographs, page numbers and the few
@@ -27,7 +28,7 @@ export const weekday = (date: string) => part(date, { weekday: "long" });
 //
 // The front route prints the cover (page 1) and the opening spread (pages 2–3); every other route
 // prints one two-page spread starting on an even, left-hand page, so the reading order's n-th
-// page (0-based) opens on page 2n + 2: Screen & Sound 4–5, Gaming 6–7, and so on.
+// page (0-based) opens on page 2n + 2: Tech 4–5, Startups 6–7, and so on.
 
 export const pageNumber = (index: number) => (index <= 0 ? 1 : 2 * index + 2);
 
@@ -89,6 +90,7 @@ export function PrintPhoto({
   priority,
   position,
   children,
+  plates,
 }: {
   image: EditionImage;
   sizes: string;
@@ -96,7 +98,17 @@ export function PrintPhoto({
   priority?: boolean;
   position?: string;
   children?: ReactNode;
+  /** A story with more than one picture prints them all, as a group, in this photo's place. */
+  plates?: Pick<StoryItem, "slug" | "images">;
 }) {
+  if (plates && plates.images.length > 1) {
+    return (
+      <div className={`m5-photo m5-photo--plates ${className ?? ""}`}>
+        <FillPlates story={plates} sizes={sizes} priority={priority} />
+        {children}
+      </div>
+    );
+  }
   return (
     <div className={`m5-photo ${className ?? ""}`}>
       <Image
@@ -166,13 +178,15 @@ export const feature = <T extends Feature["type"]>(edition: Edition, type: T) =>
 export type Ground = "apricot" | "lilac" | "mint" | "blush" | "butter" | "powder";
 
 const GROUNDS: Record<string, Ground> = {
-  "screen-and-sound": "blush",
-  gaming: "mint",
+  screen: "blush",
+  play: "mint",
+  startups: "powder",
+  music: "apricot",
   sports: "butter",
   discoveries: "powder",
   tech: "lilac",
   money: "apricot",
-  "internet-and-culture": "blush",
+  internet: "lilac",
 };
 const ROTATION: Ground[] = ["powder", "mint", "butter", "lilac", "apricot", "blush"];
 

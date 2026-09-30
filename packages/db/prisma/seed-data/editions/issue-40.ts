@@ -1,7 +1,6 @@
 // Issue 40, Monday 28 September 2026. Back to the broadsheet for the week.
-// Most stories are real good news, rewritten in our own words, each with its source article; images
-// were fetched with apps/frontend/scripts/fetch_image.py. Stories marked "(sample)" are invented.
-import { ladder, mini, riddle } from "../puzzles.ts";
+// Every story is real good news, rewritten in our own words, each with its source article; images
+// were fetched with apps/frontend/scripts/fetch_image.py.
 import type { SeedEdition } from "../types.ts";
 
 export const issue40: SeedEdition = {
@@ -13,24 +12,29 @@ export const issue40: SeedEdition = {
 
   front: [
     {
-      slug: "smiley-star-cluster",
+      slug: "dasosaurus-construction-site",
       section: "discoveries",
-      kicker: "Space",
-      headline: "Amateur astronomer's garden photo shows a star cluster that seems to be smiling",
-      dek: "Two bright stars for eyes, a curve of fainter ones for a grin, and a whole astronomy club now calling it ‘Gary’.",
+      kicker: "Dinosaurs",
+      headline:
+        "Builders digging a rail terminal in Brazil uncover a 20-metre dinosaur nobody knew about",
+      dek: "Dasosaurus tocantinensis, the ‘forest lizard’ of the Tocantins River, is the biggest dinosaur ever found in Maranhão.",
       body: [
-        "Priya Vantongeren has been photographing the night sky from her back garden in Oakhollow for eleven years, with a second-hand telescope, a folding chair and a flask of tea that is usually cold by midnight. On Thursday she stacked 300 exposures of a patch of sky she had never bothered with, pressed ‘process’, and found something looking back at her.",
-        "Two bright stars sit side by side where the eyes would be. Below them, a gentle arc of eleven fainter stars curves upwards into what can only be described as a grin. Above it all, a smudge of distant gas gives the face a slightly windswept fringe.",
-        "“I actually laughed out loud, which you shouldn't do at two in the morning in a residential street,” said Ms Vantongeren, 46, who teaches geography during the day. “I've spent years looking for faint, serious things. Galaxies, nebulae, the odd comet. And the universe sends me a smiley face. I'll take it.”",
-        "The face is a trick of perspective. According to Dr Helga Marsh, an astrophysicist at the Oakhollow Observatory, the stars that make it up are scattered across more than 2,000 light years and would look like nothing at all from almost anywhere else in the galaxy. “We just happen to be standing in exactly the right spot to see it smile,” she said. “Statistically, that makes us very lucky. I checked the maths twice because I wanted it to be true.”",
-        "Within a day, the Oakhollow & District Astronomy Club had adopted the pattern. The members shortlisted 41 names, argued for an hour and a half and then voted for Gary, because, in the words of club chair Tomasz Brevik, ‘he just looks like a Gary’. The motion passed 23 votes to two. The two dissenters wanted Gareth.",
-        "The club is now planning a public viewing night on the village green for anyone with binoculars or a small telescope, with red torches handed out at the gate and a tea urn that Mr Brevik promises will stay hot. Pupils at the local primary school have already sent in drawings of Gary with arms, a hat and, in one case, a small dog.",
-        "Ms Vantongeren has posted her camera settings and a finder chart online so other backyard astronomers can go looking for themselves. Early reports from as far away as Port Anselm suggest Gary is visible from both hemispheres, although southern observers insist he is standing on his head, and seems to be enjoying it.",
-        "Clear skies are forecast for the weekend. Gary, as ever, will be there.",
+        "Most building sites turn up pipes, old bricks and the odd lost trowel. The one in Davinópolis, in the Brazilian state of Maranhão, turned up a dinosaur the length of two buses.",
+        "Workers were preparing ground for a road and rail terminal when bones began to appear. Archaeologists had been watching the dig as part of its environmental licence, and at first they took the remains for a prehistoric mammal. They were out by a considerable margin. What they had found was a sauropod, one of the long-necked, long-tailed plant-eaters, about 20 metres from nose to tail and roughly 120 million years old.",
+        "The team has named it Dasosaurus tocantinensis. ‘Daso’ means forest, a nod to the wooded landscape of Maranhão, while the second half honours the Tocantins River that runs near the site. The study, published in the Journal of Systematic Palaeontology, was led by Elver Luiz Mayer of the Federal University of the São Francisco Valley, with Max Langer of the University of São Paulo and Tito Aureliano and Aline Ghilardi of the Federal University of Rio Grande do Norte.",
+        "The skeleton is unusually complete for a find of this age. There are tail vertebrae, ribs, bones from the limbs and feet, and a single thigh bone 1.5 metres long, taller than many of the people who dug it out.",
+        "“It's the largest known dinosaur for Maranhão, which has other species, but not sauropods like this one,” the researchers said. The state has given scientists other dinosaurs before, but nothing on this scale.",
+        "An artist's reconstruction by Jorge Blanco now shows Dasosaurus striding through its ancient forest. The terminal, meanwhile, has already earned itself the best possible foundation story.",
       ],
-      source: "Backyard Skies (sample)",
-      sticker: ":)",
-      photo: "space",
+      source: "ScienceDaily",
+      sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260907201603.htm",
+      sticker: "20m",
+      image: {
+        file: "/editions/40/dasosaurus-construction-site.jpg",
+        alt: "An artist's reconstruction of the long-necked sauropod Dasosaurus walking through a forest",
+        credit: "Jorge Blanco",
+        from: "https://www.sciencedaily.com/releases/2026/09/260907201603.htm",
+      },
     },
     {
       slug: "vinatieri-field-goal-jungfraujoch",
@@ -48,11 +52,17 @@ export const issue40: SeedEdition = {
       source: "UPI",
       sourceUrl:
         "https://www.upi.com/Odd_News/2026/09/23/switzerland-Guinness-World-Records-Adam-Vinatieri-fild-goal/9571790186297/",
+      image: {
+        file: "/editions/40/vinatieri-field-goal-jungfraujoch.jpg",
+        alt: "The Sphinx observatory on its rock at Jungfraujoch",
+        credit: "Wikimedia Commons",
+        from: "https://commons.wikimedia.org/wiki/File:CH.BE.Grindelwald_2021-04-20_Jungfraujoch_Sphinx-Observatory.jpg",
+      },
     },
     {
       slug: "magazine-returned-132-years-late",
       slot: "feature",
-      section: "internet-and-culture",
+      section: "internet",
       kicker: "Libraries",
       headline: "Library magazine comes back 132 years late, and the $12,055 fine is waived",
       dek: "The September 1894 issue of The Century Illustrated Monthly is going on display instead of back on the shelf.",
@@ -65,193 +75,16 @@ export const issue40: SeedEdition = {
       source: "UPI",
       sourceUrl:
         "https://www.upi.com/Odd_News/2026/09/15/Concord-Public-libraray-magazine-132-years-overdue/1491789490872/",
+      image: {
+        file: "/editions/40/magazine-returned-132-years-late.jpg",
+        alt: "The Concord Public Library building in Concord, New Hampshire",
+        credit: "Farragutful / Wikimedia Commons",
+        from: "https://commons.wikimedia.org/wiki/File:Concord_Public_Library.jpg",
+      },
     },
   ],
 
   inside: [
-    {
-      section: "screen-and-sound",
-      stories: [
-        {
-          slug: "mozart-notebook-found-in-paris",
-          kicker: "Classical",
-          headline: "A notebook in a Paris library turns out to be Mozart's, aged 22",
-          dek: "A curator tidying up before retirement recognised the composer's rounded, forward-leaning treble clefs.",
-          body: [
-            "François-Pierre Goy had set himself one last job before retiring from the music department of France's National Library: work through a pile of documents nobody had properly looked at. Somewhere in the pile was a 44-page notebook. It turned out to have been written by Wolfgang Amadeus Mozart.",
-            "The notebook dates from May to July 1778, when a 22-year-old Mozart was living in Paris and earning his keep as a music tutor. His pupil was Marie-Louise-Philippine, daughter of the Duke of Guines, a much-admired flute player of the day. Inside are the daily exercises Mozart set her for the harp, plus seven pieces for flute and harp that may have been meant for father and daughter to play together.",
-            "“I never imagined what I was about to find,” Goy said. He had a head start: only weeks earlier he had been studying other teaching documents in Mozart's hand, and the writing looked familiar. “The treble clefs are quite rounded and tilted slightly forward,” he explained, while the bass clefs were drawn the opposite way to the style French composers usually used.",
-            "He laid the pages beside a copy of Mozart's Concerto for Flute and Harp, the piece the Duke himself commissioned, and found identical stamps on both. In April the notebook was authenticated by Armin Brinzing, director of the Mozarteum Foundation in Salzburg, and the library has called it a “major discovery”.",
-            "The concerto is still one of Mozart's best-loved works. Now, 248 years on, we also have the lesson plans he wrote for the girl who played it.",
-          ],
-          source: "Classic FM",
-          sourceUrl:
-            "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
-          image: {
-            file: "/editions/40/mozart-notebook-paris.jpg",
-            alt: "A portrait of Mozart beside the open handwritten notebook of music exercises",
-            credit: "Classic FM",
-            from: "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
-          },
-        },
-        {
-          slug: "vulcan-salute-record-science-museum",
-          slot: "feature",
-          kicker: "Television",
-          headline: "Star Trek fans set a Vulcan salute record at London's Science Museum",
-          dek: "1,188 people came for Star Trek Day, and 934 of them held the split-fingered salute for a full minute.",
-          body: [
-            "Holding up a hand with the fingers parted in a V looks easy until you try it for sixty seconds. On 10 September, Star Trek Day, 1,188 fans gathered at the Science Museum in London to try, as part of the show's 60th-anniversary celebrations.",
-            "Among them was Martin Quinn, who plays the engineer Montgomery Scott in Star Trek: Strange New Worlds. Guinness World Records adjudicator Paulina Sapinska counted everyone who kept the salute steady for the whole minute: 934 people, enough for a new world record.",
-            "“For an attempt that lasted only one minute, there was a lot of excitement,” Sapinska said, “and it was a huge bonding moment for the fans.”",
-            "Live long, and keep your fingers apart.",
-          ],
-          source: "UPI",
-          sourceUrl:
-            "https://www.upi.com/Odd_News/2026/09/15/Guinness-World-Records-Star-Trek-Vulcan-salute/3451789489055/",
-        },
-        {
-          slug: "cassette-album-tops-chart",
-          slot: "brief",
-          kicker: "Music",
-          headline: "Cassette-only album tops Merrow's indie chart, with a pencil in every case",
-          dek: "The Lanternfish chose tape ‘because you have to listen to the whole thing’.",
-          body: [
-            "The Lanternfish released their second album, ‘Low Tide Radio’, only on cassette: 2,000 copies, each with a small yellow pencil for rewinding. It went straight to number one on Merrow's independent chart. Shops report that blank tapes have sold out too, and one now has a wall of mixtapes made for strangers.",
-          ],
-          source: "Music Notes (sample)",
-        },
-        {
-          slug: "sock-vote-encore",
-          slot: "brief",
-          kicker: "Concerts",
-          headline: "Orchestra lets its audience choose the encore by waving coloured socks",
-          dek: "Red socks meant Brahms; striped socks meant the theme from a cartoon about a heroic sandwich.",
-          body: [
-            "The Kalvenburg Philharmonic handed out two socks per seat before Saturday's concert and counted the waving at the end. The cartoon theme won by what the conductor called ‘an embarrassing margin’ and was played twice. The socks went to a knitting circle, which plans to turn them into a very long scarf.",
-          ],
-          source: "Concert Hall Notes (sample)",
-        },
-      ],
-    },
-    {
-      section: "gaming",
-      stories: [
-        {
-          slug: "lighthouse-keeper-sim",
-          kicker: "Indie",
-          headline:
-            "‘Keeper’, a game about simply looking after a lighthouse, passes a million players",
-          dek: "There are no enemies, just a kettle, a lamp, a logbook and a great many very nice waves.",
-          body: [
-            "‘Keeper’ was made over three winters by Oona Lindqvist, a solo developer on the small island of Stray, where the ferry runs twice a week and the internet runs when it feels like it. This weekend it passed one million players.",
-            "The game has no enemies, no score and no way to lose. You play a lighthouse keeper on a rock in a grey-green sea. You trim the wick, polish the lens, write down every ship that passes and make tea on a small iron stove. On stormy nights things become slightly more dramatic: you can put on a jumper.",
-            "“I kept being told a game needs conflict,” said Ms Lindqvist. “I tried adding pirates for about a week. They just made the tea go cold. So I took them out.”",
-            "Players have taken the logbook very seriously. The game lets you write a line for every ship, and the most shared screenshots online are other people's entries: ‘Small blue fishing boat. Waved.’ ‘Ferry late again. Sympathy.’ ‘A whale, I think, or a very large wave with ambitions.’",
-            "Reviewers have called it ‘the calmest hour you'll spend this year’. A retired keeper from the mainland, Albin Rask, wrote to say it was accurate in every detail except one. “You never run out of biscuits,” he said. “We always ran out of biscuits.”",
-            "Ms Lindqvist has promised to fix this in the next update. Biscuits will now run out, and a supply boat will bring more every seventh in-game day.",
-          ],
-          source: "Indie Arcade (sample)",
-          photo: "lighthouse",
-        },
-        {
-          slug: "rubiks-cubes-on-a-pogo-stick",
-          slot: "feature",
-          kicker: "Puzzles",
-          headline: "Man who solved 211 Rubik's cubes on a pogo stick makes the record book",
-          dek: "Saul Hafting set the record at 16, and five years on nobody has bounced past it.",
-          body: [
-            "Saul Hafting, from Annapolis Royal in Nova Scotia, was 16 when he solved 211 Rubik's cubes while bouncing on a pogo stick. The previous record was 65. Guinness approved his total in 2022, and it has now earned him a page in the Guinness World Records 2027 book, which is in shops this month.",
-            "Hafting, now 21, admits he wasn't sure how long it would stand. “If it ever gets broken, I know that I held it for many years, which is very satisfying,” he said.",
-            "He is most excited about the simplest part. “It's awesome,” he said. “I am very excited to get a copy of my own and flip through it and see my name in it.” He plans to help launch the book with demonstrations, which we can only assume will be bouncy.",
-          ],
-          source: "UPI",
-          sourceUrl:
-            "https://www.upi.com/Odd_News/2026/09/11/canada-Guinness-World-Records-rubiks-cube-pogo-stick/5691789143596/",
-        },
-        {
-          slug: "sofa-stairs-coop",
-          slot: "brief",
-          kicker: "Co-op",
-          headline: "Two-player game about carrying a sofa upstairs becomes a family favourite",
-          dek: "‘Pivot!’ is now, by several reliable accounts, the most shouted word in living rooms.",
-          body: [
-            "‘Lift With Your Legs’ gives each player one end of an enormous green sofa and a staircase that gets narrower every level. There is no timer and no score, just a count of how many times you have scraped the wallpaper. Level twelve has a cat asleep on the landing. The designers refuse to make the sofa smaller.",
-          ],
-          source: "Couch Co-op (sample)",
-        },
-        {
-          slug: "library-lends-half-finished-games",
-          slot: "brief",
-          kicker: "Libraries",
-          headline: "Library lends out handheld consoles with a game already saved halfway through",
-          dek: "Each one comes with a note from the last borrower about where they got to.",
-          body: [
-            "The library in Coldbrook Vale now lends twelve second-hand handhelds, each loaded with one long adventure game. Borrowers carry on from where the previous person stopped and leave a note in the case. The notes are getting chattier. The latest reads: ‘Don't open the blue door yet. Trust me. Also, the frog is a friend.’",
-          ],
-          source: "Library Letter (sample)",
-        },
-      ],
-    },
-    {
-      section: "sports",
-      stories: [
-        {
-          slug: "cyclist-returns-hat",
-          kicker: "Cycling",
-          headline: "Cyclist stops mid-race to hand back a spectator's hat, then wins anyway",
-          dek: "The flat cap blew on to the road on the final climb, and its owner has since had it framed.",
-          body: [
-            "The Tollbridge Hill Race is 94 kilometres long and finishes with a climb so steep that locals call it ‘the Wall of Mild Regret’. With four kilometres to go on Sunday, Amaru Castell was in fourth place when a gust lifted a tweed flat cap off a spectator's head and dropped it in the middle of the road.",
-            "Castell braked, unclipped, picked up the cap and rode back two metres to hand it to its owner at the barrier. Then he set off again, by now 40 seconds behind the leaders.",
-            "“It was a nice hat,” said Castell, 27, who teaches music at a primary school when he isn't racing. “If I'd left it there, somebody would have ridden over it, and I'd have been thinking about that hat for the rest of my life.”",
-            "What happened next surprised even his own team. Castell caught the leading group on the descent, sat in behind them through the last bends and won the sprint by the width of a tyre.",
-            "The cap belonged to Reginald Oyelaran, 74, who has watched the race from the same spot for 30 years. “He handed it over like a waiter bringing soup,” Mr Oyelaran said. “Very carefully, with a little nod.”",
-            "The cap now hangs in a frame in the village hall, next to a photograph of the finish. The organisers have announced a new prize for next year: a small silver hat, for sportsmanship.",
-          ],
-          source: "Grid Talk (sample)",
-        },
-        {
-          slug: "royals-home-bun-race",
-          slot: "feature",
-          kicker: "Baseball",
-          headline: "Royals fans steer a giant inflatable hot dog into its bun; everyone eats free",
-          dek: "The crowd had 35 seconds to complete the ‘Home Bun Race’ at Kauffman Stadium.",
-          body: [
-            "Baseball has the seventh-inning stretch. The Kansas City Royals have the Home Bun Race. During their game against the Toronto Blue Jays on Saturday 6 September, a giant inflatable hot dog and an equally giant inflatable bun were launched into different sections of the stands at Kauffman Stadium.",
-            "The fans had 35 seconds to nudge the two together across the crowd. They did it inside the time, which meant every fan in the ground had earned a free hot dog.",
-            "Major League Baseball's account marked the moment with a short announcement: “HOT DOG ASSEMBLY COMPLETE.” The Royals lost 4–3, but it is hard to believe many people went home hungry.",
-          ],
-          source: "UPI",
-          sourceUrl:
-            "https://www.upi.com/Odd_News/2026/09/09/home-bun-race-Kansas-City-royals/8641788970720/",
-        },
-        {
-          slug: "fastest-hole-of-disc-golf",
-          slot: "brief",
-          kicker: "Disc golf",
-          headline: "Four friends play a hole of disc golf in 44.31 seconds, flat out",
-          dek: "It took 60 attempts, and the final stretch was a 41-second sprint uphill.",
-          body: [
-            "Serial record-setter David Rush teamed up with Travis, Anders and Oliver Davidson at Mallard Park in Idaho for the Guinness record for the fastest hole of disc golf by a team of four, on a certified hole of at least 200 metres. Attempt number 60 was the one. “Everything finally aligned,” Rush said.",
-          ],
-          source: "UPI",
-          sourceUrl:
-            "https://www.upi.com/Odd_News/2026/09/09/Guinness-World-Records-David-Rush-disc-golf/8671788975951/",
-        },
-        {
-          slug: "under-nines-trick-play",
-          slot: "brief",
-          kicker: "Football",
-          headline: "Under-nines' secret free kick fools everyone, including their own coach",
-          dek: "The routine involved a fake shoelace problem and a lot of pointing at the sky.",
-          body: [
-            "The Pennyfield Juniors rehearsed it at break time for six weeks. At 1–1 in the cup, their captain knelt to tie a shoelace that was already tied, two teammates pointed upwards and gasped, and while everyone looked at the sky a quiet defender tapped the ball in. “I thought there was a hot-air balloon,” admitted the coach.",
-          ],
-          source: "Sunday League Weekly (sample)",
-        },
-      ],
-    },
     {
       section: "tech",
       stories: [
@@ -301,26 +134,287 @@ export const issue40: SeedEdition = {
           },
         },
         {
-          slug: "pawguard-cat-keyboard-app",
+          slug: "steam-frame-launch",
           slot: "brief",
-          kicker: "Open source",
-          headline: "Free app spots a cat walking across your keyboard and saves your work",
-          dek: "It tells paws from fingers by rhythm alone, then locks the screen with a polite message.",
+          kicker: "Virtual reality",
+          headline:
+            "Valve's Steam Frame headset starts shipping, with a random draw to beat the resellers",
+          dek: "It plays VR games on its own, and streams your whole Steam library from a PC.",
           body: [
-            "PawGuard watches how keys are pressed rather than which ones. Cats hold several neighbouring keys too long and cross the keyboard in a straight line; when it sees that, it saves your file and shows ‘Cat detected. Please stand by.’ Its developer trained it on 40 hours of her cat, Dumpling, who was delighted to help.",
+            "Valve's new headset comes in two sizes: $1,059 (£889) for 256GB and $1,299 (£1,089) for 1TB. It runs on a Snapdragon chip, plays VR games by itself and can stream the whole Steam library from a PC using the Wi-Fi 6E dongle in the box. To keep kits away from resellers, buyers were picked at random, with the first purchase emails sent on 18 September.",
           ],
-          source: "Open Tech Digest (sample)",
+          source: "Road to VR",
+          sourceUrl: "https://roadtovr.com/valve-steam-frame-price-release-pre-orders/",
+          image: {
+            file: "/editions/40/steam-frame-launch.jpg",
+            alt: "The black Steam Frame headset lying beside its two controllers",
+            credit: "Valve",
+            from: "https://roadtovr.com/valve-steam-frame-price-release-pre-orders/",
+          },
+        },
+      ],
+    },
+    {
+      section: "startups",
+      stories: [
+        {
+          slug: "sivo-go-dyson-award",
+          kicker: "Inventions",
+          headline:
+            "Loughborough graduate's pocket alarm for deaf travellers wins the UK James Dyson Award",
+          dek: "Gargi Agrawalla's SIVO.GO hears fire alarms, doorbells and knocks, then flashes, buzzes and shows a message.",
+          body: [
+            "Gargi Agrawalla has turned her final-year university project into a national prize. The Loughborough University product design graduate was named the UK winner of the James Dyson Award 2026 on 16 September for SIVO.GO, a portable safety system for deaf and hard-of-hearing travellers.",
+            "The idea came from her own life. Agrawalla is profoundly deaf and uses a cochlear implant, and she designed SIVO.GO for the moments when a hotel room or a holiday flat can leave you out of the loop: while you are asleep, in the shower or simply somewhere unfamiliar.",
+            "The little device listens for the sounds that matter, such as fire alarms and doorbells, while a separate vibration sensor picks up knocks and a door opening. It then passes the alert on as light, a message on a small screen and a vibration. Everything happens on the device itself, with no Wi-Fi or cloud connection needed.",
+            "Inside is an Arduino Nano 33 BLE Sense Rev2 microprocessor, a MEMS microphone, an OLED screen, RGB lights, a vibration motor and a real-time clock. Its sound-recognition model is a tiny piece of machine learning trained on more than 500 labelled audio clips.",
+            "“It feels immensely rewarding to see SIVO.GO grow from my final year university project into something recognised at a national level,” Agrawalla said. The win brings £5,000 and a place in the running for the international top 20, where £30,000 is at stake. Next she plans to improve the prototype, run more trials with users and accommodation providers, and work towards certification and pilot manufacturing.",
+          ],
+          source: "Loughborough University",
+          sourceUrl:
+            "https://www.lboro.ac.uk/media-centre/press-releases/2026/september/gargi-agrawalla-uk-winner-james-dyson-award-2026",
+          image: {
+            file: "/editions/40/sivo-go-dyson-award.jpg",
+            alt: "Gargi Agrawalla holding her SIVO.GO device in a workshop",
+            credit: "Loughborough University",
+            from: "https://www.lboro.ac.uk/media-centre/press-releases/2026/september/gargi-agrawalla-uk-winner-james-dyson-award-2026",
+          },
         },
         {
-          slug: "school-weather-stations",
-          slot: "brief",
-          kicker: "Science kits",
-          headline: "900 schools now run home-made weather stations on one shared map",
-          dek: "Each station is a jam jar, some cheap sensors and a lot of sticky tape.",
+          slug: "ithrone-waterless-toilet",
+          slot: "feature",
+          kicker: "Space spin-off",
+          headline:
+            "A toilet first imagined for astronauts now serves more than 20,000 homes on Earth",
+          dek: "Diana Yousef's iThrone dries away 95 per cent of the water in waste, so it needs no pipes at all.",
           body: [
-            "The Sky Jar project gives schools free plans for a weather station that pupils build, paint and fix to a fence post. Its readings join a public map that updates every ten minutes, now covering 31 countries. Each month, the school with the most accurate forecasts wins a trophy shaped like a cloud.",
+            "Diana Yousef was working on sanitation for spacecraft at NASA when she noticed something useful. A space station bathroom has to deal with waste without any water pipes, and so do homes in places that have no plumbing. The same answer could work for both.",
+            "The result is the iThrone, made by her start-up change:WATER. It rapidly evaporates 95 per cent of the water in human waste, which means it needs no sewer connection and no water supply at all. More than 20,000 households in Uganda, Panama and the United States already use one.",
+            "Yousef, who studied at Cornell, Columbia and Harvard, has now won the 2026 Global Citizen Waislitz Award, which comes with $100,000. She says the money will help change:WATER scale up iThrone distribution to millions more households by next year.",
           ],
-          source: "Open Tech Digest (sample)",
+          source: "Good News Network",
+          sourceUrl:
+            "https://www.goodnewsnetwork.org/inventor-envisioned-a-waterless-toilet-for-astronauts-realized-it-could-solve-a-global-sanitation-crisis-instead/",
+          image: {
+            file: "/editions/40/ithrone-waterless-toilet.jpg",
+            alt: "A diagram of the iThrone waterless toilet and its evaporative collection pouch",
+            credit: "change:WATER",
+            from: "https://www.goodnewsnetwork.org/inventor-envisioned-a-waterless-toilet-for-astronauts-realized-it-could-solve-a-global-sanitation-crisis-instead/",
+          },
+        },
+        {
+          slug: "fingagolf-dragons-den",
+          slot: "brief",
+          kicker: "Dragons' Den",
+          headline: "Peter Jones gets a hole in one with a golf game you play with a finger",
+          dek: "Fingagolf's tiny club slips on to your finger, and comes in left- and right-handed versions.",
+          body: [
+            "Glyn Richards took Fingagolf into the Den asking for £30,000 for 15 per cent. The game uses a plastic club worn on the finger and a miniature artificial course, with add-on packs of new courses and scenery. Peter Jones offered the money for 30 per cent, Richards said yes, and the Dragon declared it a hole in one. The club has six registered designs.",
+          ],
+          source: "Dragons' Den IP blog (UK Intellectual Property Office)",
+          sourceUrl:
+            "https://dragonsden.blog.gov.uk/2026/09/10/dragons-den-ip-blog-series-23-episode-11/",
+          image: {
+            file: "/editions/40/fingagolf-dragons-den.jpg",
+            alt: "Glyn Richards demonstrates Fingagolf on a miniature green to two Dragons",
+            credit: "BBC / Dragons' Den",
+            from: "https://dragonsden.blog.gov.uk/2026/09/10/dragons-den-ip-blog-series-23-episode-11/",
+          },
+        },
+      ],
+    },
+    {
+      section: "screen",
+      stories: [
+        {
+          slug: "emmys-2026-records",
+          kicker: "Emmys",
+          headline: "Jean Smart and Matthew Rhys make Emmys history on a night led by Widow's Bay",
+          dek: "Apple TV's comedy took 14 awards, and Mariska Hargitay hosted the ceremony in Los Angeles.",
+          body: [
+            "The 78th Primetime Emmy Awards were handed out on 14 September at the Peacock Theater in downtown Los Angeles, and two actors went home with a place in the record books.",
+            "Jean Smart won Outstanding Lead Actress in a Comedy for Hacks, making her the first female performer ever to win an Emmy for every season of her series. Matthew Rhys managed something just as rare: he won Lead Actor in a Comedy for Widow's Bay and Lead Actor in a Limited Series for The Beast in Me, taking prizes in both categories on the same night.",
+            "Widow's Bay was the evening's big story. The Apple TV show won Outstanding Comedy Series and 14 Emmys in total, six of them in the major categories, which made it very much Apple TV's night. The Pitt, on HBO Max, took Outstanding Drama Series, with Noah Wyle named Lead Actor in a Drama, and Rhea Seehorn won Lead Actress in a Drama for Pluribus. Sally Field was named Lead Actress in a Limited Series for Remarkably Bright Creatures.",
+            "The host was Mariska Hargitay, the star of Law & Order: Special Victims Unit. She was the first host since 1993 who is not a comedian, comedy performer, reality presenter or television personality, and the first woman to host since 2011. Michael J. Fox received the Bob Hope Humanitarian Award.",
+            "The ceremony, a proper feast of television, went out on NBC and the Peacock streaming service, and 6.8 million people tuned in to watch history being made twice in one evening.",
+          ],
+          source: "Wikipedia",
+          sourceUrl: "https://en.wikipedia.org/wiki/78th_Primetime_Emmy_Awards",
+          image: {
+            file: "/editions/40/emmys-2026-records.jpg",
+            alt: "The Peacock Theater at L.A. Live in downtown Los Angeles, where the Emmys were held",
+            credit: "Benoît Prieur / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Microsoft_Theater_(Los_Angeles)_July_2022.JPG",
+          },
+        },
+        {
+          slug: "atlas-animated-movie-basement",
+          slot: "feature",
+          kicker: "Animation",
+          headline: "Austin McConnell animates a whole 90-minute superhero film in his basement",
+          dek: "Atlas: The Animated Movie revives a 1964 comic hero who never got past issue one.",
+          body: [
+            "Austin McConnell spent four years making a 90-minute animated feature, and he did most of the animating himself, six or seven hours a day, from his basement. “It was basically like trying to figure out how to do Avatar in this basement that I'm standing in,” he told Cartoon Brew.",
+            "Atlas: The Animated Movie is based on Atlas: Man of Might, a 1964 comic from I.W. Publications. “This was essentially a Golden Age comic book character that never got past the first issue,” McConnell said. A Kickstarter campaign raised $51,809 from 1,108 backers, and he built the film with iClone, After Effects, Photoshop, DaVinci Resolve and Audacity, under a cheerful studio motto: “Just do it scuffed.”",
+            "The film went up on YouTube on 8 September, and the Moxie Cinema in Springfield, Missouri, screened it on the 12th. “When you watch this movie, it definitely feels like a person made it,” McConnell said.",
+          ],
+          source: "Cartoon Brew",
+          sourceUrl:
+            "https://www.cartoonbrew.com/feature-film/atlas-the-animated-movie-austin-mcconnell-266272.html",
+          image: {
+            file: "/editions/40/atlas-animated-movie-basement.jpg",
+            alt: "The animated superhero Atlas in his blue and red costume, from Atlas: The Animated Movie",
+            credit: "Austin McConnell",
+            from: "https://www.cartoonbrew.com/feature-film/atlas-the-animated-movie-austin-mcconnell-266272.html",
+          },
+        },
+        {
+          slug: "vulcan-salute-record-science-museum",
+          slot: "brief",
+          kicker: "Star Trek",
+          headline: "Star Trek fans set a Vulcan salute record at London's Science Museum",
+          dek: "1,188 people came for Star Trek Day, and 934 of them held the split-fingered salute for a full minute.",
+          body: [
+            "On 10 September, Star Trek Day, fans gathered at the Science Museum in London for the show's 60th anniversary, joined by Martin Quinn, Scotty in Star Trek: Strange New Worlds. A Guinness World Records adjudicator counted 934 people who held the salute steady for the whole minute. “It was a huge bonding moment for the fans,” she said. Live long, and keep your fingers apart.",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Odd_News/2026/09/15/Guinness-World-Records-Star-Trek-Vulcan-salute/3451789489055/",
+          image: {
+            file: "/editions/40/vulcan-salute-record-science-museum.jpg",
+            alt: "Star Trek fans raise the Vulcan salute together at the Science Museum in London",
+            credit: "Guinness World Records",
+            from: "https://www.guinnessworldrecords.com/news/2026/9/most-people-performing-a-vulcan-salute-simultaneously",
+          },
+        },
+      ],
+    },
+    {
+      section: "play",
+      stories: [
+        {
+          slug: "nintendo-direct-kirby-world-beyond",
+          kicker: "Nintendo",
+          headline: "Kirby gets a whole open world to explore for his 35th birthday",
+          dek: "September's Nintendo Direct also slipped ten classic Super Mario Kart tracks into Mario Kart World, free, the same day.",
+          body: [
+            "Nintendo's September Direct, broadcast on 9 September, had something for almost every kind of player, and the pinkest of all was Kirby and the World Beyond. It is a brand-new 3D adventure for Switch 2 set in an open world, built around Kirby's famous Copy Abilities, and it is due in spring 2027 to celebrate the series' 35th anniversary.",
+            "Kirby borrowing the powers of whatever he swallows has been the heart of the series for decades. Giving him a whole open world to try them out in is the sort of idea that makes you wonder why nobody thought of it sooner.",
+            "Racers did not have to wait at all. Mario Kart World got a free update the same day, bringing back ten classic tracks from Super Mario Kart, including Choco Island, Vanilla Lake and Ghost Valley, and adding two new Knockout Tour routes, Propeller and Turnip Rally.",
+            "The rest of the show filled the calendar nicely. Pikmin 4 Switch 2 Edition + Dandori Academy arrives on 12 November with voice commands and a new time-challenge mode. Professor Layton and the New World of Steam follows on 10 December, on both Switch 2 and the original Switch. Hyrule Warriors: Age of Calamity - Definitive Edition lands on 25 February 2027, and Yo-kai Watch 2: Haunted Domain is on its way to Switch 2, with a date still to come.",
+            "For anyone keeping count, that is a new Kirby, a new Layton, a smarter Pikmin and a pile of old Mario Kart tracks, all from one afternoon's broadcast. The Switch 2 is going to be a busy little machine this winter.",
+          ],
+          source: "Game Informer",
+          sourceUrl:
+            "https://gameinformer.com/nintendo-direct/2026/09/09/every-new-announcement-at-the-september-2026-nintendo-direct",
+          image: {
+            file: "/editions/40/nintendo-direct-kirby-world-beyond.jpg",
+            alt: "Sword Kirby, in his green cap, from the reveal trailer for Kirby and the World Beyond",
+            credit: "Nintendo",
+            from: "https://www.invenglobal.com/articles/25745/a-world-beyond-the-world-kirby-and-the-world-beyond-releasing-spring-2027",
+          },
+        },
+        {
+          slug: "rubiks-cubes-on-a-pogo-stick",
+          slot: "feature",
+          kicker: "Puzzles",
+          headline: "Man who solved 211 Rubik's cubes on a pogo stick makes the record book",
+          dek: "Saul Hafting set the record at 16, and five years on nobody has bounced past it.",
+          body: [
+            "Saul Hafting, from Annapolis Royal in Nova Scotia, was 16 when he solved 211 Rubik's cubes while bouncing on a pogo stick. The previous record was 65. Guinness approved his total in 2022, and it has now earned him a page in the Guinness World Records 2027 book, which is in shops this month.",
+            "Hafting, now 21, admits he wasn't sure how long it would stand. “If it ever gets broken, I know that I held it for many years, which is very satisfying,” he said.",
+            "He is most excited about the simplest part. “It's awesome,” he said. “I am very excited to get a copy of my own and flip through it and see my name in it.” He plans to help launch the book with demonstrations, which we can only assume will be bouncy.",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Odd_News/2026/09/11/canada-Guinness-World-Records-rubiks-cube-pogo-stick/5691789143596/",
+        },
+        {
+          slug: "switch-sports-resort-fingerboard",
+          slot: "brief",
+          kicker: "Freebies",
+          headline:
+            "Nintendo Switch Sports Resort comes with a tiny finger skateboard for early buyers",
+          dek: "The retro pre-order gift is on offer at two UK shops, TheGameCollection and ShopTo.",
+          body: [
+            "Anyone who remembers finger skateboards lining toy shop shelves in the late 1990s can have one again. Pre-order the Switch 2 game for £46.95 at TheGameCollection, or £43.85 at ShopTo, and a Sports Resort-themed fingerboard comes free. TheGameCollection calls it one of its favourite bonuses ever. Nintendo's own store is offering a drawstring sports bag.",
+          ],
+          source: "GamesRadar+",
+          sourceUrl:
+            "https://www.gamesradar.com/games/attention-all-millennials-the-nintendo-switch-sports-resort-pre-order-gift-is-a-bonafide-finger-skateboard/",
+          image: {
+            file: "/editions/40/switch-sports-resort-fingerboard.jpg",
+            alt: "The Nintendo Switch Sports Resort box beside its free finger skateboard",
+            credit: "GamesRadar+ / Nintendo",
+            from: "https://www.gamesradar.com/games/attention-all-millennials-the-nintendo-switch-sports-resort-pre-order-gift-is-a-bonafide-finger-skateboard/",
+          },
+        },
+      ],
+    },
+    {
+      section: "music",
+      stories: [
+        {
+          slug: "mozart-notebook-found-in-paris",
+          kicker: "Classical",
+          headline: "A notebook in a Paris library turns out to be Mozart's, aged 22",
+          dek: "A curator tidying up before retirement recognised the composer's rounded, forward-leaning treble clefs.",
+          body: [
+            "François-Pierre Goy had set himself one last job before retiring from the music department of France's National Library: work through a pile of documents nobody had properly looked at. Somewhere in the pile was a 44-page notebook. It turned out to have been written by Wolfgang Amadeus Mozart.",
+            "The notebook dates from May to July 1778, when a 22-year-old Mozart was living in Paris and earning his keep as a music tutor. His pupil was Marie-Louise-Philippine, daughter of the Duke of Guines, a much-admired flute player of the day. Inside are the daily exercises Mozart set her for the harp, plus seven pieces for flute and harp that may have been meant for father and daughter to play together.",
+            "“I never imagined what I was about to find,” Goy said. He had a head start: only weeks earlier he had been studying other teaching documents in Mozart's hand, and the writing looked familiar. “The treble clefs are quite rounded and tilted slightly forward,” he explained, while the bass clefs were drawn the opposite way to the style French composers usually used.",
+            "He laid the pages beside a copy of Mozart's Concerto for Flute and Harp, the piece the Duke himself commissioned, and found identical stamps on both. In April the notebook was authenticated by Armin Brinzing, director of the Mozarteum Foundation in Salzburg, and the library has called it a “major discovery”.",
+            "The concerto is still one of Mozart's best-loved works. Now, 248 years on, we also have the lesson plans he wrote for the girl who played it.",
+          ],
+          source: "Classic FM",
+          sourceUrl:
+            "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
+          image: {
+            file: "/editions/40/mozart-notebook-paris.jpg",
+            alt: "A portrait of Mozart beside the open handwritten notebook of music exercises",
+            credit: "Classic FM",
+            from: "https://www.classicfm.com/composers/mozart/handwritten-notebook-discovered-major-paris/",
+          },
+        },
+        {
+          slug: "olivia-rodrigo-unraveled-tour",
+          slot: "feature",
+          kicker: "Tours",
+          headline:
+            "Olivia Rodrigo opens her 86-date Unraveled Tour in Hartford, with London to come",
+          dek: "Wolf Alice and The Last Dinner Party are among the acts taking turns as support.",
+          body: [
+            "Olivia Rodrigo is back on the road. Her Unraveled Tour began on 25 September in Hartford, Connecticut, and runs for 86 dates across North America and Europe before finishing at London's O2 on 10 May 2027.",
+            "It is her third concert tour and her second full run of arenas, and it celebrates her third album, You Seem Pretty Sad for a Girl So in Love, which came out on 12 June. Fans in Los Angeles, Brooklyn and London get more than one night.",
+            "The support line-up is a treat in itself. Wolf Alice, Devon Again, The Last Dinner Party, Grace Ives and Die Spitz will take turns opening the shows. And Rodrigo is in good company this month: KATSEYE set off on the Wildworld Tour, their first arena-scale world tour, on 1 September, after their EP WILD went straight to No. 1 on the Billboard 200.",
+          ],
+          source: "InMusic Blog",
+          sourceUrl: "https://inmusicblog.com/tours/biggest-tours-september-2026/",
+          image: {
+            file: "/editions/40/olivia-rodrigo-unraveled-tour.jpg",
+            alt: "Olivia Rodrigo in a pale pink dress against a dark background decorated with flowers",
+            credit: "Geffen Records",
+            from: "https://inmusicblog.com/tours/biggest-tours-september-2026/",
+          },
+        },
+        {
+          slug: "bunnymen-apples-for-isaac",
+          slot: "brief",
+          kicker: "Albums",
+          headline:
+            "Echo & the Bunnymen release Apples for Isaac, their first album in twelve years",
+          dek: "It comes on splatter vinyl and picture disc, among other formats.",
+          body: [
+            "The 11-track album arrived on 18 September, the band's first new material since Meteorites in 2014 and their 13th studio record. Ian McCulloch produced it, and songs include Brussels Is Haunted. It is out on black vinyl, limited splatter vinyl, picture disc, CD and download, with December shows at Glasgow's Barrowland on the way.",
+          ],
+          source: "XS Noize",
+          sourceUrl: "https://www.xsnoize.com/echo-and-the-bunnymen-apples-for-isaac/",
+          image: {
+            file: "/editions/40/bunnymen-apples-for-isaac.jpg",
+            alt: "The painted cover of Apples for Isaac, showing an apple tree behind a wooden fence",
+            credit: "Echo & the Bunnymen",
+            from: "https://www.xsnoize.com/echo-and-the-bunnymen-apples-for-isaac/",
+          },
         },
       ],
     },
@@ -333,9 +427,9 @@ export const issue40: SeedEdition = {
           headline: "Petrol station knocks 20 per cent off for anyone who dances for 15 seconds",
           dek: "At Halfmoon Sunoco in New York, customers twirled, shimmied and sang their way to cheaper bills.",
           body: [
-            "The rules at the Halfmoon Sunoco, about 25 minutes outside Albany in New York state, were simple. Dance for at least 15 seconds at the counter and you got 20 per cent off your whole bill.",
-            "The idea came from the station's social media manager, Paulina Sirtori, a 23-year-old recent graduate of Syracuse University. “The No. 1 complaint we hear from people everywhere is that gas prices are just too high,” she said. “So we wanted to really do something to alleviate that a little bit.”",
-            "Customers took the challenge seriously. Denise Lapointe, a local bus driver, went with a song of her own composition. “I just danced to the beat of my own drum while singing, ‘I'm dancing for a discount. I'm dancing for a discount,’” she told the New York Post. “Just being my goofy self.”",
+            "The rules at the Halfmoon Sunoco, about 25 minutes outside Albany in New York state, were simple. Dance for at least 15 seconds at the counter and you got 20 per cent off your whole bill. No experience was required, and nobody was marked on technique.",
+            "The idea came from the station's social media manager, Paulina Sirtori, a 23-year-old recent graduate of Syracuse University, who wanted to give customers something to smile about at the till. The plan was small, silly and cheerful, and people loved it from the first song.",
+            "Customers took the challenge seriously, and some came fully prepared. Denise Lapointe, a local bus driver, went with a song of her own composition. “I just danced to the beat of my own drum while singing, ‘I'm dancing for a discount. I'm dancing for a discount,’” she told the New York Post. “Just being my goofy self.”",
             "The first two through the door, Bill and Dan, set a high bar. “Bill started twerking and kind of dropping it down, and got as low as he could,” Sirtori said. “Then we had Dan, who popped his hip out and whipped his head around, calling it his ‘Michael Jackson move.’” One woman danced her way to $15 off.",
             "A video of the shimmying customers passed a million views on TikTok, and the station says more discount ideas are planned for the months ahead. Economists have spent centuries arguing about what really moves prices. In Halfmoon, the answer is a good beat.",
           ],
@@ -350,46 +444,115 @@ export const issue40: SeedEdition = {
           },
         },
         {
-          slug: "custard-tart-index",
+          slug: "village-saves-its-bistro",
           slot: "feature",
-          kicker: "Quirky economics",
-          headline:
-            "Students crown the ‘Custard Tart Index’: one bakery's price hasn't moved in 22 years",
-          dek: "A tart at the Hollis Street Bakery cost 90p in 2004, and it costs 90p now.",
+          kicker: "Local business",
+          headline: "Burgundy village mayors club together to reopen the only café-bistro in town",
+          dek: "Au Bon Accueil in Saint-Martin-sur-Ouanne is pouring coffee again after an €25,000 refit.",
           body: [
-            "Economics students in the market town of Brenmoor noticed something odd about the Hollis Street Bakery: its custard tarts have cost 90p since 2004. They spent a term working out how, and presented the answer in a lecture that 400 people attended, most of them for the free tarts at the end.",
-            "The explanation is simple and slightly magical. The family bought the building in 1961, it swaps bread for eggs with a farm three miles away, and the owner, Marguerite Sallow, has decided the price is right. “Everyone in this town has bought a tart from us on a good day,” she said. “I want it to be the same price on the next good day.”",
-            "Stallholders at the market now compare their prices with ‘the tart standard’. The project was awarded a first.",
+            "In Saint-Martin-sur-Ouanne, a village in Burgundy, Au Bon Accueil is the café-bistro where the regulars gather every day and sit in the same seats. After eight shut months, it is open again, thanks to a little help from the local mayors.",
+            "Mayor Hervé Chapuis teamed up with the district mayor, who once ran a bistro himself for seven years, and €25,000 of public money went on renovations. “The cafe-bistro was their point of reference,” the mayor said of the villagers. The new manager, Nadia Letellier, can already see the difference. “People seem really happy it's open again,” she said.",
+            "The council has form in this sort of thing. It now owns several bistros and restaurants, and three bakeries, which must make it one of the best-fed local authorities in France.",
           ],
-          source: "High Street News (sample)",
-          photo: ["picnic", 1],
+          source: "Good News Network",
+          sourceUrl:
+            "https://www.goodnewsnetwork.org/rural-french-mayors-rally-to-save-their-local-cafe-bistro-and-help-reverse-national-trend/",
+          image: {
+            file: "/editions/40/village-saves-its-bistro.jpg",
+            alt: "The village church of Saint-Martin-sur-Ouanne in Burgundy, seen from the south",
+            credit: "Basicdesign / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:St-Martin-s-Ouanne,_%C3%A9glise_vue_du_sud.JPG",
+          },
         },
         {
-          slug: "sticker-interest-bank",
+          slug: "duffield-big-bet-for-pets",
           slot: "brief",
-          kicker: "Savings",
-          headline: "Class 5B's pocket-money bank pays interest in stickers, and savers love it",
-          dek: "One sticker a month for every five coins left alone; holographic ones for a whole term.",
+          kicker: "Big gifts",
+          headline: "Dave and Cheryl Duffield put $250 million into vet care for America's pets",
+          dek: "The five-year Big Bet for Pets starts with 250 grants of $10,000 each.",
           body: [
-            "The Bank of Class 5B at Fernhill Primary opened with a shoebox, a padlock and a very neat ledger. It now holds deposits from 61 pupils and three teachers. “The teachers are our trickiest customers,” said its chief executive, Anaya, ten. “They keep withdrawing for coffee.” The class's maths marks are up.",
+            "The Dave & Cheryl Duffield Foundation's gift goes to community vet clinics across the United States, with a $10 million pool for established nonprofit clinics too. The couple have now given more than $500 million to companion animals. “Pets are members of our families,” said Dave Duffield, “and they need veterinary care to live long, healthy lives.”",
           ],
-          source: "Pocket Money Times (sample)",
-        },
-        {
-          slug: "old-voucher-buys-hen-teapot",
-          slot: "brief",
-          kicker: "Found money",
-          headline: "A twenty-year-old gift voucher found in a coat buys exactly one teapot",
-          dek: "The shop honoured it, and a yellow teapot shaped like a hen was the only thing at the right price.",
-          body: [
-            "Clearing a wardrobe, Joaquín Ferreira found a 2006 voucher for £14 from a homeware shop on his high street. He took it in expecting polite laughter. The manager honoured it and helped him hunt for something at exactly £14. The hen teapot is now, he says, ‘the most valuable thing in the kitchen’.",
-          ],
-          source: "High Street News (sample)",
+          source: "Good News Network",
+          sourceUrl:
+            "https://www.goodnewsnetwork.org/historic-philanthropic-gift-will-expand-veterinary-care-access-to-millions-of-americans-and-their-pets/",
+          image: {
+            file: "/editions/40/duffield-big-bet-for-pets.jpg",
+            alt: "Dave Duffield speaking on stage",
+            credit: "Him121 / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Dave_Duffield_addressing_Peoplesoft,_2005.jpg",
+          },
         },
       ],
     },
     {
-      section: "internet-and-culture",
+      section: "sports",
+      stories: [
+        {
+          slug: "berlin-marathon-2026-results",
+          kicker: "Running",
+          headline: "Tigst Assefa runs the third-fastest women's marathon ever to win in Berlin",
+          dek: "Guye Adola won the men's race, and a record field of more than 56,000 runners joined in.",
+          body: [
+            "Berlin has a reputation for fast times, and on Sunday 27 September it lived up to it. Ethiopia's Tigst Assefa won the women's race in 2:11:04, a new course record for Berlin and the third-fastest women's marathon in history.",
+            "The men's race went to her compatriot Guye Adola in 2:02:50. Dida Deriba was second in 2:03:19 and Gabriel Geay third in 2:03:59. In the women's race, Bedatu Hirpa took second in 2:16:53, two seconds ahead of Dera Dida in third. Put the two winning times together and you get 4:13:54, the second-fastest combined total ever run.",
+            "There was a curious footnote on everyone's feet. All six runners on the two podiums wore the same shoe, the Adidas Pro Evo 3, an unprecedented clean sweep at one of the World Marathon Majors.",
+            "Behind the elite runners came a vast and happy crowd. More than 56,000 runners from 162 nations took part, the biggest field Berlin has ever had, and 250 runners from 43 countries collected their Six Star medals in the city, the reward for completing all six of the World Marathon Majors. The inline skating marathon, held the same weekend, went to Bart Swings in 57:30 and Keily Delgado in 1:12:55.",
+            "Anyone inspired to join them next year does not have long to wait. The draw for places in the 2027 race opens on 1 October and runs until 12 November, so there is plenty of time to practise, and plenty of time to pick the right pair of shoes.",
+          ],
+          source: "The Running Channel",
+          sourceUrl: "https://therunningchannel.com/berlin-marathon-2026-results/",
+          image: {
+            file: "/editions/40/berlin-marathon-2026-results.jpg",
+            alt: "Tigst Assefa runs towards the finish in front of the Brandenburg Gate",
+            credit: "SCC Events",
+            from: "https://therunningchannel.com/berlin-marathon-2026-results/",
+          },
+        },
+        {
+          slug: "royals-home-bun-race",
+          slot: "feature",
+          kicker: "Baseball",
+          headline: "Royals fans steer a giant inflatable hot dog into its bun; everyone eats free",
+          dek: "The crowd had 35 seconds to complete the ‘Home Bun Race’ at Kauffman Stadium.",
+          body: [
+            "Baseball has the seventh-inning stretch. The Kansas City Royals have the Home Bun Race. During their game against the Toronto Blue Jays on Saturday 6 September, a giant inflatable hot dog and an equally giant inflatable bun were launched into different sections of the stands at Kauffman Stadium.",
+            "The fans had 35 seconds to nudge the two together across the crowd, passing them from hand to hand over the rows of seats. They did it inside the time, which meant every fan in the ground had earned a free hot dog.",
+            "Major League Baseball's account marked the moment with a short announcement: “HOT DOG ASSEMBLY COMPLETE.” It is hard to believe many people went home hungry, and harder still to think of a better use of a Saturday afternoon's teamwork.",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Odd_News/2026/09/09/home-bun-race-Kansas-City-royals/8641788970720/",
+          image: {
+            file: "/editions/40/royals-home-bun-race.jpg",
+            alt: "Kauffman Stadium lit up at night",
+            credit: "Jordano53 / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Kauffman_Stadium_exterior_July_26_2019.jpg",
+          },
+        },
+        {
+          slug: "fastest-hole-of-disc-golf",
+          slot: "brief",
+          kicker: "Disc golf",
+          headline: "Four friends play a hole of disc golf in 44.31 seconds, flat out",
+          dek: "It took 60 attempts, and the final stretch was a 41-second sprint uphill.",
+          body: [
+            "Serial record-setter David Rush teamed up with Travis, Anders and Oliver Davidson at Mallard Park in Idaho for the Guinness record for the fastest hole of disc golf by a team of four, on a certified hole of at least 200 metres. Attempt number 60 was the one. “Everything finally aligned,” Rush said.",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Odd_News/2026/09/09/Guinness-World-Records-David-Rush-disc-golf/8671788975951/",
+          image: {
+            file: "/editions/40/fastest-hole-of-disc-golf.jpg",
+            alt: "A disc golf basket on its pole",
+            credit: "kallerna / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Disc_golf_basket_3_and_10_in_Yyteri.jpg",
+          },
+        },
+      ],
+    },
+    {
+      section: "internet",
       stories: [
         {
           slug: "fat-bear-week-2026-bracket",
@@ -401,7 +564,7 @@ export const issue40: SeedEdition = {
             "Fat Bear Week 2026 runs from 22 to 29 September, with voting on weekdays at fatbearweek.org. The bears go head-to-head in a knockout bracket, and the public picks whichever looks fatter and more ready for hibernation. This year's field of 16 is the biggest yet, and last year's champion, Chunk, is back to defend his title. Last time, more than 1.7 million votes were cast.",
             "The weight matters. Bears don't eat or drink during hibernation and can lose about a third of their body weight before spring, so dozens of them gather at Brooks River from late June to mid-October to feast on salmon. Few rivers anywhere give bears such a long banquet in one place.",
             "There is fresh competition coming up behind the big names. “There are more cubs at Brooks Camp this year than have been seen in a long time,” said park superintendent Mark Sturm. “A new generation of fat bears is taking shape, and they're off to a strong start.”",
-            "Fans can scout the contenders on live webcams run by Explore.org, which organises the contest with the National Park Service and the Katmai Conservancy. The champion is crowned on Tuesday 29 September. We would tell you who to vote for, but frankly they are all magnificent.",
+            "Fans can scout the contenders on live webcams run by Explore.org, which organises the contest with the National Park Service and the Katmai Conservancy. The champion is crowned on Tuesday 29 September. We would tell you who to vote for, but frankly they are all magnificent, every last round one of them.",
           ],
           source: "National Park Service",
           sourceUrl: "https://www.nps.gov/katm/learn/news/fat-bear-week-2026.htm",
@@ -420,12 +583,18 @@ export const issue40: SeedEdition = {
           dek: "The loudest hit 121.9 decibels and went home with a small megaphone.",
           body: [
             "Danielle Egan felt like she needed a really good scream. “And I think it'd be more fun with other people,” she said. So this month she invited anyone who fancied it to Vista Del Mar, above Ocean Beach in San Francisco. More than 100 people turned up, stood at the edge of the land and let the Pacific have it.",
-            "Some came with particular things to shout about. Plenty said simply that it felt good. There was also a competition, judged on volume, length and vocal style.",
-            "The winner, Olivia Gugliemotto, reached 121.9 decibels, not far short of the world record of 129, and was presented with a small megaphone, which feels like a bold prize to give her. The ocean made no complaint.",
+            "Some came with particular things to shout about. Plenty said simply that it felt good. There was also a competition, judged on three things: volume, length and vocal style.",
+            "The winner, Olivia Gugliemotto, reached 121.9 decibels, not far short of the world record of 129, and was presented with a small megaphone, which feels like a bold prize to give her. The ocean, for its part, made no complaint whatsoever.",
           ],
           source: "UPI",
           sourceUrl:
             "https://www.upi.com/Odd_News/2026/09/14/Guttural-scream-at-the-sea-San-Francisco/6761789408160/",
+          image: {
+            file: "/editions/40/scream-at-the-sea.jpg",
+            alt: "Waves roll in at Ocean Beach, San Francisco",
+            credit: "Radomianin / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Seal_Rocks,_Ocean_Beach,_San_Francisco.jpg",
+          },
         },
         {
           slug: "salt-and-pepper-packet-record",
@@ -440,22 +609,84 @@ export const issue40: SeedEdition = {
           source: "UPI",
           sourceUrl:
             "https://www.upi.com/Odd_News/2026/09/16/Guinness-World-Records-salt-and-pepper-packets/9321789579951/",
-        },
-        {
-          slug: "caretaker-sticky-note-mural",
-          slot: "brief",
-          kicker: "Schools",
-          headline: "Pupils cover a corridor in 4,000 sticky notes to thank their caretaker",
-          dek: "Mr Okafor retires on Friday after 31 years, and the notes spell out his name.",
-          body: [
-            "Every pupil at Brightwater Secondary wrote at least one note. The most common message was about the day he rescued eleven footballs and a single trainer from the sports-hall roof; the second was about his whistling. “I've painted that corridor four times,” he said. “I've never seen it look this good.”",
-          ],
-          source: "Around the Web (sample)",
+          image: {
+            file: "/editions/40/salt-and-pepper-packet-record.jpg",
+            alt: "Linda Schulz with her collection of salt and pepper packets",
+            credit: "The Freeman / gmtoday.com",
+            from: "https://www.gmtoday.com/the_freeman/news/linda-schulz-salt-pepper-packets/article_913af23a-d129-5adc-b054-027985c229aa.html",
+          },
         },
       ],
     },
     {
-      section: "art-design-and-books",
+      section: "discoveries",
+      stories: [
+        {
+          slug: "cat-urine-id-card",
+          kicker: "Cats",
+          headline:
+            "Scientists find the chemical name tag that lets cats tell each other apart by smell",
+          dek: "Thirteen unusual fatty acids give every cat a signature scent, and they solve a century-old kidney puzzle too.",
+          body: [
+            "Cats have always been rather private about how they keep track of one another. A team led by Professor Masao Miyazaki at Iwate University in Japan, working with colleagues in Germany and Spain, has now found one of their tricks: a chemical ‘ID card’ carried in their urine.",
+            "The researchers first confirmed that cats really can tell individuals apart by the smell of their urine, and that they can do it across months. Then they went looking for what makes each smell different. They separated out the fatty parts of the urine and identified 13 unusual branched-chain fatty acids, which together form a stable signature for each cat.",
+            "To make sure these were the compounds doing the work, the team swapped only the fraction containing them between samples and watched how the cats responded. The profiles also held steady for at least 24 hours in urine-soaked samples kept at 25°C, long enough for a scent mark to carry a message.",
+            "The find may also answer an old question about feline anatomy. “Lipid droplets in the cat kidney have been known for more than a century, but why cats have so many of them has remained a mystery,” Miyazaki said. The team suggests the droplets act as a store for these compounds, keeping each cat's chemical profile consistent even as its diet changes.",
+            "The study, published in Current Biology, looked beyond house cats too, examining lions, tigers, leopards, jaguars, lynxes and the rare Iriomote cat. It turns out a lot of cats have been leaving their names about all along.",
+          ],
+          source: "ScienceDaily",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260919031033.htm",
+          image: {
+            file: "/editions/40/cat-urine-id-card.jpg",
+            alt: "A ginger cat sniffing the edge of a yellow litter tray",
+            credit: "Shutterstock",
+            from: "https://www.sciencedaily.com/releases/2026/09/260919031033.htm",
+          },
+        },
+        {
+          slug: "chimps-throw-rocks-at-trees",
+          slot: "feature",
+          kicker: "Chimpanzees",
+          headline:
+            "Chimpanzees in Guinea-Bissau have been throwing stones at the same trees for a decade",
+          dek: "Camera traps show a rare tradition that has built up piles of stones at favourite spots.",
+          body: [
+            "In Boé National Park in Guinea-Bissau, western chimpanzees have a habit that looks a lot like culture. Adult males in particular return again and again to the same trees and hurl stones at them, and at some sites they have kept it up for more than ten years. Over time the stones pile up at the foot of each favourite tree.",
+            "Researchers based in the village of Béli set up a bush camp 22 kilometres into the savanna woodland and placed camera traps and sound recorders at the throwing sites, so they could watch without disturbing the chimps. The recordings caught loud pant hoots and ‘buttress drumming’, where the chimps beat their hands and feet against the tree.",
+            "The behaviour has been seen in just four groups of chimpanzees in West Africa, which is why the researchers think it is passed on as a local tradition rather than something all chimps do.",
+          ],
+          source: "The Conversation, via ScienceDaily",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/08/260826055506.htm",
+          image: {
+            file: "/editions/40/chimps-throw-rocks-at-trees.jpg",
+            alt: "A chimpanzee standing upright mid-throw beside a river",
+            credit: "ScienceDaily",
+            from: "https://www.sciencedaily.com/releases/2026/08/260826055506.htm",
+          },
+        },
+        {
+          slug: "eight-letter-dna-alphabet",
+          slot: "brief",
+          kicker: "Genetics",
+          headline:
+            "Life spells with four DNA letters, and scientists have now shown eight can work",
+          dek: "The expanded alphabet is called ‘hachimoji’, Japanese for eight letters.",
+          body: [
+            "A team led by Professor Dong Wang at UC San Diego used cryo-electron microscopy to watch RNA polymerase, the enzyme that reads genes, working through an eight-letter genetic alphabet. It recognised the synthetic letters using many of the same signals it uses for natural ones. The work, in Nature Communications and PNAS, could lead to new diagnostics and engineered biology.",
+          ],
+          source: "ScienceDaily",
+          sourceUrl: "https://www.sciencedaily.com/releases/2026/09/260904000310.htm",
+          image: {
+            file: "/editions/40/eight-letter-dna-alphabet.jpg",
+            alt: "An illustration of a glowing blue DNA double helix",
+            credit: "Shutterstock",
+            from: "https://www.sciencedaily.com/releases/2026/09/260904000310.htm",
+          },
+        },
+      ],
+    },
+    {
+      section: "art-and-design",
       stories: [
         {
           slug: "athens-airport-becomes-park",
@@ -466,8 +697,8 @@ export const issue40: SeedEdition = {
             "For decades, planes took off and landed at Ellinikon, the old international airport on the coast south of Athens. Its runways are being turned into something much quieter: Ellinikon Park, which will stretch across more than 400 acres beside the sea and become the second-largest city park in Europe.",
             "The plan calls for 30,000 trees and three million smaller plants from more than 520 species, around three-quarters of them native or well suited to the climate. The designers have treated shade almost as a building material: rest areas are planned with more than 60 per cent shade cover, while running channels, misting systems and low-use basins will keep the air cool and damp.",
             "Much of the layout came out of a computer. Planners ran simulations of air circulation, wind direction and evaporation, the discipline known as computational fluid dynamics, to decide where every path and plant should go. The target is a park about 7.2°F, or 4°C, cooler than the asphalt and concrete around it.",
-            "Water has been thought through too. The park will treat its own water for irrigation and collect rain in a large catchment system to feed its fountains and misters.",
-            "A runway, it turns out, is a very good place to put a picnic.",
+            "Water has been thought through too. The park will treat its own water for irrigation and collect rain in a large catchment system to feed its fountains and misters, so the green stays green all year round, from one picnic season to the next.",
+            "Put together, it is a rare thing: a design in which the trees, the paths, the water and even the breeze have all been drawn in on purpose. A runway, it turns out, is a very good place to put a picnic.",
           ],
           source: "Good News Network",
           sourceUrl:
@@ -509,11 +740,84 @@ export const issue40: SeedEdition = {
           headline: "Engineer Ruth Amos builds a working hairdryer taller than most people",
           dek: "At 5 feet 9 inches long and 5 feet 3 inches tall, it is the largest in the new Guinness World Records book.",
           body: [
-            "The British engineer's supersized dryer is one of the new entries in Guinness World Records 2027, alongside a 4,550-piece My Little Pony collection and a Californian's 13,201 frog-themed items. It really does blow hot air. Styling appointments, sadly, are not available.",
+            "Ruth Amos, the British engineer behind the Kids Invent Stuff YouTube channel, has made one of the new entries in Guinness World Records 2027 with the largest hairdryer, and it really works. She already holds records for the largest electric toothbrush and the tallest 3D-printed plastic-brick Christmas tree. Styling appointments, sadly, are not available.",
           ],
           source: "UPI",
           sourceUrl:
             "https://www.upi.com/Odd_News/2026/09/10/Guinness-World-Records-book-new-titles/8281789059748/",
+          image: {
+            file: "/editions/40/worlds-largest-hairdryer.jpg",
+            alt: "Ruth Amos sits in a chair, hair blowing, in front of her giant purple hairdryer",
+            credit: "Guinness World Records",
+            from: "https://www.sustainableconstruction-now.com/article/547608/kids-invent-stuff-yorkshire-inventor-who-sent-robot-chicken-up-to-space-and-made-worlds-largest-electric-toothbrush-makes-guinness-world-record-books-again-with-giant-hairdryer",
+          },
+        },
+      ],
+    },
+    {
+      section: "shelf",
+      stories: [
+        {
+          slug: "booker-shortlist-2026",
+          kicker: "Prizes",
+          headline: "Mary Beard and Jarvis Cocker's Booker judges pick six novels from 163 books",
+          dek: "The winner will be crowned on 9 November and take home £50,000.",
+          body: [
+            "The shortlist for the 2026 Booker Prize is out, and it is a lively mix. The judges, chaired by the classicist and broadcaster Mary Beard and including the musician and broadcaster Jarvis Cocker, read 163 books to choose their six.",
+            "Rebecca Perry's May We Feed the King follows a reluctant medieval monarch and a modern curator whose lives mysteriously intertwine, a book the judges said holds a great deal “with an admirably light touch”. Luke Kennard's Black Bag sends an out-of-work actor into an absurd experiment inspired by the 1960s, which the judges called a mix of the absurd and the moving. M. John Harrison's The End of Everything, about a collector gathering shape-shifting objects from the Channel, won praise for humour that is “subtle, surreal, and sly”.",
+            "Marlon James is shortlisted for The Disappearers, in which a group of men rehearse a play and argue, in the judges' words, “in real time, over literary philosophy, politics, and the canon”. Douglas Stuart's John of John takes a young man home to his Scottish island, and the judges admired its “beautiful and sustained attention to detail”. Elizabeth Strout's The Things We Never Say, about a schoolteacher, was called “entertaining” and “accessible”.",
+            "The winner will receive £50,000, and each of the other five shortlisted authors gets £2,500. The prize is announced on 9 November.",
+            "That leaves six novels and six weeks or so to read them in, which sounds like a perfectly reasonable autumn plan. Put the kettle on and find a comfy chair.",
+          ],
+          source: "Time Out",
+          sourceUrl:
+            "https://www.timeout.com/usa/news/here-are-the-six-novels-on-the-2026-booker-prize-shortlist-092526",
+          image: {
+            file: "/editions/40/booker-shortlist-2026.jpg",
+            alt: "The six shortlisted novels for the 2026 Booker Prize stacked on a wooden table",
+            credit: "Yuki Sugiura for the Booker Prize Foundation",
+            from: "https://lithub.com/heres-the-shortlist-for-the-2026-booker-prize/",
+          },
+        },
+        {
+          slug: "comic-book-day-records",
+          slot: "feature",
+          kicker: "Comics",
+          headline:
+            "Iron Man's very first page becomes the most valuable piece of comic art ever sold",
+          dek: "For National Comic Book Day, a look back at a record-breaking summer for superhero fans.",
+          body: [
+            "National Comic Book Day fell on 25 September, and superheroes have had a bumper year for records. The biggest belongs to Iron Man. Don Heck's original artwork from Tales of Suspense No. 39, the March 1963 comic in which the armoured hero first appeared, sold in July for $3,875,000, a new world record for a piece of original comic art. It beat the previous best of $3,360,000.",
+            "Collectors have been busy too. In June, Aleshia Wiley of Cedartown, Georgia, set a record with 1,581 Wonder Woman items, from comics and Funko Pop figurines to action figures and toys. “Wonder Woman is a beacon of hope for girls and women everywhere,” she said. And 22-year-old Megan Pierce of Bloomington, Indiana, holds a Guinness record for her 2,318 pieces of Joker memorabilia, including rollerblades, a skateboard and milk caps from 1966.",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Odd_News/2026/09/25/comic-book-day-superheroes/7271790273293/",
+          image: {
+            file: "/editions/40/comic-book-day-records.jpg",
+            alt: "Don Heck's original splash page artwork for Iron Man's first appearance in Tales of Suspense No. 39",
+            credit: "Heritage Auctions",
+            from: "https://www.finebooksmagazine.com/fine-books-news/iron-man-debut-breaks-comic-art-auction-record",
+          },
+        },
+        {
+          slug: "fall-books-on-screen",
+          slot: "brief",
+          kicker: "Adaptations",
+          headline: "Colin Meloy's Wildwood leads a busy autumn of books becoming films and series",
+          dek: "Laika's stop-motion version arrives on 23 October, the same day as Klara and the Sun.",
+          body: [
+            "Colin Meloy's Wildwood has become a stop-motion film from Laika, with Carey Mulligan, Jacob Tremblay and Peyton Elizabeth Lee among the voices. Also coming: Netflix's East of Eden with Florence Pugh on 1 October, Daisy Edgar-Jones in Sense and Sensibility on 16 October, and Jenna Ortega and Amy Adams in Klara and the Sun on the 23rd. Time to read the books first.",
+          ],
+          source: "UPI",
+          sourceUrl:
+            "https://www.upi.com/Entertainment_News/2026/09/22/fall-reading-list-2026/1141789140382/",
+          image: {
+            file: "/editions/40/fall-books-on-screen.jpg",
+            alt: "Wildwood author Colin Meloy singing on stage",
+            credit: "Max Goldberg / Wikimedia Commons",
+            from: "https://commons.wikimedia.org/wiki/File:Colin_Meloy_(9_July_2016).jpg",
+          },
         },
       ],
     },
@@ -532,7 +836,7 @@ export const issue40: SeedEdition = {
       content: {
         headline: "Monday: sunny spells, with a warm front of fresh starts",
         detail:
-          "High pressure over the kettle from 7am. Patchy inbox drizzle clears by elevenses, followed by scattered dancing at petrol stations. Visibility excellent: on a clear night you can see Gary from here.",
+          "High pressure over the kettle from 7am. Patchy inbox drizzle clears by elevenses, followed by scattered dancing at petrol stations. Visibility excellent: on a clear night you can see all the way to Kirby's new world.",
       },
     },
     {
@@ -552,7 +856,7 @@ export const issue40: SeedEdition = {
       type: "classified",
       content: {
         heading: "WANTED",
-        text: "Second-hand staircase, extremely narrow, for a game studio's research. Will collect. Will not bring a sofa.",
+        text: "Very small golf club, finger-sized, left-handed. Will swap for one giant hairdryer, barely used, collection by crane only.",
       },
     },
     {
@@ -566,7 +870,7 @@ export const issue40: SeedEdition = {
       type: "classified",
       content: {
         heading: "SEEKING",
-        text: "A cat willing to walk across keyboards for science. Paid in warm laptops. No experience necessary; most cats are naturals.",
+        text: "Inflatable bun, large, for inflatable hot dog, larger. Must be good with crowds. Free lunch for everyone on completion.",
       },
     },
     {
@@ -589,21 +893,5 @@ export const issue40: SeedEdition = {
       },
     },
     { type: "sign_off", content: { text: "You're done for today. See you tomorrow." } },
-  ],
-
-  puzzles: [
-    mini(
-      [
-        ["COMET", "A space snowball with a tail"],
-        ["DANCE", "What Disco Pete does best"],
-        ["ROBOT", "It might fold your sheets, eventually"],
-      ],
-      [
-        ["CEDAR", "A tree that smells like a nice drawer"],
-        ["TWEET", "A small bird's big announcement"],
-      ],
-    ),
-    ladder(["HEAD", "HEAL", "TEAL", "TELL", "TALL", "TAIL"]),
-    riddle("What has lots of teeth but can't bite?", "A comb"),
   ],
 };
