@@ -280,3 +280,8 @@
   color: #161412;
   font-weight: 700;
 }
+.yp-all__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}

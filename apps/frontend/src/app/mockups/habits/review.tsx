@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   earnSticker,
@@ -316,8 +317,8 @@ export function HabitsReview() {
             date={today ? addDays(today, -1) : undefined}
           />
           <p className="hr-note">
-            Kept stories are listed at <a href="/saved">/saved</a> (switch the demo data off to see
-            your own).
+            Kept stories are pinned to <Link href="/wall">Your Wall</Link> (switch the demo data off
+            to see your own).
           </p>
         </div>
       </section>
