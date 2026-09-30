@@ -66,8 +66,9 @@ function planPages(e: SeedEdition): PlannedPage[] {
   ];
 }
 
-const guestSectionOf = (e: SeedEdition) =>
-  e.inside.find((p) => sectionKind.get(p.section) === "guest")?.section ?? null;
+/** The edition's guest sections, in page order. */
+const guestSectionsOf = (e: SeedEdition) =>
+  e.inside.filter((p) => sectionKind.get(p.section) === "guest").map((p) => p.section);
 
 /** The day's puzzles, with the word search hiding words from the edition's own headlines. */
 const puzzlesOf = (e: SeedEdition) =>
@@ -251,6 +252,8 @@ function validate(e: SeedEdition) {
   const slugs = new Set<string>();
   const guests = e.inside.filter((p) => sectionKind.get(p.section) === "guest");
   if (guests.length > 2) problems.push("more than two guest sections");
+  if (new Set(guests.map((p) => p.section)).size < guests.length)
+    problems.push("a guest section appears twice");
 
   const pictures = new Set<string>();
   for (const page of pages) {
@@ -301,7 +304,7 @@ function validate(e: SeedEdition) {
 
 async function createEdition(e: SeedEdition, sectionIds: Map<string, string>) {
   const sectionId = (slug: string) => sectionIds.get(slug) as string;
-  const guest = guestSectionOf(e);
+  const guests = guestSectionsOf(e);
 
   // Features are ordered within their type, in the order they are listed.
   const seen = new Map<string, number>();
@@ -321,7 +324,7 @@ async function createEdition(e: SeedEdition, sectionIds: Map<string, string>) {
         kind: e.kind ?? "regular",
         design: e.design,
         colourway: e.colourway,
-        guestSectionId: guest ? sectionId(guest) : null,
+        guests: { create: guests.map((g, order) => ({ sectionId: sectionId(g), order })) },
         features: { create: features },
         puzzles: {
           create: puzzlesOf(e).map((p) => ({

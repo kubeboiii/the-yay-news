@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { play } from "@/features/sound";
 import { stampInk } from "./catalogue";
 import type { StampInfo } from "./core";
@@ -111,8 +111,11 @@ export function StampMoment({
   streak,
   onClose,
   floating = true,
+  extra,
 }: {
   stamp: StampInfo;
+  /** More below the links (the Yay Attax rewards). */
+  extra?: ReactNode;
   /** The streak including this paper, if known. */
   streak?: number | null;
   onClose?: () => void;
@@ -150,6 +153,7 @@ export function StampMoment({
             </button>
           ) : null}
         </p>
+        {extra}
       </div>
     </aside>
   );

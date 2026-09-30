@@ -1,0 +1,22 @@
+{
+  "alex-pereira": {
+    "src": "wiki:Alex Pereira",
+    "file": "alex-pereira.jpg",
+    "credit": "Wikimedia Commons · U.S. Department of the Interior, PD"
+  },
+  "jon-jones": {
+    "src": "wiki:Jon Jones",
+    "file": "jon-jones.jpg",
+    "credit": "Wikimedia Commons · Senate Democrats, CC BY 2.0"
+  },
+  "conor-mcgregor": {
+    "src": "wiki:Conor McGregor",
+    "file": "conor-mcgregor.jpg",
+    "credit": "Wikimedia Commons · U.S. Secretary of Defense, PD"
+  },
+  "khabib-nurmagomedov": {
+    "src": "wiki:Khabib Nurmagomedov",
+    "file": "khabib-nurmagomedov.jpg",
+    "credit": "Wikimedia Commons · Airotcivss, CC BY-SA 4.0"
+  }
+}

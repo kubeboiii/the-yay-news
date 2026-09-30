@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "spider-man",
+    "src": "wiki:Spider-Man"
+  },
+  {
+    "slug": "iron-man",
+    "src": "wiki:Iron Man"
+  },
+  {
+    "slug": "hulk",
+    "src": "wiki:Hulk"
+  },
+  {
+    "slug": "thanos",
+    "src": "wiki:Thanos"
+  }
+]

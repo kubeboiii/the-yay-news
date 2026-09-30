@@ -317,7 +317,9 @@ export class PrismaStore implements Store {
           kind: draft.kind,
           design: draft.design,
           colourway: draft.colourway,
-          guestSectionId: draft.guestSection ? sectionId(draft.guestSection) : null,
+          guests: {
+            create: draft.guestSections.map((g, order) => ({ sectionId: sectionId(g), order })),
+          },
           features: {
             create: draft.features.map((f) => ({
               type: f.type,

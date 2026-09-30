@@ -1,0 +1,22 @@
+{
+  "eleven": {
+    "src": "wiki:Eleven (Stranger Things)",
+    "file": "eleven.jpg",
+    "credit": "Wikipedia · Netflix, Fair use"
+  },
+  "walter-white": {
+    "src": "wiki:Walter White (Breaking Bad)",
+    "file": "walter-white.jpg",
+    "credit": "Wikipedia · AMC, Fair use"
+  },
+  "michael-scott": {
+    "src": "wiki:Michael Scott (The Office)",
+    "file": "michael-scott.jpg",
+    "credit": "Wikipedia · Fair use"
+  },
+  "wednesday-addams": {
+    "src": "wiki:Jenna Ortega",
+    "file": "wednesday-addams.jpg",
+    "credit": "Wikimedia Commons · Harald Krichel, CC BY-SA 4.0"
+  }
+}

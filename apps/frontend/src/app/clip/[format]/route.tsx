@@ -1,8 +1,9 @@
-// GET /clip/story|post|link?issue=<n>&story=<slug|front>[&tz=<IANA zone>]
-// GET /clip/story|post|link?story=<slug|front>&look=v1|v3|v4|v5&theme=<v1 colourway>&pastel=<slug>
+// GET /clip/story|post|square|link?issue=<n>&story=<slug|front>[&tz=<IANA zone>][&now=<preview>]
+// GET /clip/story|post|square|link?story=<slug|front>&look=v1|v3|v4|v5&theme=<…>&pastel=<slug>
 //
 // A story, or the front page, as a torn-out newspaper clipping: 1080×1920 for Stories, 1080×1350
-// for a feed post, 1200×630 as the link preview.
+// for a feed post, 1080×1080 square ("Cut it out"), 1200×630 as the link preview. A real
+// edition's clipping (not the link preview) prints the story's address small, with a QR code.
 //
 // With `?issue=` the story comes from that edition through the API, printed in the edition's own
 // design and colourway, and only once the edition is released (in `?tz=`, else UTC). Without it the
@@ -19,6 +20,8 @@ import { editionSubject } from "../_lib/edition";
 import { loadFonts } from "../_lib/fonts";
 import { type Look, type LookId, LOOKS, lookFor } from "../_lib/looks";
 import { sampleSubject } from "../_lib/sample";
+import { issueHref, storyHref } from "@/features/papers/reading";
+import { absoluteUrl } from "@/features/reader/site";
 
 const FOREVER = "public, max-age=31536000, immutable";
 const A_DAY = "public, max-age=3600, s-maxage=86400";
@@ -31,7 +34,7 @@ const notFound = (message: string) => new Response(message, { status: 404 });
 
 export async function GET(request: Request, ctx: RouteContext<"/clip/[format]">) {
   const { format } = await ctx.params;
-  if (!isFormat(format)) return notFound("Unknown format: use story, post or link");
+  if (!isFormat(format)) return notFound("Unknown format: use story, post, square or link");
 
   const q = new URL(request.url).searchParams;
   const slug = q.get("story") ?? "front";
@@ -47,9 +50,17 @@ export async function GET(request: Request, ctx: RouteContext<"/clip/[format]">)
       return notFound("Bad issue number");
     }
     const tz = q.get("tz");
-    const found = await editionSubject(issue, slug, tz && tz.length <= 100 ? tz : null);
+    const now = q.get("now");
+    const found = await editionSubject(
+      issue,
+      slug,
+      tz && tz.length <= 100 ? tz : null,
+      now && now.length <= 40 ? now : null,
+    );
     if (!found) return notFound(`No released story "${slug}" in No. ${issue}`);
     ({ subject, look } = found);
+    const href = absoluteUrl(slug === "front" ? issueHref(issue) : storyHref(issue, slug));
+    subject = { ...subject, link: { href, text: href.replace(/^https?:\/\/(www\.)?/, "") } };
     cache = A_DAY;
   } else {
     const sample = sampleSubject(slug);

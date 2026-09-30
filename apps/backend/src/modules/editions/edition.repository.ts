@@ -18,25 +18,36 @@ const storyInclude = {
   images: { orderBy: { order: "asc" } },
 } satisfies Prisma.StoryInclude;
 
-/** Everything a reader needs to lay out a whole edition. Reserve stories are never loaded. */
+/** The stories a reader may see: never a reserve, never a story the admin has pulled. */
+export const readableStoryWhere = {
+  isReserve: false,
+  pulledAt: null,
+} satisfies Prisma.StoryWhereInput;
+
+const guestsInclude = {
+  orderBy: { order: "asc" },
+  select: { section: { select: sectionSelect } },
+} satisfies Prisma.Edition$guestsArgs;
+
+/** Everything a reader needs to lay out a whole edition. Reserves and pulled stories are never loaded. */
 export const editionInclude = {
-  guestSection: { select: sectionSelect },
+  guests: guestsInclude,
   pages: {
     orderBy: { order: "asc" },
     include: {
       section: { select: sectionSelect },
-      stories: { where: { isReserve: false }, orderBy: { order: "asc" }, include: storyInclude },
+      stories: { where: readableStoryWhere, orderBy: { order: "asc" }, include: storyInclude },
     },
   },
   features: { orderBy: [{ type: "asc" }, { order: "asc" }] },
   puzzles: { orderBy: { order: "asc" } },
 } satisfies Prisma.EditionInclude;
 
-/** Enough for an archive rack: the guest section and the front-page lead. */
+/** Enough for an archive rack: the guest sections and the front-page lead. */
 export const editionSummaryInclude = {
-  guestSection: { select: sectionSelect },
+  guests: guestsInclude,
   stories: {
-    where: { slot: "lead", isReserve: false },
+    where: { slot: "lead", ...readableStoryWhere },
     orderBy: [{ page: { order: "asc" } }, { order: "asc" }],
     take: 1,
     include: storyInclude,

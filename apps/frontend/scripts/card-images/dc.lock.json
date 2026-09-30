@@ -1,0 +1,22 @@
+{
+  "batman": {
+    "src": "wiki:Batman",
+    "file": "batman.jpg",
+    "credit": "Wikipedia · DC Comics, Fair use"
+  },
+  "superman": {
+    "src": "wiki:Superman",
+    "file": "superman.png",
+    "credit": "Wikipedia · Jason Fabok, Fair use"
+  },
+  "wonder-woman": {
+    "src": "fandom:dc:Wonder Woman (Diana Prince)",
+    "file": "wonder-woman.jpg",
+    "credit": "Dc Fandom wiki"
+  },
+  "joker": {
+    "src": "wiki:Joker (The Dark Knight)",
+    "file": "joker.jpg",
+    "credit": "Wikipedia · Fair use"
+  }
+}

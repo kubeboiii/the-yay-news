@@ -1,0 +1,1108 @@
+/*
+ * Yay Attax: printed trading cards. Every size is in cqw of the card (its container), so a card
+ * scales as one printed object. Card stock carries a real scanned texture (tex-card.jpg,
+ * multiplied), the inks are flat, and each type prints in its own frame:
+ *   animal   field-guide green, leaf veins, a specimen label
+ *   hero     wrestling-poster red, a slanted name banner and a starburst
+ *   record   gold trophy plate and a laurel
+ *   internet neon on black, stepped pixel corners, scanlines
+ *   sports   footballer card: jersey stripes, a shield photo, a stats bar
+ *   music    album cover: square sleeve with the record sliding out
+ *   play     game cartridge: grey plastic, grip ridges, a label
+ *   screen   film strip / VHS: sprocket holes down both sides, a tape label
+ *   space    star chart: navy, pinprick stars, an orbit
+ *   tech     blueprint: grid lines, typewriter labels
+ *   money    banknote: engraved guilloche, a serial number
+ *   generic  the section's own colour, a double rule
+ * Rarity is the edge: cream card stock (Common), silver foil (Rare), violet-gold foil with a
+ * moving shimmer (Epic), holographic foil that follows the pointer (Legendary).
+ */
+
+.ya-card {
+  --ink: #1d1a17;
+  --paper: #f6f0e1;
+  --frame: #4a4a4a;
+  --frame-2: #6a6a6a;
+  --plate: #fbf7ec;
+  --plate-ink: var(--ink);
+  --stat-bg: #fbf7ec;
+  --stat-ink: var(--ink);
+  --top-ink: #fff;
+  --edge: #efe7d2;
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  perspective: 1400px;
+  color: var(--ink);
+}
+
+.ya-card__tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  position: absolute;
+  inset: 0;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
+}
+
+.ya-card__inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.ya-card__inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.ya-card__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  padding: 3.4cqw;
+  border-radius: 4.4cqw;
+  background: var(--edge);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 0.4cqw 0.6cqw rgb(30 20 10 / 0.18),
+    0 3cqw 6cqw -3cqw rgb(30 20 10 / 0.45);
+}
+
+/* Card stock: the scanned texture over every face, so inks sit in the grain. */
+.ya-card__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/mockup/inserts/tex-card.jpg") center / 140cqw;
+  mix-blend-mode: multiply;
+  opacity: 0.42;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.ya-card__back {
+  transform: rotateY(180deg);
+}
+
+.ya-card__frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2cqw;
+  height: 100%;
+  padding: 3.2cqw;
+  border-radius: 2.6cqw;
+  background: var(--frame);
+  overflow: hidden;
+}
+
+.ya-card__deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ya-card__top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2cqw;
+  color: var(--top-ink);
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  font-size: 4.3cqw;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ya-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4cqw;
+  min-width: 0;
+  padding: 1.2cqw 2.4cqw 1.2cqw 1.6cqw;
+  border-radius: 10cqw;
+  background: rgb(0 0 0 / 0.22);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ya-card__glyph {
+  flex: none;
+  width: 5.4cqw;
+  height: 5.4cqw;
+  fill: currentColor;
+}
+
+.ya-card__set {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.8cqw;
+  padding: 0.9cqw 1.6cqw;
+  border: 0.5cqw solid currentColor;
+  border-radius: 1.4cqw;
+  font-size: 3.4cqw;
+}
+
+.ya-card__set-glyph {
+  width: 3.6cqw;
+  height: 3.6cqw;
+  fill: currentColor;
+}
+
+.ya-card__window {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 1.6cqw;
+  background: #7a7268;
+  box-shadow: inset 0 0 0 0.6cqw rgb(0 0 0 / 0.25);
+}
+
+.ya-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.04);
+}
+
+.ya-card__nophoto {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(
+    45deg,
+    rgb(255 255 255 / 0.12) 0 2cqw,
+    transparent 2cqw 4cqw
+  );
+}
+
+.ya-card__nophoto-glyph {
+  width: 30cqw;
+  height: 30cqw;
+  fill: rgb(255 255 255 / 0.7);
+}
+
+.ya-card__vinyl {
+  display: none;
+}
+
+.ya-card__plate {
+  position: relative;
+  padding: 1.8cqw 2.6cqw 2cqw;
+  border-radius: 1.4cqw;
+  background: var(--plate);
+  color: var(--plate-ink);
+}
+
+.ya-card__name {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--hb-gothic), Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  line-height: 0.96;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.ya-card__kicker {
+  margin: 0.8cqw 0 0;
+  overflow: hidden;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 3.9cqw;
+  font-style: italic;
+  line-height: 1.1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+}
+
+.ya-card__stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4cqw;
+  margin: 0;
+}
+
+.ya-card__stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2cqw 0 1cqw;
+  border-radius: 1.2cqw;
+  background: var(--stat-bg);
+  color: var(--stat-ink);
+}
+
+.ya-card__stat dt {
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  font-size: 3.3cqw;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ya-card__stat dd {
+  margin: 0.4cqw 0 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 9.6cqw;
+  line-height: 0.9;
+}
+
+.ya-card__stat.is-picked {
+  outline: 0.9cqw solid #ffd23f;
+  outline-offset: 0.3cqw;
+}
+
+.ya-card__stat-pick {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ya-card__stat-pick:hover {
+  background: rgb(255 210 63 / 0.35);
+}
+
+.ya-card__stat-pick:focus-visible {
+  outline: 0.9cqw dashed var(--stat-ink);
+  outline-offset: 0.2cqw;
+}
+
+.ya-card__foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--top-ink);
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  font-size: 3.6cqw;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ya-card__rarity {
+  display: inline-flex;
+  align-items: center;
+  gap: 1cqw;
+}
+
+.ya-card__rarity-glyph {
+  width: 4.4cqw;
+  height: 4.4cqw;
+  fill: currentColor;
+}
+
+/* The whole front turns the card over. */
+.ya-card__turn {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ya-card__turn:focus-visible,
+.ya-card__read:focus-visible,
+.ya-card__turn-back:focus-visible {
+  outline: 3px dashed #1d1a17;
+  outline-offset: 3px;
+}
+
+/* ——— The back ——— */
+
+.ya-card__back-in {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4cqw;
+  height: 100%;
+  padding: 5cqw 5.2cqw;
+  border-radius: 2.6cqw;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1.2cqw var(--frame);
+  overflow: hidden;
+}
+
+.ya-card__logo {
+  margin: 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 10cqw;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--logo, var(--frame));
+}
+
+.ya-card__watermark {
+  position: absolute;
+  right: -8cqw;
+  bottom: 10cqw;
+  width: 62cqw;
+  height: 62cqw;
+  fill: var(--logo, var(--frame));
+  opacity: 0.1;
+  rotate: -12deg;
+  pointer-events: none;
+}
+
+.ya-card__logo b {
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.ya-card__back-type {
+  display: flex;
+  align-items: center;
+  gap: 1.4cqw;
+  margin: 0;
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  font-size: 3.8cqw;
+  text-transform: uppercase;
+}
+
+.ya-card__back-name {
+  margin: 0;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: max(16px, 5.4cqw);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.ya-card__summary {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: max(16px, 5cqw);
+  line-height: 1.35;
+}
+
+.ya-card__meta {
+  margin: 0;
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  font-size: max(12px, 3.6cqw);
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.ya-card__back-links {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1cqw 4cqw;
+  margin: 0;
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: max(16px, 4.8cqw);
+}
+
+.ya-card__read,
+.ya-card__turn-back {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.ya-card__read {
+  font-weight: 700;
+}
+
+.ya-card__turn-back {
+  opacity: 0.75;
+}
+
+/* ——— A face-down card ——— */
+
+.ya-card__cover {
+  display: grid;
+  place-items: center;
+  background: #1d1a17;
+  padding: 3.4cqw;
+}
+
+.ya-card__cover::before {
+  content: "";
+  position: absolute;
+  inset: 3.4cqw;
+  border-radius: 2.6cqw;
+  background:
+    radial-gradient(circle at 50% 50%, #ffd23f 0 22cqw, transparent 22.3cqw),
+    repeating-conic-gradient(from 0deg, #ff5fa2 0 7deg, #3d7bff 7deg 14deg);
+}
+
+.ya-card__cover-word {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 15cqw;
+  line-height: 0.82;
+  text-align: center;
+  text-transform: uppercase;
+  color: #1d1a17;
+  rotate: -6deg;
+}
+
+/* ——— Rarity: the edge, and what moves on it ——— */
+
+.ya-card[data-rarity="rare"] .ya-card__face {
+  background: linear-gradient(
+    135deg,
+    #b9bec5 0%,
+    #f7f8fa 22%,
+    #8e959e 44%,
+    #eef0f3 64%,
+    #a2a9b2 82%,
+    #f4f5f7 100%
+  );
+}
+
+.ya-card[data-rarity="epic"] .ya-card__face {
+  background: linear-gradient(
+    135deg,
+    #6b3fc4 0%,
+    #f3d27a 25%,
+    #9b5de5 48%,
+    #ffe9a8 66%,
+    #7a47d1 84%,
+    #e7c160 100%
+  );
+}
+
+.ya-card[data-rarity="legendary"] .ya-card__face {
+  background: conic-gradient(
+    from calc(var(--mx) * 3.6deg) at var(--mx) var(--my),
+    #ff6b8b,
+    #ffd23f,
+    #7cf29a,
+    #5fd4ff,
+    #b28dff,
+    #ff6b8b
+  );
+}
+
+.ya-card__shine,
+.ya-card__holo {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  pointer-events: none;
+  display: none;
+}
+
+.ya-card[data-rarity="epic"] .ya-card__shine {
+  display: block;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgb(255 255 255 / 0.5) 48%,
+    rgb(255 240 200 / 0.25) 52%,
+    transparent 62%
+  );
+  background-size: 260% 100%;
+  mix-blend-mode: soft-light;
+  animation: ya-shine 3.4s ease-in-out infinite;
+}
+
+@keyframes ya-shine {
+  0% {
+    background-position: 110% 0;
+  }
+  60%,
+  100% {
+    background-position: -10% 0;
+  }
+}
+
+.ya-card[data-rarity="legendary"] .ya-card__holo {
+  display: block;
+  background:
+    radial-gradient(
+      circle at var(--mx) var(--my),
+      rgb(255 255 255 / 0.55),
+      rgb(255 255 255 / 0) 42%
+    ),
+    repeating-linear-gradient(
+      115deg,
+      rgb(255 107 139 / 0.5) 0%,
+      rgb(255 210 63 / 0.5) 6%,
+      rgb(124 242 154 / 0.5) 12%,
+      rgb(95 212 255 / 0.5) 18%,
+      rgb(178 141 255 / 0.5) 24%,
+      rgb(255 107 139 / 0.5) 30%
+    );
+  background-size:
+    100% 100%,
+    300% 300%;
+  background-position:
+    center,
+    var(--mx) var(--my);
+  mix-blend-mode: color-dodge;
+  opacity: 0.42;
+}
+
+.ya-card[data-rarity="legendary"] .ya-card__face {
+  box-shadow:
+    0 0 0 0.4cqw rgb(255 255 255 / 0.6),
+    0 0.4cqw 0.6cqw rgb(30 20 10 / 0.18),
+    0 3cqw 8cqw -2cqw rgb(120 60 200 / 0.55);
+}
+
+/* ——— The frames ——— */
+
+/* Animal: a field guide. */
+.ya-card[data-type="animal"] {
+  --frame: #2f6f3a;
+  --frame-2: #9bc46a;
+  --plate: #f3ecd4;
+  --stat-bg: #e6f0cf;
+  --stat-ink: #1f3d22;
+}
+.ya-card[data-type="animal"] .ya-card__frame {
+  background:
+    repeating-linear-gradient(35deg, rgb(255 255 255 / 0.06) 0 1.2cqw, transparent 1.2cqw 4cqw),
+    radial-gradient(circle at 12% 8%, #4f9a4e, transparent 55%), var(--frame);
+}
+.ya-card[data-type="animal"] .ya-card__window {
+  border-radius: 40cqw 40cqw 2cqw 2cqw;
+  box-shadow:
+    inset 0 0 0 0.8cqw #f3ecd4,
+    inset 0 0 0 1.4cqw #2f6f3a;
+}
+.ya-card[data-type="animal"] .ya-card__plate {
+  border: 0.5cqw dashed #2f6f3a;
+}
+.ya-card[data-type="animal"] .ya-card__deco {
+  background:
+    radial-gradient(ellipse 4cqw 9cqw at 98% 46%, #9bc46a 60%, transparent 62%),
+    radial-gradient(ellipse 9cqw 4cqw at 96% 54%, #7bb356 60%, transparent 62%),
+    radial-gradient(ellipse 4cqw 8cqw at 2% 30%, #7bb356 60%, transparent 62%);
+}
+
+/* Hero: a wrestling superstar poster. */
+.ya-card[data-type="hero"] {
+  --frame: #c8202b;
+  --frame-2: #ffd23f;
+  --plate: #111;
+  --plate-ink: #fff;
+  --stat-bg: #fff;
+  --stat-ink: #111;
+}
+.ya-card[data-type="hero"] .ya-card__frame {
+  background:
+    linear-gradient(115deg, transparent 58%, rgb(255 255 255 / 0.14) 58% 66%, transparent 66%),
+    repeating-conic-gradient(from 0deg at 50% 38%, rgb(0 0 0 / 0.1) 0 6deg, transparent 6deg 12deg),
+    var(--frame);
+}
+.ya-card[data-type="hero"] .ya-card__badge {
+  background: #ffd23f;
+  color: #111;
+  clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
+}
+.ya-card[data-type="hero"] .ya-card__window {
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+  border-radius: 0;
+}
+.ya-card[data-type="hero"] .ya-card__plate {
+  margin: -6cqw -1cqw 0;
+  transform: skewX(-8deg) rotate(-2deg);
+  border-radius: 0;
+  box-shadow: 1.4cqw 1.4cqw 0 #ffd23f;
+}
+.ya-card[data-type="hero"] .ya-card__name {
+  text-shadow: 0.5cqw 0.5cqw 0 #c8202b;
+}
+
+/* Record: a gold trophy plate. */
+.ya-card[data-type="record"] {
+  --logo: #8a6212;
+  --frame: #b8862a;
+  --plate: #1d1a17;
+  --plate-ink: #f3d27a;
+  --stat-bg: #fbf1d0;
+  --stat-ink: #3d2c07;
+  --top-ink: #2b1f05;
+}
+.ya-card[data-type="record"] .ya-card__frame {
+  background: linear-gradient(
+    150deg,
+    #a8761b 0%,
+    #f3d27a 30%,
+    #c99b3a 52%,
+    #f7e1a0 72%,
+    #9b6d18 100%
+  );
+}
+.ya-card[data-type="record"] .ya-card__badge {
+  background: rgb(255 255 255 / 0.45);
+}
+.ya-card[data-type="record"] .ya-card__window {
+  border-radius: 1cqw;
+  box-shadow:
+    inset 0 0 0 1cqw #1d1a17,
+    inset 0 0 0 1.6cqw #f3d27a;
+}
+.ya-card[data-type="record"] .ya-card__plate {
+  text-align: center;
+  border: 0.6cqw solid #f3d27a;
+  outline: 0.5cqw solid #1d1a17;
+}
+.ya-card[data-type="record"] .ya-card__rarity::before,
+.ya-card[data-type="record"] .ya-card__rarity::after {
+  content: "";
+  width: 3cqw;
+  height: 5cqw;
+  border: 0.5cqw solid currentColor;
+  border-radius: 0 100% 0 100%;
+}
+
+/* Internet: neon pixels. */
+.ya-card[data-type="internet"] {
+  --frame: #15112a;
+  --plate: #15112a;
+  --plate-ink: #7cf7ff;
+  --stat-bg: #241c48;
+  --stat-ink: #ff5fd2;
+  --top-ink: #7cf7ff;
+}
+.ya-card[data-type="internet"] .ya-card__frame {
+  border-radius: 0;
+  clip-path: polygon(
+    0 3cqw,
+    3cqw 3cqw,
+    3cqw 0,
+    calc(100% - 3cqw) 0,
+    calc(100% - 3cqw) 3cqw,
+    100% 3cqw,
+    100% calc(100% - 3cqw),
+    calc(100% - 3cqw) calc(100% - 3cqw),
+    calc(100% - 3cqw) 100%,
+    3cqw 100%,
+    3cqw calc(100% - 3cqw),
+    0 calc(100% - 3cqw)
+  );
+  background:
+    linear-gradient(rgb(255 95 210 / 0.12) 1px, transparent 1px) 0 0 / 100% 2.4cqw,
+    var(--frame);
+}
+.ya-card[data-type="internet"] .ya-card__window {
+  border-radius: 0;
+  box-shadow:
+    0 0 0 0.8cqw #ff5fd2,
+    0 0 3cqw #ff5fd2;
+  margin: 0.8cqw;
+}
+.ya-card[data-type="internet"] .ya-card__window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(transparent 0 0.8cqw, rgb(0 0 0 / 0.22) 0.8cqw 1.2cqw);
+}
+.ya-card[data-type="internet"] .ya-card__plate {
+  border: 0.5cqw solid #7cf7ff;
+  border-radius: 0;
+}
+.ya-card[data-type="internet"] .ya-card__name {
+  text-shadow: 0 0 2cqw rgb(124 247 255 / 0.7);
+}
+.ya-card[data-type="internet"] .ya-card__stat {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 0.4cqw #ff5fd2;
+}
+
+/* Sports: a footballer card. */
+.ya-card[data-type="sports"] {
+  --frame: #0f2f73;
+  --plate: #fff;
+  --plate-ink: #0f2f73;
+  --stat-bg: #ffd23f;
+  --stat-ink: #0f2f73;
+}
+.ya-card[data-type="sports"] .ya-card__frame {
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.08) 0 5cqw, transparent 5cqw 10cqw),
+    linear-gradient(180deg, #1c4fb8, #0f2f73 60%);
+}
+.ya-card[data-type="sports"] .ya-card__window {
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%);
+  border-radius: 0;
+  background: #0b2255;
+}
+.ya-card[data-type="sports"] .ya-card__plate {
+  margin-top: -2cqw;
+  text-align: center;
+  border-radius: 0;
+  clip-path: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
+}
+.ya-card[data-type="sports"] .ya-card__stats {
+  gap: 0;
+  border-radius: 1.2cqw;
+  overflow: hidden;
+}
+.ya-card[data-type="sports"] .ya-card__stat {
+  border-radius: 0;
+  border-left: 0.4cqw solid #0f2f73;
+}
+.ya-card[data-type="sports"] .ya-card__stat:first-child {
+  border-left: 0;
+}
+
+/* Music: an album sleeve with the record sliding out. */
+.ya-card[data-type="music"] {
+  --frame: #1b1b1f;
+  --plate: #f0e6d0;
+  --stat-bg: #2c2c33;
+  --stat-ink: #f0e6d0;
+}
+.ya-card[data-type="music"] .ya-card__frame {
+  background: radial-gradient(circle at 80% 30%, #3b2a4a, transparent 60%), var(--frame);
+}
+.ya-card[data-type="music"] .ya-card__window {
+  flex: 0 0 auto;
+  width: 78%;
+  aspect-ratio: 1;
+  overflow: visible;
+  border-radius: 0.6cqw;
+  box-shadow: 1.4cqw 1.4cqw 0 rgb(0 0 0 / 0.4);
+  z-index: 1;
+}
+.ya-card[data-type="music"] .ya-card__photo {
+  border-radius: 0.6cqw;
+}
+.ya-card[data-type="music"] .ya-card__vinyl {
+  display: block;
+  position: absolute;
+  top: 5%;
+  left: 38%;
+  z-index: -1;
+  width: 90%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #ff5fa2 0 8%, #111 8.5% 9.5%, transparent 10%),
+    repeating-radial-gradient(circle, #111 0 1.2%, #262626 1.2% 2%);
+}
+.ya-card[data-type="music"] .ya-card__plate {
+  margin-top: auto;
+}
+.ya-card[data-type="music"] .ya-card__plate::before {
+  content: "Side A";
+  position: absolute;
+  top: -2.6cqw;
+  right: 3cqw;
+  padding: 0.6cqw 1.8cqw;
+  border-radius: 1cqw;
+  background: #ff5fa2;
+  color: #fff;
+  font-family: var(--hb-stamp), monospace;
+  font-size: 3cqw;
+  text-transform: uppercase;
+}
+
+/* Play: a game cartridge. */
+.ya-card[data-type="play"] {
+  --logo: #2b2d31;
+  --frame: #8d9097;
+  --plate: #fff;
+  --stat-bg: #3a3d44;
+  --stat-ink: #fff;
+  --top-ink: #2b2d31;
+}
+.ya-card[data-type="play"] .ya-card__frame {
+  clip-path: polygon(0 0, 78% 0, 84% 4%, 100% 4%, 100% 100%, 0 100%);
+  border-radius: 2cqw 0 2cqw 2cqw;
+  background:
+    repeating-linear-gradient(180deg, rgb(0 0 0 / 0.14) 0 0.6cqw, transparent 0.6cqw 2cqw) 0 0 /
+      100% 9cqw no-repeat,
+    linear-gradient(180deg, #a3a6ad, #7b7e85);
+}
+.ya-card[data-type="play"] .ya-card__badge {
+  background: #2b2d31;
+  color: #fff;
+}
+.ya-card[data-type="play"] .ya-card__window {
+  border: 1.6cqw solid #fff;
+  border-bottom: 0;
+  border-radius: 1.6cqw 1.6cqw 0 0;
+}
+.ya-card[data-type="play"] .ya-card__plate {
+  margin-top: -2.2cqw;
+  border-radius: 0 0 1.6cqw 1.6cqw;
+  background: linear-gradient(90deg, #ff5a5a 0 3cqw, #fff 3cqw);
+  padding-left: 5cqw;
+}
+
+/* Screen: a film strip, with a VHS label. */
+.ya-card[data-type="screen"] {
+  --frame: #151412;
+  --plate: #f4f1ea;
+  --stat-bg: #f4f1ea;
+  --stat-ink: #151412;
+}
+.ya-card[data-type="screen"] .ya-card__frame {
+  padding-inline: 7cqw;
+  background:
+    radial-gradient(circle, #f4f1ea 0 40%, transparent 44%) 1.6cqw 0 / 3.6cqw 5cqw repeat-y,
+    radial-gradient(circle, #f4f1ea 0 40%, transparent 44%) calc(100% - 1.6cqw) 0 / 3.6cqw 5cqw
+      repeat-y,
+    var(--frame);
+}
+.ya-card[data-type="screen"] .ya-card__frame > * {
+  z-index: 1;
+}
+.ya-card[data-type="screen"] .ya-card__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0 1.2cqw;
+  background: linear-gradient(90deg, #151412 0 1cqw, transparent 1cqw calc(100% - 1cqw), #151412 0)
+    0 0 / 100% 100%;
+  pointer-events: none;
+}
+.ya-card[data-type="screen"] .ya-card__window {
+  border-radius: 0.4cqw;
+}
+.ya-card[data-type="screen"] .ya-card__plate {
+  border-radius: 0.6cqw;
+  background:
+    linear-gradient(
+        90deg,
+        #e63946 0 20%,
+        #f4a261 20% 40%,
+        #e9c46a 40% 60%,
+        #2a9d8f 60% 80%,
+        #264653 80%
+      )
+      0 100% / 100% 1.4cqw no-repeat,
+    var(--plate);
+  padding-bottom: 3.2cqw;
+}
+
+/* Space: a star chart. */
+.ya-card[data-type="space"] {
+  --frame: #0c1745;
+  --plate: #0c1745;
+  --plate-ink: #fff;
+  --stat-bg: #1b2a6b;
+  --stat-ink: #ffe27a;
+  --top-ink: #cfe0ff;
+}
+.ya-card[data-type="space"] .ya-card__frame {
+  background:
+    radial-gradient(circle, #fff 0 0.35cqw, transparent 0.45cqw) 0 0 / 11cqw 13cqw,
+    radial-gradient(circle, rgb(255 255 255 / 0.7) 0 0.25cqw, transparent 0.35cqw) 5cqw 6cqw / 9cqw
+      8cqw,
+    radial-gradient(circle at 85% 90%, #3a2f8a, transparent 55%),
+    var(--frame);
+}
+.ya-card[data-type="space"] .ya-card__window {
+  border-radius: 50% 50% 2cqw 2cqw / 30% 30% 2cqw 2cqw;
+  box-shadow:
+    0 0 0 0.6cqw #ffe27a,
+    0 0 4cqw rgb(255 226 122 / 0.35);
+  margin: 0.6cqw;
+}
+.ya-card[data-type="space"] .ya-card__plate {
+  border: 0.4cqw solid rgb(255 255 255 / 0.5);
+}
+.ya-card[data-type="space"] .ya-card__deco {
+  border: 0.4cqw dashed rgb(207 224 255 / 0.4);
+  border-radius: 50%;
+  inset: 18% -30% 30% -30%;
+  rotate: -14deg;
+}
+
+/* Tech: a blueprint. */
+.ya-card[data-type="tech"] {
+  --frame: #1f4fa3;
+  --plate: #e9f1ff;
+  --plate-ink: #0f2c63;
+  --stat-bg: #e9f1ff;
+  --stat-ink: #0f2c63;
+}
+.ya-card[data-type="tech"] .ya-card__frame {
+  background:
+    linear-gradient(rgb(255 255 255 / 0.16) 1px, transparent 1px) 0 0 / 5cqw 5cqw,
+    linear-gradient(90deg, rgb(255 255 255 / 0.16) 1px, transparent 1px) 0 0 / 5cqw 5cqw,
+    var(--frame);
+}
+.ya-card[data-type="tech"] .ya-card__window {
+  border-radius: 0;
+  box-shadow: 0 0 0 0.5cqw #fff;
+  margin: 1cqw;
+}
+.ya-card[data-type="tech"] .ya-card__window::before,
+.ya-card[data-type="tech"] .ya-card__window::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 5cqw;
+  height: 5cqw;
+  border: 0.6cqw solid #fff;
+}
+.ya-card[data-type="tech"] .ya-card__window::before {
+  top: 1.2cqw;
+  left: 1.2cqw;
+  border-right: 0;
+  border-bottom: 0;
+}
+.ya-card[data-type="tech"] .ya-card__window::after {
+  right: 1.2cqw;
+  bottom: 1.2cqw;
+  border-left: 0;
+  border-top: 0;
+}
+.ya-card[data-type="tech"] .ya-card__plate {
+  border-radius: 0;
+  border-left: 1.4cqw solid #ffd23f;
+}
+
+/* Money: a banknote. */
+.ya-card[data-type="money"] {
+  --logo: #1f3b2b;
+  --frame: #c9dcc0;
+  --plate: #f3f1e4;
+  --plate-ink: #1f3b2b;
+  --stat-bg: #1f3b2b;
+  --stat-ink: #f3f1e4;
+  --top-ink: #1f3b2b;
+}
+.ya-card[data-type="money"] .ya-card__frame {
+  background:
+    repeating-radial-gradient(
+      circle at 20% 30%,
+      rgb(31 59 43 / 0.1) 0 0.3cqw,
+      transparent 0.3cqw 1.6cqw
+    ),
+    repeating-radial-gradient(
+      circle at 80% 75%,
+      rgb(31 59 43 / 0.1) 0 0.3cqw,
+      transparent 0.3cqw 1.6cqw
+    ),
+    var(--frame);
+  box-shadow: inset 0 0 0 0.8cqw #1f3b2b;
+}
+.ya-card[data-type="money"] .ya-card__badge {
+  background: #1f3b2b;
+  color: #f3f1e4;
+}
+.ya-card[data-type="money"] .ya-card__set {
+  color: #b3261e;
+}
+.ya-card[data-type="money"] .ya-card__window {
+  border-radius: 50% / 18%;
+  box-shadow: 0 0 0 0.6cqw #1f3b2b;
+  margin: 0.6cqw 2cqw;
+}
+.ya-card[data-type="money"] .ya-card__plate {
+  text-align: center;
+  box-shadow: inset 0 0 0 0.4cqw #1f3b2b;
+}
+
+/* Generic: the section's own colour, a double rule. */
+.ya-card[data-type="generic"] {
+  --logo: #1d1a17;
+  --frame: var(--sec, #555);
+  --plate: #fbf7ec;
+  --stat-bg: #fbf7ec;
+  --top-ink: #1d1a17;
+}
+.ya-card[data-type="generic"] .ya-card__frame {
+  box-shadow:
+    inset 0 0 0 0.6cqw #1d1a17,
+    inset 0 0 0 1.4cqw var(--frame),
+    inset 0 0 0 1.8cqw #1d1a17;
+}
+.ya-card[data-type="generic"] .ya-card__badge {
+  background: rgb(255 255 255 / 0.55);
+}
+
+/* ——— An empty slot in the album ——— */
+
+.ya-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  aspect-ratio: 5 / 7;
+  padding: 16px;
+  border: 3px dashed rgb(29 26 23 / 0.28);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.18);
+  color: rgb(29 26 23 / 0.6);
+  text-align: center;
+}
+
+.ya-slot__q {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 64px;
+  line-height: 0.8;
+}
+
+.ya-slot__label {
+  font-family: var(--hb-serif), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.25;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.ya-slot__sub {
+  font-family: var(--hb-stamp), monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ya-card__tilt,
+  .ya-card__inner {
+    transition: none;
+    transform: none;
+  }
+  .ya-card__inner.is-flipped {
+    transform: rotateY(180deg);
+  }
+  .ya-card[data-rarity="epic"] .ya-card__shine {
+    animation: none;
+    background-position: 40% 0;
+  }
+}

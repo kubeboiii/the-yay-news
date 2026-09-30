@@ -2,7 +2,12 @@
 // admin.repository.ts. Used only by *.test.ts files.
 
 import { SERVED_STATUSES } from "../editions/status.js";
-import type { AdminEditionRecord, AdminStoryRecord, adminRepository } from "./admin.repository.js";
+import type {
+  AdminActionRecord,
+  AdminEditionRecord,
+  AdminStoryRecord,
+  adminRepository,
+} from "./admin.repository.js";
 
 const story = (
   issue: number,
@@ -18,6 +23,8 @@ const story = (
   headline: `Headline for ${slug}`,
   slot,
   isReserve,
+  pulledAt: null,
+  pulledReason: null,
   pageId: `${issue}-p${page}`,
   order,
   section: { slug: section },
@@ -55,17 +62,34 @@ type Repo = typeof adminRepository;
 
 export function fakeAdminRepository(editions: AdminEditionRecord[]): Repo & {
   editions: AdminEditionRecord[];
+  actions: AdminActionRecord[];
 } {
+  const actions: AdminActionRecord[] = [];
   const byIssue = (n: number) => editions.find((e) => e.issueNumber === n) ?? null;
+  /** As the Prisma select orders them: by page, then position. */
+  const ordered = (e: AdminEditionRecord): AdminEditionRecord => ({
+    ...e,
+    stories: [...e.stories].sort((a, b) => a.page.order - b.page.order || a.order - b.order),
+  });
   const served = (d: Date) =>
     editions
       .filter((e) => (SERVED_STATUSES as readonly string[]).includes(e.status) && e.date <= d)
       .sort((a, b) => b.date.getTime() - a.date.getTime())[0] ?? null;
+  const find = (id: string) => editions.flatMap((e) => e.stories).find((s) => s.id === id) ?? null;
+  const onPage = (pageId: string) =>
+    editions.flatMap((e) => e.stories).filter((s) => s.pageId === pageId);
   return {
     editions,
+    actions,
     listRecent: async (take) =>
-      [...editions].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, take),
-    findByIssue: async (n) => byIssue(n),
+      [...editions]
+        .sort((a, b) => b.date.getTime() - a.date.getTime())
+        .slice(0, take)
+        .map(ordered),
+    findByIssue: async (n) => {
+      const e = byIssue(n);
+      return e && ordered(e);
+    },
     findLatestServed: async (d) => {
       const e = served(d);
       return e && { issueNumber: e.issueNumber };
@@ -74,19 +98,37 @@ export function fakeAdminRepository(editions: AdminEditionRecord[]): Repo & {
       const e = byIssue(n);
       if (e) e.status = status;
     },
-    pullStory: async (pulled, reserve) => {
-      for (const e of editions) {
-        e.stories = e.stories.filter((s) => s.id !== pulled.id);
-        const r = reserve && e.stories.find((s) => s.id === reserve.id);
-        if (r)
-          Object.assign(r, {
-            isReserve: false,
-            pageId: pulled.pageId,
-            order: pulled.order,
-            slot: pulled.slot,
-            page: pulled.page,
-          });
-      }
+    pullStory: async (pulled, reserve, { reason, at }) => {
+      const p = find(pulled.id);
+      const r = reserve && find(reserve.id);
+      if (!p) return;
+      // `pulled` may be the very record we change, so take its place first.
+      const place = { pageId: p.pageId, order: p.order, slot: p.slot, page: p.page };
+      const order = r ? Math.min(0, ...onPage(pulled.pageId).map((s) => s.order)) - 1 : place.order;
+      Object.assign(p, { pulledAt: at, pulledReason: reason, order });
+      if (r) Object.assign(r, { isReserve: false, ...place });
     },
+    unpullStory: async (story) => {
+      const s = find(story.id);
+      if (!s) throw new Error("no such story");
+      if (s.order >= 0) {
+        Object.assign(s, { pulledAt: null, pulledReason: null });
+        return "restored";
+      }
+      const order = Math.max(0, ...onPage(s.pageId).map((x) => x.order)) + 1;
+      Object.assign(s, { pulledAt: null, pulledReason: null, isReserve: true, order });
+      return "reserve";
+    },
+    recordAction: async (row) => {
+      actions.push({
+        id: `a${actions.length + 1}`,
+        action: row.action,
+        issue: row.issue ?? null,
+        slug: row.slug ?? null,
+        detail: (row.detail ?? null) as AdminActionRecord["detail"],
+        at: new Date(),
+      });
+    },
+    listActions: async (take) => [...actions].reverse().slice(0, take),
   };
 }

@@ -44,7 +44,8 @@ export function toServedEdition(d: EditionDraft): Edition {
     kind: d.kind,
     design: d.design,
     colourway: d.colourway,
-    guestSection: d.guestSection ? section(d.guestSection) : null,
+    guestSections: d.guestSections.map(section),
+    guestSection: d.guestSections[0] ? section(d.guestSections[0]) : null,
     lead: lead
       ? {
           slug: lead.slug,
@@ -88,8 +89,8 @@ export function draftProblems(d: EditionDraft): string[] {
     problems.push("no lead story");
   const guests = d.pages.filter((p) => p.layout === "guest");
   if (guests.length > 2) problems.push("more than two guest pages");
-  if ((guests[0]?.section ?? null) !== d.guestSection)
-    problems.push("guest section does not match its page");
+  if (guests.map((p) => p.section).join() !== d.guestSections.join())
+    problems.push("guest sections do not match their pages");
   for (const p of d.puzzles) {
     const r = solvedPuzzleSchema.safeParse(p);
     if (!r.success) problems.push(`puzzle ${p.type}: ${r.error.message}`);

@@ -221,6 +221,9 @@ const editionSummaryShape = z.object({
   kind: editionKindSchema,
   design: editionDesignSchema,
   colourway: z.string(),
+  /** The day's guest sections in page order (two on a normal day). */
+  guestSections: z.array(sectionSchema),
+  /** The first of `guestSections`, kept for older clients. */
   guestSection: sectionSchema.nullable(),
   /** The front-page lead, for archive racks and link previews. */
   lead: z

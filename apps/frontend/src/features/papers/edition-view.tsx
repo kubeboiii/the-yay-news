@@ -1,10 +1,12 @@
 import type { Edition, EditionDesign, Story } from "@repo/shared";
 import type { CSSProperties } from "react";
+import { RewardHost, RewardOffer } from "@/features/cards/rewards";
 import { ReadingTracker } from "@/features/habits/reading";
 import { SaveStoryButton } from "@/features/habits/save-story";
 import { StickerLayer } from "@/features/habits/stickers";
 import { PageBar } from "@/features/reader/page-bar";
-import { ShareBar } from "@/features/reader/share-bar";
+import { ShareBar, StoryCut } from "@/features/reader/share-bar";
+import { ZineLink } from "@/features/zine/zine-link";
 import { Balance } from "./balance";
 import { withOnePictureGroup } from "./plates";
 import { readingFor, storyLinks } from "./reading";
@@ -34,7 +36,24 @@ export function EditionPageView({
   return (
     <>
       <PrintedPage edition={edition} page={page} live />
-      <ReadingTracker edition={edition} page={page} />
+      {page.layout === "back" ? (
+        <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-[#e4ded3] px-4 pt-6 pb-24 text-center font-serif text-[17px] text-[#1c1a17] print:hidden">
+          <span>Take today with you:</span>
+          <ZineLink
+            issue={edition.issueNumber}
+            className="rounded-full bg-[#1c1a17] px-4 py-1.5 font-semibold text-[#fbf6ea] hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            Download the mini zine
+          </ZineLink>
+          <span className="opacity-75">one A4 sheet, one cut, eight pages</span>
+        </p>
+      ) : null}
+      <ReadingTracker
+        edition={edition}
+        page={page}
+        extra={<RewardOffer key="reward-offer" issue={edition.issueNumber} />}
+      />
+      <RewardHost />
       <PageBar issue={edition.issueNumber} reading={readingFor(edition, page)} />
     </>
   );
@@ -128,7 +147,8 @@ export function StoryView({ data: printed, design }: { data: Story; design?: Edi
       <paper.Frame colourway={data.edition.colourway}>
         <paper.Story data={data} links={storyLinks(data)} />
       </paper.Frame>
-      <div className="flex justify-center bg-[#e4ded3] px-4 pt-8 font-sans text-base text-[#1c1a17] print:hidden">
+      <div className="flex flex-wrap items-start justify-center gap-x-8 gap-y-4 bg-[#e4ded3] px-4 pt-8 font-sans text-base text-[#1c1a17] print:hidden">
+        <StoryCut data={printed} />
         <SaveStoryButton
           issue={printed.edition.issueNumber}
           slug={printed.story.slug}

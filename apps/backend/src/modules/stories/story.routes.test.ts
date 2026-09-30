@@ -49,6 +49,12 @@ describe("stories routes", () => {
     expect(last?.next).toBeNull();
   });
 
+  it("returns 404 for a pulled story, and leaves it out of the neighbours", async () => {
+    expect((await get("/api/v1/editions/41/stories/pulled-41")).res.status).toBe(404);
+    const { body } = await get("/api/v1/editions/41/stories/game-b-41");
+    expect(body?.next).toBeNull();
+  });
+
   it("returns 404 for a story of an edition not yet released to the reader", async () => {
     const { res } = await get("/api/v1/editions/42/stories/lead-42");
     expect(res.status).toBe(404);

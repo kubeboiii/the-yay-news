@@ -1,0 +1,22 @@
+{
+  "lando-norris": {
+    "src": "wiki:Lando Norris",
+    "file": "lando-norris.jpg",
+    "credit": "Wikimedia Commons · Original: Steffen Prößdorf; Derivative…, CC BY-SA 4.0"
+  },
+  "lewis-hamilton": {
+    "src": "wiki:Lewis Hamilton",
+    "file": "lewis-hamilton.jpg",
+    "credit": "Wikimedia Commons · Picture by Lauren Hurley / No 10 Downi…, OGL 3"
+  },
+  "ayrton-senna": {
+    "src": "wiki:Ayrton Senna",
+    "file": "ayrton-senna.jpg",
+    "credit": "Wikimedia Commons · File:Ayrton Senna 2.jpg: Instituto Ayr…, CC BY 2.0"
+  },
+  "max-verstappen": {
+    "src": "wiki:Max Verstappen",
+    "file": "max-verstappen.jpg",
+    "credit": "Wikimedia Commons · Steffen Prößdorf, CC BY-SA 4.0"
+  }
+}

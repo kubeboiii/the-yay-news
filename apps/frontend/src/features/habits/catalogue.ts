@@ -15,6 +15,8 @@ export type StickerDef = {
   ratio: number;
   /** What earns it, in words, for the sheet's small print. */
   earnedBy: string;
+  /** The sheet's hint for a sticker still to earn, when "Solve …" doesn't fit. */
+  hint?: string;
 };
 
 export const STICKERS: StickerDef[] = [
@@ -29,6 +31,14 @@ export const STICKERS: StickerDef[] = [
     w: 17,
     ratio: 0.46,
     earnedBy: "every puzzle in a paper",
+  },
+  {
+    id: "full-set",
+    label: "Full set!",
+    w: 13,
+    ratio: 1,
+    earnedBy: "a full set of Yay Attax cards",
+    hint: "Complete a set of cards",
   },
   { id: "bee", label: "A busy bee", w: 12, ratio: 0.8, earnedBy: "a bonus" },
   { id: "rainbow", label: "A rainbow", w: 13, ratio: 0.7, earnedBy: "a bonus" },

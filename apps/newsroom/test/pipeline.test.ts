@@ -31,7 +31,7 @@ function storeWithHistory() {
     kind: "regular",
     design: "zine",
     colourway: "paint-box",
-    guestSection: null,
+    guestSections: [],
     pages: [],
     features: [],
     puzzles: [],
@@ -75,7 +75,7 @@ describe("the pipeline, end to end with the fake model", () => {
     const fed = new Set<SectionSlug>(ALL_SECTIONS);
     const guestPages = d.pages.filter((p) => p.layout === "guest").map((p) => p.section);
     expect(guestPages).toEqual([...guests, ...fallbacks].filter((g) => fed.has(g)).slice(0, 2));
-    expect(d.guestSection).toBe(guestPages[0]);
+    expect(d.guestSections).toEqual(guestPages);
     for (const p of d.pages.slice(1, -1))
       expect(p.stories.filter((s) => !s.isReserve).length, p.section ?? "").toBeGreaterThanOrEqual(
         3,

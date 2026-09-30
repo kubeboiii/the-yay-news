@@ -1,0 +1,22 @@
+{
+  "roman-reigns": {
+    "src": "wiki:Roman Reigns",
+    "file": "roman-reigns.jpg",
+    "credit": "Wikimedia Commons · Diego Serrano, CC BY 2.0"
+  },
+  "john-cena": {
+    "src": "wiki:John Cena",
+    "file": "john-cena.jpg",
+    "credit": "Wikimedia Commons · Gage Skidmore, CC BY-SA 3.0"
+  },
+  "the-rock": {
+    "src": "wiki:Dwayne Johnson",
+    "file": "the-rock.jpg",
+    "credit": "Wikimedia Commons · Harald Krichel, CC BY-SA 4.0"
+  },
+  "the-undertaker": {
+    "src": "wiki:The Undertaker",
+    "file": "the-undertaker.jpg",
+    "credit": "Wikimedia Commons · Pfc. Hilario Martinez, PD"
+  }
+}

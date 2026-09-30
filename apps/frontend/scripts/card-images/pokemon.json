@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "pikachu",
+    "src": "pokeapi:25"
+  },
+  {
+    "slug": "charmander",
+    "src": "pokeapi:4"
+  },
+  {
+    "slug": "charmeleon",
+    "src": "pokeapi:5"
+  },
+  {
+    "slug": "charizard",
+    "src": "pokeapi:6"
+  },
+  {
+    "slug": "mewtwo",
+    "src": "pokeapi:150"
+  }
+]

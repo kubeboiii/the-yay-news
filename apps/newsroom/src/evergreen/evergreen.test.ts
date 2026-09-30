@@ -1,6 +1,6 @@
 import { editionDesignProblems, featureSchema, slugSchema } from "@repo/shared";
 import { describe, expect, it } from "vitest";
-import { draftProblems } from "../contract.ts";
+import { draftProblems, toServedEdition } from "../contract.ts";
 import { fromEvergreen } from "../slow-news-day.ts";
 import { CORE_SECTIONS, GUEST_SECTIONS, type SectionSlug } from "../types.ts";
 import {
@@ -103,8 +103,21 @@ describe("buildSlowNewsDay", () => {
       const d = fromEvergreen(await buildSlowNewsDay(addDays("2026-10-05", i)), 50 + i);
       expect(draftProblems(d)).toEqual([]);
       expect(d.pages.filter((p) => p.layout === "guest")).toHaveLength(2);
-      expect(d.guestSection).toBe(d.pages.find((p) => p.layout === "guest")?.section);
+      expect(d.guestSections).toEqual(
+        d.pages.filter((p) => p.layout === "guest").map((p) => p.section),
+      );
+      expect(d.guestSections).toHaveLength(2);
+      expect(toServedEdition(d).guestSection?.slug).toBe(d.guestSections[0]);
     }
+  });
+
+  it("flags guest sections that do not match the guest pages", async () => {
+    const d = fromEvergreen(await buildSlowNewsDay("2026-10-05"), 50);
+    const swapped = { ...d, guestSections: [...d.guestSections].reverse() };
+    expect(draftProblems(swapped)).toContain("guest sections do not match their pages");
+    expect(draftProblems({ ...d, guestSections: d.guestSections.slice(0, 1) })).toContain(
+      "guest sections do not match their pages",
+    );
   });
 
   it("prints a broadsheet on weekdays and a weekend design at weekends", async () => {

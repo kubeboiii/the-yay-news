@@ -25,6 +25,7 @@ import { type SectionInfo, writeStories } from "./stages/write.ts";
 import { BEATS_STAGE, type BeatRecord, SECTIONS, type Store } from "./store.ts";
 import {
   FROM_THE_WEEK,
+  guestSectionsOf,
   type Candidate,
   type CandidateRecord,
   type Decision,
@@ -419,7 +420,6 @@ export async function runEdition(o: RunOptions): Promise<RunOutcome> {
     );
 
     // 8. Lay out (done) and check the whole edition against the contracts.
-    const guestPage = laid.pages.find((p) => p.layout === "guest");
     const d: EditionDraft = {
       date: o.date,
       issueNumber,
@@ -428,7 +428,7 @@ export async function runEdition(o: RunOptions): Promise<RunOutcome> {
       kind: "regular",
       design,
       colourway,
-      guestSection: guestPage?.section ?? null,
+      guestSections: guestSectionsOf(laid.pages),
       pages: laid.pages,
       features,
       puzzles,

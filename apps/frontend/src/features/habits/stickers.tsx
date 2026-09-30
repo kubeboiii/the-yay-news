@@ -270,7 +270,7 @@ export function StickerSheet({
             >
               <StickerArt id={d.id} />
             </span>
-            <span className="hb-sheet__earn">Solve {d.earnedBy}</span>
+            <span className="hb-sheet__earn">{d.hint ?? `Solve ${d.earnedBy}`}</span>
           </li>
         ))}
       </ul>

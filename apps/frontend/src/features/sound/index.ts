@@ -16,6 +16,12 @@
 //   fold    a crisp crease: a sharp noise attack swept downwards, then a papery settle
 //   rustle  a page turning: uneven crinkles across a sweeping band
 //   whoosh  air past a paper aeroplane: a band of noise swelling and falling, panned across
+//   tear    a foil card pack ripped open: a run of crackles climbing in pitch, then a flap
+//   flip    a trading card flicked over: a stiff card-stock snap with a short swish
+//   scratch a coin on a scratch card: a gritty burst of high noise, jittered like foil flaking
+//   rattle  a blind box shaken: card stock knocking about inside a cardboard box
+//   chime   a reveal: three bright sine partials, a little glockenspiel
+//   bag     a hand in a paper bag: a slow, crinkly rustle
 
 export type PaperSound =
   | "pencil" // a short graphite scratch, per letter written
@@ -26,7 +32,13 @@ export type PaperSound =
   | "press" // pressing a sticker down
   | "fold" // a paper fold/crease
   | "rustle" // a page turning
-  | "whoosh"; // a paper aeroplane leaving
+  | "whoosh" // a paper aeroplane leaving
+  | "tear" // tearing open a pack of cards
+  | "flip" // turning a card over
+  | "scratch" // scratching a scratch card
+  | "rattle" // shaking a blind box
+  | "chime" // a card revealed
+  | "bag"; // reaching into the lucky dip
 
 const KEY = "yn-sound";
 const listeners = new Set<() => void>();
@@ -351,6 +363,130 @@ function whoosh(ac: AudioContext, t: number) {
   out.connect(ac.destination);
 }
 
+function tear(ac: AudioContext, t: number) {
+  // Foil tears in a quick run of small rips, each a little higher as the tear speeds up.
+  const rips = 11;
+  for (let i = 0; i < rips; i++) {
+    const at = t + i * 0.028 + Math.random() * 0.01;
+    const src = noise(ac, at, 0.03);
+    const band = filter(ac, "bandpass", jitter(1600 + i * 330, 0.12), 2.2);
+    src
+      .connect(band)
+      .connect(filter(ac, "highpass", 900))
+      .connect(
+        envelope(
+          ac,
+          [
+            [0.002, jitter(0.09 + i * 0.006, 0.25)],
+            [0.025, 0],
+          ],
+          at,
+        ),
+      )
+      .connect(ac.destination);
+  }
+  // The strip coming away: a soft papery flap.
+  const flap = noise(ac, t + rips * 0.028, 0.16);
+  flap
+    .connect(filter(ac, "bandpass", 900, 0.8))
+    .connect(
+      envelope(
+        ac,
+        [
+          [0.02, 0.08],
+          [0.15, 0],
+        ],
+        t + rips * 0.028,
+      ),
+    )
+    .connect(ac.destination);
+}
+
+function flip(ac: AudioContext, t: number) {
+  // A short swish of air as the card turns...
+  const swish = noise(ac, t, 0.12);
+  const band = filter(ac, "bandpass", 1200, 1.2);
+  band.frequency.setValueAtTime(900, t);
+  band.frequency.exponentialRampToValueAtTime(2600, t + 0.1);
+  swish
+    .connect(band)
+    .connect(
+      envelope(
+        ac,
+        [
+          [0.04, 0.05],
+          [0.11, 0],
+        ],
+        t,
+      ),
+    )
+    .connect(ac.destination);
+  // ...and the stiff card-stock snap as it lands.
+  const snap = noise(ac, t + 0.1, 0.02);
+  snap
+    .connect(filter(ac, "highpass", 2500))
+    .connect(
+      envelope(
+        ac,
+        [
+          [0.001, 0.14],
+          [0.018, 0],
+        ],
+        t + 0.1,
+      ),
+    )
+    .connect(ac.destination);
+}
+
+function scratchGrit(ac: AudioContext, t: number) {
+  const src = noise(ac, t, 0.09);
+  const band = filter(ac, "bandpass", jitter(5200, 0.2), 0.9);
+  const pts: [number, number][] = [];
+  for (let i = 1; i <= 6; i++) pts.push([i * 0.014, (i % 2 ? 0.11 : 0.04) * (1 - i / 8)]);
+  pts.push([0.09, 0]);
+  src
+    .connect(band)
+    .connect(filter(ac, "highpass", 2500))
+    .connect(envelope(ac, pts, t))
+    .connect(ac.destination);
+}
+
+function rattle(ac: AudioContext, t: number) {
+  for (let i = 0; i < 7; i++) {
+    const at = t + i * 0.07 + Math.random() * 0.02;
+    const src = noise(ac, at, 0.04);
+    src
+      .connect(filter(ac, "bandpass", jitter(i % 2 ? 700 : 1100, 0.2), 1.4))
+      .connect(
+        envelope(
+          ac,
+          [
+            [0.003, jitter(0.22, 0.3)],
+            [0.04, 0],
+          ],
+          at,
+        ),
+      )
+      .connect(ac.destination);
+  }
+}
+
+function chime(ac: AudioContext, t: number) {
+  [1318.5, 1760, 2637].forEach((f, i) => {
+    const at = t + i * 0.07;
+    const osc = ac.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = f;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(0.12, at + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + 0.7);
+    osc.connect(g).connect(ac.destination);
+    osc.start(at);
+    osc.stop(at + 0.75);
+  });
+}
+
 /** Plays a paper sound if sound is on. */
 export function play(sound: PaperSound): void {
   const ac = ready();
@@ -385,6 +521,25 @@ export function play(sound: PaperSound): void {
         break;
       case "whoosh":
         whoosh(ac, t);
+        break;
+      case "tear":
+        tear(ac, t);
+        break;
+      case "flip":
+        flip(ac, t);
+        break;
+      case "scratch":
+        scratchGrit(ac, t);
+        break;
+      case "rattle":
+        rattle(ac, t);
+        break;
+      case "chime":
+        chime(ac, t);
+        break;
+      case "bag":
+        rustle(ac, t);
+        rustle(ac, t + 0.35);
         break;
     }
   } catch {

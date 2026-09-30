@@ -18,6 +18,7 @@ const section = (slug: string, name: string, kind: "core" | "guest" = "core") =>
 const discoveries = section("discoveries", "Discoveries");
 const play = section("play", "Play");
 const wordNerd = section("word-nerd", "Word Nerd", "guest");
+const foodAndDrink = section("food-and-drink", "Food & Drink", "guest");
 
 function story(
   id: string,
@@ -26,6 +27,7 @@ function story(
   slot: StoryRecord["slot"],
   sec: StoryRecord["section"],
   withImage = false,
+  pulled = false,
 ): StoryRecord {
   return {
     id,
@@ -46,6 +48,8 @@ function story(
     sourceName: "Example Source (sample)",
     embedUrl: null,
     isReserve: false,
+    pulledAt: pulled ? at : null,
+    pulledReason: pulled ? "A reader spotted a mistake" : null,
     createdAt: at,
     updatedAt: at,
     images: withImage
@@ -92,8 +96,7 @@ export function makeEdition({
     kind: "regular",
     design,
     colourway,
-    guestSectionId: guest ? "word-nerd" : null,
-    guestSection: guest ? wordNerd : null,
+    guests: guest ? [{ section: wordNerd }, { section: foodAndDrink }] : [],
     createdAt: at,
     updatedAt: at,
     pages: [
@@ -116,6 +119,8 @@ export function makeEdition({
         stories: [
           story(`game-a-${issueNumber}`, p(2), 1, "feature", play),
           story(`game-b-${issueNumber}`, p(2), 2, "brief", play),
+          // Pulled by the admin: kept in the database, never served.
+          story(`pulled-${issueNumber}`, p(2), -1, "brief", play, false, true),
         ],
       },
       {
@@ -189,7 +194,7 @@ export function makeEdition({
   };
 }
 
-/** Issue 41 (Tue), 42 (Wed, with a guest section), 43 (Thu, scheduled) and 44 (Fri, a draft). */
+/** Issue 41 (Tue), 42 (Wed, with two guest sections), 43 (Thu, scheduled) and 44 (Fri, a draft). */
 export const fixtureEditions = (): EditionRecord[] => [
   makeEdition({ issueNumber: 41, date: "2026-09-29", colourway: "acid-garden" }),
   makeEdition({ issueNumber: 42, date: "2026-09-30", guest: true }),
@@ -209,8 +214,18 @@ export const fixtureEditions = (): EditionRecord[] => [
 
 type Repository = typeof editionRepository;
 
+/** The JS twin of `readableStoryWhere` (edition.repository.test.ts keeps the two in step). */
+export const isReadable = (s: StoryRecord) => !s.isReserve && s.pulledAt === null;
+
+/** What the Prisma include loads: only readable stories on each page. */
+const loaded = (e: EditionRecord): EditionRecord => ({
+  ...e,
+  pages: e.pages.map((pg) => ({ ...pg, stories: pg.stories.filter(isReadable) })),
+});
+
 /** An in-memory repository over `editions`, with the same semantics as the Prisma queries. */
-export function fakeRepository(editions: EditionRecord[]): Repository {
+export function fakeRepository(stored: EditionRecord[]): Repository {
+  const editions = stored.map(loaded);
   const newestFirst = [...editions].sort((a, b) => b.date.getTime() - a.date.getTime());
   const published = newestFirst.filter((e) =>
     (SERVED_STATUSES as readonly string[]).includes(e.status),

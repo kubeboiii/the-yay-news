@@ -10,7 +10,13 @@ import type {
 import { puzzlesOf } from "./stages/features.ts";
 import { SECTIONS } from "./store.ts";
 import { slugify, wordCount } from "./text.ts";
-import type { DraftPage, DraftStory, EditionDraft, SectionSlug } from "./types.ts";
+import {
+  guestSectionsOf,
+  type DraftPage,
+  type DraftStory,
+  type EditionDraft,
+  type SectionSlug,
+} from "./types.ts";
 
 /**
  * Evergreen items are our own words, so their "source" is the paper itself: the site's about page
@@ -77,7 +83,7 @@ export function fromEvergreen(e: EvergreenDraft, issueNumber: number): EditionDr
     kind: "slow_news_day",
     design: e.design,
     colourway: e.colourway,
-    guestSection: (pages.find((p) => p.layout === "guest")?.section ?? null) as SectionSlug | null,
+    guestSections: guestSectionsOf(pages),
     pages,
     features,
     puzzles: puzzlesOf(e.date, headlines),

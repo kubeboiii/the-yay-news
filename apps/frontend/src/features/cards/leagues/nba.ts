@@ -1,0 +1,55 @@
+// Yay Attax · NBA Basketball. Scoring, Playmaking, Defense and Athleticism.
+
+import type { CardDef } from "../types.ts";
+
+export const cards: CardDef[] = [
+  {
+    slug: "lebron-james",
+    name: "LeBron James",
+    kind: "SF",
+    team: "LA Lakers",
+    stats: [93, 94, 82, 90],
+    rarity: "rare",
+    era: "current",
+    bio: "The NBA's all-time leading scorer, and four titles with three teams.",
+    move: "Chase-down block",
+    colour: "#552583",
+  },
+  {
+    slug: "stephen-curry",
+    name: "Stephen Curry",
+    kind: "PG",
+    team: "Golden State Warriors",
+    stats: [97, 88, 62, 74],
+    rarity: "common",
+    era: "current",
+    bio: "Has made more three-pointers than anyone in history.",
+    move: "Logo three",
+    colour: "#1d428a",
+  },
+  {
+    slug: "kobe-bryant",
+    name: "Kobe Bryant",
+    kind: "SG",
+    team: "LA Lakers",
+    stats: [96, 80, 86, 90],
+    rarity: "epic",
+    era: "2000s",
+    bio: "Five titles with the Lakers and 81 points in a single game.",
+    move: "Fadeaway",
+    colour: "#552583",
+  },
+  {
+    slug: "michael-jordan",
+    name: "Michael Jordan",
+    kind: "SG",
+    team: "Chicago Bulls",
+    stats: [99, 86, 92, 97],
+    rarity: "legendary",
+    era: "legend",
+    weight: 0.8,
+    bio: "Six titles, six Finals MVPs, and never lost a Finals series.",
+    move: "Free-throw-line dunk",
+    colour: "#ce1141",
+  },
+];

@@ -1,0 +1,22 @@
+{
+  "spider-man": {
+    "src": "wiki:Spider-Man",
+    "file": "spider-man.jpg",
+    "credit": "Wikipedia · Mike McKone and Morry Hollowell / Marv…, Fair use"
+  },
+  "hulk": {
+    "src": "wiki:Hulk",
+    "file": "hulk.png",
+    "credit": "Wikipedia · Fair use"
+  },
+  "thanos": {
+    "src": "wiki:Thanos",
+    "file": "thanos.png",
+    "credit": "Wikipedia · Dike Ruan / Marvel Comics, Fair use"
+  },
+  "iron-man": {
+    "src": "wiki:Iron Man",
+    "file": "iron-man.jpg",
+    "credit": "Wikipedia · Marvel Comics, Fair use"
+  }
+}

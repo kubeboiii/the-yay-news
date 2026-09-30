@@ -24,7 +24,7 @@ export type Presser = (
   minWidth?: number,
 ) => Promise<string | null>;
 
-/** apps/frontend/scripts/fetch_image.py: download, press onto newsprint, save at 1200px. */
+/** apps/frontend/scripts/fetch_image.py: download, press onto newsprint, save at 1600px. */
 export const pressWithPython: Presser = async (url, issue, slug, minWidth) => {
   try {
     const { stdout } = await run(

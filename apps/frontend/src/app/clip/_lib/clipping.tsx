@@ -7,6 +7,7 @@
 // the torn sheet (its shape, paler fibre rim and blurred shadow) is drawn as one SVG underneath.
 
 import type { CSSProperties, ReactNode } from "react";
+import { qrPath } from "@/features/reader/qr";
 import { type Picture, required } from "./assets";
 import type { Look } from "./looks";
 import { seedFrom, type Tear, tornOutline } from "./torn";
@@ -14,6 +15,7 @@ import { seedFrom, type Tear, tornOutline } from "./torn";
 export const FORMATS = {
   story: { w: 1080, h: 1920 },
   post: { w: 1080, h: 1350 },
+  square: { w: 1080, h: 1080 },
   link: { w: 1200, h: 630 },
 } as const;
 export type Format = keyof typeof FORMATS;
@@ -25,6 +27,7 @@ const LAY: Record<
 > = {
   story: { w: 930, h: 1660, x: 540, y: 985, turn: -1.8, tear: 20 },
   post: { w: 920, h: 1170, x: 540, y: 690, turn: 1.4, tear: 18 },
+  square: { w: 950, h: 950, x: 540, y: 548, turn: 1.3, tear: 18 },
   link: { w: 1090, h: 530, x: 600, y: 320, turn: -1.1, tear: 14 },
 };
 
@@ -60,6 +63,8 @@ export type Subject = {
   picture: Picture | null;
   /** The page the story's opening "continues" on. */
   continuedOn: number;
+  /** Where to read it, printed small with a QR code (real editions only). */
+  link?: { href: string; text: string } | null;
 };
 
 /** WCAG relative luminance of a #rrggbb colour. */
@@ -111,6 +116,7 @@ type Parts = {
   issue: ClipIssue;
   continuedOn: number;
   front: boolean;
+  link: Subject["link"];
 };
 
 function Folio({ look, fmt, issue }: Parts) {
@@ -169,7 +175,7 @@ function Folio({ look, fmt, issue }: Parts) {
 }
 
 function Masthead({ look, fmt, front }: Parts) {
-  const scale = fmt === "link" ? 0.42 : fmt === "post" ? 0.66 : 0.8;
+  const scale = fmt === "link" ? 0.42 : fmt === "post" ? 0.66 : fmt === "square" ? 0.46 : 0.8;
   const big = front ? 1.15 : 1;
   const s = (n: number) => Math.round(n * scale * big);
   switch (look.id) {
@@ -384,14 +390,16 @@ function Kicker({ look, fmt, story }: Parts) {
   }
 }
 
-function Headline({ look, fmt, story, front }: Parts) {
+function Headline({ look, fmt, story, front, link }: Parts) {
   const text = story.headline;
   const bounds: Record<Format, [number, number]> = {
     story: [116, 88],
     post: [104, 76],
+    square: [70, 50],
     link: [66, 48],
   };
-  const [big, small] = bounds[fmt];
+  // A little smaller when the address and QR code take the foot of the piece.
+  const [big, small] = link && fmt === "story" ? [104, 76] : bounds[fmt];
   switch (look.id) {
     case "v1": {
       const size = fit(text, big * 1.08, small * 1.08);
@@ -472,8 +480,18 @@ function Headline({ look, fmt, story, front }: Parts) {
   }
 }
 
-function Standfirst({ look, fmt, story }: Parts) {
-  const size = fmt === "link" ? 24 : fmt === "post" ? 34 : 40;
+/** The standfirst, cut at a sentence (or word) near `chars` when the clipping is short of room. */
+function trimmed(text: string, chars: number) {
+  if (text.length <= chars) return text;
+  const cut = text.slice(0, chars);
+  const end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "));
+  return end > chars * 0.5 ? cut.slice(0, end + 1) : `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
+function Standfirst({ look, fmt, story, link }: Parts) {
+  // With the address and QR code at the foot, the standfirst gives up a little room.
+  const size = fmt === "link" ? 24 : fmt === "post" ? (link ? 30 : 34) : link ? 34 : 40;
+  const dek = link ? trimmed(story.dek, fmt === "post" ? 120 : 150) : story.dek;
   const family = look.text;
   const italic = look.id === "v1" || look.id === "v5" || look.id === "v4";
   return (
@@ -488,7 +506,7 @@ function Standfirst({ look, fmt, story }: Parts) {
         color: look.ink,
       }}
     >
-      {story.dek}
+      {dek}
     </div>
   );
 }
@@ -555,7 +573,10 @@ function PhotoBlock(p: Parts & { pic: Picture; grow?: boolean }) {
         display: "flex",
         flexDirection: "column",
         flexGrow: grow ? 1 : 0,
-        minHeight: 0,
+        // Never squeezed to a sliver: the words give way first (see Printed).
+        minHeight: p.link ? { story: 340, post: 280, square: 220, link: 0 }[fmt] : 0,
+        flexShrink: p.link ? 0 : 1,
+        flexBasis: p.link ? { story: 340, post: 280, square: 220, link: 0 }[fmt] : "auto",
         background: mount ? look.a : "transparent",
         padding: mount ? `${pad}px ${pad}px ${pad * 0.6}px` : 0,
       }}
@@ -591,8 +612,8 @@ function PhotoBlock(p: Parts & { pic: Picture; grow?: boolean }) {
   );
 }
 
-function Body({ look, story, continuedOn }: Parts) {
-  const text = opening(story, look.id === "v5" ? 250 : 290);
+function Body({ look, story, link }: Parts) {
+  const text = opening(story, link ? (look.id === "v5" ? 170 : 200) : look.id === "v5" ? 250 : 290);
   const [a, b] = columns(text);
   const col: CSSProperties = {
     display: "flex",
@@ -622,7 +643,7 @@ function Body({ look, story, continuedOn }: Parts) {
           textTransform: "uppercase",
         }}
       >
-        {`Continued on page ${continuedOn} →`}
+        Read the rest →
       </div>
     </div>
   );
@@ -696,6 +717,83 @@ function InsideToday({ look, issue }: Parts) {
   );
 }
 
+/** The first line or two of the story, for the square clipping. */
+function Opening({ look, story }: Parts) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        fontFamily: look.text,
+        fontSize: look.id === "v5" ? 30 : 27,
+        lineHeight: 1.3,
+        color: look.ink,
+      }}
+    >
+      {opening(story, 110)}
+    </div>
+  );
+}
+
+/** A story's URL, printed small, and its QR code: where to read the rest. */
+function qrSrc(href: string, ink: string) {
+  const { size, d } = qrPath(href);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges"><rect width="${size}" height="${size}" fill="#ffffff"/><path d="${d}" fill="${ink}"/></svg>`;
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+}
+
+function ReadOn({ look, fmt, link }: Parts) {
+  if (!link) return null;
+  const qr = fmt === "story" ? 140 : fmt === "post" ? 116 : 96;
+  const small = fmt === "story" ? 22 : 20;
+  const face = look.id === "v5" ? look.sans : look.mono;
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 22,
+        borderTop: `2px solid ${look.ink}`,
+        paddingTop: 14,
+        color: look.ink,
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, gap: 6 }}>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: face,
+            fontWeight: 700,
+            fontSize: small,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}
+        >
+          Cut out of The Yay News · read the rest
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: face,
+            fontSize: small + 4,
+            lineHeight: 1.2,
+            wordBreak: "break-all",
+          }}
+        >
+          {link.text}
+        </div>
+      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={qrSrc(link.href, look.ink)}
+        alt=""
+        width={qr}
+        height={qr}
+        style={{ flexShrink: 0 }}
+      />
+    </div>
+  );
+}
+
 /** A block that keeps its natural height; only the photograph gives way when space runs short. */
 const Fixed = ({ children }: { children: ReactNode }) => (
   <div style={{ display: "flex", flexDirection: "column", flexShrink: 0 }}>{children}</div>
@@ -704,8 +802,8 @@ const Fixed = ({ children }: { children: ReactNode }) => (
 /** The printed content of the piece, laid out for its format. */
 function Printed(p: Parts & { pic: Picture | null }) {
   const { fmt, front, pic } = p;
-  const pad = fmt === "link" ? 44 : 60;
-  const gap = fmt === "link" ? 14 : fmt === "post" ? 22 : 26;
+  const pad = fmt === "link" ? 44 : fmt === "square" ? 50 : 60;
+  const gap = fmt === "link" ? 14 : fmt === "post" ? 20 : fmt === "square" ? 13 : p.link ? 22 : 26;
   const column: CSSProperties = { display: "flex", flexDirection: "column", gap };
 
   if (fmt === "link") {
@@ -771,7 +869,7 @@ function Printed(p: Parts & { pic: Picture | null }) {
       <Fixed>
         <Headline {...p} />
       </Fixed>
-      {front ? null : (
+      {front || fmt === "square" ? null : (
         <Fixed>
           <Standfirst {...p} />
         </Fixed>
@@ -782,6 +880,14 @@ function Printed(p: Parts & { pic: Picture | null }) {
         <div style={{ display: "flex", flexGrow: 1 }} />
       )}
       {fmt === "story" ? <Fixed>{front ? <InsideToday {...p} /> : <Body {...p} />}</Fixed> : null}
+      {fmt === "square" && !front ? (
+        <Fixed>
+          <Opening {...p} />
+        </Fixed>
+      ) : null}
+      <Fixed>
+        <ReadOn {...p} />
+      </Fixed>
     </div>
   );
 }
@@ -843,6 +949,7 @@ export function Clipping({
     issue: subject.issue,
     continuedOn: subject.continuedOn,
     front,
+    link: fmt === "link" ? null : (subject.link ?? null),
   };
   const tapeW = fmt === "link" ? 220 : 300;
   // Grain and wear run over the printed area only, clear of the torn edge.

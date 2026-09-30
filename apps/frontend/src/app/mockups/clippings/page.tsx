@@ -16,6 +16,7 @@ export const metadata: Metadata = { title: "Clippings · The Yay News" };
 const FORMAT_LABELS: Record<Format, string> = {
   story: "Stories 1080×1920",
   post: "Feed post 1080×1350",
+  square: "Square 1080×1080",
   link: "Link preview 1200×630",
 };
 

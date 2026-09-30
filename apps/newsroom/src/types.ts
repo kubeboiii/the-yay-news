@@ -178,7 +178,8 @@ export type EditionDraft = {
   kind: "regular" | "slow_news_day";
   design: EditionDesign;
   colourway: string;
-  guestSection: SectionSlug | null;
+  /** The day's guest sections, in the order of their pages (two on a normal day). */
+  guestSections: SectionSlug[];
   pages: DraftPage[];
   features: Feature[];
   puzzles: SolvedPuzzle[];
@@ -192,3 +193,7 @@ export type LogEntry = {
   message: string;
   data?: unknown;
 };
+
+/** A draft's guest sections: the sections of its guest pages, in page order. */
+export const guestSectionsOf = (pages: readonly DraftPage[]): SectionSlug[] =>
+  pages.flatMap((p) => (p.layout === "guest" && p.section ? [p.section] : []));

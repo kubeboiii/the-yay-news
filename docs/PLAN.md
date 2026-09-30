@@ -311,19 +311,26 @@ The frontend reads only through the backend API; the newsroom writes through `@r
 
 The current demo `Article` / `Category` models are replaced by:
 
-| Model         | Key fields                                                                                                                                                |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Edition`     | `date` (unique), `issueNumber` (unique), `status` (`draft` · `scheduled` · `published` · `pulled`), `kind` (`regular` · `slow_news_day`), `guestSection?` |
-| `Page`        | `edition`, `order`, `section`, `layout`                                                                                                                   |
-| `Story`       | `page`, `order`, `slot` (`lead` · `brief` · …), `headline`, `body`, `section`, `sourceUrl`, `sourceName`, `embedUrl?`, `isReserve`                        |
-| `Image`       | `story`, `url`, `credit`, `licence`, `licenceUrl`, `kind` (`photo` · `illustration`)                                                                      |
-| `Section`     | `slug`, `name`, `kind` (`core` · `guest`), `colour`, `voice`                                                                                              |
-| `Puzzle`      | `edition`, `type`, `data` (JSON), `solution` (JSON)                                                                                                       |
-| `Feature`     | `edition`, `type` (`number_of_day` · `weather` · `correction` · `classified`), `content`                                                                  |
-| `Source`      | `name`, `url`, `type`, `sections`, `enabled`                                                                                                              |
-| `Candidate`   | `source`, `url`, `fetchedAt`, `decision`, `decisionReason`, `run`                                                                                         |
-| `PipelineRun` | `edition`, `startedAt`, `finishedAt`, `status`, `log`                                                                                                     |
-| `Subscriber`  | `email` (unique), `confirmedAt?`, `unsubscribedAt?`, `timezone`                                                                                           |
+| Model          | Key fields                                                                                                                                                                                  |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Edition`      | `date` (unique), `issueNumber` (unique), `status` (`draft` · `scheduled` · `published` · `pulled`), `kind` (`regular` · `slow_news_day`), `design`, `colourway`, `guests`                   |
+| `EditionGuest` | `edition`, `section`, `order`: the day's guest sections (two on a normal day) in page order; the API serves them as `guestSections`, with `guestSection` (the first) kept for older clients |
+| `Page`         | `edition`, `order`, `section`, `layout`                                                                                                                                                     |
+| `Story`        | `page`, `order`, `slot` (`lead` · `brief` · …), `headline`, `body`, `section`, `sourceUrl`, `sourceName`, `embedUrl?`, `isReserve`, `pulledAt?`, `pulledReason?`                            |
+| `Image`        | `story`, `url`, `credit`, `licence`, `licenceUrl`, `kind` (`photo` · `illustration`)                                                                                                        |
+| `Section`      | `slug`, `name`, `kind` (`core` · `guest`), `colour`, `voice`                                                                                                                                |
+| `Puzzle`       | `edition`, `type`, `data` (JSON), `solution` (JSON)                                                                                                                                         |
+| `Feature`      | `edition`, `type` (`number_of_day` · `weather` · `correction` · `classified`), `content`                                                                                                    |
+| `Source`       | `name`, `url`, `type`, `sections`, `enabled`                                                                                                                                                |
+| `Candidate`    | `source`, `url`, `fetchedAt`, `decision`, `decisionReason`, `run`                                                                                                                           |
+| `PipelineRun`  | `edition`, `startedAt`, `finishedAt`, `status`, `log`                                                                                                                                       |
+| `AdminAction`  | `action`, `issue?`, `slug?`, `detail?` (JSON), `at`: the admin's audit log, one row per action and per checked login, never the password                                                    |
+| `Subscriber`   | `email` (unique), `confirmedAt?`, `unsubscribedAt?`, `timezone`                                                                                                                             |
+
+A pulled story is marked (`pulledAt`, `pulledReason`), never deleted, and never served: reader
+queries load only stories that are neither reserves nor pulled. A reserve takes its place; the
+pulled story moves to a negative `order` on its page to free the position. Un-pulling puts a story
+back in its place if it kept it, or among the reserves if a reserve took it.
 
 ### Hosting and costs (estimates at launch)
 
@@ -488,4 +495,4 @@ None of these block Phase 1.
 - ~~AI provider~~ — decided in Phase 4: Claude Code CLI, with Gemini's free tier as fallback (§9)
 - ~~The exact source allowlist~~ — drafted in Phase 4 (`apps/newsroom/src/sources.ts`)
 - Whether any guest section ever gets its own fixed day
-- `Edition.guestSection` holds only the first of the day's two guests; the pages themselves (`layout: "guest"`) are the record. A list field would need a schema change (owner approval)
+- ~~`Edition.guestSection` holds only the first guest~~ — replaced by `EditionGuest` (2026-10-01, owner approved)

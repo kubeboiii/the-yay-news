@@ -1,0 +1,22 @@
+{
+  "virat-kohli": {
+    "src": "wiki:Virat Kohli",
+    "file": "virat-kohli.jpg",
+    "credit": "Wikimedia Commons · Prime Minister's Office, GODL-India"
+  },
+  "rohit-sharma": {
+    "src": "wiki:Rohit Sharma",
+    "file": "rohit-sharma.jpg",
+    "credit": "Wikimedia Commons · Prime Minister's Office, GODL-India"
+  },
+  "jasprit-bumrah": {
+    "src": "wiki:Jasprit Bumrah",
+    "file": "jasprit-bumrah.jpg",
+    "credit": "Wikimedia Commons · Prime Minister's Office, GODL-India"
+  },
+  "ms-dhoni": {
+    "src": "wiki:MS Dhoni",
+    "file": "ms-dhoni.jpg",
+    "credit": "Wikimedia Commons · RIGI, CC BY 3.0"
+  }
+}

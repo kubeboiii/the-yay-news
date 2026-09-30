@@ -1,0 +1,55 @@
+// Yay Attax · Anime. Power, Technique, Speed and Aura; `team` is the series.
+
+import type { CardDef } from "../types.ts";
+
+export const cards: CardDef[] = [
+  {
+    slug: "monkey-d-luffy",
+    name: "Monkey D. Luffy",
+    kind: "Pirate captain",
+    team: "One Piece",
+    stats: [92, 80, 85, 95],
+    rarity: "common",
+    era: "current",
+    bio: "The rubber-limbed captain who means to be King of the Pirates.",
+    move: "Gear Fifth",
+    colour: "#d62828",
+  },
+  {
+    slug: "satoru-gojo",
+    name: "Satoru Gojo",
+    kind: "Sorcerer",
+    team: "Jujutsu Kaisen",
+    stats: [95, 98, 92, 97],
+    rarity: "rare",
+    era: "current",
+    bio: "The strongest jujutsu sorcerer, and he knows it.",
+    move: "Infinity",
+    colour: "#3a7bd5",
+  },
+  {
+    slug: "naruto-uzumaki",
+    name: "Naruto Uzumaki",
+    kind: "Ninja",
+    team: "Naruto",
+    stats: [86, 76, 84, 92],
+    rarity: "epic",
+    era: "2000s",
+    bio: "The classic loudmouth ninja of the Hidden Leaf, believe it!",
+    move: "Rasengan",
+    colour: "#f47c20",
+  },
+  {
+    slug: "goku",
+    name: "Goku",
+    kind: "Saiyan",
+    team: "Dragon Ball Z",
+    stats: [99, 92, 96, 99],
+    rarity: "legendary",
+    era: "legend",
+    weight: 0.8,
+    bio: "The Saiyan raised on Earth, always looking for a stronger opponent.",
+    move: "Kamehameha",
+    colour: "#f58220",
+  },
+];

@@ -1,0 +1,22 @@
+{
+  "lebron-james": {
+    "src": "wiki:LeBron James",
+    "file": "lebron-james.jpg",
+    "credit": "Wikimedia Commons · Erik Drost, CC BY 2.0"
+  },
+  "kobe-bryant": {
+    "src": "wiki:Kobe Bryant",
+    "file": "kobe-bryant.jpg",
+    "credit": "Wikimedia Commons · Keith Allison, CC BY-SA 2.0"
+  },
+  "michael-jordan": {
+    "src": "wiki:Michael Jordan",
+    "file": "michael-jordan.jpg",
+    "credit": "Wikimedia Commons · DOD photo by D. Myles Cullen, PD"
+  },
+  "stephen-curry": {
+    "src": "wiki:Stephen Curry",
+    "file": "stephen-curry.jpg",
+    "credit": "Wikimedia Commons · Clément Bardot, CC BY-SA 4.0"
+  }
+}

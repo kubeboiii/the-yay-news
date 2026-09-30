@@ -1,0 +1,136 @@
+/* "Cut it out": a pair of scissors in the margin, and the clipping it makes. */
+
+.cut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+}
+
+.cut__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 6px;
+  border: 0;
+  border-bottom: 2px dashed currentColor;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cut__open:focus-visible,
+.cut__go:focus-visible {
+  outline: 2px dashed currentColor;
+  outline-offset: 3px;
+}
+
+.cut__scissors {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  rotate: -90deg;
+  transition: rotate 0.2s;
+}
+
+.cut__open[aria-expanded="true"] .cut__scissors {
+  rotate: -70deg;
+}
+
+.cut__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #fbf6ea;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.1),
+    0 10px 22px -12px rgb(40 30 20 / 0.5);
+  rotate: -0.5deg;
+}
+
+.cut__formats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  font-size: 18px;
+}
+
+.cut__format {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.cut__format input {
+  width: 18px;
+  height: 18px;
+  accent-color: #1d1a17;
+}
+
+.cut__format small {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.cut__preview {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  background: #d8d1c4;
+}
+
+.cut__preview--story {
+  height: min(420px, 60vh);
+  aspect-ratio: 9 / 16;
+}
+
+.cut__preview--square {
+  height: min(300px, 70vw);
+  aspect-ratio: 1;
+}
+
+.cut__actions {
+  margin: 0;
+}
+
+.cut__go {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #1d1a17;
+  color: #fbf6ea;
+  font: inherit;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.cut__go:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.cut__status {
+  margin: 0;
+  font-size: 18px;
+}
+
+.cut__status:empty {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cut__scissors {
+    transition: none;
+  }
+}

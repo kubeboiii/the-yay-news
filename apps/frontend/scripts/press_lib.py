@@ -22,19 +22,22 @@ def screen(ch, cell, angle, ss=3, gain=1.0):
             d.ellipse((X-r, Y-r, X+r, Y+r), fill=255)
     return out.resize((w, h), Image.LANCZOS)
 
-def press(src, dst, width=1600, cell=4.0, mix=0.5):
+def press(src, dst, width=1600, cell=3.0, mix=0.22):
+    # Clearer since 2026-10-01 (owner: "make images a little more clearer"): a finer, lighter dot
+    # screen, truer colour and blacks, and no blur, so the photo still reads as printed but the
+    # subject is sharp.
     im = Image.open(src).convert("RGB")
     if im.width > width:
         im = im.resize((width, round(im.height*width/im.width)), Image.LANCZOS)
-    # Newsprint can't hold deep blacks or full saturation: lift the floor and soften a touch.
-    im = ImageEnhance.Color(im).enhance(0.9)
-    im = ImageEnhance.Contrast(im).enhance(0.92)
-    lut = [round(24 + v*(246-24)/255) for v in range(256)]
+    # Newsprint can't hold deep blacks or full saturation: lift the floor a little.
+    im = ImageEnhance.Color(im).enhance(0.96)
+    im = ImageEnhance.Contrast(im).enhance(0.98)
+    lut = [round(12 + v*(250-12)/255) for v in range(256)]
     im = im.point(lut*3)
     c, m, y, k = im.convert("CMYK").split()
     dots = Image.merge("CMYK", (screen(c, cell, 15), screen(m, cell, 75), screen(y, cell, 0), screen(k, cell, 45))).convert("RGB")
-    out = Image.blend(im, dots, mix).filter(ImageFilter.GaussianBlur(0.3))
-    out.save(dst, quality=84, optimize=True, progressive=True)
+    out = Image.blend(im, dots, mix).filter(ImageFilter.UnsharpMask(radius=1.2, percent=40, threshold=2))
+    out.save(dst, quality=86, optimize=True, progressive=True)
 
 if __name__ == "__main__":
     press(sys.argv[1], sys.argv[2], cell=float(sys.argv[3]) if len(sys.argv) > 3 else 4.0)

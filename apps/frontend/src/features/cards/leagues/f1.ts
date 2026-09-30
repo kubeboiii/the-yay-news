@@ -1,0 +1,55 @@
+// Yay Attax · Formula 1. Pace, Racecraft, Consistency and Wet (driving in the rain).
+
+import type { CardDef } from "../types.ts";
+
+export const cards: CardDef[] = [
+  {
+    slug: "lando-norris",
+    name: "Lando Norris",
+    kind: "Driver",
+    team: "McLaren",
+    stats: [94, 88, 86, 86],
+    rarity: "common",
+    era: "current",
+    bio: "McLaren's quick-witted front-runner from Bristol.",
+    move: "Late-braking lunge",
+    colour: "#ff8000",
+  },
+  {
+    slug: "max-verstappen",
+    name: "Max Verstappen",
+    kind: "Driver",
+    team: "Red Bull",
+    stats: [97, 97, 94, 98],
+    rarity: "rare",
+    era: "current",
+    bio: "Four world titles in a row, from 2021 to 2024.",
+    move: "Around the outside",
+    colour: "#1e41ff",
+  },
+  {
+    slug: "lewis-hamilton",
+    name: "Lewis Hamilton",
+    kind: "Driver",
+    team: "Mercedes",
+    stats: [96, 97, 96, 97],
+    rarity: "epic",
+    era: "2010s",
+    bio: "Seven world titles, a record he shares, and the most wins in F1.",
+    move: "Hammer time",
+    colour: "#00d2be",
+  },
+  {
+    slug: "ayrton-senna",
+    name: "Ayrton Senna",
+    kind: "Driver",
+    team: "McLaren",
+    stats: [98, 96, 88, 99],
+    rarity: "legendary",
+    era: "legend",
+    weight: 0.8,
+    bio: "Three-time world champion and the master of racing in the rain.",
+    move: "Qualifying lap",
+    colour: "#ff8000",
+  },
+];

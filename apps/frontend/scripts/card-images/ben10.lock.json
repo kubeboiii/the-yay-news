@@ -1,0 +1,22 @@
+{
+  "ben-tennyson": {
+    "src": "fandom:ben10:Ben Tennyson (Classic)",
+    "file": "ben-tennyson.png",
+    "credit": "Ben10 Fandom wiki"
+  },
+  "heatblast": {
+    "src": "fandom:ben10:Heatblast (Classic)",
+    "file": "heatblast.png",
+    "credit": "Ben10 Fandom wiki"
+  },
+  "four-arms": {
+    "src": "fandom:ben10:Four Arms (Classic)",
+    "file": "four-arms.png",
+    "credit": "Ben10 Fandom wiki"
+  },
+  "xlr8": {
+    "src": "fandom:ben10:XLR8 (Classic)",
+    "file": "xlr8.png",
+    "credit": "Ben10 Fandom wiki"
+  }
+}

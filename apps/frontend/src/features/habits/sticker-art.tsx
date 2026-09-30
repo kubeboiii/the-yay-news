@@ -76,6 +76,16 @@ export function StickerArt({ id, issue }: { id: string; issue?: number }) {
       );
     case "star":
       return <Mark name="stars-21" ink="#f4b400" className="hb-st-fill" />;
+    case "full-set":
+      return (
+        <Burst fill={VINYL.orange} points={16} depth={0.16} className="hb-st-fill">
+          <span style={type(22, { color: VINYL.ink })}>
+            Full
+            <br />
+            set!
+          </span>
+        </Burst>
+      );
     case "hi":
       return (
         <span className="hb-st-dot" style={{ background: VINYL.green }}>

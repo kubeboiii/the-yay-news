@@ -1,0 +1,1064 @@
+/*
+ * Yay Attax league cards: glossy trading cards. Every size is in cqw of the card (its container),
+ * so a card scales as one printed object. Each league prints in its own frame (data-league):
+ *   pokemon   yellow border, a type-coloured field, HP in the corner
+ *   wwe       black and gold, a spotlight, a slanted red name banner
+ *   football  Match Attax: a deep blue prism, the overall rating in a shield
+ *   ipl       night-match navy with an orange floodlight stripe
+ *   ufc       an octagon window on red and black, a gold belt strip
+ *   nba       hardwood, an orange ball seam
+ *   marvel    comic red with halftone dots
+ *   dc        steel blue with a chrome edge
+ *   ben10     Omnitrix green on black, the hourglass
+ *   anime     sakura pink and violet with speed lines
+ *   f1        carbon fibre and a chequered stripe
+ *   tv        a retro telly: a rounded screen with scanlines
+ * Rarity is the edge: white (Common), silver foil (Rare), violet-gold foil with a moving shimmer
+ * (Epic), holographic foil that follows the pointer (Legendary). Era is a stamp on the picture
+ * and a finish: 2010s cooler, 2000s warm and grained, legends gold and sepia.
+ */
+
+.yc-card {
+  --ink: #111;
+  --f1: #333;
+  --f2: #555;
+  --field: #eee;
+  --plate: #fff;
+  --plate-ink: #111;
+  --top-ink: #fff;
+  --stat-bg: rgb(255 255 255 / 0.92);
+  --stat-ink: #111;
+  --edge: #fbfbfb;
+  --accent: #ffcb05;
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  perspective: 1400px;
+  color: var(--ink);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.yc-tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  position: absolute;
+  inset: 0;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
+}
+
+.yc-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.yc-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.yc-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  padding: 2.8cqw;
+  border-radius: 4.6cqw;
+  background: var(--edge);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 0.4cqw 0.8cqw rgb(0 0 0 / 0.2),
+    0 3cqw 7cqw -3cqw rgb(0 0 0 / 0.5);
+}
+
+.yc-back {
+  transform: rotateY(180deg);
+}
+
+.yc-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6cqw;
+  height: 100%;
+  padding: 2.6cqw;
+  border-radius: 2.8cqw;
+  background: linear-gradient(160deg, var(--f1), var(--f2));
+  overflow: hidden;
+}
+
+.yc-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.yc-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2cqw;
+  min-height: 11cqw;
+  color: var(--top-ink);
+}
+
+.yc-name {
+  margin: 0;
+  font-family: var(--hb-gothic), "Arial Narrow", Impact, sans-serif;
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.yc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8cqw;
+  flex: none;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 10cqw;
+  line-height: 1;
+}
+
+.yc-head small {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 3cqw;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.yc-window {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 2cqw;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.55), transparent 65%), var(--field);
+  box-shadow: inset 0 0 0 0.7cqw rgb(0 0 0 / 0.25);
+}
+
+.yc-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  user-select: none;
+}
+
+.yc-art.is-cutout {
+  inset: 5%;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  object-position: 50% 60%;
+  filter: drop-shadow(0 2cqw 2cqw rgb(0 0 0 / 0.35));
+}
+
+.yc-art--type {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  color: var(--top-ink);
+  background: repeating-linear-gradient(135deg, var(--f1) 0 3cqw, var(--f2) 3cqw 6cqw);
+}
+
+.yc-art__initials {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 30cqw;
+  line-height: 0.9;
+}
+
+.yc-art__league {
+  font-size: 3.6cqw;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.yc-season {
+  position: absolute;
+  right: 1.8cqw;
+  bottom: 1.8cqw;
+  padding: 0.6cqw 1.6cqw;
+  border-radius: 99px;
+  background: rgb(0 0 0 / 0.65);
+  color: #fff;
+  font-size: 3cqw;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.yc-strip {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+  margin: 0;
+  padding: 1cqw 2.4cqw;
+  border-radius: 1.4cqw;
+  background: var(--plate);
+  color: var(--plate-ink);
+  font-size: 3.5cqw;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.yc-strip__team {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.yc-stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2cqw;
+  margin: 0;
+}
+
+.yc-stat {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.9cqw 2cqw 1.5cqw;
+  border-radius: 1.4cqw;
+  background: var(--stat-bg);
+  color: var(--stat-ink);
+  overflow: hidden;
+}
+
+.yc-stat dt {
+  font-size: 3.3cqw;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.yc-stat dd {
+  margin: 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 7.2cqw;
+  line-height: 1;
+}
+
+.yc-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0.9cqw;
+  background: var(--accent);
+}
+
+.yc-stat.is-picked {
+  outline: 0.9cqw solid #ff2d55;
+  outline-offset: -0.5cqw;
+}
+
+.yc-stat__pick {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.yc-stat__pick:hover {
+  background: rgb(255 45 85 / 0.14);
+}
+
+.yc-stat__pick:focus-visible {
+  outline: 0.9cqw solid #1a73e8;
+  outline-offset: -0.5cqw;
+}
+
+.yc-foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1cqw;
+  color: var(--top-ink);
+  font-size: 3.2cqw;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.yc-rarity {
+  display: flex;
+  align-items: center;
+  gap: 0.8cqw;
+}
+
+.yc-rarity__mark {
+  width: 3.6cqw;
+  height: 3.6cqw;
+  fill: currentColor;
+}
+
+.yc-logo {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 4.4cqw;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.yc-copies {
+  position: absolute;
+  top: -0.5cqw;
+  right: 8cqw;
+  z-index: 8;
+  padding: 0.6cqw 2cqw 1cqw;
+  border-radius: 0 0 1.6cqw 1.6cqw;
+  background: #ff2d55;
+  color: #fff;
+  font-size: 3.6cqw;
+  font-weight: 800;
+}
+
+.yc-turn {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+.yc-turn:focus-visible,
+.yc-back__turn:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+/* ——— Gloss and rarity ——— */
+
+.yc-gloss {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgb(255 255 255 / 0.28) 0%,
+    rgb(255 255 255 / 0) 30%,
+    rgb(255 255 255 / 0) 62%,
+    rgb(255 255 255 / 0.14) 80%,
+    rgb(255 255 255 / 0) 100%
+  );
+}
+
+.yc-shine,
+.yc-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  pointer-events: none;
+  display: none;
+}
+
+.yc-card[data-rarity="rare"] .yc-face {
+  background: linear-gradient(
+    135deg,
+    #b9bec5 0%,
+    #f7f8fa 22%,
+    #8e959e 44%,
+    #eef0f3 64%,
+    #a2a9b2 82%,
+    #f4f5f7 100%
+  );
+}
+
+.yc-card[data-rarity="epic"] .yc-face {
+  background: linear-gradient(
+    135deg,
+    #6b3fc4 0%,
+    #f3d27a 25%,
+    #9b5de5 48%,
+    #ffe9a8 66%,
+    #7a47d1 84%,
+    #e7c160 100%
+  );
+}
+
+.yc-card[data-rarity="legendary"] .yc-face {
+  background: conic-gradient(
+    from calc(var(--mx) * 3.6deg) at var(--mx) var(--my),
+    #ff6b8b,
+    #ffd23f,
+    #7cf29a,
+    #5fd4ff,
+    #b28dff,
+    #ff6b8b
+  );
+  box-shadow:
+    0 0 0 0.4cqw rgb(255 255 255 / 0.6),
+    0 0.4cqw 0.6cqw rgb(30 20 10 / 0.18),
+    0 3cqw 8cqw -2cqw rgb(120 60 200 / 0.55);
+}
+
+.yc-card[data-rarity="epic"] .yc-shine {
+  display: block;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgb(255 255 255 / 0.5) 48%,
+    rgb(255 240 200 / 0.25) 52%,
+    transparent 62%
+  );
+  background-size: 260% 100%;
+  mix-blend-mode: soft-light;
+  animation: yc-shine 3.4s ease-in-out infinite;
+}
+
+@keyframes yc-shine {
+  0% {
+    background-position: 110% 0;
+  }
+  60%,
+  100% {
+    background-position: -10% 0;
+  }
+}
+
+.yc-card[data-rarity="legendary"] .yc-holo {
+  display: block;
+  background:
+    radial-gradient(
+      circle at var(--mx) var(--my),
+      rgb(255 255 255 / 0.55),
+      rgb(255 255 255 / 0) 42%
+    ),
+    repeating-linear-gradient(
+      115deg,
+      rgb(255 107 139 / 0.5) 0%,
+      rgb(255 210 63 / 0.5) 6%,
+      rgb(124 242 154 / 0.5) 12%,
+      rgb(95 212 255 / 0.5) 18%,
+      rgb(178 141 255 / 0.5) 24%,
+      rgb(255 107 139 / 0.5) 30%
+    );
+  background-size:
+    100% 100%,
+    300% 300%;
+  background-position:
+    center,
+    var(--mx) var(--my);
+  mix-blend-mode: color-dodge;
+  opacity: 0.36;
+}
+
+/* ——— Eras ——— */
+
+.yc-era {
+  position: absolute;
+  top: 2cqw;
+  left: 2cqw;
+  z-index: 2;
+  padding: 0.8cqw 2.2cqw;
+  border: 0.6cqw solid currentColor;
+  border-radius: 1cqw;
+  font-family: var(--hb-stamp), "Courier New", monospace;
+  font-size: 4.2cqw;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+}
+
+.yc-card[data-era="2010s"] .yc-era {
+  color: #0fb5ae;
+  background: rgb(10 20 30 / 0.78);
+}
+
+.yc-card[data-era="2010s"] .yc-art {
+  filter: saturate(0.92) contrast(1.05) hue-rotate(-6deg);
+}
+
+.yc-card[data-era="2000s"] .yc-era {
+  color: #ffb347;
+  background: rgb(40 20 0 / 0.78);
+}
+
+.yc-card[data-era="2000s"] .yc-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle, rgb(0 0 0 / 0.16) 0.5px, transparent 1px) 0 0 / 1.2cqw 1.2cqw,
+    linear-gradient(180deg, rgb(255 190 110 / 0.14), rgb(120 60 20 / 0.18));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.yc-card[data-era="2000s"] .yc-art:not(.is-cutout) {
+  filter: sepia(0.18) saturate(0.95) contrast(1.06);
+}
+
+.yc-card[data-era="legend"] .yc-era {
+  top: 4.5cqw;
+  left: -9cqw;
+  width: 44cqw;
+  padding: 0.8cqw 0;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, #a67c00, #ffe28a, #b8860b);
+  color: #2a1a00;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 5.4cqw;
+  letter-spacing: 0.3em;
+  text-align: center;
+  transform: rotate(-38deg);
+  box-shadow: 0 0.6cqw 1.2cqw rgb(0 0 0 / 0.4);
+}
+
+.yc-card[data-era="legend"] .yc-window {
+  box-shadow:
+    inset 0 0 0 0.9cqw #d4af37,
+    inset 0 0 0 1.4cqw rgb(0 0 0 / 0.35);
+}
+
+.yc-card[data-era="legend"] .yc-art:not(.is-cutout) {
+  filter: sepia(0.28) saturate(0.9) contrast(1.08);
+}
+
+/* ——— League frames ——— */
+
+/* Pokémon: a yellow border round a field in the Pokémon's type colour. */
+.yc-card[data-league="pokemon"] {
+  --f1: #ffe066;
+  --f2: #f5c400;
+  --top-ink: #1d2a5c;
+  --plate: #1d2a5c;
+  --plate-ink: #fff;
+  --field: var(--accent);
+  --stat-bg: rgb(255 255 255 / 0.85);
+}
+
+.yc-card[data-league="pokemon"] .yc-frame {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--accent) 40%, #fff7d1),
+    var(--accent)
+  );
+  box-shadow: inset 0 0 0 2.2cqw #ffd400;
+  padding: 4cqw;
+}
+
+.yc-card[data-league="pokemon"] .yc-window {
+  background:
+    radial-gradient(circle at 50% 45%, rgb(255 255 255 / 0.85), transparent 60%),
+    color-mix(in srgb, var(--accent) 55%, #fff);
+  box-shadow: inset 0 0 0 0.8cqw #c9a100;
+}
+
+.yc-card[data-league="pokemon"] .yc-head {
+  color: #c62828;
+}
+
+/* WWE: black and gold under a spotlight, a slanted red banner. */
+.yc-card[data-league="wwe"] {
+  --f1: #1b1b1b;
+  --f2: #000;
+  --top-ink: #fff;
+  --plate: #d4a72c;
+  --plate-ink: #000;
+  --field: #2a2a2a;
+  --stat-bg: #151515;
+  --stat-ink: #f5d77a;
+  --accent: #d4a72c;
+}
+
+.yc-card[data-league="wwe"] .yc-frame {
+  box-shadow: inset 0 0 0 0.7cqw #d4a72c;
+}
+
+.yc-card[data-league="wwe"] .yc-top {
+  margin: -2.6cqw -2.6cqw 0;
+  padding: 1.8cqw 3cqw;
+  background: linear-gradient(90deg, #c8102e, #7a0010);
+  clip-path: polygon(0 0, 100% 0, 96% 100%, 0 100%);
+}
+
+.yc-card[data-league="wwe"] .yc-window {
+  background: radial-gradient(ellipse at 50% 0%, rgb(255 240 200 / 0.55), transparent 60%), #1a1a1a;
+}
+
+.yc-card[data-league="wwe"] .yc-deco {
+  background: repeating-linear-gradient(
+    60deg,
+    rgb(212 167 44 / 0.08) 0 1.5cqw,
+    transparent 1.5cqw 4cqw
+  );
+}
+
+/* Club football: Match Attax's deep-blue prism with a rating shield. */
+.yc-card[data-league="football"] {
+  --f1: #1f2d8a;
+  --f2: #0a0f3d;
+  --top-ink: #fff;
+  --plate: #37e0ff;
+  --plate-ink: #0a0f3d;
+  --field: #2b3aa8;
+  --stat-bg: rgb(10 15 61 / 0.85);
+  --stat-ink: #fff;
+}
+
+.yc-card[data-league="football"] .yc-deco {
+  background:
+    linear-gradient(115deg, transparent 40%, rgb(55 224 255 / 0.25) 50%, transparent 60%),
+    linear-gradient(65deg, transparent 55%, rgb(255 255 255 / 0.12) 62%, transparent 70%);
+}
+
+.yc-card[data-league="football"] .yc-head {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 1cqw 2cqw 2.4cqw;
+  background: linear-gradient(#ffe57a, #d4a72c);
+  color: #0a0f3d;
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+}
+
+.yc-card[data-league="football"] .yc-window {
+  background: radial-gradient(circle at 50% 30%, rgb(55 224 255 / 0.5), transparent 65%), #16207a;
+}
+
+/* IPL: night-match navy with an orange floodlight stripe. */
+.yc-card[data-league="ipl"] {
+  --f1: #0b1f4d;
+  --f2: #1a3a85;
+  --top-ink: #fff;
+  --plate: #ff7a1a;
+  --plate-ink: #fff;
+  --field: #16306e;
+  --stat-bg: #fff6ea;
+}
+
+.yc-card[data-league="ipl"] .yc-deco {
+  background:
+    linear-gradient(100deg, transparent 62%, rgb(255 122 26 / 0.55) 62% 68%, transparent 68%),
+    radial-gradient(circle at 85% 8%, rgb(255 255 255 / 0.45), transparent 22%);
+}
+
+.yc-card[data-league="ipl"] .yc-window {
+  box-shadow: inset 0 0 0 0.7cqw var(--accent);
+}
+
+/* UFC: an octagon window on red and black, and a gold belt strip. */
+.yc-card[data-league="ufc"] {
+  --f1: #1c0505;
+  --f2: #000;
+  --top-ink: #fff;
+  --plate: linear-gradient(90deg, #8a6d1f, #f1d27a, #8a6d1f);
+  --plate-ink: #1c0505;
+  --field: #3a0b0b;
+  --stat-bg: #1a1a1a;
+  --stat-ink: #fff;
+  --accent: #d20a0a;
+}
+
+.yc-card[data-league="ufc"] .yc-window {
+  clip-path: polygon(29% 0, 71% 0, 100% 22%, 100% 78%, 71% 100%, 29% 100%, 0 78%, 0 22%);
+  border-radius: 0;
+  background: radial-gradient(circle, #6d1010, #200303);
+}
+
+.yc-card[data-league="ufc"] .yc-era {
+  top: 1.6cqw;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.yc-card[data-league="ufc"] .yc-deco {
+  background: linear-gradient(180deg, #d20a0a 0 1.4cqw, transparent 1.4cqw);
+}
+
+/* NBA: hardwood and an orange ball seam. */
+.yc-card[data-league="nba"] {
+  --f1: #c98a4b;
+  --f2: #8a5a2b;
+  --top-ink: #1a1208;
+  --plate: #1a1208;
+  --plate-ink: #fff;
+  --field: #ee6730;
+  --stat-bg: #fff4e2;
+}
+
+.yc-card[data-league="nba"] .yc-frame {
+  background:
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0.08) 0 0.3cqw, transparent 0.3cqw 9cqw),
+    linear-gradient(160deg, #e0a868, #b87838);
+}
+
+.yc-card[data-league="nba"] .yc-window {
+  background:
+    radial-gradient(
+      circle at 50% 110%,
+      transparent 45%,
+      rgb(0 0 0 / 0.35) 45.5% 46.5%,
+      transparent 47%
+    ),
+    radial-gradient(circle at 50% 40%, #ff9a5c, #c84a14);
+}
+
+/* Marvel: comic red and halftone dots. */
+.yc-card[data-league="marvel"] {
+  --f1: #e23636;
+  --f2: #8f0f12;
+  --top-ink: #fff;
+  --plate: #fff;
+  --plate-ink: #8f0f12;
+  --field: #ffd23f;
+  --stat-bg: #fff;
+}
+
+.yc-card[data-league="marvel"] .yc-deco {
+  background: radial-gradient(circle, rgb(0 0 0 / 0.22) 0.6cqw, transparent 0.7cqw) 0 0 / 3cqw 3cqw;
+}
+
+.yc-card[data-league="marvel"] .yc-window {
+  background:
+    radial-gradient(circle, rgb(226 54 54 / 0.35) 0.5cqw, transparent 0.6cqw) 0 0 / 2.4cqw 2.4cqw,
+    radial-gradient(circle at 50% 40%, #fff3b0, #ffc400);
+  box-shadow: inset 0 0 0 0.9cqw #111;
+}
+
+.yc-card[data-league="marvel"] .yc-name {
+  text-shadow: 0.5cqw 0.5cqw 0 #111;
+}
+
+/* DC: steel blue with a chrome edge. */
+.yc-card[data-league="dc"] {
+  --f1: #0b2a6b;
+  --f2: #050b1f;
+  --top-ink: #fff;
+  --plate: linear-gradient(90deg, #9aa4b1, #eef2f7, #9aa4b1);
+  --plate-ink: #050b1f;
+  --field: #1b3f8f;
+  --stat-bg: rgb(255 255 255 / 0.9);
+}
+
+.yc-card[data-league="dc"] .yc-frame {
+  box-shadow: inset 0 0 0 0.6cqw #c7ced8;
+}
+
+.yc-card[data-league="dc"] .yc-window {
+  background: radial-gradient(circle at 50% 35%, #5fa0ff, #0b2a6b);
+}
+
+/* Ben 10: Omnitrix green on black, the hourglass. */
+.yc-card[data-league="ben10"] {
+  --f1: #1a1a1a;
+  --f2: #050805;
+  --top-ink: #b6ff6a;
+  --plate: #5bd12f;
+  --plate-ink: #041004;
+  --field: #0f2a0f;
+  --stat-bg: #0c140c;
+  --stat-ink: #b6ff6a;
+  --accent: #5bd12f;
+}
+
+.yc-card[data-league="ben10"] .yc-window {
+  background:
+    conic-gradient(from 90deg at 50% 50%, #5bd12f 0 25%, #0b140b 0 50%, #5bd12f 0 75%, #0b140b 0)
+      center / 100% 100%,
+    #0b140b;
+  box-shadow: inset 0 0 0 0.9cqw #5bd12f;
+}
+
+.yc-card[data-league="ben10"] .yc-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgb(11 20 11 / 0.2), rgb(11 20 11 / 0.85) 70%);
+}
+
+/* Anime: sakura pink and violet with speed lines. */
+.yc-card[data-league="anime"] {
+  --f1: #ff4fa3;
+  --f2: #6a2bbd;
+  --top-ink: #fff;
+  --plate: #1d0b2e;
+  --plate-ink: #ffd6ea;
+  --field: #fff0f6;
+  --stat-bg: rgb(255 255 255 / 0.9);
+}
+
+.yc-card[data-league="anime"] .yc-window {
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 45%,
+      rgb(255 79 163 / 0.22) 0 4deg,
+      transparent 4deg 12deg
+    ),
+    #fff6fb;
+}
+
+/* F1: carbon fibre and a chequered stripe. */
+.yc-card[data-league="f1"] {
+  --f1: #1c1c1c;
+  --f2: #0a0a0a;
+  --top-ink: #fff;
+  --plate: #e10600;
+  --plate-ink: #fff;
+  --field: #2a2a2a;
+  --stat-bg: #f2f2f2;
+}
+
+.yc-card[data-league="f1"] .yc-frame {
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.04) 0 0.8cqw, transparent 0.8cqw 1.6cqw),
+    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.04) 0 0.8cqw, transparent 0.8cqw 1.6cqw),
+    #141414;
+}
+
+.yc-card[data-league="f1"] .yc-deco {
+  inset: 0 0 auto auto;
+  width: 4.5cqw;
+  height: 62%;
+  background: conic-gradient(#fff 25%, #111 0 50%, #fff 0 75%, #111 0) 0 0 / 3cqw 3cqw;
+  opacity: 0.6;
+}
+
+/* TV: a retro telly with scanlines. */
+.yc-card[data-league="tv"] {
+  --f1: #8a6a44;
+  --f2: #5a4128;
+  --top-ink: #fff5dc;
+  --plate: #ffb300;
+  --plate-ink: #2a1c05;
+  --field: #20242a;
+  --stat-bg: #fff8e6;
+}
+
+.yc-card[data-league="tv"] .yc-window {
+  border-radius: 7cqw / 5cqw;
+  box-shadow:
+    inset 0 0 0 1.2cqw #2a2a2a,
+    inset 0 0 5cqw rgb(0 0 0 / 0.6);
+}
+
+.yc-card[data-league="tv"] .yc-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    rgb(0 0 0 / 0.12) 0 0.3cqw,
+    transparent 0.3cqw 0.8cqw
+  );
+  pointer-events: none;
+}
+
+/* ——— The back ——— */
+
+.yc-back__in {
+  display: flex;
+  flex-direction: column;
+  gap: 2cqw;
+  height: 100%;
+  padding: 5cqw;
+  border-radius: 2.8cqw;
+  background: linear-gradient(160deg, var(--f1), var(--f2));
+  color: var(--top-ink);
+  overflow: hidden;
+}
+
+.yc-back__logo {
+  margin: 0;
+  font-size: 3.4cqw;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.yc-back__name {
+  margin: 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 10cqw;
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.yc-back__meta {
+  margin: 0;
+  font-size: 3.2cqw;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.yc-back__bio {
+  margin: 0;
+  padding: 2.4cqw 3cqw;
+  border-radius: 1.6cqw;
+  background: var(--stat-bg);
+  color: var(--stat-ink);
+  font-size: 4.4cqw;
+  line-height: 1.3;
+}
+
+.yc-back__stats {
+  display: grid;
+  gap: 0.8cqw;
+  margin: 0;
+  font-size: 3.9cqw;
+}
+
+.yc-back__stats div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.3cqw solid rgb(255 255 255 / 0.25);
+}
+
+.yc-back__stats dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.yc-back__stats small {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.yc-back__move {
+  margin: 0;
+  font-size: 3.9cqw;
+}
+
+.yc-back__credit {
+  margin: auto 0 0;
+  font-size: 2.7cqw;
+  line-height: 1.3;
+  opacity: 0.75;
+}
+
+.yc-back__turn {
+  align-self: flex-start;
+  padding: 1.4cqw 3.6cqw;
+  border: 0;
+  border-radius: 99px;
+  background: var(--stat-bg);
+  color: var(--stat-ink);
+  font: inherit;
+  font-size: 3.6cqw;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.yc-card[data-league="pokemon"] .yc-back__in {
+  background: linear-gradient(160deg, #3b4cca, #1d2a5c);
+  color: #fff;
+}
+
+/* ——— Face down, and empty slots ——— */
+
+.yc-cover {
+  display: grid;
+  place-items: center;
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.07) 0 3cqw, transparent 3cqw 6cqw),
+    linear-gradient(150deg, #ff2d55, #6a2bbd 60%, #1d2a5c);
+  box-shadow:
+    inset 0 0 0 2.6cqw #fff,
+    0 3cqw 7cqw -3cqw rgb(0 0 0 / 0.5);
+}
+
+.yc-cover__burst {
+  position: absolute;
+  inset: 22%;
+  background: #ffd23f;
+  clip-path: polygon(
+    50% 0,
+    61% 30%,
+    95% 20%,
+    72% 47%,
+    100% 70%,
+    65% 70%,
+    60% 100%,
+    45% 74%,
+    15% 95%,
+    28% 62%,
+    0 45%,
+    32% 36%,
+    20% 8%,
+    43% 28%
+  );
+}
+
+.yc-cover__word {
+  position: relative;
+  color: #1d2a5c;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 16cqw;
+  line-height: 0.85;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-8deg);
+}
+
+.yc-slot {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqw;
+  aspect-ratio: 5 / 7;
+  padding: 6cqw;
+  border: 0.8cqw dashed rgb(29 26 23 / 0.35);
+  border-radius: 4.6cqw;
+  background: rgb(255 255 255 / 0.3);
+  color: rgb(29 26 23 / 0.7);
+  text-align: center;
+}
+
+.yc-slot__q {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 26cqw;
+  line-height: 1;
+  opacity: 0.35;
+}
+
+.yc-slot__label {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 9cqw;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.yc-slot__sub {
+  font-size: 5cqw;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yc-tilt,
+  .yc-inner {
+    transition: none;
+  }
+
+  .yc-card[data-rarity="epic"] .yc-shine {
+    animation: none;
+  }
+}

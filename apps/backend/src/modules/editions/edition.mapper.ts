@@ -51,7 +51,8 @@ const summaryFields = (e: EditionSummaryRecord | EditionRecord, lead: StoryRecor
   kind: e.kind,
   design: e.design,
   colourway: e.colourway,
-  guestSection: e.guestSection,
+  guestSections: e.guests.map((g) => g.section),
+  guestSection: e.guests[0]?.section ?? null,
   lead: lead
     ? {
         slug: lead.slug,

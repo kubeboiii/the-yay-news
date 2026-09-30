@@ -1,0 +1,27 @@
+{
+  "pikachu": {
+    "src": "pokeapi:25",
+    "file": "pikachu.png",
+    "credit": "Official artwork © The Pokémon Company, via PokéAPI"
+  },
+  "charmander": {
+    "src": "pokeapi:4",
+    "file": "charmander.png",
+    "credit": "Official artwork © The Pokémon Company, via PokéAPI"
+  },
+  "charmeleon": {
+    "src": "pokeapi:5",
+    "file": "charmeleon.png",
+    "credit": "Official artwork © The Pokémon Company, via PokéAPI"
+  },
+  "charizard": {
+    "src": "pokeapi:6",
+    "file": "charizard.png",
+    "credit": "Official artwork © The Pokémon Company, via PokéAPI"
+  },
+  "mewtwo": {
+    "src": "pokeapi:150",
+    "file": "mewtwo.png",
+    "credit": "Official artwork © The Pokémon Company, via PokéAPI"
+  }
+}

@@ -1,0 +1,56 @@
+// Yay Attax · Marvel. Power, Intellect, Speed and Durability; `kind` is the side (hero, villain,
+// antihero), which Deck Battle's heroes-vs-villains rule uses.
+
+import type { CardDef } from "../types.ts";
+
+export const cards: CardDef[] = [
+  {
+    slug: "spider-man",
+    name: "Spider-Man",
+    kind: "hero",
+    team: "Avengers",
+    stats: [62, 82, 86, 64],
+    rarity: "rare",
+    era: "current",
+    weight: 0.9,
+    bio: "Peter Parker, bitten by a radioactive spider in Queens.",
+    move: "Web-shooters",
+    colour: "#d62828",
+  },
+  {
+    slug: "iron-man",
+    name: "Iron Man",
+    kind: "hero",
+    team: "Avengers",
+    stats: [80, 97, 72, 80],
+    rarity: "common",
+    era: "current",
+    bio: "Tony Stark: genius inventor, flying in a suit he built himself.",
+    move: "Unibeam",
+    colour: "#b3001b",
+  },
+  {
+    slug: "hulk",
+    name: "Hulk",
+    kind: "hero",
+    team: "Avengers",
+    stats: [99, 40, 60, 97],
+    rarity: "common",
+    era: "current",
+    bio: "Bruce Banner gets angry. The angrier he gets, the stronger he gets.",
+    move: "Thunderclap",
+    colour: "#3f8f29",
+  },
+  {
+    slug: "thanos",
+    name: "Thanos",
+    kind: "villain",
+    team: "Black Order",
+    stats: [98, 86, 55, 96],
+    rarity: "rare",
+    era: "current",
+    bio: "The Mad Titan, who gathered all six Infinity Stones.",
+    move: "The Snap",
+    colour: "#6b3fa0",
+  },
+];

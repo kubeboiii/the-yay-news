@@ -2,7 +2,7 @@
 
     python3 apps/frontend/scripts/fetch_image.py <image-url> <issue> <story-slug> [min-width]
 
-Writes apps/frontend/public/editions/<issue>/<story-slug>.jpg (the pressed print, 1200px wide) and
+Writes apps/frontend/public/editions/<issue>/<story-slug>.jpg (the pressed print, 1600px wide) and
 prints the site path to use as the story's `image.file` in the seed data. With a min-width, a
 picture narrower than that is refused (exit 3) rather than pressed: the newsroom uses it to skip
 thumbnails.
@@ -35,8 +35,8 @@ if min_width:
             os.unlink(raw)
             print(f"too narrow: {probe.width}px < {min_width}px", file=sys.stderr)
             sys.exit(3)
-press(raw, dst, width=1200)
+press(raw, dst, width=1600)
 os.unlink(raw)
 # Sample images are committed with the seed data, so keep them small.
-Image.open(dst).save(dst, quality=74, optimize=True, progressive=True)
+Image.open(dst).save(dst, quality=82, optimize=True, progressive=True)
 print(f"/editions/{issue}/{slug}.jpg")

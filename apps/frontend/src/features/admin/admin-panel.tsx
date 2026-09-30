@@ -12,6 +12,8 @@ type AdminStory = {
   section: string;
   slot: "lead" | "feature" | "brief";
   page: number;
+  pulledAt: string | null;
+  pulledReason: string | null;
 };
 
 type AdminEdition = {
@@ -22,11 +24,43 @@ type AdminEdition = {
   design: string;
   stories: AdminStory[];
   reserves: AdminStory[];
+  pulled: AdminStory[];
+};
+
+type AdminAction = {
+  id: string;
+  action: string;
+  issue: number | null;
+  slug: string | null;
+  detail: Record<string, unknown> | null;
+  at: string;
 };
 
 type ApiResult<T> = { data?: T; error?: { code: string; message: string } };
 
 const API = "/api/v1/admin";
+
+const when = (iso: string) =>
+  new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+
+/** The interesting part of an audit row's detail, in a few words. */
+function describeDetail(detail: AdminAction["detail"]) {
+  if (!detail) return "";
+  const parts: string[] = [];
+  if (typeof detail.reason === "string") parts.push(`“${detail.reason}”`);
+  if ("replacement" in detail)
+    parts.push(
+      detail.replacement ? `replaced by ${String(detail.replacement)}` : "no reserve left",
+    );
+  if (typeof detail.outcome === "string")
+    parts.push(detail.outcome === "reserve" ? "back among the reserves" : "back in its place");
+  if ("nowServing" in detail)
+    parts.push(
+      detail.nowServing ? `now serving No. ${String(detail.nowServing)}` : "nothing served",
+    );
+  if (typeof detail.client === "string") parts.push(`from ${detail.client}`);
+  return parts.join(" · ");
+}
 
 async function call<T>(
   path: string,
@@ -45,6 +79,7 @@ async function call<T>(
 export function AdminPanel() {
   const [state, setState] = useState<"checking" | "out" | "in">("checking");
   const [editions, setEditions] = useState<AdminEdition[]>([]);
+  const [actions, setActions] = useState<AdminAction[]>([]);
   const [message, setMessage] = useState<{ tone: "ok" | "bad"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
@@ -55,6 +90,8 @@ export function AdminPanel() {
     if (res.error) return setMessage({ tone: "bad", text: res.error.message });
     setEditions(res.data ?? []);
     setState("in");
+    const log = await call<AdminAction[]>("/actions?limit=20");
+    setActions(log.data ?? []);
   }, []);
 
   useEffect(() => {
@@ -64,8 +101,22 @@ export function AdminPanel() {
 
   async function act(path: string, confirmText: string, done: (data: unknown) => string) {
     if (!window.confirm(confirmText)) return;
+    await send(path, undefined, done);
+  }
+
+  /** A story pull asks for a reason instead of a plain yes; cancelling the prompt cancels the pull. */
+  async function pullStory(path: string, promptText: string, done: (data: unknown) => string) {
+    const reason = window.prompt(`${promptText}\n\nWhy is it being pulled? (optional)`, "");
+    if (reason === null) return;
+    await send(path, { reason: reason.trim().slice(0, 300) }, done);
+  }
+
+  async function send(path: string, body: unknown, done: (data: unknown) => string) {
     setBusy(true);
-    const res = await call(path, { method: "POST" });
+    const res = await call(path, {
+      method: "POST",
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
     setBusy(false);
     if (res.status === 401) return setState("out");
     setMessage(
@@ -88,6 +139,7 @@ export function AdminPanel() {
   async function logout() {
     await call("/logout", { method: "POST" });
     setEditions([]);
+    setActions([]);
     setState("out");
   }
 
@@ -161,6 +213,7 @@ export function AdminPanel() {
                 ) : null}
                 <span className="adm__meta">
                   {e.stories.length} stories · {e.reserves.length} reserves
+                  {e.pulled.length ? ` · ${e.pulled.length} pulled` : ""}
                 </span>
               </button>
               {e.status === "pulled" || e.status === "draft" ? (
@@ -221,7 +274,7 @@ export function AdminPanel() {
                           className="adm__danger"
                           disabled={busy}
                           onClick={() =>
-                            act(
+                            pullStory(
                               `/editions/${e.issueNumber}/stories/${encodeURIComponent(s.slug)}/pull`,
                               `Pull “${s.headline}”? ${e.reserves.length ? "A reserve takes its place." : "There are no reserves left, so the space stays empty."}`,
                               (d) => {
@@ -238,12 +291,62 @@ export function AdminPanel() {
                       </td>
                     </tr>
                   ))}
+                  {e.pulled.map((s) => (
+                    <tr key={s.id} className="adm__pulled">
+                      <td>{s.page}</td>
+                      <td>
+                        <strong>{s.headline}</strong>
+                        <span className="adm__meta">
+                          {s.section} · {s.slot} · {s.slug}
+                        </span>
+                        <span className="adm__meta">
+                          Pulled {s.pulledAt ? when(s.pulledAt) : ""}
+                          {s.pulledReason ? `: ${s.pulledReason}` : " (no reason given)"}
+                        </span>
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          disabled={busy}
+                          onClick={() =>
+                            act(
+                              `/editions/${e.issueNumber}/stories/${encodeURIComponent(s.slug)}/unpull`,
+                              `Restore “${s.headline}”? If a reserve took its place, it rejoins the reserves instead.`,
+                              (d) =>
+                                (d as { outcome: "restored" | "reserve" }).outcome === "restored"
+                                  ? "Restored to its place."
+                                  : "Restored as a reserve (its place is taken).",
+                            )
+                          }
+                        >
+                          Restore
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             ) : null}
           </li>
         ))}
       </ol>
+      <section className="adm__log" aria-labelledby="adm-log">
+        <h2 id="adm-log">Log</h2>
+        {actions.length ? (
+          <ol>
+            {actions.map((a) => (
+              <li key={a.id}>
+                <time dateTime={a.at}>{when(a.at)}</time> <strong>{a.action}</strong>
+                {a.issue ? ` No. ${a.issue}` : ""}
+                {a.slug ? ` · ${a.slug}` : ""}
+                {a.detail ? <span className="adm__meta">{describeDetail(a.detail)}</span> : null}
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="adm__note">Nothing yet.</p>
+        )}
+      </section>
     </div>
   );
 }

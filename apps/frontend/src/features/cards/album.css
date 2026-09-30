@@ -1,0 +1,349 @@
+/* The Yay Attax album, on the reader's desk (habits/saved.css's .hb-desk). */
+
+.ya-album {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.ya-ledger {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 22px;
+}
+
+.ya-ledger__item {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 21px;
+}
+
+.ya-ledger__item b {
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.ya-ledger__play,
+.ya-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #1d1a17;
+  color: #fff;
+  font:
+    700 15px/1.1 "Helvetica Neue",
+    Arial,
+    sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ya-ledger__play--battle {
+  background: #c8102e;
+}
+
+.ya-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ya-ledger__play:focus-visible,
+.ya-btn:focus-visible,
+.ya-chip:focus-visible,
+.ya-tab:focus-visible,
+.ya-season:focus-visible,
+.ya-shop__select:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.ya-teaser {
+  margin: 0;
+  padding: 10px 16px;
+  border: 2px dashed rgb(29 26 23 / 0.35);
+  border-radius: 12px;
+  font-family: var(--hb-hand), cursive;
+  font-size: 20px;
+  text-align: center;
+}
+
+.ya-panel {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.55);
+}
+
+.ya-h2 {
+  margin: 0 0 8px;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.ya-evolve {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ya-shop__text {
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.ya-shop__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.ya-shop__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.ya-shop__select {
+  min-height: 40px;
+  padding: 6px 10px;
+  border: 2px solid #1d1a17;
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+}
+
+.ya-shop__short {
+  font-family: var(--hb-hand), cursive;
+  font-size: 18px;
+}
+
+.ya-toast {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #1d1a17;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+}
+
+.ya-toast__x {
+  margin-left: 8px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffd23f;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ya-seasons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ya-season {
+  min-height: 38px;
+  padding: 6px 16px;
+  border: 2px solid #1d1a17;
+  border-radius: 999px;
+  background: transparent;
+  font:
+    700 14px/1 "Helvetica Neue",
+    Arial,
+    sans-serif;
+  cursor: pointer;
+}
+
+.ya-season[aria-pressed="true"] {
+  background: #1d1a17;
+  color: #fff;
+}
+
+.ya-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 0 -16px;
+  padding: 2px 16px 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.ya-tab {
+  --c: #1d1a17;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 12px 12px 4px 4px;
+  background: rgb(255 255 255 / 0.5);
+  color: #1d1a17;
+  font:
+    700 15px/1.1 "Helvetica Neue",
+    Arial,
+    sans-serif;
+  cursor: pointer;
+  box-shadow: inset 0 -4px 0 var(--c);
+}
+
+.ya-tab small {
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.ya-tab[aria-selected="true"] {
+  background: var(--c);
+  color: #fff;
+}
+
+.ya-tab[data-league="pokemon"] {
+  --c: #d4a700;
+}
+.ya-tab[data-league="wwe"] {
+  --c: #111;
+}
+.ya-tab[data-league="football"] {
+  --c: #1f2d8a;
+}
+.ya-tab[data-league="ipl"] {
+  --c: #d35400;
+}
+.ya-tab[data-league="ufc"] {
+  --c: #b00808;
+}
+.ya-tab[data-league="nba"] {
+  --c: #b4501f;
+}
+.ya-tab[data-league="marvel"] {
+  --c: #c62828;
+}
+.ya-tab[data-league="dc"] {
+  --c: #0b4fa8;
+}
+.ya-tab[data-league="ben10"] {
+  --c: #2e7d1a;
+}
+.ya-tab[data-league="anime"] {
+  --c: #b0287a;
+}
+.ya-tab[data-league="f1"] {
+  --c: #b30500;
+}
+.ya-tab[data-league="tv"] {
+  --c: #8a5a00;
+}
+.ya-tab[data-league="classic"] {
+  --c: #6b5a45;
+}
+
+.ya-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ya-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ya-chip {
+  min-height: 34px;
+  padding: 5px 13px;
+  border: 1.5px solid rgb(29 26 23 / 0.5);
+  border-radius: 999px;
+  background: transparent;
+  color: #1d1a17;
+  font:
+    600 14px/1 "Helvetica Neue",
+    Arial,
+    sans-serif;
+  cursor: pointer;
+}
+
+.ya-chip[aria-pressed="true"] {
+  border-color: #1d1a17;
+  background: #1d1a17;
+  color: #fff;
+}
+
+.ya-set__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-bottom: 12px;
+}
+
+.ya-set__name {
+  margin: 0;
+  font-family: var(--hb-gothic), Impact, sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.ya-set__sub,
+.ya-set__count {
+  margin: 0;
+  font-size: 15px;
+}
+
+.ya-set__count {
+  font-weight: 700;
+}
+
+.ya-set__done {
+  color: #c8102e;
+}
+
+.ya-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ya-empty {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 20px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .ya-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}

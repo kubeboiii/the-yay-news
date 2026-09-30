@@ -13,6 +13,8 @@
 // order, any number of times, and every device ends up with the same log and the same streak.
 
 import type { PuzzleType } from "@repo/shared";
+import type { CardSnap } from "../cards/classic/types.ts";
+import type { LeagueId } from "../cards/types.ts";
 
 export type MoodId = "sunny" | "grin" | "calm" | "silly" | "sleepy" | "wow";
 
@@ -66,6 +68,79 @@ export type HabitEvent = { id: string; at: string } & (
       date?: string;
     }
   | { type: "story_unsaved"; issue: number; slug: string }
+  // ——— Yay Attax (features/cards) ———
+  | {
+      type: "pack_opened";
+      /** Which pack: "d:<issue>" daily, "s:<issue>" Sunday bonus, "b:<id>" bought with coins. */
+      pack: string;
+      issue: number;
+      kind: "daily" | "sunday" | "bought";
+      /** Yay Coins spent (bought packs only). */
+      cost?: number;
+    }
+  | {
+      type: "card_collected";
+      /** The id of the pack_opened event it came out of. */
+      pack: string;
+      card: CardSnap;
+    }
+  | {
+      type: "clash_played";
+      result: "won" | "lost" | "drawn";
+      /** Yay Coins won (a few wins a day pay out). */
+      coins: number;
+      /** The device's edition date when it was played. */
+      date: string;
+      /** The league played (absent on classic clashes). */
+      league?: LeagueId;
+    }
+  | { type: "set_completed"; set: string }
+  // ——— Yay Attax leagues (features/cards: collection.ts has the merge rules) ———
+  | {
+      /** A finished paper's scratch card, scratched: "sc:<issue>". */
+      type: "scratch_revealed";
+      pack: string;
+      issue: number;
+    }
+  | {
+      /** A blind box opened: "bx:<issue>" for a finished paper's, "b:<id>" for one bought. */
+      type: "box_opened";
+      pack: string;
+      issue?: number;
+      /** The league its cards came from (chosen, or picked at random). */
+      league: LeagueId;
+      /** Whether the reader chose the league. */
+      chosen: boolean;
+      /** Yay Coins spent (bought boxes only). */
+      cost?: number;
+    }
+  | {
+      /** A Sunday paper's lucky dip: "dp:<issue>". */
+      type: "dip_opened";
+      pack: string;
+      issue: number;
+    }
+  | {
+      /** A card out of a scratch card, box or dip: `from` is that event's id. */
+      type: "card_pulled";
+      from: string;
+      /** The card's id, "<league>:<slug>". */
+      card: string;
+    }
+  | {
+      /** Three copies of a Pokémon evolved into its next stage. */
+      type: "card_evolved";
+      from: string;
+      to: string;
+    }
+  | {
+      type: "battle_played";
+      result: "won" | "lost";
+      coins: number;
+      date: string;
+      /** The reader's deck, card ids. */
+      deck: string[];
+    }
 );
 
 export type HabitEventType = HabitEvent["type"];
@@ -129,6 +204,16 @@ const KNOWN = new Set<string>([
   "mood",
   "story_saved",
   "story_unsaved",
+  "pack_opened",
+  "card_collected",
+  "clash_played",
+  "set_completed",
+  "scratch_revealed",
+  "box_opened",
+  "dip_opened",
+  "card_pulled",
+  "card_evolved",
+  "battle_played",
 ]);
 
 /** Reads a stored document: the current shape, or v0's bare array of events. */
@@ -164,6 +249,8 @@ export function parseDoc(raw: string | null, device: string): HabitDoc {
 //     an unsave, as a tombstone, so merging with an older device can't resurrect the story).
 // Merging a compacted log with an uncompacted one gives the same views, because every rule above
 // is "latest wins" or a read-only history nobody looks at.
+// Yay Attax events (rewards, cards, clashes, battles, sets) are never dropped: the album and the
+// Yay Coins balance are folds over all of them. A pulled card is ~0.1 KB, so a year is ~60 KB.
 
 export const COMPACT_AT = 4000;
 const OLD_MS = 60 * 24 * 3600 * 1000;

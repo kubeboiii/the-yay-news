@@ -1,0 +1,27 @@
+{
+  "erling-haaland": {
+    "src": "wiki:Erling Haaland",
+    "file": "erling-haaland.jpg",
+    "credit": "Wikimedia Commons · Bryan Berlin, CC BY-SA 4.0"
+  },
+  "kylian-mbappe": {
+    "src": "wiki:Kylian Mbappé",
+    "file": "kylian-mbappe.jpg",
+    "credit": "Wikimedia Commons · Bryan Berlin, CC BY-SA 4.0"
+  },
+  "lamine-yamal": {
+    "src": "wiki:Lamine Yamal",
+    "file": "lamine-yamal.jpg",
+    "credit": "Wikimedia Commons · Bryan Berlin, CC BY-SA 4.0"
+  },
+  "lionel-messi": {
+    "src": "wiki:Lionel Messi",
+    "file": "lionel-messi.jpg",
+    "credit": "Wikimedia Commons · Bryan Berlin, CC BY-SA 4.0"
+  },
+  "cristiano-ronaldo": {
+    "src": "wiki:Cristiano Ronaldo",
+    "file": "cristiano-ronaldo.jpg",
+    "credit": "Wikimedia Commons · Bryan Berlin, CC BY-SA 4.0"
+  }
+}

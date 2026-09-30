@@ -57,12 +57,19 @@ describe("editions routes", () => {
       expect(((await res.json()) as Body<Edition>).data.issueNumber).toBe(43);
     });
 
+    it("never serves a story the admin has pulled", async () => {
+      const { data } = (await (await get("/api/v1/editions/today")).json()) as Body<Edition>;
+      const slugs = data.pages.flatMap((p) => p.stories.map((s) => s.slug));
+      expect(slugs).toEqual(["lead-41", "game-a-41", "game-b-41"]);
+    });
+
     it("returns the whole edition, with yesterday's answers but not today's", async () => {
       const res = await get("/api/v1/editions/today", { "x-timezone": KIRITIMATI });
       const { data } = (await res.json()) as Body<Edition>;
       expect(data.pages.map((p) => p.layout)).toEqual(["front", "section", "back"]);
       expect(data.lead?.slug).toBe("lead-42");
       expect(data.lead?.image?.licence).toBe("Unsplash License");
+      expect(data.guestSections.map((g) => g.slug)).toEqual(["word-nerd", "food-and-drink"]);
       expect(data.guestSection?.slug).toBe("word-nerd");
       expect(data.features.map((f) => f.type)).toEqual(["number_of_day", "weather"]);
       expect(data.puzzles.map((p) => p.type)).toEqual(["riddle", "word_search", "fortune_teller"]);
@@ -178,7 +185,9 @@ describe("editions routes", () => {
         date: "2026-09-30",
         lead: { slug: "lead-42", headline: "Headline for lead-42" },
         guestSection: { slug: "word-nerd" },
+        guestSections: [{ slug: "word-nerd" }, { slug: "food-and-drink" }],
       });
+      expect(data.items[1]).toMatchObject({ guestSection: null, guestSections: [] });
       expect(data.nextCursor).toBeNull();
       expect(res.headers.get("vary")).toContain("x-timezone");
     });

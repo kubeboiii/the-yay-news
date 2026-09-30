@@ -2,10 +2,12 @@ import Link from "next/link";
 import { issueHref } from "@/features/papers/reading";
 import type { Reading } from "@/features/papers/types";
 import { SoundToggle } from "@/features/sound/sound-toggle";
+import { ZineLink } from "@/features/zine/zine-link";
 
 /**
  * The reader's way through the paper: previous page, where you are, next page, and every page of
- * the edition, plus the stamp book, kept stories and the paper-sounds switch. It sits outside the printed sheet, like a hand turning pages, so it is plain on
+ * the edition, plus the stamp book, cards, kept stories, the printable mini zine and the
+ * paper-sounds switch. It sits outside the printed sheet, like a hand turning pages, so it is plain on
  * purpose.
  */
 export function PageBar({ issue, reading }: { issue: number; reading: Reading }) {
@@ -53,6 +55,11 @@ export function PageBar({ issue, reading }: { issue: number; reading: Reading })
             </Link>
           </li>
           <li>
+            <ZineLink issue={issue} className="block rounded-lg px-3 py-1.5 hover:bg-white/15">
+              Download today&rsquo;s zine
+            </ZineLink>
+          </li>
+          <li>
             <Link href="/archive" className="block rounded-lg px-3 py-1.5 hover:bg-white/15">
               Back issues
             </Link>
@@ -60,6 +67,11 @@ export function PageBar({ issue, reading }: { issue: number; reading: Reading })
           <li>
             <Link href="/stamps" className="block rounded-lg px-3 py-1.5 hover:bg-white/15">
               Your stamps
+            </Link>
+          </li>
+          <li>
+            <Link href="/cards" className="block rounded-lg px-3 py-1.5 hover:bg-white/15">
+              Your cards
             </Link>
           </li>
           <li>

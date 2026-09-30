@@ -1,0 +1,22 @@
+{
+  "monkey-d-luffy": {
+    "src": "wiki:Monkey D. Luffy",
+    "file": "monkey-d-luffy.png",
+    "credit": "Wikipedia · Fair use"
+  },
+  "satoru-gojo": {
+    "src": "wiki:Satoru Gojo",
+    "file": "satoru-gojo.png",
+    "credit": "Wikipedia · Akutami, Gege, Fair use"
+  },
+  "naruto-uzumaki": {
+    "src": "wiki:Naruto Uzumaki",
+    "file": "naruto-uzumaki.png",
+    "credit": "Wikipedia · Fair use"
+  },
+  "goku": {
+    "src": "wiki:Goku",
+    "file": "goku.jpg",
+    "credit": "Wikipedia · Shueisha; Akira Toriyama, Fair use"
+  }
+}

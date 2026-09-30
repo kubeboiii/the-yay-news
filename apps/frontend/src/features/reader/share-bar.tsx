@@ -3,6 +3,7 @@ import type { Story } from "@repo/shared";
 import { cookies } from "next/headers";
 import { TZ_COOKIE } from "@/features/editions/timezone";
 import { storyHref } from "@/features/papers/reading";
+import { CutItOut } from "./cut-it-out";
 import { qrPath } from "./qr";
 import { ShareButtons } from "./share-buttons";
 import { absoluteUrl, clipPath } from "./site";
@@ -29,6 +30,19 @@ export async function ShareBar({ data }: { data: Story }) {
       postImage={clip("post")}
       fileName={`the-yay-news-${issue}-${slug}`}
       qr={qrPath(url)}
+    />
+  );
+}
+
+/** "Cut it out" for a story: its clipping as a Stories or square image, shared or downloaded. */
+export async function StoryCut({ data }: { data: Story }) {
+  const tz = (await cookies()).get(TZ_COOKIE)?.value;
+  return (
+    <CutItOut
+      issue={data.edition.issueNumber}
+      slug={data.story.slug}
+      headline={data.story.headline}
+      tz={tz}
     />
   );
 }

@@ -153,6 +153,19 @@ export function record(event: NewHabitEvent): void {
 }
 
 /**
+ * Records an event and the events that point at its id (a pack and the cards that came out of
+ * it) in one write. Returns the first event's id.
+ */
+export function recordLinked(
+  first: NewHabitEvent,
+  rest: (firstId: string) => NewHabitEvent[],
+): string {
+  const head = stamp(first);
+  append([head, ...rest(head.id).map(stamp)]);
+  return head.id;
+}
+
+/**
  * Records an event only if no matching event is in the log yet (`same` decides what matches).
  * Returns whether it was recorded.
  */

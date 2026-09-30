@@ -1,7 +1,7 @@
 "use client";
 
 import type { Edition } from "@repo/shared";
-import { type RefObject, useCallback, useEffect, useMemo, useState } from "react";
+import { type ReactNode, type RefObject, useCallback, useEffect, useMemo, useState } from "react";
 import { play } from "@/features/sound";
 import { earnSticker, exportLog, recordOnce, useHabitLog, useHabitsReady } from "./api";
 import { ALL_SOLVED_STICKER } from "./catalogue";
@@ -183,19 +183,23 @@ export function ReadingTracker({
   edition,
   page,
   target,
+  extra,
 }: {
   edition: EditionLike;
   page: { order: number };
   target?: RefObject<HTMLElement | null>;
+  /** More on the stamping card (the Yay Attax rewards); it then stays up a little longer. */
+  extra?: ReactNode;
 }) {
   const state = useReadingTracker({ edition, page, target });
   const { justFinished, dismiss } = state;
+  const linger = extra ? 30000 : 12000;
   useEffect(() => {
     if (!justFinished) return;
     play("rustle");
-    const t = window.setTimeout(dismiss, 12000);
+    const t = window.setTimeout(dismiss, linger);
     return () => window.clearTimeout(t);
-  }, [justFinished, dismiss]);
+  }, [justFinished, dismiss, linger]);
   if (!justFinished) return null;
-  return <StampMoment stamp={justFinished} streak={state.streak} onClose={dismiss} />;
+  return <StampMoment stamp={justFinished} streak={state.streak} onClose={dismiss} extra={extra} />;
 }

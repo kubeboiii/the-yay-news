@@ -24,7 +24,12 @@ function picture(image: Image | undefined | null): Picture | null {
   return {
     src: photoSrc(image.url),
     alt: image.alt,
-    credit: `${kind}: ${image.credit}${image.licence ? ` / ${image.licence.replace(/ License$/, "")}` : ""}`,
+    // The licence only when it says something ("Credited to its source" is what every credit is).
+    credit: `${kind}: ${image.credit}${
+      image.licence && image.licence !== "Credited to its source"
+        ? ` / ${image.licence.replace(/ License$/, "")}`
+        : ""
+    }`,
     focus: "50% 50%",
   };
 }
@@ -90,8 +95,13 @@ export async function editionSubject(
   issue: number,
   slug: string,
   tz: string | null,
+  /** A preview clock (`?now=`), honoured outside production only. */
+  now?: string | null,
 ): Promise<EditionSubject | null> {
-  const qs = tz ? `?tz=${encodeURIComponent(tz)}` : "";
+  const params = new URLSearchParams();
+  if (tz) params.set("tz", tz);
+  if (now && process.env.NODE_ENV !== "production") params.set("now", now);
+  const qs = params.size ? `?${params.toString()}` : "";
 
   if (slug === "front") {
     const edition = await read(`/api/v1/editions/${issue}${qs}`, editionSchema);
