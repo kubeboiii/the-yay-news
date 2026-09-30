@@ -1,0 +1,125 @@
+/* The site bar: a strip of black ink along the top of every reader page. */
+
+.ys-bar {
+  --ys-ink: #161412;
+  --ys-paper: #efe8d8;
+  --ys-hi: #e9ff1f;
+  position: sticky;
+  top: 0;
+  z-index: 45;
+  background: var(--ys-ink);
+  color: var(--ys-paper);
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+  transition: transform 0.25s ease;
+}
+.ys-bar[data-tucked] {
+  transform: translateY(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ys-bar {
+    transition: none;
+  }
+}
+@media print {
+  .ys-bar {
+    display: none;
+  }
+}
+
+.ys-bar__in {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 52px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+.ys-bar__gap {
+  flex: 1;
+}
+
+.ys-bar a {
+  color: inherit;
+  text-decoration: none;
+}
+.ys-bar a:focus-visible {
+  outline: 3px solid var(--ys-hi);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.ys-mark {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  font-family: var(--ar-gothic), "League Gothic", sans-serif;
+  font-size: 27px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.ys-mark__short {
+  display: none;
+}
+@media (max-width: 400px) {
+  .ys-mark__word {
+    display: none;
+  }
+  .ys-mark__short {
+    display: inline;
+  }
+}
+
+.ys-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 34px;
+  margin-left: 4px;
+  padding: 0 10px;
+  border: 1.5px solid rgba(239, 232, 216, 0.55);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.ys-date:hover {
+  border-color: var(--ys-paper);
+}
+.ys-date svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ys-date--blank {
+  width: 88px;
+  border-color: transparent;
+}
+
+.ys-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: inset 0 -4px 0 transparent;
+}
+.ys-tab:hover {
+  box-shadow: inset 0 -4px 0 rgba(239, 232, 216, 0.4);
+}
+.ys-tab[aria-current="page"] {
+  box-shadow: inset 0 -4px 0 var(--ys-hi);
+}
+@media (max-width: 360px) {
+  .ys-tab {
+    padding: 0 7px;
+  }
+}

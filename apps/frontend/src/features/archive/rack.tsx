@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 import { editionLook } from "@/app/clip/_lib/looks";
 import { issueHref } from "@/features/papers/reading";
 import { printedPhoto } from "@/features/print/photo";
+import { PileMark } from "@/features/pile/pile-mark";
 import { aged, daysSince, seeded } from "./age";
 
 // The newsstand rack: back issues standing folded in wire racks, a week to a rack, each copy in the
@@ -42,7 +43,7 @@ const on = (ground: string, ink: string) =>
   contrast(ground, ink) >= contrast(ground, "#ffffff") ? ink : "#ffffff";
 
 /** The Monday a date's week starts on, as YYYY-MM-DD. */
-function weekOf(date: string): string {
+export function weekOf(date: string): string {
   const d = at(date);
   d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
   return d.toISOString().slice(0, 10);
@@ -74,8 +75,11 @@ function Masthead({ design }: { design: EditionDesign }) {
   return <>The Yay News</>;
 }
 
-/** One folded front page standing in the rack: masthead up, the lead above the fold. */
-function Copy({
+/**
+ * One folded front page standing in the rack: masthead up, the lead above the fold, and the
+ * reader's own mark on it (a stamp once finished, a dog-ear once started; see PileMark).
+ */
+export function Copy({
   edition: e,
   index,
   now,
@@ -147,6 +151,7 @@ function Copy({
         <span className="ar-front__tag" aria-hidden>
           {paper.short}
         </span>
+        <PileMark issue={e.issueNumber} />
       </Link>
     </li>
   );

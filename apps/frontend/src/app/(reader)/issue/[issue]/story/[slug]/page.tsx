@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { getStory, issueParam } from "@/features/editions/api";
+import { Suspense } from "react";
+import { habitFonts } from "@/features/habits/fonts";
+import { rackFonts } from "@/features/archive/fonts";
+import { getEdition, getStory, getToday, issueParam } from "@/features/editions/api";
 import { StoryView } from "@/features/papers/edition-view";
 import { storyHref } from "@/features/papers/reading";
 import { storyPreview } from "@/features/reader/previews";
+import { PassedNote } from "@/features/site/pass-it-on";
+import { PileBand } from "@/features/site/pile-band";
+import { StoryStrip } from "@/features/site/story-strip";
 import { previewFrom } from "../../../../_preview";
 
 export async function generateMetadata({
@@ -28,6 +34,22 @@ export default async function StoryPage({
 }: PageProps<"/issue/[issue]/story/[slug]">) {
   const { issue, slug } = await params;
   const preview = await previewFrom(searchParams);
-  const data = await getStory(issueParam(issue), slug, preview);
-  return <StoryView data={data} design={preview.design} />;
+  const n = issueParam(issue);
+  const [data, edition, today] = await Promise.all([
+    getStory(n, slug, preview),
+    getEdition(n, preview),
+    getToday(preview).catch(() => null),
+  ]);
+  return (
+    <>
+      <PileBand issue={data.edition.issueNumber} date={data.edition.date} today={today} />
+      <div className={`${rackFonts} ${habitFonts}`}>
+        <Suspense>
+          <PassedNote />
+        </Suspense>
+      </div>
+      <StoryView data={data} design={preview.design} />
+      <StoryStrip data={data} edition={edition} todayIssue={today?.issueNumber ?? null} />
+    </>
+  );
 }

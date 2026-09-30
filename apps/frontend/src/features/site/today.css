@@ -1,0 +1,359 @@
+/* Today's front door: the shutter (half up before 7, down once you've finished), the welcome note
+   and the carry-on chip. Fonts come from rackFonts (--ar-*) and habitFonts (--hb-*). */
+
+.ys-today {
+  --ys-ink: #161412;
+  --ys-paper: #efe8d8;
+  --ys-hi: #e9ff1f;
+  --ys-pink: #d61f7a;
+}
+.ys-shutter,
+.ys-flyer,
+.ys-resume {
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+}
+.ys-flyer {
+  color: var(--ys-ink);
+}
+
+.ys-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 2px solid var(--ys-ink);
+  background: var(--ys-paper);
+  color: var(--ys-ink);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ys-btn--hi {
+  background: var(--ys-hi);
+  box-shadow: 3px 3px 0 var(--ys-ink);
+}
+.ys-btn--ink {
+  background: var(--ys-ink);
+  color: var(--ys-paper);
+}
+.ys-btn:focus-visible,
+.ys-today a:focus-visible {
+  outline: 3px solid #6a2cf0;
+  outline-offset: 2px;
+}
+
+/* ——— The shutter ——— */
+
+.ys-shutter {
+  background: repeating-linear-gradient(180deg, #2c2c30 0 11px, #3d3d42 11px 13px);
+  color: var(--ys-paper);
+  padding: 44px 16px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  border-bottom: 8px solid #0e0e10;
+}
+.ys-shutter--down {
+  animation: ys-shut 0.8s cubic-bezier(0.55, 0, 0.25, 1) both;
+}
+@keyframes ys-shut {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.ys-shutter__slats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+}
+.ys-shutter__kicker {
+  margin: 0;
+  font-family: var(--ar-type), monospace;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.ys-shutter__title {
+  margin: 0;
+  font-family: var(--ar-gothic), sans-serif;
+  font-weight: 400;
+  font-size: clamp(72px, 22vw, 132px);
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+.ys-shutter__sub {
+  margin: 0;
+  max-width: 30ch;
+  font-family: var(--ar-caslon), serif;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.45;
+  color: #e3dccb;
+}
+.ys-shutter__sub b {
+  font-style: normal;
+  color: var(--ys-hi);
+}
+.ys-shutter__links {
+  display: flex;
+  gap: 10px;
+  width: min(100%, 420px);
+}
+.ys-shutter__links .ys-btn {
+  flex: 1;
+}
+
+.ys-peek {
+  display: block;
+  width: min(100%, 420px);
+  margin-bottom: -60px;
+  padding: 16px 18px 20px;
+  background: var(--ys-paper);
+  color: var(--ys-ink);
+  text-align: left;
+  text-decoration: none;
+  transform: rotate(1.2deg);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
+  position: relative;
+  z-index: 2;
+}
+.ys-peek__kicker {
+  display: block;
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ys-peek__line {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--ar-gothic), sans-serif;
+  font-size: 30px;
+  line-height: 1;
+}
+.ys-shutter--half {
+  padding-bottom: 0;
+  margin-bottom: 72px;
+}
+
+.ys-sign {
+  width: min(100%, 360px);
+  padding: 16px 18px 20px;
+  background: var(--ys-paper);
+  color: var(--ys-ink);
+  border: 3px solid #0e0e10;
+  box-shadow: 6px 6px 0 #0e0e10;
+  transform: rotate(-2deg);
+}
+.ys-sign__small {
+  margin: 0;
+  font-family: var(--ar-type), monospace;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.ys-sign__big {
+  margin: 2px 0 6px;
+  font-family: var(--ar-gothic), sans-serif;
+  font-weight: 400;
+  font-size: 104px;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+.ys-sign__sub {
+  margin: 0;
+  font-family: var(--ar-caslon), serif;
+  font-style: italic;
+  font-size: 17px;
+}
+.ys-scrawl {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--ys-hi);
+  transform: rotate(-3deg);
+}
+
+/* ——— The receipt ——— */
+
+.ys-receipt {
+  width: min(100%, 300px);
+  padding: 16px 18px 24px;
+  background: #ffffff;
+  color: var(--ys-ink);
+  text-align: left;
+  font-family: var(--ar-type), monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 96%,
+    94% 100%,
+    88% 96%,
+    82% 100%,
+    76% 96%,
+    70% 100%,
+    64% 96%,
+    58% 100%,
+    52% 96%,
+    46% 100%,
+    40% 96%,
+    34% 100%,
+    28% 96%,
+    22% 100%,
+    16% 96%,
+    10% 100%,
+    4% 96%,
+    0 100%
+  );
+}
+.ys-receipt p {
+  margin: 0;
+}
+.ys-receipt__head {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.ys-receipt__row {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px !important;
+}
+.ys-receipt__sq {
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--ys-ink);
+  box-sizing: border-box;
+}
+.ys-receipt__n {
+  margin-left: 6px;
+}
+.ys-note {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ys-hi);
+}
+.ys-again {
+  color: var(--ys-paper);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* ——— First visit ——— */
+
+.ys-flyer {
+  position: relative;
+  width: min(calc(100% - 32px), 440px);
+  box-sizing: border-box;
+  margin: 26px auto 8px;
+  padding: 20px 20px 18px;
+  background: #fffbe6;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  transform: rotate(-1.6deg);
+  animation: ys-pop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+.ys-flyer__tape {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 84px;
+  height: 22px;
+  margin-left: -42px;
+  background: rgba(233, 255, 31, 0.8);
+  transform: rotate(3deg);
+}
+.ys-flyer__hand {
+  margin: 0;
+  font-family: var(--hb-hand), cursive;
+  font-size: 30px;
+  line-height: 1.05;
+}
+.ys-flyer__text {
+  margin: 10px 0 14px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+@keyframes ys-pop {
+  from {
+    transform: scale(0.7) rotate(-6deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(-1.6deg);
+    opacity: 1;
+  }
+}
+
+.ys-resume {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 18px auto 0;
+  padding: 10px 18px;
+  background: var(--ys-hi);
+  border: 2px solid var(--ys-ink);
+  box-shadow: 3px 3px 0 var(--ys-ink);
+  color: var(--ys-ink);
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  transform: rotate(-1deg);
+}
+.ys-resume__k {
+  font-family: var(--ar-type), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ——— The drop ——— */
+
+.ys-paper[data-dropping] {
+  animation: ys-drop 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  transform-origin: 50% 0;
+}
+@keyframes ys-drop {
+  0% {
+    transform: translateY(-60vh) rotate(-4deg);
+  }
+  65% {
+    transform: translateY(1.5%) rotate(0.6deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ys-shutter--down,
+  .ys-flyer,
+  .ys-paper[data-dropping] {
+    animation: none;
+  }
+}
+@media print {
+  .ys-shutter,
+  .ys-flyer,
+  .ys-resume {
+    display: none;
+  }
+}

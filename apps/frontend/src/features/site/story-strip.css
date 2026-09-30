@@ -1,0 +1,133 @@
+.ys-strip {
+  padding: 36px 16px 120px;
+  background: #e4ded3;
+  color: #161412;
+  font-family: var(--ar-franklin), system-ui, sans-serif;
+}
+@media print {
+  .ys-strip {
+    display: none;
+  }
+}
+.ys-strip a:focus-visible {
+  outline: 3px solid #6a2cf0;
+  outline-offset: 2px;
+}
+.ys-strip > .ys-pass {
+  margin-bottom: 30px;
+}
+.ys-strip__tear {
+  width: min(620px, 100%);
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 26px 24px 24px;
+  background: #fffbe6;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.14);
+  rotate: -0.8deg;
+  clip-path: polygon(
+    0 4%,
+    5% 0,
+    11% 3%,
+    18% 0,
+    26% 3%,
+    34% 0,
+    42% 3%,
+    50% 0,
+    58% 3%,
+    66% 0,
+    74% 3%,
+    82% 0,
+    90% 3%,
+    96% 0,
+    100% 3%,
+    100% 100%,
+    0 100%
+  );
+}
+.ys-strip__k {
+  margin: 0;
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ys-strip__pitch {
+  margin: 8px 0 16px;
+  font-family: var(--ar-gothic), sans-serif;
+  font-size: clamp(28px, 6vw, 38px);
+  line-height: 1.02;
+}
+.ys-strip__go {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+.ys-strip__btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 18px;
+  background: #e9ff1f;
+  border: 2px solid #161412;
+  box-shadow: 3px 3px 0 #161412;
+  color: #161412;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+}
+.ys-strip__btn--quiet {
+  background: transparent;
+  box-shadow: none;
+}
+.ys-strip__more {
+  width: min(620px, 100%);
+  margin: 34px auto 0;
+}
+.ys-strip__h {
+  margin: 0 0 6px;
+  font-family: var(--ar-gothic), sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  text-transform: uppercase;
+  border-bottom: 3px solid #161412;
+}
+.ys-strip__more ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ys-strip__more a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid #161412;
+  color: inherit;
+  text-decoration: none;
+}
+.ys-strip__more a:hover .ys-strip__mh {
+  text-decoration: underline;
+}
+.ys-strip__mk {
+  font-family: var(--ar-type), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ys-strip__mh {
+  font-family: var(--ar-caslon), Georgia, serif;
+  font-size: 18px;
+  line-height: 1.35;
+}
+.ys-strip__how {
+  width: min(620px, 100%);
+  margin: 22px auto 0;
+  font-size: 14px;
+}
+.ys-strip__how a {
+  color: inherit;
+  font-weight: 700;
+}

@@ -54,11 +54,15 @@ export async function getStory(issue: number, slug: string, preview: Preview = {
   );
 }
 
-export async function getArchive(cursor?: string, preview: Preview = {}) {
+/** Back issues newest first, `limit` at a time (the API's default is 12, its most 50). */
+export async function getArchive(cursor?: string, preview: Preview = {}, limit?: number) {
   const base = await readerQuery(preview);
-  const sep = base ? "&" : "?";
+  const extra = new URLSearchParams();
+  if (cursor) extra.set("cursor", cursor);
+  if (limit) extra.set("limit", String(limit));
+  const more = extra.toString();
   return read(
-    `/api/v1/editions${base}${cursor ? `${sep}cursor=${encodeURIComponent(cursor)}` : ""}`,
+    `/api/v1/editions${base}${more ? `${base ? "&" : "?"}${more}` : ""}`,
     archiveListSchema,
   );
 }

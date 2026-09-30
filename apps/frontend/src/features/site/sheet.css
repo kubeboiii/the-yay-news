@@ -1,0 +1,105 @@
+.ys-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+.ys-sheet__scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: none;
+  background: rgba(22, 20, 18, 0.55);
+  cursor: pointer;
+  animation: ys-fade 0.2s both;
+}
+.ys-sheet__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 880px;
+  height: 92vh;
+  height: 92dvh;
+  margin: 0 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #e4ded3;
+  border-top: 3px solid #161412;
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  animation: ys-rise 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  padding-bottom: 40px;
+}
+.ys-sheet__panel:focus {
+  outline: none;
+}
+.ys-sheet__top {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 52px;
+  background: #e4ded3;
+}
+.ys-sheet__grip {
+  width: 44px;
+  height: 5px;
+  border-radius: 3px;
+  background: #161412;
+  opacity: 0.35;
+}
+.ys-sheet__close {
+  position: absolute;
+  right: 12px;
+  top: 4px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #161412;
+  border-radius: 50%;
+  background: #efe8d8;
+  color: #161412;
+  cursor: pointer;
+}
+.ys-sheet__close svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.ys-sheet__close:focus-visible {
+  outline: 3px solid #6a2cf0;
+  outline-offset: 2px;
+}
+@keyframes ys-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ys-rise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ys-sheet__scrim,
+  .ys-sheet__panel {
+    animation: none;
+  }
+}
+
+.ys-sheet__pass {
+  padding: 24px 16px 8px;
+}
