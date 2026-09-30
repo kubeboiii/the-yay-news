@@ -6,6 +6,7 @@ import { useEditionToday, useHabitLog, useHabitsReady } from "@/features/habits/
 import { isFinished, pagesRead } from "@/features/habits/core";
 import { issueHref } from "@/features/papers/reading";
 import { SoundToggle } from "@/features/sound/sound-toggle";
+import { ZineLink } from "@/features/zine/zine-link";
 import type { PagerPage } from "./pager-pages";
 import "./pager.css";
 
@@ -73,9 +74,17 @@ function AllPages({
           })}
         </ol>
         <div className="yp-all__foot">
-          <Link href={`${issueHref(issue)}/print`} className="yp-link">
-            Printable edition
-          </Link>
+          <span className="yp-all__links">
+            <ZineLink issue={issue} className="yp-link">
+              Download the mini zine
+            </ZineLink>
+            <Link href={`${issueHref(issue)}/print`} className="yp-link">
+              Printable edition
+            </Link>
+            <Link href="/cards" className="yp-link">
+              Your cards
+            </Link>
+          </span>
           <SoundToggle />
         </div>
       </div>

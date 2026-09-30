@@ -35,7 +35,12 @@ export function mondayOf(date: string): string {
   return addDays(date, -day);
 }
 
-function recapBetween(events: readonly HabitEvent[], from: string, to: string, label: string): Recap {
+function recapBetween(
+  events: readonly HabitEvent[],
+  from: string,
+  to: string,
+  label: string,
+): Recap {
   const inside = (d: string) => d >= from && d <= to;
   const localDay = (at: string) => editionDateAt(new Date(at));
   const stamps = stampsOf(events)
