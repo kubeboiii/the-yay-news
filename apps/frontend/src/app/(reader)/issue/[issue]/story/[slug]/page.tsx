@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { habitFonts } from "@/features/habits/fonts";
-import { rackFonts } from "@/features/archive/fonts";
 import { getEdition, getStory, getToday, issueParam } from "@/features/editions/api";
 import { StoryView } from "@/features/papers/edition-view";
 import { storyHref } from "@/features/papers/reading";
@@ -43,7 +41,7 @@ export default async function StoryPage({
   return (
     <>
       <PileBand issue={data.edition.issueNumber} date={data.edition.date} today={today} />
-      <div className={`${rackFonts} ${habitFonts}`}>
+      <div>
         <Suspense>
           <PassedNote />
         </Suspense>

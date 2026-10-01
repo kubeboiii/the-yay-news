@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useStamps } from "@/features/habits/api";
+import { Scrap } from "@/features/riot";
+import { GoAction } from "./go-action";
 import { takeInstallPrompt } from "./offline";
 
 // The one ask on the closed shutter, once a reader has finished three papers: put the paper on
@@ -51,7 +53,7 @@ export function InstallAsk() {
   };
 
   return (
-    <div className="ys-install">
+    <Scrap seed="install" ground="white" tape="top-left" as="aside" className="ys-install">
       <p className="ys-install__line">
         That&rsquo;s {stamps.length} papers finished. Put the paper on your home screen?
       </p>
@@ -62,13 +64,11 @@ export function InstallAsk() {
         </p>
       ) : null}
       <p className="ys-install__row">
-        <button type="button" className="ys-btn ys-btn--hi" onClick={install}>
-          Add to home screen
-        </button>
-        <button type="button" className="ys-btn" onClick={done}>
+        <GoAction onClick={install}>Add to home screen</GoAction>
+        <GoAction tone="quiet" onClick={done}>
           No thanks
-        </button>
+        </GoAction>
       </p>
-    </div>
+    </Scrap>
   );
 }

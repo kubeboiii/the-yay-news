@@ -65,18 +65,18 @@ export function KeptPapers() {
   if (!kept) return null;
   if (kept.length === 0) {
     return (
-      <p className="ar-sign__note">
+      <p className="ys-kept__none">
         No papers kept on this device yet. Open one while you&rsquo;re online and it&rsquo;ll be
         here next time.
       </p>
     );
   }
   return (
-    <p className="ar-nf__links">
+    <p className="ys-kept">
       {kept.map((k) => (
         // A full page load, not a client-side one: offline, only the kept page itself is there.
-        <a key={k.href} href={k.href} className="ar-ticket">
-          {k.label}
+        <a key={k.href} href={k.href} className="rt-go rt-go--paper">
+          <span className="rt-go__label">{k.label}</span>
         </a>
       ))}
     </p>

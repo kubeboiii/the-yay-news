@@ -4,10 +4,10 @@ import { minutesToPress, type ReaderClock } from "./clock";
 import { pagerPages } from "./pager-pages";
 import type { HeroPage } from "./today-hero";
 
-const LONG = new Intl.DateTimeFormat("en-GB", {
-  weekday: "long",
+const SHORT = new Intl.DateTimeFormat("en-GB", {
+  weekday: "short",
   day: "numeric",
-  month: "long",
+  month: "short",
   timeZone: "UTC",
 });
 
@@ -24,6 +24,7 @@ export function heroProps(edition: Edition, clock: ReaderClock) {
     pages,
     tags,
     pressIn: minutesToPress(clock, edition.date),
-    servedLabel: `Yesterday's paper · No. ${edition.issueNumber} · ${LONG.format(new Date(`${edition.date}T00:00:00Z`))}`,
+    date: edition.date,
+    servedShort: SHORT.format(new Date(`${edition.date}T00:00:00Z`)),
   };
 }

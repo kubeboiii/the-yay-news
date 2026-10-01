@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { rackFonts } from "@/features/archive/fonts";
-import { habitFonts } from "@/features/habits/fonts";
-import "@/features/archive/archive.css";
+import { GAP, GoButton, Heading, Mascot, MASCOT_NAME, RansomHeading, Scrap } from "@/features/riot";
 import "@/features/site/about.css";
 
 export const metadata: Metadata = {
@@ -72,94 +70,116 @@ const STEPS = [
 
 export default function AboutPage() {
   return (
-    <main className={`ar-desk ab-desk ${rackFonts} ${habitFonts}`}>
-      <header className="ar-sign">
-        <span className="ar-tape ar-tape--l" aria-hidden />
-        <span className="ar-tape ar-tape--r" aria-hidden />
-        <p className="ar-sign__kicker">The Yay News</p>
-        <h1 className="ar-sign__title">How it&rsquo;s made</h1>
-        <p className="ar-sign__sub">
-          Only good news. Mostly fun. Occasionally weird.{" "}
-          <b>Written by robots, checked like mad.</b>
-        </p>
+    <div className="ys-page ab-desk">
+      <header className="sb-pile__head ab-head-row">
+        <div>
+          <RansomHeading
+            text="HOW IT'S MADE"
+            seed="how-its-made"
+            as="h1"
+            className="sb-pile__h"
+            cuts={[
+              { ch: "HO", from: "slab", size: 1.08 },
+              { ch: "W", from: "didone", size: 0.92, lift: 0.06, turn: -3 },
+              GAP,
+              { ch: "IT'", from: "gothic", size: 1.04, ground: "a" },
+              { ch: "S", from: "roman", size: 0.96, turn: 2 },
+              GAP,
+              { ch: "MA", from: "slab", size: 0.98, tuck: 0.03 },
+              { ch: "DE", from: "gothic", size: 1.1, tuck: 0.02 },
+            ]}
+          />
+          <p className="sb-pile__sub">
+            Only good news. Mostly fun. Occasionally weird. Written by robots, checked like mad.
+          </p>
+        </div>
+        <Mascot pose="standing" label={`${MASCOT_NAME}, the paper's husky`} className="ab-odin" />
       </header>
 
-      <section className="ab-sheet" aria-labelledby="ab-rules">
-        <h2 id="ab-rules" className="ab-head">
-          The rules we print by
-        </h2>
-        <ol className="ab-rules">
-          {RULES.map((r) => (
-            <li key={r.head}>
-              <b>{r.head}</b> {r.body}
-            </li>
-          ))}
-        </ol>
+      <section aria-labelledby="ab-rules" className="ab-sheet">
+        <Scrap seed="rules" ground="white" tape="top-left">
+          <Heading as="h2" id="ab-rules" className="sb-h">
+            The rules we print by
+          </Heading>
+          <ol className="ab-rules">
+            {RULES.map((r) => (
+              <li key={r.head}>
+                <b>{r.head}</b> {r.body}
+              </li>
+            ))}
+          </ol>
+        </Scrap>
       </section>
 
-      <section className="ab-sheet ab-sheet--tilt" aria-labelledby="ab-newsroom">
-        <h2 id="ab-newsroom" className="ab-head">
-          The robot newsroom
-        </h2>
-        <p className="ab-lede">
-          Nobody sits up at night writing this paper. An automated newsroom builds each edition a
-          day or two ahead, and every decision it makes is written down, so a bad call can always be
-          traced. It works like this:
-        </p>
-        <ol className="ab-steps">
-          {STEPS.map(([head, body], i) => (
-            <li key={head}>
-              <span className="ab-steps__n" aria-hidden>
-                {i + 1}
-              </span>
-              <span>
-                <b>{head}.</b> {body}
-              </span>
-            </li>
-          ))}
-        </ol>
-        <p className="ab-note">
-          The writing and the checking are done by AI models from Anthropic (Claude), with
-          Google&rsquo;s Gemini standing by if Claude is unavailable. If a day can&rsquo;t fill a
-          paper, you get a <b>Slow News Day</b> edition from our own bank of evergreen pieces, never
-          a blank front page.
-        </p>
+      <section aria-labelledby="ab-newsroom" className="ab-sheet">
+        <Scrap seed="newsroom" ground="white">
+          <Heading as="h2" id="ab-newsroom" className="sb-h">
+            The robot newsroom
+          </Heading>
+          <p className="ab-lede">
+            Nobody sits up at night writing this paper. An automated newsroom builds each edition a
+            day or two ahead, and every decision it makes is written down, so a bad call can always
+            be traced. It works like this:
+          </p>
+          <ol className="ab-steps">
+            {STEPS.map(([head, body], i) => (
+              <li key={head}>
+                <span className="ab-steps__n" aria-hidden>
+                  {i + 1}
+                </span>
+                <span>
+                  <b>{head}.</b> {body}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p className="ab-note">
+            The writing and the checking are done by AI models from Anthropic (Claude), with
+            Google&rsquo;s Gemini standing by if Claude is unavailable. If a day can&rsquo;t fill a
+            paper, you get a <b>Slow News Day</b> edition from our own bank of evergreen pieces,
+            never a blank front page.
+          </p>
+        </Scrap>
       </section>
 
-      <section className="ab-sheet" aria-labelledby="ab-receipts">
-        <h2 id="ab-receipts" className="ab-head">
-          Receipts and corrections
-        </h2>
-        <p>
-          Every story ends with its <b>receipts</b>: the name of the outlet it came from and a link
-          to the original. Read the real thing whenever you like; they did the reporting.
-        </p>
-        <p>
-          If something slips through, it can be pulled from the paper and replaced with a spare, and
-          the next day&rsquo;s Corrections column says what changed.
-        </p>
+      <section aria-labelledby="ab-receipts" className="ab-sheet">
+        <Scrap seed="receipts" ground="white">
+          <Heading as="h2" id="ab-receipts" className="sb-h">
+            Receipts and corrections
+          </Heading>
+          <p>
+            Every story ends with its <b>receipts</b>: the name of the outlet it came from and a
+            link to the original. Read the real thing whenever you like; they did the reporting.
+          </p>
+          <p>
+            If something slips through, it can be pulled from the paper and replaced with a spare,
+            and the next day&rsquo;s Corrections column says what changed.
+          </p>
+        </Scrap>
       </section>
 
-      <section className="ab-sheet ab-sheet--tilt" aria-labelledby="ab-you">
-        <h2 id="ab-you" className="ab-head">
-          You, and what we keep
-        </h2>
-        <p>
-          There are no accounts and no ads. Your stamps, clippings, cards and stickers are kept on
-          your device, not on our servers, and you can move them to a new phone from{" "}
-          <Link href="/wall">Your Wall</Link>.
-        </p>
-        <p>Your timezone is kept in a cookie, only so your paper lands at 7:00 where you are.</p>
+      <section aria-labelledby="ab-you" className="ab-sheet">
+        <Scrap seed="you" ground="white" tape="top-right">
+          <Heading as="h2" id="ab-you" className="sb-h">
+            You, and what we keep
+          </Heading>
+          <p>
+            There are no accounts and no ads. Your stamps, clippings, cards and stickers are kept on
+            your device, not on our servers, and you can move them to a new phone from{" "}
+            <Link href="/wall">Your Wall</Link>.
+          </p>
+          <p>Your timezone is kept in a cookie, only so your paper lands at 7:00 where you are.</p>
+        </Scrap>
       </section>
 
       <p className="ab-links">
-        <Link href="/" className="ar-ticket">
+        <GoButton href="/" sub="the one that's out now">
           Read today&rsquo;s paper
-        </Link>
-        <Link href="/pile" className="ar-ticket">
+        </GoButton>
+        <GoButton tone="quiet" href="/pile">
           Dig through the pile
-        </Link>
+        </GoButton>
       </p>
-    </main>
+    </div>
   );
 }

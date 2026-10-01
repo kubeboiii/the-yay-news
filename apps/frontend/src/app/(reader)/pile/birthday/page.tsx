@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { rackFonts } from "@/features/archive/fonts";
 import { findByDate } from "@/features/editions/api";
-import { habitFonts } from "@/features/habits/fonts";
 import { BirthdayForm } from "@/features/pile/birthday-form";
+import { GAP, Mascot, RansomHeading } from "@/features/riot";
 import { readerClock } from "@/features/site/clock";
 import { previewFrom } from "../../_preview";
-import "@/features/archive/archive.css";
 import "@/features/pile/pile.css";
 
 export const metadata: Metadata = {
@@ -65,27 +63,38 @@ export default async function BirthdayPage({ searchParams }: PageProps<"/pile/bi
   }
 
   return (
-    <main className={`ar-desk pl-desk ${rackFonts} ${habitFonts}`}>
-      <header className="ar-sign pl-sign">
-        <span className="ar-tape ar-tape--l" aria-hidden />
-        <span className="ar-tape ar-tape--r" aria-hidden />
-        <p className="ar-sign__kicker">
-          <Link href="/pile">Your Pile</Link>
+    <div className="ys-page sb-pile">
+      <div className="sb-pile__head">
+        <p className="rt-meta">
+          <Link href="/pile">← Your Pile</Link>
         </p>
-        <h1 className="ar-sign__title">Your birthday paper</h1>
+        <RansomHeading
+          text="BIRTHDAY PAPER"
+          seed="birthday"
+          as="h1"
+          className="sb-pile__h"
+          cuts={[
+            { ch: "BIR", from: "slab", size: 1.08 },
+            { ch: "TH", from: "didone", size: 0.92, lift: 0.06, turn: -2 },
+            { ch: "DAY", from: "gothic", size: 1.04, tuck: 0.03, ground: "a" },
+            GAP,
+            { ch: "PA", from: "roman", size: 1.0, turn: 2 },
+            { ch: "PER", from: "slab", size: 0.94, tuck: 0.03 },
+          ]}
+        />
         {asked && next ? (
-          <p className="ar-sign__sub">
-            There&rsquo;s no paper from {d} {MONTHS[m - 1]} yet. Yours comes out on{" "}
-            <b>
-              {d} {MONTHS[m - 1]} {next.slice(0, 4)}
-            </b>
-            . Save the date.
+          <p className="sb-pile__sub">
+            There&rsquo;s no paper from {d} {MONTHS[m - 1]} yet. Yours comes out on {d}{" "}
+            {MONTHS[m - 1]} {next.slice(0, 4)}. Save the date.
           </p>
         ) : (
-          <p className="ar-sign__sub">Pick your birthday and read the paper printed that day.</p>
+          <p className="sb-pile__sub">Pick your birthday and read the paper printed that day.</p>
         )}
+      </div>
+      <div className="ys-pile__foot">
         <BirthdayForm month={asked ? m : undefined} day={asked ? d : undefined} />
-      </header>
-    </main>
+        <Mascot pose="lights" label="" className="ys-bday__odin" />
+      </div>
+    </div>
   );
 }

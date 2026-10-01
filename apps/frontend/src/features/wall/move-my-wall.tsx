@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { exportLog, importLog } from "@/features/habits/api";
 import { sanitize } from "@/features/habits/core";
+import { Heading, Scrap, Sticker } from "@/features/riot";
+import { GoAction } from "@/features/site/go-action";
 
 // Everything on the wall lives on this device until accounts arrive, so a new phone would start
 // from nothing. This packs the reader's whole log into a code to copy across, and merges a pasted
@@ -31,7 +33,7 @@ export function MoveMyWall() {
     const packed = PREFIX + encode(JSON.stringify(doc.events));
     try {
       await navigator.clipboard.writeText(packed);
-      setMsg("Copied your wall. Paste it into Your Wall on the new phone.");
+      setMsg("Packed and copied. Paste it into Your Wall on the new phone.");
     } catch {
       setCode(packed);
       setMsg("Couldn't copy automatically, so the code is in the box: copy it from there.");
@@ -53,33 +55,49 @@ export function MoveMyWall() {
   };
 
   return (
-    <div className="wl-card wl-move">
-      <p className="wl-card__line">
-        Your stamps, clippings and cards live on this device. Move them to another one:
+    <Scrap
+      seed="smuggle"
+      as="aside"
+      ground="white"
+      edge="zigzag"
+      sides={["top"]}
+      className="sb-smuggle"
+    >
+      <Sticker seed="smug" ground="a" pinned className="sb-smuggle__sticker">
+        new phone?
+      </Sticker>
+      <Heading as="h2" className="sb-h">
+        Smuggle your wall out
+      </Heading>
+      <p>
+        Everything on this wall lives on this device. Pack it into one code and paste it on the new
+        phone. No account.
       </p>
-      <button type="button" className="wl-btn" onClick={copy}>
-        Copy my wall
-      </button>
-      <label htmlFor="wl-code" className="wl-move__label">
-        Or paste a code from your old phone
+      <div className="sb-smuggle__row">
+        <GoAction onClick={copy}>Pack it</GoAction>
+      </div>
+      <label htmlFor="wl-code" className="ys-smuggle__label rt-meta">
+        Got a code from your old phone? Paste it here
       </label>
       <textarea
         id="wl-code"
-        className="wl-move__code"
+        className="ys-smuggle__code"
         rows={2}
         value={code}
         onChange={(e) => setCode(e.target.value)}
         placeholder="YAY1:…"
         spellCheck={false}
       />
-      <button type="button" className="wl-btn wl-btn--ink" onClick={bring} disabled={!code.trim()}>
-        Bring it here
-      </button>
+      <div className="sb-smuggle__row">
+        <GoAction tone="quiet" onClick={bring} disabled={!code.trim()}>
+          Unpack it here
+        </GoAction>
+      </div>
       {msg ? (
-        <p className="wl-move__msg" role="status">
+        <p className="ys-note rt-meta" role="status">
           {msg}
         </p>
       ) : null}
-    </div>
+    </Scrap>
   );
 }

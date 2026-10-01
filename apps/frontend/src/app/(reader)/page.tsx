@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { rackFonts } from "@/features/archive/fonts";
 import { getToday } from "@/features/editions/api";
-import { habitFonts } from "@/features/habits/fonts";
 import { EditionPageView } from "@/features/papers/edition-view";
 import { frontPreview } from "@/features/reader/previews";
 import { readerClock } from "@/features/site/clock";
@@ -33,11 +31,11 @@ export default async function TodayPage({ searchParams }: PageProps<"/">) {
   const [edition, clock] = await Promise.all([getToday(preview), readerClock(preview)]);
   const front = edition.pages.find((p) => p.layout === "front") ?? edition.pages[0]!;
   return (
-    <div className={`ys-today ${rackFonts} ${habitFonts}`}>
+    <>
       <TodayHero {...heroProps(edition, clock)} />
       <Drop issue={edition.issueNumber}>
         <EditionPageView edition={edition} page={front} design={preview.design} />
       </Drop>
-    </div>
+    </>
   );
 }

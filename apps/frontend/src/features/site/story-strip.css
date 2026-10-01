@@ -2,7 +2,7 @@
   padding: 36px 16px 120px;
   background: #e4ded3;
   color: #161412;
-  font-family: var(--ar-franklin), system-ui, sans-serif;
+  font-family: var(--rt-ff-read), system-ui, sans-serif;
 }
 @media print {
   .ys-strip {
@@ -46,7 +46,7 @@
 }
 .ys-strip__k {
   margin: 0;
-  font-family: var(--ar-type), monospace;
+  font-family: var(--rt-ff-meta), monospace;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -54,7 +54,7 @@
 }
 .ys-strip__pitch {
   margin: 8px 0 16px;
-  font-family: var(--ar-gothic), sans-serif;
+  font-family: var(--rt-ff-head), sans-serif;
   font-size: clamp(28px, 6vw, 38px);
   line-height: 1.02;
 }
@@ -69,7 +69,7 @@
   align-items: center;
   min-height: 48px;
   padding: 0 18px;
-  background: #e9ff1f;
+  background: var(--rt-a);
   border: 2px solid #161412;
   box-shadow: 3px 3px 0 #161412;
   color: #161412;
@@ -87,7 +87,7 @@
 }
 .ys-strip__h {
   margin: 0 0 6px;
-  font-family: var(--ar-gothic), sans-serif;
+  font-family: var(--rt-ff-head), sans-serif;
   font-weight: 400;
   font-size: 30px;
   text-transform: uppercase;
@@ -111,14 +111,14 @@
   text-decoration: underline;
 }
 .ys-strip__mk {
-  font-family: var(--ar-type), monospace;
+  font-family: var(--rt-ff-meta), monospace;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .ys-strip__mh {
-  font-family: var(--ar-caslon), Georgia, serif;
+  font-family: var(--rt-ff-read), Georgia, serif;
   font-size: 18px;
   line-height: 1.35;
 }

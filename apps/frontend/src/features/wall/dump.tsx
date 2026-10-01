@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useEditionToday, useHabitLog } from "@/features/habits/api";
+import { Heading } from "@/features/riot";
+import { GoAction } from "@/features/site/go-action";
 import { type DumpFonts, drawDump } from "./dump-canvas";
 import { monthRecap, type Recap, weekRecap } from "./recap";
 
@@ -16,30 +18,11 @@ function pageFonts(probe: HTMLElement): DumpFonts {
     return getComputedStyle(probe).fontFamily || "sans-serif";
   };
   return {
-    gothic: family("--ar-gothic"),
-    type: family("--ar-type"),
-    hand: family("--hb-hand"),
-    sans: family("--ar-franklin"),
+    gothic: family("--rt-ff-head"),
+    type: family("--rt-ff-meta"),
+    hand: family("--rt-ff-hand"),
+    sans: family("--rt-ff-read"),
   };
-}
-
-function Numbers({ r }: { r: Recap }) {
-  return (
-    <ul className="wl-nums">
-      <li>
-        <b>{r.papers}</b> paper{r.papers === 1 ? "" : "s"} read{r.late ? ` (${r.late} late)` : ""}
-      </li>
-      <li>
-        <b>{r.clippings.length}</b> torn out
-      </li>
-      <li>
-        <b>{r.puzzles}</b> puzzle{r.puzzles === 1 ? "" : "s"} solved
-      </li>
-      <li>
-        <b>{r.stickers}</b> sticker{r.stickers === 1 ? "" : "s"} earned
-      </li>
-    </ul>
-  );
 }
 
 function Maker({ recap, title, file }: { recap: Recap; title: string; file: string }) {
@@ -81,8 +64,8 @@ function Maker({ recap, title, file }: { recap: Recap; title: string; file: stri
   };
 
   return (
-    <div className="wl-maker">
-      <span ref={probe} className="wl-maker__probe" aria-hidden />
+    <div className="ys-maker">
+      <span ref={probe} className="ys-maker__probe" aria-hidden />
       {img ? (
         <>
           {/* A blob: URL of a picture drawn on the device, which next/image can't optimise. */}
@@ -90,24 +73,22 @@ function Maker({ recap, title, file }: { recap: Recap; title: string; file: stri
           <img
             src={img.url}
             alt={`Your ${title.toLowerCase()}: a corkboard of the stories you kept and the papers you stamped`}
-            className="wl-maker__img"
+            className="ys-maker__img"
           />
-          <p className="wl-maker__row">
-            <button type="button" className="wl-btn" onClick={share}>
-              Share it
-            </button>
-            <a href={img.url} download={file} className="wl-btn wl-btn--ink">
-              Save the picture
+          <p className="ys-maker__row">
+            <GoAction onClick={share}>Share it</GoAction>
+            <a href={img.url} download={file} className="rt-go rt-go--quiet">
+              <span className="rt-go__label">Save the picture</span>
             </a>
           </p>
         </>
       ) : (
-        <button type="button" className="wl-btn" onClick={make}>
-          Make my {title.toLowerCase()}
-        </button>
+        <GoAction tone="paper" onClick={make} sub="a picture to post, made on this phone">
+          Post the dump
+        </GoAction>
       )}
       {msg ? (
-        <p className="wl-move__msg" role="status">
+        <p className="ys-note rt-meta" role="status">
           {msg}
         </p>
       ) : null}
@@ -118,26 +99,56 @@ function Maker({ recap, title, file }: { recap: Recap; title: string; file: stri
 export function Dumps() {
   const events = useHabitLog();
   const today = useEditionToday();
-  const week = useMemo(() => (today ? weekRecap(events, today) : null), [events, today]);
-  const month = useMemo(() => (today ? monthRecap(events, today) : null), [events, today]);
-  if (!week || !month) return null;
+  const [month, setMonth] = useState(false);
+  const recap = useMemo(
+    () => (today ? (month ? monthRecap(events, today) : weekRecap(events, today)) : null),
+    [events, today, month],
+  );
+  if (!recap) return null;
+  const frames = [
+    { n: recap.papers, l: recap.papers === 1 ? "paper" : "papers" },
+    { n: recap.puzzles, l: recap.puzzles === 1 ? "puzzle" : "puzzles" },
+    { n: recap.stickers, l: recap.stickers === 1 ? "sticker" : "stickers" },
+    { n: recap.best, l: "best run" },
+    { n: recap.clippings.length, l: "kept" },
+  ];
+  const title = month ? "Month in Yay" : "Weekly dump";
   return (
-    <div className="wl-dumps">
-      <div className="wl-card wl-card--dump">
-        <span className="wl-label wl-label--in">Your weekly dump · {week.label}</span>
-        <Numbers r={week} />
-        <Maker recap={week} title="Weekly dump" file={`yay-weekly-dump-${week.from}.png`} />
+    <section className="sb-film" aria-labelledby="film-h">
+      <div className="sb-film__top">
+        <Heading id="film-h" className="sb-h">
+          {month ? "Month in yay" : "Photo dump"}
+        </Heading>
+        <div className="sb-film__switch" role="group" aria-label="Photo dump period">
+          <button type="button" aria-pressed={!month} onClick={() => setMonth(false)}>
+            Week
+          </button>
+          <button type="button" aria-pressed={month} onClick={() => setMonth(true)}>
+            Month
+          </button>
+        </div>
+        <p className="sb-film__when">{recap.label}</p>
       </div>
-      <div className="wl-card wl-card--month">
-        <span className="wl-label wl-label--in">Your month in Yay · {month.label}</span>
-        <Numbers r={month} />
-        <p className="wl-card__hint">Best streak so far: {month.best}</p>
-        <Maker
-          recap={month}
-          title="Month in Yay"
-          file={`yay-month-${month.from.slice(0, 7)}.png`}
-        />
-      </div>
-    </div>
+      <ol className="sb-film__strip">
+        {frames.map((f, i) => (
+          <li key={f.l}>
+            <span className="sb-film__frame">
+              <span className="sb-film__n">{f.n}</span>
+            </span>
+            <span className="sb-film__l">
+              {String(i + 12)}A · {f.l}
+            </span>
+          </li>
+        ))}
+      </ol>
+      <Maker
+        key={title}
+        recap={recap}
+        title={title}
+        file={
+          month ? `yay-month-${recap.from.slice(0, 7)}.png` : `yay-weekly-dump-${recap.from}.png`
+        }
+      />
+    </section>
   );
 }
