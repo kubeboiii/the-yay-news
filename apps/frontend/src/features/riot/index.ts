@@ -3,6 +3,7 @@
 
 export { RiotTheme } from "./theme";
 export { riotInks, type RiotInks } from "./tokens/inks";
+export { HOUSE_COLOURWAY, HOUSE_INKS } from "./tokens/house";
 export { contrast, type Palette, paletteFor, paletteVars, textOn } from "./tokens/palette";
 export { riotFonts } from "./tokens/fonts";
 export { type Edge, edgePath, type Side } from "./tokens/edges";
