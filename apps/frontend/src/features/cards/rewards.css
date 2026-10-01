@@ -1,487 +1,351 @@
-/* Yay Attax rewards: the scratch card, the blind box and the Sunday lucky dip. */
+/* Yay Attax rewards in the riot kit: the scratch card, the blind box and the Sunday lucky dip, on a
+ * sheet of copier paper laid over the page (desk.css has the shared parts). */
 
 .yr-overlay {
   position: fixed;
   inset: 0;
   z-index: 80;
-  display: grid;
-  place-items: start center;
-  padding: 28px 16px 48px;
   overflow-y: auto;
-  background:
-    radial-gradient(circle at 50% 30%, rgb(255 255 255 / 0.12), transparent 60%),
-    rgb(18 14 30 / 0.9);
-  color: #fff;
-  backdrop-filter: blur(4px);
+  overscroll-behavior: contain;
+}
+.yr-overlay:focus {
+  outline: none;
+}
+.yr-sheet {
+  padding: 22px 16px 64px;
 }
 
 .yr-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  width: min(100%, 880px);
+  gap: 22px;
+  width: min(100%, 960px);
+  margin: 0 auto;
 }
-
-.yr-kicker {
-  margin: 0;
-  font-family: var(--hb-stamp), monospace;
-  font-size: 13px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.85;
-}
-
-.yr-help {
-  margin: 0;
-  font-family: var(--hb-hand), cursive;
-  font-size: 22px;
-  line-height: 1.2;
-  text-align: center;
-}
-
-.yr-note {
-  max-width: 420px;
-  text-align: center;
-  font-size: 17px;
-}
-
-.yr-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 10px 22px;
-  border: 0;
-  border-radius: 999px;
-  background: #ffd23f;
-  color: #1d1a17;
-  font:
-    700 16px/1.1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: 0 3px 0 #b8901a;
-}
-
-.yr-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.yr-btn:focus-visible,
-.yr-chip:focus-visible,
-.yr-down:focus-visible,
-.yr-share:focus-visible,
-.yr-offer__btn:focus-visible {
-  outline: 3px solid #5fd4ff;
-  outline-offset: 3px;
-}
-
-.yr-btn--big {
-  min-height: 52px;
-  padding: 12px 30px;
-  font-size: 19px;
-}
-
-.yr-btn--quiet {
-  background: transparent;
-  color: #fff;
-  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.5);
-}
-
-.yr-later {
-  margin-top: 4px;
-}
-
-.yr-chips {
+.yr-top {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 18px;
+  width: 100%;
+  padding-bottom: 6px;
+  border-bottom: 3px solid var(--rt-k);
+}
+.yr-kicker {
+  margin: 0;
+  font-size: 14px;
+}
+.yr-h {
   justify-content: center;
-  gap: 8px;
-  max-width: 640px;
+  font-size: clamp(54px, 8vw, 96px);
 }
-
-.yr-chip {
-  min-height: 36px;
-  padding: 6px 14px;
-  border: 0;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.14);
-  color: #fff;
-  font:
-    600 14px/1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  cursor: pointer;
+.yr-help {
+  max-width: 38ch;
+  margin: 0;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.3;
+  text-align: center;
 }
-
-.yr-chip[aria-pressed="true"] {
-  background: #fff;
-  color: #1d1a17;
+.yr-note {
+  max-width: 440px;
+  text-align: center;
+  font-weight: 800;
 }
-
-.yr-choose {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.yr-note .rt-scrap__body {
+  display: grid;
+  justify-items: center;
   gap: 12px;
+  padding: 22px;
+  outline: 2px solid var(--rt-k);
+  outline-offset: -2px;
+}
+.yr-note p {
+  margin: 0;
 }
 
-/* ——— Scratch card ——— */
+/* ——— Scratch card: the one poster on the sheet ——— */
 
-.yr-scratch {
+.yr-poster {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
+  width: min(100%, 720px);
+  padding: 34px 28px 54px;
 }
-
-.yr-scratch__card {
+.yr-poster > :not(.rt-poster__sheet, .rt-tape) {
   position: relative;
-  width: min(300px, 78vw);
+}
+.yr-poster .yr-h {
+  font-size: clamp(52px, 7vw, 88px);
+}
+.yr-scratch__card {
+  width: min(270px, 70vw);
   touch-action: none;
 }
-
+.yr-scratch__in {
+  position: relative;
+}
+.yr-scratch__tape {
+  z-index: 30;
+}
 .yr-foil {
   position: absolute;
   inset: 0;
   z-index: 20;
   width: 100%;
   height: 100%;
-  border-radius: 4.6%/3.3%;
   cursor: crosshair;
   touch-action: none;
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+  transition: opacity 0.5s steps(4);
 }
-
 .yr-foil.is-gone {
   opacity: 0;
-  transform: scale(1.04);
   pointer-events: none;
 }
-
 .yr-scratch__card.is-done {
-  animation: yr-pop 0.6s ease;
+  animation: yr-pop 0.5s ease;
 }
-
 @keyframes yr-pop {
   40% {
-    transform: scale(1.06) rotate(-1.5deg);
+    scale: 1.04;
   }
 }
 
-/* ——— Blind box ——— */
+/* ——— Blind box: cut from flat ink, plate B's lid overprinting plate A's box ——— */
 
 .yr-box-wrap,
 .yr-dip-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
   width: 100%;
+}
+.yr-choose {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.yr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 700px;
+}
+.yr-chips .rt-ring {
+  color: var(--rt-a);
+  mix-blend-mode: multiply;
+  inset: -8px -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 16px);
 }
 
 .yr-box {
-  --c: #ff2d55;
   position: relative;
+  width: 230px;
+  height: 214px;
+  margin-top: 26px;
   pointer-events: none;
-  width: 210px;
-  height: 200px;
-  margin-top: 34px;
 }
-
-.yr-box[data-league="pokemon"] {
-  --c: #ffcb05;
-}
-.yr-box[data-league="wwe"] {
-  --c: #d4a72c;
-}
-.yr-box[data-league="football"] {
-  --c: #3a4bd8;
-}
-.yr-box[data-league="ipl"] {
-  --c: #ff7a1a;
-}
-.yr-box[data-league="ufc"] {
-  --c: #d20a0a;
-}
-.yr-box[data-league="nba"] {
-  --c: #ee6730;
-}
-.yr-box[data-league="marvel"] {
-  --c: #e23636;
-}
-.yr-box[data-league="dc"] {
-  --c: #0476f2;
-}
-.yr-box[data-league="ben10"] {
-  --c: #5bd12f;
-}
-.yr-box[data-league="anime"] {
-  --c: #ff4fa3;
-}
-.yr-box[data-league="f1"] {
-  --c: #e10600;
-}
-.yr-box[data-league="tv"] {
-  --c: #ffb300;
-}
-
 .yr-box__body {
   position: absolute;
-  inset: 30px 0 0;
+  inset: 34px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  border-radius: 10px;
-  background:
-    linear-gradient(
-      90deg,
-      transparent calc(50% - 14px),
-      rgb(255 255 255 / 0.85) 0 calc(50% + 14px),
-      transparent 0
-    ),
-    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.1) 0 12px, transparent 12px 24px),
-    linear-gradient(160deg, var(--c), color-mix(in srgb, var(--c) 55%, #000));
-  box-shadow:
-    inset 0 -10px 0 rgb(0 0 0 / 0.18),
-    0 20px 40px -12px rgb(0 0 0 / 0.6);
+  gap: 2px;
+  border: 3px solid var(--rt-k);
+  background-color: var(--rt-a);
+  background-image: var(--rt-speckle), var(--rt-toner);
+  background-size:
+    420px 420px,
+    240px 240px;
+  color: var(--rt-a-on);
   text-align: center;
 }
-
-.yr-box__body > * {
+.yr-box__ribbon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 16px);
+  width: 32px;
+  background: var(--rt-paper);
+}
+.yr-box__body > :not(.yr-box__ribbon) {
   position: relative;
-  padding: 0 6px;
-  border-radius: 4px;
-  background: color-mix(in srgb, var(--c) 70%, #000);
+  padding: 0 8px;
+  background: var(--rt-a);
 }
-
 .yr-box__q {
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 70px;
-  line-height: 0.8;
-  color: #fff;
-  text-shadow: 0 3px 0 rgb(0 0 0 / 0.25);
+  font-family: var(--rt-ff-wood);
+  font-size: 66px;
+  line-height: 0.95;
 }
-
 .yr-box__word {
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 28px;
+  font-family: var(--rt-ff-head);
+  font-size: 32px;
+  line-height: 1;
   text-transform: uppercase;
 }
-
 .yr-box__info {
-  font-size: 12px;
+  font-family: var(--rt-ff-meta);
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
 }
-
 .yr-box__lid {
   position: absolute;
   z-index: 2;
-  top: 6px;
-  left: -10px;
-  right: -10px;
-  height: 40px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
-  box-shadow: 0 6px 10px rgb(0 0 0 / 0.25);
+  top: 8px;
+  left: -12px;
+  right: -12px;
+  height: 46px;
+  border: 3px solid var(--rt-k);
+  background: var(--rt-b);
+  mix-blend-mode: multiply;
   transform-origin: 0 100%;
-  transition: transform 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+  transition: transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
 }
-
-.yr-box__ribbon {
-  position: absolute;
-  left: calc(50% - 14px);
-  top: 0;
-  bottom: 0;
-  width: 28px;
-  background: #fff;
-  opacity: 0.92;
-}
-
 .yr-box.is-shaking {
   animation: yr-shake 0.22s ease-in-out infinite;
 }
-
 @keyframes yr-shake {
   0%,
   100% {
-    transform: rotate(0) translateY(0);
+    rotate: 0deg;
+    translate: 0 0;
   }
   25% {
-    transform: rotate(-6deg) translateY(-6px);
+    rotate: -5deg;
+    translate: 0 -6px;
   }
   75% {
-    transform: rotate(6deg) translateY(-3px);
+    rotate: 5deg;
+    translate: 0 -3px;
   }
 }
-
+/* Open: the lid tipped back off the box, still overprinting its corner. */
 .yr-box.is-open .yr-box__lid {
-  transform: translate(-40px, -70px) rotate(-38deg);
+  transform: translate(-26px, -20px) rotate(-16deg);
 }
 
-.yr-box.is-open .yr-box__ribbon {
-  display: none;
-}
-
-.yr-box.is-open {
-  height: 120px;
-  margin-top: 70px;
-  opacity: 0.85;
-}
-
-/* ——— Lucky dip: a paper bag ——— */
+/* ——— Lucky dip: a paper bag in plate B, Odin peeking over the rim ——— */
 
 .yr-bag {
   position: relative;
-  pointer-events: none;
-  width: 200px;
-  height: 230px;
-  margin-top: 60px;
+  width: 260px;
+  height: 250px;
+  margin-top: 70px;
 }
-
-.yr-bag__back,
-.yr-bag__front {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .yr-bag__back {
-  top: 0;
-  background: #b07f4f;
+  position: absolute;
+  inset: 0 0 0;
+  background: var(--rt-over);
   clip-path: polygon(
-    0 8%,
-    12% 0,
-    25% 7%,
-    38% 0,
+    0 9%,
+    10% 2%,
+    22% 8%,
+    35% 1%,
     50% 7%,
-    62% 0,
-    75% 7%,
-    88% 0,
+    63% 0,
+    77% 7%,
+    90% 1%,
     100% 8%,
     100% 100%,
     0 100%
   );
 }
-
+.yr-bag__odin {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: calc(100% - 96px);
+  width: 210px;
+  translate: -50% 0;
+}
 .yr-bag__front {
-  top: 26px;
+  position: absolute;
+  z-index: 2;
+  inset: 70px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  z-index: 2;
-  background:
-    repeating-linear-gradient(90deg, rgb(0 0 0 / 0.04) 0 2px, transparent 2px 9px),
-    linear-gradient(180deg, #d6a878, #c49061);
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.6);
-  color: #3a2410;
+  border: 3px solid var(--rt-k);
+  border-top: 0;
+  background-color: var(--rt-b);
+  background-image: var(--rt-speckle), var(--rt-toner);
+  background-size:
+    420px 420px,
+    240px 240px;
+  color: var(--rt-b-on);
+  clip-path: polygon(0 0, 14% 4%, 29% 0, 44% 5%, 58% 1%, 73% 5%, 87% 0, 100% 4%, 100% 100%, 0 100%);
 }
-
 .yr-bag__word {
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 40px;
+  font-family: var(--rt-ff-head);
+  font-size: 46px;
+  line-height: 0.95;
   text-transform: uppercase;
-  transform: rotate(-4deg);
 }
-
 .yr-bag__sub {
-  font-family: var(--hb-hand), cursive;
-  font-size: 18px;
+  font-family: var(--rt-ff-meta);
+  font-weight: 700;
+  font-size: 13px;
 }
-
-.yr-bag__hand {
-  position: absolute;
-  z-index: 1;
-  left: 70px;
-  top: -150px;
-  width: 60px;
-  height: 150px;
-  border-radius: 30px 30px 8px 8px;
-  background: linear-gradient(90deg, #f1c9a5, #e3b08a);
-  box-shadow: inset 0 -30px 0 #3b6fd8;
-  opacity: 0;
-  transform: translateY(-40px);
-}
-
-.yr-bag.is-reaching .yr-bag__hand {
-  animation: yr-reach 1.3s ease-in-out forwards;
-}
-
 .yr-bag.is-reaching {
   animation: yr-wobble 0.5s ease-in-out 2;
 }
-
-@keyframes yr-reach {
-  0% {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-  15% {
-    opacity: 1;
-  }
-  55% {
-    opacity: 1;
-    transform: translateY(120px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(-20px);
-  }
+.yr-bag.is-reaching .yr-bag__odin {
+  animation: yr-duck 1.3s ease-in-out;
 }
-
 @keyframes yr-wobble {
   50% {
-    transform: rotate(3deg) scaleX(1.03);
+    rotate: 2deg;
   }
 }
-
+@keyframes yr-duck {
+  45%,
+  60% {
+    translate: -50% 62%;
+  }
+}
 .yr-bag.is-out {
-  height: 150px;
-  margin-top: 20px;
+  height: 170px;
+  margin-top: 70px;
+}
+.yr-bag.is-out .yr-bag__front {
+  inset: 60px 0 0;
 }
 
-.yr-bag.is-out .yr-bag__hand {
-  display: none;
-}
-
-/* ——— Dealt cards ——— */
+/* ——— Dealt cards, in sleeves on the paper ——— */
 
 .yr-deal {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 18px;
+  gap: 22px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-
 .yr-deal__card {
-  width: min(230px, 72vw);
-  animation: yr-deal 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  width: min(230px, 74vw);
+  animation: yr-deal 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
   animation-delay: calc(var(--i) * 0.14s);
 }
-
 @keyframes yr-deal {
   from {
     opacity: 0;
-    transform: translateY(-120px) scale(0.6) rotate(-8deg);
+    translate: 0 -90px;
   }
 }
-
 .yr-down {
   display: block;
   width: 100%;
@@ -489,54 +353,35 @@
   border: 0;
   background: none;
   cursor: pointer;
-  border-radius: 12px;
 }
-
 .yr-down:hover {
-  transform: translateY(-4px);
+  translate: 0 -4px;
 }
-
 .yr-reveal {
-  animation: yr-flipin 0.5s ease both;
+  position: relative;
+  animation: yr-flipin 0.4s ease both;
 }
-
 @keyframes yr-flipin {
   from {
     transform: rotateY(90deg);
   }
 }
-
-.yr-reveal[data-rarity="legendary"],
-.yr-reveal[data-rarity="epic"] {
-  filter: drop-shadow(0 0 18px rgb(255 214 90 / 0.55));
+.yr-reveal__sticker {
+  top: 40%;
+  right: -22px;
+  z-index: 15;
+  font-size: 24px;
 }
-
 .yr-tag {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-top: 10px;
 }
-
 .yr-tag p {
   margin: 0;
-  font-family: var(--hb-hand), cursive;
-  font-size: 20px;
-}
-
-.yr-share {
-  min-height: 36px;
-  padding: 6px 16px;
-  border: 0;
-  border-radius: 999px;
-  background: #5fd4ff;
-  color: #06202c;
-  font:
-    700 14px/1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  cursor: pointer;
+  font-size: 15px;
 }
 
 .yr-actions {
@@ -544,28 +389,45 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px 26px;
 }
-
 .yr-sum {
   flex-basis: 100%;
-  margin: 0;
-  font-family: var(--hb-hand), cursive;
-  font-size: 22px;
+  font-size: 40px;
   text-align: center;
 }
 
-/* ——— The offer (the stamping card, the album) ——— */
+/* ——— Share your pull, and the offer (the album's poster, the stamping card) ——— */
 
+.rt .yr-share {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 14px 5px;
+  border: 2px solid var(--rt-k);
+  border-radius: 0;
+  background: var(--rt-white);
+  color: var(--rt-k);
+  font-family: var(--rt-ff-head);
+  font-size: 22px;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.rt .yr-share:hover {
+  text-decoration: underline 2px;
+  text-underline-offset: 3px;
+}
+
+/* Outside the kit (the stamping card on a paper's page) the offer keeps its own look. */
 .yr-offer {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
 }
-
 .yr-offer__btn {
-  min-height: 40px;
+  min-height: 44px;
   padding: 8px 16px;
   border: 0;
   border-radius: 999px;
@@ -577,24 +439,71 @@
     sans-serif;
   cursor: pointer;
 }
-
 .yr-offer__btn[data-kind="box"] {
-  background: #ff2d55;
+  background: #b0123f;
 }
-
 .yr-offer__btn[data-kind="dip"] {
-  background: #b07f4f;
+  background: #6b4a2b;
 }
-
 .yr-offer__btn small {
   font-weight: 400;
-  opacity: 0.8;
+}
+.yr-offer__btn:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+.rt .yr-offer {
+  gap: 10px;
+  margin-top: 0;
+}
+.rt .yr-offer__btn {
+  min-height: 56px;
+  padding: 8px 20px 7px;
+  border: 3px solid var(--rt-k);
+  border-radius: 0;
+  background: var(--rt-k);
+  color: var(--rt-paper);
+  font-family: var(--rt-ff-head);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.rt .yr-offer__btn small {
+  font-family: var(--rt-ff-meta);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: none;
+}
+.rt .yr-offer__btn:hover {
+  text-decoration: underline 3px;
+  text-underline-offset: 4px;
+}
+.rt .yr-offer__btn:focus-visible {
+  outline: 4px solid var(--rt-k);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .yr-poster {
+    padding: 26px 16px 46px;
+  }
+  .yr-h {
+    font-size: 52px;
+  }
+  .yr-help {
+    font-size: 17px;
+  }
+  .yr-sum {
+    font-size: 32px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .yr-box.is-shaking,
   .yr-bag.is-reaching,
-  .yr-bag.is-reaching .yr-bag__hand,
+  .yr-bag.is-reaching .yr-bag__odin,
   .yr-deal__card,
   .yr-reveal,
   .yr-scratch__card.is-done {

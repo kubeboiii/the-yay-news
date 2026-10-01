@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { DeckBattle } from "@/features/cards/battle-view";
-import { habitFonts } from "@/features/habits/fonts";
-import { SoundToggle } from "@/features/sound/sound-toggle";
-import "@/features/habits/saved.css";
+import { BATTLE_CUTS, CardsDesk, GameHead } from "@/features/cards/desk";
 
 export const metadata: Metadata = {
   title: "Deck Battle · Yay Attax · The Yay News",
@@ -14,18 +11,11 @@ export const metadata: Metadata = {
 /** Deck Battle: five cards against the computer's five. */
 export default function BattlePage() {
   return (
-    <main className={`hb-desk ${habitFonts}`}>
-      <header className="hb-desk__head">
-        <p className="hb-desk__kicker">Yay Attax</p>
-        <h1 className="hb-desk__title">Deck Battle</h1>
-        <p className="hb-desk__note">
-          Five cards a side, knock them all out. <Link href="/cards">Back to your album</Link>
-        </p>
-      </header>
+    <CardsDesk>
+      <GameHead text="DECK BATTLE" cuts={BATTLE_CUTS}>
+        Five cards a side, turn by turn. Knock all of the computer&rsquo;s out.
+      </GameHead>
       <DeckBattle />
-      <p className="hb-desk__corner">
-        <SoundToggle />
-      </p>
-    </main>
+    </CardsDesk>
   );
 }

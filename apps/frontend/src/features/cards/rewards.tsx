@@ -1,17 +1,31 @@
 "use client";
 
-import Link from "next/link";
 import {
   type ReactNode,
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
 } from "react";
 import { createPortal } from "react-dom";
 import { deviceId, exportLog, recordLinked } from "@/features/habits/api";
-import { habitFonts } from "@/features/habits/fonts";
+import {
+  type Cut,
+  GAP,
+  GoButton,
+  Heading,
+  MarkerCircle,
+  Mascot,
+  MASCOT_NAME,
+  Poster,
+  RansomHeading,
+  RiotTheme,
+  Scrap,
+  Sticker,
+  Tape,
+} from "@/features/riot";
 import { play } from "@/features/sound";
 import { CardFaceDown, YayCard } from "./card-view";
 import { BOX_PRICE, collectionOf, luckOn, type PendingReward } from "./collection";
@@ -20,7 +34,9 @@ import { LEAGUES, RARITY_NAME, RARITY_RANK } from "./leagues/meta";
 import { ShareButton } from "./share-button";
 import { ScratchLayer } from "./scratch";
 import type { Card, LeagueId } from "./types";
+import { CARDS_COLOURWAY } from "./colourway";
 import { previewToday, useCardsToday, useCollection } from "./use-collection";
+import "./desk.css";
 import "./rewards.css";
 
 // Getting cards, only ever by reading: a finished paper's SCRATCH CARD (scratch the foil to see
@@ -148,6 +164,10 @@ function commit(
 }
 
 // ——— The overlay ———
+//
+// A sheet of copier paper over the page, in the riot kit: one loud thing a stage (the pasted
+// poster round the scratch card, the flat-ink box, the paper bag Odin peeks out of), the cards in
+// sleeves, and one action at a time.
 
 const NAME: Record<RewardKind, string> = {
   scratch: "Scratch card",
@@ -163,6 +183,7 @@ function RewardOverlay({ req, onClose }: { req: RewardRequest; onClose: () => vo
   const [today] = useState(todayNow);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const dialog = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -171,9 +192,12 @@ function RewardOverlay({ req, onClose }: { req: RewardRequest; onClose: () => vo
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const back = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    dialog.current?.focus();
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      back?.focus();
     };
   }, [onClose]);
 
@@ -197,35 +221,73 @@ function RewardOverlay({ req, onClose }: { req: RewardRequest; onClose: () => vo
 
   const title = `${NAME[req.kind]}${req.issue ? `, No. ${req.issue}` : ""}`;
   return (
-    <div className={`yr-overlay ${habitFonts}`} role="dialog" aria-modal="true" aria-label={title}>
-      <div className="yr-stage">
-        <p className="yr-kicker">{title}</p>
-        {error ? (
-          <div className="yr-note">
-            <p>{error}</p>
-            <button type="button" className="yr-btn" onClick={onClose}>
-              Close
-            </button>
-          </div>
-        ) : req.kind === "scratch" ? (
-          <ScratchStage req={req} rkey={key} today={today} open={open} />
-        ) : req.kind === "dip" ? (
-          <DipStage open={open} outcome={outcome} />
-        ) : (
-          <BoxStage req={req} today={today} open={open} outcome={outcome} />
-        )}
-        {outcome ? <Summary outcome={outcome} onClose={onClose} /> : null}
-        {!outcome && !error ? (
-          <button type="button" className="yr-btn yr-btn--quiet yr-later" onClick={onClose}>
-            {req.kind === "bought" ? "Not now" : "Keep it for later"}
-          </button>
-        ) : null}
-      </div>
+    <div
+      ref={dialog}
+      className="yr-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      tabIndex={-1}
+    >
+      <RiotTheme colourway={CARDS_COLOURWAY} className="yr-sheet">
+        <div className="yr-stage">
+          <header className="yr-top">
+            <p className="yr-kicker rt-meta">Yay Attax · {title}</p>
+            {!outcome && !error ? (
+              <GoButton tone="quiet" onClick={onClose}>
+                {req.kind === "bought" ? "Not now" : "Keep it for later"}
+              </GoButton>
+            ) : null}
+          </header>
+          {error ? (
+            <Scrap seed="reward-error" ground="white" className="yr-note">
+              <p>{error}</p>
+              <GoButton onClick={onClose}>Close</GoButton>
+            </Scrap>
+          ) : req.kind === "scratch" ? (
+            <ScratchStage req={req} rkey={key} today={today} open={open} />
+          ) : req.kind === "dip" ? (
+            <DipStage open={open} outcome={outcome} />
+          ) : (
+            <BoxStage req={req} today={today} open={open} outcome={outcome} />
+          )}
+          {outcome ? <Summary outcome={outcome} onClose={onClose} /> : null}
+        </div>
+      </RiotTheme>
     </div>
   );
 }
 
 type OpenFn = (league: LeagueId | null, chosen: boolean) => Outcome | null;
+
+const SCRATCH_CUTS: readonly (Cut | typeof GAP)[] = [
+  { ch: "SC", from: "gothic", size: 1.12 },
+  { ch: "R", from: "didone", size: 0.96, lift: 0.06, tuck: 0.03, turn: -3 },
+  { ch: "ATCH", from: "slab", size: 0.94, tuck: 0.02 },
+  GAP,
+  { ch: "I", from: "roman", size: 1.06, turn: 2 },
+  { ch: "T", from: "gothic", size: 1.14, tuck: 0.02, ground: "ink" },
+];
+
+const BOX_CUTS: readonly (Cut | typeof GAP)[] = [
+  { ch: "BL", from: "slab", size: 1 },
+  { ch: "I", from: "didone", size: 1, lift: 0.06, tuck: 0.02, turn: -3 },
+  { ch: "ND", from: "gothic", size: 1.12, tuck: 0.02 },
+  GAP,
+  { ch: "B", from: "roman", size: 1.04, turn: 2 },
+  { ch: "O", from: "slab", size: 0.92, tuck: 0.04, lift: 0.08, ground: "ink" },
+  { ch: "X", from: "gothic", size: 1.14, tuck: 0.02 },
+];
+
+const DIP_CUTS: readonly (Cut | typeof GAP)[] = [
+  { ch: "LU", from: "gothic", size: 1.12 },
+  { ch: "CK", from: "slab", size: 0.94, tuck: 0.03, turn: 2 },
+  { ch: "Y", from: "didone", size: 1, lift: 0.06, tuck: 0.02, turn: -4 },
+  GAP,
+  { ch: "D", from: "roman", size: 1.04 },
+  { ch: "I", from: "gothic", size: 1.14, tuck: 0.02, ground: "ink" },
+  { ch: "P", from: "slab", size: 0.96, tuck: 0.03, lift: 0.04 },
+];
 
 // ——— Scratch card ———
 
@@ -251,20 +313,36 @@ function ScratchStage({
   };
   if (!card) return <p className="yr-note">No cards to pull just yet.</p>;
   return (
-    <div className="yr-scratch">
+    <Poster
+      seed="scratch-card"
+      className="yr-poster yr-scratch"
+      screen={{ fade: "corner", density: 0.45, area: "0 0 52% 50%", w: 420, h: 360 }}
+    >
+      <RansomHeading
+        as="h2"
+        text="SCRATCH IT"
+        seed="scratch"
+        cuts={SCRATCH_CUTS}
+        className="yr-h"
+      />
       <p className="yr-help">
-        {done ? "You scratched…" : "Scratch the foil with your finger or mouse."}
+        {done
+          ? "There it is. It's in your album now."
+          : "Scratch the foil off with a finger or the mouse. Your card is underneath."}
       </p>
-      <div className={`yr-scratch__card ${done ? "is-done" : ""}`}>
-        <YayCard card={card} still />
-        <ScratchLayer onDone={reveal} done={done} />
+      <div className={`yr-scratch__card yk-sleeve yk-sleeve--paper ${done ? "is-done" : ""}`}>
+        <Tape at="top" seed="scratch-tape" className="yr-scratch__tape" />
+        <div className="yr-scratch__in">
+          <YayCard card={card} still />
+          <ScratchLayer onDone={reveal} done={done} />
+        </div>
       </div>
       {!done ? (
-        <button type="button" className="yr-btn yr-btn--quiet" onClick={reveal}>
+        <button type="button" className="yk-btn yk-btn--paper yr-scratch__skip" onClick={reveal}>
           Reveal it without scratching
         </button>
       ) : null}
-    </div>
+    </Poster>
   );
 }
 
@@ -305,32 +383,35 @@ function BoxStage({
   const boxLeague = outcome?.league ?? league;
   return (
     <div className="yr-box-wrap">
+      <RansomHeading as="h2" text="BLIND BOX" seed="box" cuts={BOX_CUTS} className="yr-h" />
       {stage === "choose" ? (
         <div className="yr-choose" role="group" aria-label="Pick a league">
           <p className="yr-help">
-            {bought ? "Pick a league for your box:" : "Pick a league, or let the box surprise you:"}
+            {bought ? "Pick a league for your box." : "Pick a league, or let the box surprise you."}
           </p>
           <div className="yr-chips">
             {bought ? null : (
               <button
                 type="button"
-                className="yr-chip"
+                className="yk-toggle"
                 aria-pressed={league === null}
                 onClick={() => setLeague(null)}
               >
                 Surprise me
+                {league === null ? <MarkerCircle seed="pick-any" ink="a" aspect={2.6} /> : null}
               </button>
             )}
             {leagues.map((l) => (
               <button
                 key={l}
                 type="button"
-                className="yr-chip"
+                className="yk-toggle"
                 data-league={l}
                 aria-pressed={league === l}
                 onClick={() => setLeague(l)}
               >
                 {LEAGUES[l].short}
+                {league === l ? <MarkerCircle seed={`pick-${l}`} ink="a" aspect={1.6} /> : null}
               </button>
             ))}
           </div>
@@ -338,29 +419,30 @@ function BoxStage({
       ) : null}
       <div
         className={`yr-box ${stage === "shaking" ? "is-shaking" : ""} ${stage === "open" ? "is-open" : ""}`}
-        data-league={boxLeague ?? "any"}
         aria-hidden
       >
-        <span className="yr-box__lid">
-          <span className="yr-box__ribbon" />
-        </span>
         <span className="yr-box__body">
+          <span className="yr-box__ribbon" />
           <span className="yr-box__q">?</span>
           <span className="yr-box__word">Yay Attax</span>
           <span className="yr-box__info">
             {boxLeague ? LEAGUES[boxLeague].name : "Mystery league"} · 3 cards
           </span>
         </span>
+        <span className="yr-box__lid" />
       </div>
       {stage === "choose" ? (
-        <button
-          type="button"
-          className="yr-btn yr-btn--big"
+        <GoButton
           onClick={shake}
           disabled={bought && !league}
+          sub={
+            bought
+              ? `${BOX_PRICE} coins for three ${league ? LEAGUES[league].short : ""} cards`
+              : "three cards inside"
+          }
         >
-          {bought ? `Open it · ${BOX_PRICE} coins` : "Shake it and open it"}
-        </button>
+          {bought ? "Open it" : "Shake it and open it"}
+        </GoButton>
       ) : null}
       {stage === "open" && outcome ? <Deal cards={outcome.cards} /> : null}
     </div>
@@ -387,26 +469,30 @@ function DipStage({ open, outcome }: { open: OpenFn; outcome: Outcome | null }) 
   };
   return (
     <div className="yr-dip-wrap">
+      <RansomHeading as="h2" text="LUCKY DIP" seed="dip" cuts={DIP_CUTS} className="yr-h" />
       <p className="yr-help">
         {stage === "out"
-          ? "Out of the bag…"
+          ? `${MASCOT_NAME} fetched these out of the bag.`
           : "It's Sunday: reach into the bag for two bonus cards, with better odds."}
       </p>
       <div
         className={`yr-bag ${stage !== "bag" ? "is-reaching" : ""} ${stage === "out" ? "is-out" : ""}`}
-        aria-hidden
       >
-        <span className="yr-bag__hand" />
-        <span className="yr-bag__back" />
-        <span className="yr-bag__front">
+        <span className="yr-bag__back" aria-hidden />
+        <Mascot
+          pose="peek"
+          className="yr-bag__odin"
+          label={`${MASCOT_NAME} the husky, peeking out of the lucky dip bag`}
+        />
+        <span className="yr-bag__front" aria-hidden>
           <span className="yr-bag__word">Lucky dip</span>
-          <span className="yr-bag__sub">Sunday special</span>
+          <span className="yr-bag__sub">Sunday special · 2 cards</span>
         </span>
       </div>
       {stage === "bag" ? (
-        <button type="button" className="yr-btn yr-btn--big" onClick={reach}>
+        <GoButton onClick={reach} sub={`${MASCOT_NAME} will fetch two cards out`}>
           Reach in
-        </button>
+        </GoButton>
       ) : null}
       {stage === "out" && outcome ? <Deal cards={outcome.cards} /> : null}
     </div>
@@ -423,33 +509,50 @@ function Deal({ cards }: { cards: Pulled[] }) {
     play(c && RARITY_RANK[c.rarity] >= 2 ? "chime" : "flip");
   };
   const all = shown.every(Boolean);
+  // One sticker at most: on the best new pull, if it's Epic or better.
+  const best = cards.reduce<number>(
+    (b, c, i) =>
+      c.isNew &&
+      RARITY_RANK[c.rarity] >= 2 &&
+      (b < 0 || RARITY_RANK[c.rarity] > RARITY_RANK[cards[b]!.rarity])
+        ? i
+        : b,
+    -1,
+  );
   return (
     <>
       <ul className="yr-deal" aria-label="Your new cards">
         {cards.map((c, i) => (
           <li key={`${c.id}:${i}`} className="yr-deal__card" style={{ ["--i" as string]: i }}>
-            {shown[i] ? (
-              <div className="yr-reveal" data-rarity={c.rarity}>
-                <YayCard card={c} />
-                <Tag card={c} />
-              </div>
-            ) : (
-              <button
-                type="button"
-                className="yr-down"
-                onClick={() => turn(i)}
-                aria-label={`Turn over card ${i + 1}`}
-              >
-                <CardFaceDown />
-              </button>
-            )}
+            <div className="yk-sleeve yk-sleeve--paper">
+              {shown[i] ? (
+                <div className="yr-reveal" data-rarity={c.rarity}>
+                  <YayCard card={c} />
+                  {i === best ? (
+                    <Sticker seed={`best-${c.id}`} ground="b" pinned className="yr-reveal__sticker">
+                      New {RARITY_NAME[c.rarity]}!
+                    </Sticker>
+                  ) : null}
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="yr-down"
+                  onClick={() => turn(i)}
+                  aria-label={`Turn over card ${i + 1}`}
+                >
+                  <CardFaceDown />
+                </button>
+              )}
+            </div>
+            {shown[i] ? <Tag card={c} /> : null}
           </li>
         ))}
       </ul>
       {!all ? (
         <button
           type="button"
-          className="yr-btn"
+          className="yk-btn"
           onClick={() => {
             setShown((s) => s.map(() => true));
             play("flip");
@@ -465,7 +568,7 @@ function Deal({ cards }: { cards: Pulled[] }) {
 function Tag({ card }: { card: Pulled }) {
   return (
     <div className="yr-tag">
-      <p>
+      <p className="rt-meta">
         {card.isNew ? "New!" : "Duplicate"} · {RARITY_NAME[card.rarity]}
       </p>
       {RARITY_RANK[card.rarity] >= 1 ? <ShareButton card={card} /> : null}
@@ -483,13 +586,15 @@ function Summary({ outcome, onClose }: { outcome: Outcome; onClose: () => void }
   if (outcome.coins) line = `${line} · +${outcome.coins} Yay Coin${outcome.coins === 1 ? "" : "s"}`;
   return (
     <div className="yr-actions" role="status" aria-live="polite">
-      <p className="yr-sum">{line}</p>
-      <Link href="/cards" className="yr-btn yr-btn--big" onClick={onClose}>
+      <Heading as="p" className="yr-sum">
+        {line}
+      </Heading>
+      <GoButton href="/cards" onClick={onClose} sub="every league, every set">
         See your album
-      </Link>
-      <button type="button" className="yr-btn yr-btn--quiet" onClick={onClose}>
+      </GoButton>
+      <GoButton tone="quiet" onClick={onClose}>
         Close
-      </button>
+      </GoButton>
     </div>
   );
 }

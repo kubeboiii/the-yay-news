@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { PEEK_ART } from "../art/peek";
 import { SITTING_ART } from "../art/sitting";
-import { Cap, Catchlights, Lids, Satchel } from "../overlays";
+import { Cap, Catchlights, HappyEyes, Lids, Satchel } from "../overlays";
 import { ArtLayers, type Ctx } from "../parts";
 
 /** Where things are on the sitting drawing (its own units). */
@@ -47,11 +47,15 @@ const PEEK_EYES: [number, number][] = [
   [224, 184],
 ];
 
+const PEEK_EYE_LINES = [1, 2];
+
 /** The small peeking Odin: head and paws over a line. */
 export function Peeking({ c }: { c: Ctx }) {
   return (
     <g>
-      <ArtLayers art={PEEK_ART} c={c} />
+      {/* The trace's own eyes (lines 1 and 2) slant in and read cross: redrawn round. */}
+      <ArtLayers art={PEEK_ART} c={c} omitLines={PEEK_EYE_LINES} />
+      <HappyEyes c={c} eyes={PEEK_EYES} r={8} />
       <Catchlights eyes={PEEK_EYES} r={8} />
       <Lids c={c} eyes={PEEK_EYES} r={8} ground={c.k.white} />
       <Cap c={c} x={192} y={150} s={3.6} />
