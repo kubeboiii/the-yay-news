@@ -5,6 +5,16 @@
 // Not fetchable when last checked (2026-09-30), so left out: techbrew.com (403 to every client),
 // worldanimalnews.com (403), apnews.com/oddities (403), reuters.com/business (401) and
 // bloomberg.com/india (a bot wall; Bloomberg's public technology feed stands in).
+//
+// Checked 2026-10-01 and left out: morningbrew.com (403 to every client), marketplace.org (403 to
+// article pages), Bloomberg Pursuits (no public feed; 404), Mint Lounge (feed gone, 410),
+// Moneycontrol (feeds stale since the spring; features 403), CNBC Make It's feed (stale; its
+// listing page is scraped instead), inc.com and people.com (article pages 403 / 402), NerdWallet
+// (no article text), The Guardian ("A new start after 60" and the rest: its robots.txt forbids use
+// with LLMs), BBC Worklife (feed stale since May), r/MadeMeSmile and r/wholesomememes (reddit's
+// robots.txt disallows everything, the posts are pictures with nothing to write from, and the feed
+// rate-limits: 429), and the Edutopia, Goodnet, Kids News, DOGOnews, Sunny Skyz and Scholastic Kids
+// Press feeds (empty, 403, 404 or unreachable).
 import type { SourceDef } from "./types.ts";
 
 export const SOURCES: SourceDef[] = [
@@ -237,7 +247,7 @@ export const SOURCES: SourceDef[] = [
     name: "NPR Planet Money",
     url: "https://feeds.npr.org/510289/podcast.xml",
     type: "rss",
-    sections: ["money"],
+    sections: ["money", "brain-snacks"],
   },
   {
     slug: "freakonomics",
@@ -276,6 +286,7 @@ export const SOURCES: SourceDef[] = [
       "dig-site",
       "homes",
       "weird-jobs",
+      "weird-local",
     ],
   },
 
@@ -798,7 +809,7 @@ export const SOURCES: SourceDef[] = [
     name: "Runner's World",
     url: "https://www.runnersworld.com/rss/all.xml/",
     type: "rss",
-    sections: ["sports"],
+    sections: ["sports", "your-small-wins"],
   },
   {
     slug: "irunfar",
@@ -889,7 +900,7 @@ export const SOURCES: SourceDef[] = [
     name: "Mental Floss",
     url: "https://www.mentalfloss.com/rss.xml",
     type: "rss",
-    sections: ["brain-snacks", "time-machine", "word-nerd", "myth-busters"],
+    sections: ["brain-snacks", "time-machine", "word-nerd", "myth-busters", "weird-jobs"],
     browserAgent: true,
   },
   {
@@ -927,7 +938,14 @@ export const SOURCES: SourceDef[] = [
     name: "The Better India",
     url: "https://thebetterindia.com/feed/",
     type: "rss",
-    sections: ["india-desk", "good-humans", "planet-wins", "kids-and-schools"],
+    sections: [
+      "india-desk",
+      "good-humans",
+      "planet-wins",
+      "kids-and-schools",
+      "your-small-wins",
+      "weird-jobs",
+    ],
   },
   {
     slug: "grist",
@@ -1067,6 +1085,313 @@ export const SOURCES: SourceDef[] = [
     name: "Good News Network",
     url: "https://www.goodnewsnetwork.org/category/news/inspiring/feed/",
     type: "rss",
+    maxAgeHours: 336,
     sections: ["good-humans", "kids-and-schools", "your-small-wins", "weird-jobs"],
+  },
+
+  // ——— Money, business and markets (2026-10): the upbeat and curious end of the business desk ———
+  // Mixed feeds on purpose: the blocklist and the delight check keep only records, launches,
+  // quirky businesses and personal-finance wins, so volume is what fills the page.
+  {
+    slug: "the-hustle",
+    name: "The Hustle",
+    url: "https://thehustle.co/news/rss.xml",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["money", "startups", "weird-jobs", "internet"],
+  },
+  {
+    slug: "cnbc-make-it",
+    name: "CNBC Make It",
+    // The Make It feed stopped updating; its listing page is current.
+    url: "https://www.cnbc.com/make-it/",
+    type: "api",
+    adapter: "scrape",
+    linkPattern: "^https://www\\.cnbc\\.com/20\\d\\d/\\d\\d/\\d\\d/[a-z0-9-]{12,}\\.html$",
+    maxAgeHours: 168,
+    sections: ["money", "weird-jobs", "your-small-wins"],
+  },
+  {
+    slug: "cnbc-business",
+    name: "CNBC",
+    url: "https://www.cnbc.com/id/10001147/device/rss/rss.html",
+    type: "rss",
+    sections: ["money", "startups"],
+  },
+  {
+    slug: "business-insider",
+    name: "Business Insider",
+    url: "https://feeds.businessinsider.com/custom/all",
+    type: "rss",
+    sections: ["money", "weird-jobs", "internet", "tech"],
+  },
+  {
+    slug: "fortune",
+    name: "Fortune",
+    url: "https://fortune.com/feed/",
+    type: "rss",
+    sections: ["money", "startups", "weird-jobs"],
+  },
+  {
+    slug: "entrepreneur",
+    name: "Entrepreneur",
+    url: "https://www.entrepreneur.com/latest.rss",
+    type: "rss",
+    sections: ["money", "startups", "weird-jobs"],
+  },
+  {
+    slug: "kiplinger",
+    name: "Kiplinger",
+    url: "https://www.kiplinger.com/feeds/all",
+    type: "rss",
+    sections: ["money"],
+  },
+  {
+    slug: "visual-capitalist",
+    name: "Visual Capitalist",
+    url: "https://www.visualcapitalist.com/feed/",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["money", "brain-snacks"],
+  },
+  {
+    slug: "npr-business",
+    name: "NPR",
+    url: "https://feeds.npr.org/1006/rss.xml",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["money", "tech"],
+  },
+  {
+    slug: "npr-the-indicator",
+    name: "NPR The Indicator",
+    url: "https://feeds.npr.org/510325/podcast.xml",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["money", "brain-snacks"],
+  },
+  {
+    slug: "axios",
+    name: "Axios",
+    url: "https://api.axios.com/feed/",
+    type: "rss",
+    perSource: 20,
+    sections: ["money", "tech", "internet"],
+  },
+  {
+    slug: "bloomberg-markets",
+    name: "Bloomberg",
+    url: "https://feeds.bloomberg.com/markets/news.rss",
+    type: "rss",
+    paywalled: true,
+    sections: ["money"],
+  },
+  {
+    slug: "gnn-business",
+    name: "Good News Network",
+    url: "https://www.goodnewsnetwork.org/category/news/business/feed/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["money", "good-humans", "weird-jobs"],
+  },
+  // India money: markets, companies and the lighter business pages
+  {
+    slug: "livemint-markets",
+    name: "Mint",
+    url: "https://www.livemint.com/rss/markets",
+    type: "rss",
+    sections: ["money"],
+  },
+  {
+    slug: "hindustan-times-business",
+    name: "Hindustan Times",
+    url: "https://www.hindustantimes.com/feeds/rss/business/rssfeed.xml",
+    type: "rss",
+    sections: ["money", "startups"],
+  },
+  {
+    slug: "et-panache",
+    name: "The Economic Times",
+    url: "https://economictimes.indiatimes.com/magazines/panache/rssfeeds/32897557.cms",
+    type: "rss",
+    sections: ["money", "internet", "weird-jobs"],
+  },
+  {
+    slug: "ndtv-profit",
+    name: "NDTV Profit",
+    url: "https://feeds.feedburner.com/ndtvprofit-latest",
+    type: "rss",
+    sections: ["money", "startups"],
+  },
+
+  // ——— Guest sections without a desk of their own (2026-10) ———
+  // Guests print once a fortnight, so their feeds may reach back two weeks (dedup keeps repeats out).
+  // Your Small Wins: real people's small triumphs, as reported (never invented readers).
+  {
+    slug: "good-good-good",
+    name: "Good Good Good",
+    url: "https://www.goodgoodgood.co/articles/rss.xml",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["your-small-wins", "good-humans", "kids-and-schools", "animal-kingdom"],
+  },
+  {
+    slug: "upworthy",
+    name: "Upworthy",
+    url: "https://www.upworthy.com/feeds/feed.rss",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["your-small-wins", "good-humans", "internet"],
+  },
+  // Kids & Schools
+  {
+    slug: "bbc-newsround",
+    name: "BBC Newsround",
+    url: "https://feeds.bbci.co.uk/newsround/rss.xml",
+    type: "rss",
+    // The feed mixes articles with video bulletins ("Watch Newsround"); keep the articles.
+    linkPattern: "/newsround/articles/",
+    maxAgeHours: 168,
+    sections: ["kids-and-schools", "discoveries", "animal-kingdom"],
+  },
+  {
+    slug: "time-for-kids",
+    name: "TIME for Kids",
+    url: "https://www.timeforkids.com/feed/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["kids-and-schools"],
+  },
+  {
+    slug: "science-news-explores",
+    name: "Science News Explores",
+    url: "https://www.snexplores.org/feed",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["kids-and-schools", "tiny-science", "discoveries"],
+  },
+  {
+    slug: "news-for-kids",
+    name: "News for Kids",
+    url: "https://www.newsforkids.net/feed/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["kids-and-schools", "discoveries"],
+  },
+  {
+    slug: "indian-express-education",
+    name: "The Indian Express",
+    url: "https://indianexpress.com/section/education/feed/",
+    type: "rss",
+    sections: ["kids-and-schools", "india-desk"],
+  },
+  {
+    slug: "gnn-kids",
+    name: "Good News Network",
+    url: "https://www.goodnewsnetwork.org/category/news/kids/feed/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["kids-and-schools", "your-small-wins"],
+  },
+  // Weird Laws & Local
+  {
+    slug: "oddity-central",
+    name: "Oddity Central",
+    url: "https://www.odditycentral.com/feed",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["weird-local", "weird-jobs", "world-records"],
+  },
+  {
+    slug: "ny-post-weird-but-true",
+    name: "New York Post",
+    url: "https://nypost.com/weird-but-true/feed/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["weird-local", "world-records"],
+  },
+  {
+    slug: "metro-weird",
+    name: "Metro",
+    url: "https://metro.co.uk/news/weird/feed/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["weird-local"],
+  },
+  {
+    slug: "huffpost-weird",
+    name: "HuffPost",
+    url: "https://www.huffpost.com/section/weird-news/feed",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["weird-local", "internet"],
+  },
+  {
+    slug: "hindustan-times-trending",
+    name: "Hindustan Times",
+    url: "https://www.hindustantimes.com/feeds/rss/trending/rssfeed.xml",
+    type: "rss",
+    sections: ["internet", "weird-local", "weird-jobs"],
+  },
+  // Thin guests topped up (2026-10): Word Nerd, Postcards, India Desk and Creator Economy.
+  {
+    slug: "language-log",
+    name: "Language Log",
+    url: "https://languagelog.ldc.upenn.edu/nll/?feed=rss2",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["word-nerd"],
+  },
+  {
+    slug: "cn-traveller",
+    name: "Condé Nast Traveller",
+    url: "https://www.cntraveller.com/feed/rss",
+    type: "rss",
+    sections: ["postcards", "food-and-drink", "homes"],
+  },
+  {
+    slug: "bbc-travel",
+    name: "BBC Travel",
+    url: "https://www.bbc.com/travel/feed.rss",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["postcards", "time-machine", "food-and-drink"],
+  },
+  {
+    slug: "smithsonian-travel",
+    name: "Smithsonian Magazine",
+    url: "https://www.smithsonianmag.com/rss/travel/",
+    type: "rss",
+    maxAgeHours: 336,
+    sections: ["postcards", "time-machine"],
+  },
+  {
+    slug: "indian-express-trending",
+    name: "The Indian Express",
+    url: "https://indianexpress.com/section/trending/feed/",
+    type: "rss",
+    sections: ["india-desk", "internet", "weird-local"],
+  },
+  {
+    slug: "the-hindu-life-and-style",
+    name: "The Hindu",
+    url: "https://www.thehindu.com/life-and-style/feeder/default.rss",
+    type: "rss",
+    maxAgeHours: 168,
+    sections: ["india-desk", "food-and-drink", "postcards"],
+  },
+  {
+    slug: "social-media-today",
+    name: "Social Media Today",
+    url: "https://www.socialmediatoday.com/feeds/news/",
+    type: "rss",
+    sections: ["creators", "internet"],
+  },
+  {
+    slug: "dexerto",
+    name: "Dexerto",
+    url: "https://www.dexerto.com/feed/",
+    type: "rss",
+    sections: ["creators", "play", "internet"],
   },
 ];
