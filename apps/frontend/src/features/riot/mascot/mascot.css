@@ -1,0 +1,90 @@
+/* Odin's idle life: an eyelid blink, a gentle breath, and the props' own loops (wheels, Zs,
+ * glowing bulbs). Slow and small; none of it runs for reduced motion or on a `still` sheet. */
+
+.rt-odin {
+  display: block;
+  overflow: visible;
+}
+.rt-odin :is(.rt-odin__lid, .rt-odin__breath, .rt-odin__spin, .rt-odin__z, .rt-odin__glow) {
+  transform-box: fill-box;
+}
+/* Eyelids are drawn but folded away until a blink; asleep, they stay shut. */
+.rt-odin__lid {
+  transform-origin: 50% 0;
+  scale: 1 0;
+}
+.rt-odin__lids--shut .rt-odin__lid {
+  scale: 1 1;
+}
+.rt-odin__breath {
+  transform-origin: 50% 100%;
+}
+.rt-odin__spin {
+  transform-origin: 50% 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rt-odin:not(.rt-odin--still) .rt-odin__lids:not(.rt-odin__lids--shut) .rt-odin__lid {
+    animation: rt-odin-blink 5.4s infinite;
+  }
+  .rt-odin:not(.rt-odin--still) .rt-odin__breath {
+    animation: rt-odin-breath 3.6s ease-in-out infinite;
+  }
+  .rt-odin--asleep:not(.rt-odin--still) .rt-odin__breath {
+    animation-duration: 5s;
+  }
+  .rt-odin:not(.rt-odin--still) .rt-odin__spin {
+    animation: rt-odin-spin 0.9s linear infinite;
+  }
+  .rt-odin:not(.rt-odin--still) .rt-odin__z {
+    animation: rt-odin-z 3s ease-in-out infinite;
+  }
+  .rt-odin:not(.rt-odin--still) .rt-odin__glow {
+    animation: rt-odin-glow 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes rt-odin-blink {
+  0%,
+  94%,
+  100% {
+    scale: 1 0;
+  }
+  96% {
+    scale: 1 1;
+  }
+}
+@keyframes rt-odin-breath {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+  50% {
+    scale: 1.008 1.014;
+  }
+}
+@keyframes rt-odin-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes rt-odin-z {
+  0%,
+  100% {
+    translate: 0 0;
+    opacity: 0.35;
+  }
+  50% {
+    translate: 6px -10px;
+    opacity: 1;
+  }
+}
+@keyframes rt-odin-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
