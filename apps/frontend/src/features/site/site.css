@@ -61,10 +61,15 @@
   line-height: 1;
   text-transform: uppercase;
 }
+.ys-mark {
+  white-space: nowrap;
+  flex: none;
+}
 .ys-mark__short {
   display: none;
 }
-@media (max-width: 400px) {
+/* Phones (iPhone Pro and Plus sizes are 402–440 wide): the short mark, so the date fits. */
+@media (max-width: 480px) {
   .ys-mark__word {
     display: none;
   }

@@ -31,6 +31,16 @@ function canShareFiles(): boolean {
 }
 const noSubscribe = () => () => {};
 
+/** `url`'s path and query: fetched or downloaded from wherever the reader is, not the canonical origin. */
+function sameOrigin(url: string): string {
+  try {
+    const u = new URL(url, "http://localhost");
+    return `${u.pathname}${u.search}`;
+  } catch {
+    return url;
+  }
+}
+
 const q = (params: Record<string, string>) => new URLSearchParams(params).toString();
 
 const shape =
@@ -42,8 +52,11 @@ export function ShareButtons({ url, headline, dek, storyImage, postImage, fileNa
   const [status, setStatus] = useState("");
   const file = useRef<Promise<File> | null>(null);
 
+  // Fetched from this page's own origin: `storyImage` is absolute (for the platforms that need a
+  // full URL), but the site's configured origin can differ from the one the reader is on (www, a
+  // preview host, a dev port), and a cross-origin fetch of it fails before the share sheet opens.
   const fetchClipping = () =>
-    (file.current ??= fetch(storyImage)
+    (file.current ??= fetch(sameOrigin(storyImage))
       .then((r) => {
         if (!r.ok) throw new Error(`clipping ${r.status}`);
         return r.blob();
@@ -160,10 +173,18 @@ export function ShareButtons({ url, headline, dek, storyImage, postImage, fileNa
                   the code to open this story on your phone and share it from there.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <a href={storyImage} download={`${fileName}-story.png`} className={pill}>
+                  <a
+                    href={sameOrigin(storyImage)}
+                    download={`${fileName}-story.png`}
+                    className={pill}
+                  >
                     Download image (Stories, 1080×1920)
                   </a>
-                  <a href={postImage} download={`${fileName}-post.png`} className={pill}>
+                  <a
+                    href={sameOrigin(postImage)}
+                    download={`${fileName}-post.png`}
+                    className={pill}
+                  >
                     Feed post (1080×1350)
                   </a>
                 </div>

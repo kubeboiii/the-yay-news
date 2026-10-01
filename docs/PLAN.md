@@ -429,8 +429,12 @@ browse back issues, and share any story to each platform's composer.
 - Share bar with every composer in §7, Instagram through the share sheet (download and QR on
   desktop), link previews from the 1200×630 clipping, and a printable edition saved as PDF from the
   browser (server-rendered PDF is not built).
-- Still to do: try the Instagram share sheet on real iOS and Android phones; move the shared print
-  components into `packages/ui` once the mockups are retired.
+- The print components now live in `packages/ui` (`@repo/ui/print/*`).
+- Instagram, tested in Safari on the iOS simulator (2026-10-01): "Share to Instagram / Stories"
+  opens the system share sheet with the 1080×1920 clipping attached. The clipping is fetched from
+  the page's own origin, so a `SITE_URL` that differs from the host the reader is on can't break it.
+  The simulator has no Instagram app, so picking Instagram itself is still to try on a real iPhone,
+  and on Android. Set `SITE_URL` in production: it's the address printed on every clipping.
 
 ### Phase 3 — Puzzles and habits
 
