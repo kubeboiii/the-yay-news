@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exportLog, record, useHabitsReady } from "@/features/habits/api";
+import { GoButton, Heading, Misprint, Scrap } from "@/features/riot";
 import { play } from "@/features/sound";
 import {
   act,
@@ -25,6 +25,7 @@ import { shuffle } from "./draw";
 import { LEAGUES, RARITY_RANK } from "./leagues/meta";
 import type { Card, LeagueId } from "./types";
 import { nonce, useCardsToday, useCollection } from "./use-collection";
+import "./desk.css";
 import "./play.css";
 
 // Deck Battle: build a deck of five from your album (one league or mixed), then fight the
@@ -135,24 +136,25 @@ export function DeckBattle() {
     const leagues = [...new Set(chosen.map((c) => c.league))];
     return (
       <div className="yp-builder">
-        <p className="yp-note">
-          Pick five cards for your deck, from one league or mixed. Each league brings its own rule.
-          A win pays {BATTLE_COINS} Yay Coins (the first {BATTLE_PAYOUTS} wins a day).
-        </p>
         {mine.length < DECK_SIZE ? (
-          <p className="yp-note">
-            You need {DECK_SIZE} cards, and you have {mine.length}.{" "}
-            <Link href="/">Finish today&rsquo;s paper</Link> for more.
-          </p>
+          <Scrap seed="battle-empty" ground="white" className="yp-empty">
+            <p>
+              You need {DECK_SIZE} cards for a deck, and you have {mine.length}. Finish a paper for
+              a scratch card and a blind box.
+            </p>
+            <GoButton href="/" sub="a scratch card and a blind box for finishing it">
+              Read today&rsquo;s paper
+            </GoButton>
+          </Scrap>
         ) : (
           <>
             <div className="yp-deckbar">
               <p className="yp-deckbar__count">
-                Deck: <b>{chosen.length}</b>/{DECK_SIZE}
+                Deck <b>{chosen.length}</b>/{DECK_SIZE}
               </p>
               <button
                 type="button"
-                className="yp-btn yp-btn--quiet"
+                className="yk-btn yk-btn--paper"
                 onClick={() =>
                   setDeck(
                     shuffle(mine, nonce())
@@ -163,24 +165,24 @@ export function DeckBattle() {
               >
                 Random deck
               </button>
-              <button
-                type="button"
-                className="yp-btn yp-btn--big"
+              <GoButton
+                tone="a"
                 disabled={chosen.length !== DECK_SIZE}
                 onClick={begin}
+                sub={
+                  chosen.length === DECK_SIZE
+                    ? `${BATTLE_COINS} Yay Coins for a win`
+                    : `pick ${DECK_SIZE - chosen.length} more`
+                }
               >
                 Battle!
-              </button>
+              </GoButton>
             </div>
-            {leagues.length ? (
-              <ul className="yp-rules">
-                {leagues.map((l) => (
-                  <li key={l}>
-                    <b>{LEAGUES[l].short}:</b> {LEAGUES[l].rule}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+            <p className="yp-note">
+              Pick five cards for your deck, from one league or mixed. Each league brings its own
+              rule. A win pays {BATTLE_COINS} Yay Coins (the first {BATTLE_PAYOUTS} wins a day).
+            </p>
+            {leagues.length ? <Rules leagues={leagues} /> : null}
             <ul className="yp-pick">
               {mine.map((c) => {
                 const on = deck.includes(c.id);
@@ -193,8 +195,13 @@ export function DeckBattle() {
                       aria-label={`${on ? "Remove" : "Add"} ${c.name}`}
                       onClick={() => toggle(c.id)}
                     >
-                      <YayCard card={c} still />
-                      <span className="yp-pick__hp">HP {hpOf(c)}</span>
+                      <span className="yk-sleeve yk-sleeve--paper yp-pick__sleeve">
+                        <YayCard card={c} still />
+                      </span>
+                      <span className="yp-pick__hp rt-meta">
+                        HP {hpOf(c)}
+                        {on ? " · in deck" : ""}
+                      </span>
                     </button>
                   </li>
                 );
@@ -215,18 +222,9 @@ export function DeckBattle() {
   const yourTurn = state.turn === "you" && !state.winner && !auto;
   return (
     <div className="yp-battle">
-      <ul className="yp-rules yp-rules--small">
-        {state.wet && leagues.includes("f1") ? (
-          <li className="yp-wet">It&rsquo;s raining: a wet track.</li>
-        ) : null}
-        {leagues.map((l) => (
-          <li key={l}>
-            <b>{LEAGUES[l].short}:</b> {LEAGUES[l].rule}
-          </li>
-        ))}
-      </ul>
+      <Rules leagues={leagues} wet={state.wet && leagues.includes("f1")} />
       <Bench fighters={state.cpu} label="The computer's deck" />
-      <div className="yp-arena">
+      <div className="yp-arena yk-band">
         <Combatant
           f={them}
           side="cpu"
@@ -260,10 +258,10 @@ export function DeckBattle() {
       </div>
       <Bench fighters={state.you} label="Your deck" />
       {state.winner ? (
-        <div className="yp-end">
-          <p className="yp-big">
+        <Scrap seed="battle-end" ground="white" tape="top" className="yp-end">
+          <Heading as="p" className="yp-big">
             {state.winner === "you" ? "You win the battle!" : "The computer wins."}
-          </p>
+          </Heading>
           <p className="yp-line">
             {state.winner === "you"
               ? paid
@@ -271,38 +269,34 @@ export function DeckBattle() {
                 : `A win, though today's ${BATTLE_PAYOUTS} paid wins are done.`
               : `You knocked out ${DECK_SIZE - alive(state.cpu)} of its ${DECK_SIZE}. Rematch?`}
           </p>
-          <p className="yp-actions">
-            <button type="button" className="yp-btn yp-btn--big" onClick={begin}>
+          <div className="yp-actions">
+            <GoButton onClick={begin} sub="the same five cards">
               Rematch
-            </button>
-            <button type="button" className="yp-btn yp-btn--quiet" onClick={() => setState(null)}>
+            </GoButton>
+            <GoButton tone="quiet" onClick={() => setState(null)}>
               Change deck
-            </button>
-            <Link href="/cards" className="yp-link">
-              Back to the album
-            </Link>
-          </p>
-        </div>
+            </GoButton>
+          </div>
+        </Scrap>
       ) : (
         <div className="yp-moves">
           {me ? (
             <>
-              <button
-                type="button"
-                className="yp-btn yp-btn--big"
+              <GoButton
                 disabled={!yourTurn}
                 onClick={() => move("strike")}
+                sub={LEAGUES[me.card.league].stats[LEAGUES[me.card.league].roles.atk]}
               >
-                Strike · {LEAGUES[me.card.league].stats[LEAGUES[me.card.league].roles.atk]}
-              </button>
-              <button
-                type="button"
-                className="yp-btn yp-btn--big yp-btn--special"
+                Strike
+              </GoButton>
+              <GoButton
+                tone="a"
                 disabled={!yourTurn || !canSpecial(state)}
                 onClick={() => move("special")}
+                sub={me.usedSpecial ? "used up" : (me.card.move ?? "Power move")}
               >
-                {me.usedSpecial ? "Special used" : `Special · ${me.card.move ?? "Power move"}`}
-              </button>
+                {me.usedSpecial ? "Special used" : "Special"}
+              </GoButton>
             </>
           ) : null}
           <label className="yp-auto">
@@ -313,6 +307,20 @@ export function DeckBattle() {
         </div>
       )}
     </div>
+  );
+}
+
+/** Each league's house rule, as a plain list on a slip. */
+function Rules({ leagues, wet }: { leagues: readonly LeagueId[]; wet?: boolean }) {
+  return (
+    <ul className="yp-rules">
+      {wet ? <li className="yp-wet">It&rsquo;s raining: a wet track.</li> : null}
+      {leagues.map((l) => (
+        <li key={l}>
+          <b>{LEAGUES[l].short}:</b> {LEAGUES[l].rule}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -336,17 +344,23 @@ function Combatant({
         key={`${f.card.id}:${lunge ?? 0}:${struck ? hit.key : 0}`}
         className={`yp-fighter__card ${lunge !== null ? "is-lunging" : ""} ${struck ? "is-struck" : ""}`}
       >
-        <YayCard card={f.card} still />
+        <span className="yk-sleeve">
+          <YayCard card={f.card} still />
+        </span>
         {struck ? (
           <span className="yp-dmg" aria-hidden>
-            {hit.n ? `−${hit.n}` : "Miss"}
+            <Misprint>{hit.n ? `−${hit.n}` : "Miss"}</Misprint>
           </span>
         ) : null}
       </div>
-      <div className="yp-hp" aria-label={`${f.card.name}: ${f.hp} of ${f.max} HP`}>
-        <span className="yp-hp__bar" data-low={pct < 30} style={{ width: `${pct}%` }} />
+      <div className="yp-hp">
+        <span className="yp-hp__track" aria-hidden>
+          <span className="yp-hp__bar" data-low={pct < 30} style={{ width: `${pct}%` }} />
+        </span>
         <span className="yp-hp__text">
-          {f.hp}/{f.max} HP{f.usedSpecial ? " · special used" : ""}
+          {side === "you" ? "Yours" : "Theirs"}: {f.hp}/{f.max} HP
+          {pct < 30 && f.hp > 0 ? " · low" : ""}
+          {f.usedSpecial ? " · special used" : ""}
         </span>
       </div>
     </div>

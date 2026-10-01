@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { play } from "@/features/sound";
 
-// The scratch card's foil: a canvas over the card, painted silver, that the pointer (a finger or
+// The scratch card's foil: a canvas over the card, printed in plate B, that the pointer (a finger or
 // a mouse held down) scratches away. Once about half of it is gone the rest flakes off by itself.
 
 const BRUSH = 0.075; // of the card's width
@@ -27,32 +27,37 @@ export function ScratchLayer({ onDone, done }: { onDone: () => void; done: boole
     canvas.height = Math.round(height * dpr);
     const w = canvas.width;
     const h = canvas.height;
-    // The foil: brushed silver, a sparkle of glints, and the words.
-    const g = ctx.createLinearGradient(0, 0, w, h);
-    g.addColorStop(0, "#b8bec6");
-    g.addColorStop(0.3, "#eef1f4");
-    g.addColorStop(0.55, "#9aa2ac");
-    g.addColorStop(0.8, "#e3e7eb");
-    g.addColorStop(1, "#a9b0b8");
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.roundRect(0, 0, w, h, w * 0.046);
-    ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
-    for (let i = 0; i < 160; i++) {
-      const x = (Math.sin(i * 12.9898) * 43758.5453) % 1;
-      const y = (Math.sin(i * 78.233) * 12345.678) % 1;
-      ctx.fillRect(Math.abs(x) * w, Math.abs(y) * h, 1.5 * dpr, 1.5 * dpr);
-    }
-    ctx.fillStyle = "rgba(40,44,52,0.75)";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = `${Math.round(w * 0.13)}px Impact, "League Gothic", sans-serif`;
-    ctx.fillText("SCRATCH", w / 2, h * 0.42);
-    ctx.fillText("ME!", w / 2, h * 0.55);
-    ctx.font = `${Math.round(w * 0.045)}px Arial, sans-serif`;
-    ctx.fillText("The Yay News · Yay Attax", w / 2, h * 0.7);
-    ctx.globalCompositeOperation = "destination-out";
+    // The foil, printed riso-style: a flat slab of plate B with a coarse halftone of black
+    // through it, and the words in the kit's condensed face (read off the page's inks).
+    const paint = () => {
+      ctx.globalCompositeOperation = "source-over";
+      const css = getComputedStyle(canvas);
+      const ink = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
+      ctx.fillStyle = ink("--rt-b", "#2fa8ff");
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = "rgba(17,17,17,0.2)";
+      const pitch = w * 0.045;
+      for (let y = pitch / 2, row = 0; y < h; y += pitch * 0.87, row++) {
+        for (let x = (row % 2 ? pitch / 2 : 0) + pitch / 4; x < w; x += pitch) {
+          // Bigger dots toward the bottom corner, like a tone fading across the sheet.
+          const t = Math.min(1, (x / w + y / h) / 1.6);
+          ctx.beginPath();
+          ctx.arc(x, y, pitch * (0.08 + 0.3 * t), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      const head = ink("--rt-ff-gothic", "") || '"League Gothic", Impact';
+      ctx.fillStyle = ink("--rt-k", "#111");
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = `${Math.round(w * 0.2)}px ${head}, Impact, sans-serif`;
+      ctx.fillText("SCRATCH", w / 2, h * 0.4);
+      ctx.fillText("ME!", w / 2, h * 0.57);
+      ctx.font = `bold ${Math.round(w * 0.045)}px "Courier New", monospace`;
+      ctx.fillText("The Yay News · Yay Attax", w / 2, h * 0.72);
+      ctx.globalCompositeOperation = "destination-out";
+    };
+    paint();
 
     let down = false;
     let last: [number, number] | null = null;
@@ -109,11 +114,17 @@ export function ScratchLayer({ onDone, done }: { onDone: () => void; done: boole
         finished.current();
       }
     };
+    // The heading face may still be loading: print the foil again once it's in, if untouched.
+    let live = true;
+    void document.fonts?.ready.then(() => {
+      if (live && !strokes) paint();
+    });
     canvas.addEventListener("pointerdown", onDown);
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerup", onUp);
     canvas.addEventListener("pointercancel", onUp);
     return () => {
+      live = false;
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerup", onUp);

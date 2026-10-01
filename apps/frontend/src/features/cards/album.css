@@ -1,233 +1,201 @@
-/* The Yay Attax album, on the reader's desk (habits/saved.css's .hb-desk). */
+/* The Yay Attax album in the riot kit (desk.css has the shared parts). One loud thing: the
+ * pasted poster at the top. Below it the paper stays calm: slips to pick a season and a league,
+ * square toggles to filter, and each set's binder page, black, with the glossy cards in sleeves. */
 
 .ya-album {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  max-width: 1100px;
-  margin: 0 auto;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  gap: 30px;
+}
+
+/* ——— The poster ——— */
+
+.ya-hero {
+  margin-top: 12px;
+  padding: 40px 44px 52px;
+}
+.ya-hero > :not(.rt-poster__sheet, .rt-tape, .rt-sticker) {
+  position: relative;
+}
+.ya-hero__kicker {
+  margin: 0 0 10px;
+}
+.ya-hero__h {
+  font-size: clamp(76px, 10vw, 136px);
+}
+.ya-hero__line {
+  max-width: 34ch;
+  margin: 20px 0 0;
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1.25;
 }
 
 .ya-ledger {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px 36px;
+  margin: 22px 0 0;
+}
+.ya-ledger__item {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.ya-ledger dt {
+  font-weight: 800;
+  font-size: 16px;
+}
+.ya-ledger dd {
+  margin: 0;
+}
+.ya-ledger__n {
+  font-family: var(--rt-ff-head);
+  font-size: 64px;
+  line-height: 0.9;
+}
+dd > .ya-ledger__n {
+  font-family: var(--rt-ff-wood);
+  font-size: 88px;
+}
+.ya-ledger__of {
+  font-family: var(--rt-ff-head);
+  font-size: 34px;
+}
+
+.ya-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 30px;
+  margin-top: 26px;
+}
+.ya-hero__waiting {
+  margin: 0 0 8px;
+  font-weight: 800;
+}
+.ya-hero__games {
+  display: flex;
+  gap: 4px 22px;
+}
+.ya-hero__drop {
+  top: -20px;
+  right: 4%;
+  max-width: 300px;
+  padding: 10px 16px 8px;
+}
+.ya-drop__when {
+  font-size: 34px;
+}
+.ya-drop__what {
+  margin-top: 4px;
+  font-family: var(--rt-ff-read);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+/* ——— Messages ——— */
+
+.ya-toast {
+  position: sticky;
+  top: 12px;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px 22px;
-}
-
-.ya-ledger__item {
-  margin: 0;
-  font-family: var(--hb-hand), cursive;
-  font-size: 21px;
-}
-
-.ya-ledger__item b {
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 30px;
-  font-weight: 400;
-}
-
-.ya-ledger__play,
-.ya-btn {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 8px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: #1d1a17;
-  color: #fff;
-  font:
-    700 15px/1.1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.ya-ledger__play--battle {
-  background: #c8102e;
-}
-
-.ya-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.ya-ledger__play:focus-visible,
-.ya-btn:focus-visible,
-.ya-chip:focus-visible,
-.ya-tab:focus-visible,
-.ya-season:focus-visible,
-.ya-shop__select:focus-visible {
-  outline: 3px solid #1a73e8;
-  outline-offset: 2px;
-}
-
-.ya-teaser {
+  gap: 10px 16px;
   margin: 0;
   padding: 10px 16px;
-  border: 2px dashed rgb(29 26 23 / 0.35);
-  border-radius: 12px;
-  font-family: var(--hb-hand), cursive;
-  font-size: 20px;
+  background: var(--rt-k);
+  color: var(--rt-paper);
+  font-weight: 800;
+  font-size: 17px;
   text-align: center;
 }
 
-.ya-panel {
-  padding: 16px 18px;
-  border-radius: 14px;
-  background: rgb(255 255 255 / 0.55);
+.ya-panel .rt-scrap__body {
+  padding: 20px 22px 24px;
+  outline: 2px solid var(--rt-k);
+  outline-offset: -2px;
 }
-
+.ya-shop .rt-scrap__body {
+  padding: 20px 22px 38px;
+}
 .ya-h2 {
-  margin: 0 0 8px;
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 28px;
-  font-weight: 400;
-  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-size: 44px;
 }
-
 .ya-evolve {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.ya-shop__text {
-  margin: 0 0 10px;
-  font-size: 15px;
-  line-height: 1.45;
-}
+/* ——— Picking what to look at ——— */
 
-.ya-shop__row {
+.ya-browse {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 14px;
+  flex-direction: column;
+  gap: 16px;
 }
-
-.ya-shop__label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-}
-
-.ya-shop__select {
-  min-height: 40px;
-  padding: 6px 10px;
-  border: 2px solid #1d1a17;
-  border-radius: 10px;
-  background: #fff;
-  font: inherit;
-}
-
-.ya-shop__short {
-  font-family: var(--hb-hand), cursive;
-  font-size: 18px;
-}
-
-.ya-toast {
-  position: sticky;
-  top: 12px;
-  z-index: 20;
-  margin: 0;
-  padding: 12px 16px;
-  border-radius: 12px;
-  background: #1d1a17;
-  color: #fff;
-  font-size: 16px;
-  text-align: center;
-}
-
-.ya-toast__x {
-  margin-left: 8px;
-  padding: 4px 12px;
-  border: 0;
-  border-radius: 999px;
-  background: #ffd23f;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .ya-seasons {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 8px;
-}
-
-.ya-season {
-  min-height: 38px;
-  padding: 6px 16px;
-  border: 2px solid #1d1a17;
-  border-radius: 999px;
-  background: transparent;
-  font:
-    700 14px/1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  cursor: pointer;
-}
-
-.ya-season[aria-pressed="true"] {
-  background: #1d1a17;
-  color: #fff;
 }
 
 .ya-tabs {
   display: flex;
   gap: 6px;
   margin: 0 -16px;
-  padding: 2px 16px 8px;
+  padding: 2px 16px 6px;
   overflow-x: auto;
   scrollbar-width: thin;
 }
-
 .ya-tab {
-  --c: #1d1a17;
-  display: flex;
+  --c: var(--rt-k);
+  display: grid;
   flex: none;
-  flex-direction: column;
-  align-items: center;
-  min-width: 76px;
-  min-height: 52px;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 12px 12px 4px 4px;
-  background: rgb(255 255 255 / 0.5);
-  color: #1d1a17;
-  font:
-    700 15px/1.1 "Helvetica Neue",
-    Arial,
-    sans-serif;
+  align-content: center;
+  min-width: 78px;
+  min-height: 56px;
+  padding: 5px 12px 4px;
+  border: 2px solid var(--rt-k);
+  border-left: 7px solid var(--c);
+  border-radius: 0;
+  background: var(--rt-white);
+  color: var(--rt-k);
+  text-align: left;
   cursor: pointer;
-  box-shadow: inset 0 -4px 0 var(--c);
 }
-
+.ya-tab__name {
+  font-family: var(--rt-ff-head);
+  font-size: 26px;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
 .ya-tab small {
-  margin-top: 3px;
   font-size: 12px;
-  font-weight: 600;
-  opacity: 0.75;
 }
-
+.ya-tab:hover .ya-tab__name {
+  text-decoration: underline 2px;
+  text-underline-offset: 3px;
+}
 .ya-tab[aria-selected="true"] {
-  background: var(--c);
-  color: #fff;
+  background: var(--rt-k);
+  color: var(--rt-paper);
 }
 
 .ya-tab[data-league="pokemon"] {
   --c: #d4a700;
 }
 .ya-tab[data-league="wwe"] {
-  --c: #111;
+  --c: #6b6b6b;
 }
 .ya-tab[data-league="football"] {
   --c: #1f2d8a;
@@ -265,85 +233,153 @@
 
 .ya-filters {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 10px 26px;
 }
-
 .ya-chips {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6px;
 }
-
-.ya-chip {
-  min-height: 34px;
-  padding: 5px 13px;
-  border: 1.5px solid rgb(29 26 23 / 0.5);
-  border-radius: 999px;
-  background: transparent;
-  color: #1d1a17;
-  font:
-    600 14px/1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  cursor: pointer;
+.ya-chips__label {
+  margin-right: 4px;
 }
 
-.ya-chip[aria-pressed="true"] {
-  border-color: #1d1a17;
-  background: #1d1a17;
-  color: #fff;
-}
+/* ——— A set: its name, then its binder page ——— */
 
 .ya-set__head {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 14px;
+  gap: 4px 16px;
   margin-bottom: 12px;
 }
-
 .ya-set__name {
-  margin: 0;
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 34px;
-  font-weight: 400;
-  text-transform: uppercase;
+  font-size: 46px;
 }
-
-.ya-set__sub,
+.ya-set__sub {
+  margin: 0;
+  font-size: 16px;
+}
 .ya-set__count {
   margin: 0;
-  font-size: 15px;
 }
-
-.ya-set__count {
-  font-weight: 700;
-}
-
-.ya-set__done {
-  color: #c8102e;
+.ya-set__stamp {
+  position: absolute;
+  right: 4px;
+  top: -6px;
+  font-size: 38px;
 }
 
 .ya-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 18px;
+  gap: 14px;
   margin: 0;
-  padding: 0;
+  padding: 16px;
   list-style: none;
+  background-color: var(--rt-k);
+  background-image: var(--rt-toner);
+  background-size: 240px 240px;
+}
+
+/* An empty pocket: where a missing card goes. */
+.ya-grid__empty .yc-slot {
+  /* Its own size in its own units would read the page's width: set it in its box's. */
+  gap: 6px;
+  padding: 8%;
+  border: 2px dashed rgb(246 243 234 / 0.7);
+  border-radius: 0;
+  background: rgb(255 255 255 / 0.04);
+  color: var(--rt-paper);
+}
+.ya-grid__empty .yc-slot__q {
+  font-family: var(--rt-ff-head);
+  opacity: 0.5;
+}
+.ya-grid__empty .yc-slot__label {
+  font-family: var(--rt-ff-head);
+}
+.ya-grid__empty .yc-slot__sub {
+  font-family: var(--rt-ff-meta);
+  font-weight: 700;
 }
 
 .ya-empty {
   margin: 0;
-  font-family: var(--hb-hand), cursive;
-  font-size: 20px;
+  padding: 20px;
+  border: 2px dashed var(--rt-k);
+  font-weight: 800;
+  font-size: 18px;
   text-align: center;
 }
 
-@media (max-width: 480px) {
+/* ——— The coin shop ——— */
+
+.ya-shop__text {
+  max-width: 62ch;
+  margin: 0 0 16px;
+}
+.ya-shop__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 18px;
+}
+.ya-shop__label {
+  display: grid;
+  gap: 4px;
+}
+.ya-shop__select {
+  min-width: 200px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border: 3px solid var(--rt-k);
+  border-radius: 0;
+  background: var(--rt-paper);
+  color: var(--rt-k);
+  font: 800 19px/1.2 var(--rt-ff-read);
+}
+
+@media (max-width: 760px) {
+  .ya-hero {
+    margin-inline: -16px;
+    padding: 30px 18px 44px;
+  }
+  .ya-hero__h {
+    font-size: 70px;
+  }
+  .ya-hero__line {
+    font-size: 18px;
+  }
+  .ya-hero__drop {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 22px;
+  }
+  dd > .ya-ledger__n {
+    font-size: 66px;
+  }
+  .ya-ledger__n {
+    font-size: 50px;
+  }
+  .ya-set__name {
+    font-size: 38px;
+  }
+  .ya-set__stamp {
+    position: static;
+    font-size: 30px;
+  }
   .ya-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
+    margin-inline: -16px;
+    padding: 12px;
+  }
+  .ya-filters {
+    flex-direction: column;
   }
 }

@@ -15,6 +15,8 @@ export function GoButton({
   type = "button",
   scroll,
   className,
+  onClick,
+  disabled,
   "aria-label": ariaLabel,
 }: {
   children: ReactNode;
@@ -25,6 +27,10 @@ export function GoButton({
   type?: "button" | "submit";
   scroll?: boolean;
   className?: string;
+  /** A button's action, or a link's side effect (closing an overlay). From client callers. */
+  onClick?: () => void;
+  /** Buttons only. */
+  disabled?: boolean;
   "aria-label"?: string;
 }) {
   const cls = `rt-go rt-go--${tone} ${className ?? ""}`;
@@ -35,11 +41,17 @@ export function GoButton({
     </>
   );
   return href ? (
-    <Link href={href} scroll={scroll} className={cls} aria-label={ariaLabel}>
+    <Link href={href} scroll={scroll} className={cls} aria-label={ariaLabel} onClick={onClick}>
       {body}
     </Link>
   ) : (
-    <button type={type} className={cls} aria-label={ariaLabel}>
+    <button
+      type={type}
+      className={cls}
+      aria-label={ariaLabel}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {body}
     </button>
   );

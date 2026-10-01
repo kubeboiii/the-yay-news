@@ -7,7 +7,9 @@ import { StickerLayer } from "@/features/habits/stickers";
 import { ShareBar, StoryCut } from "@/features/reader/share-bar";
 import { Pager } from "@/features/site/pager";
 import { pagerPages } from "@/features/site/pager-pages";
+import { Heading, RiotTheme, riotInks } from "@/features/riot";
 import { ZineLink } from "@/features/zine/zine-link";
+import "./take-zine.css";
 import { Balance } from "./balance";
 import { withOnePictureGroup } from "./plates";
 import { readingFor, storyLinks } from "./reading";
@@ -40,16 +42,24 @@ export function EditionPageView({
         <PrintedPage edition={edition} page={page} live />
       </div>
       {page.layout === "back" ? (
-        <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-[#e4ded3] px-4 pt-6 pb-24 text-center font-serif text-[17px] text-[#1c1a17] print:hidden">
-          <span>Take today with you:</span>
-          <ZineLink
-            issue={edition.issueNumber}
-            className="rounded-full bg-[#1c1a17] px-4 py-1.5 font-semibold text-[#fbf6ea] hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2"
-          >
-            Download the mini zine
-          </ZineLink>
-          <span className="opacity-75">one A4 sheet, one cut, eight pages</span>
-        </p>
+        <RiotTheme
+          as="section"
+          inks={riotInks({ design: edition.design, colourway: edition.colourway })}
+          surface={false}
+          className="yz-take print:hidden"
+          aria-labelledby="yz-take-h"
+        >
+          <div className="yz-take__in">
+            <Heading as="h2" id="yz-take-h" className="yz-take__h">
+              Take today with you
+            </Heading>
+            <p className="yz-take__what rt-meta">One A4 sheet · one cut · eight pages</p>
+            <ZineLink issue={edition.issueNumber} className="rt-go rt-go--ink yz-take__go">
+              <span className="rt-go__label">Download the mini zine</span>
+              <span className="rt-go__sub">a PDF to print, fold and keep</span>
+            </ZineLink>
+          </div>
+        </RiotTheme>
       ) : null}
       <ReadingTracker
         edition={edition}

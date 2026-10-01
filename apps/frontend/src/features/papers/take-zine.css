@@ -1,0 +1,42 @@
+/* "Take today with you": the mini zine's download strip under the back page, in the riot kit's
+ * inks for the day: a band of plate A, the head in the condensed face, one black slab to press. */
+
+.yz-take {
+  padding: 28px 16px 104px;
+  background-color: var(--rt-a);
+  background-image: var(--rt-speckle), var(--rt-toner);
+  background-size:
+    420px 420px,
+    240px 240px;
+  color: var(--rt-a-on);
+  clip-path: polygon(
+    0 10px,
+    9% 2px,
+    23% 8px,
+    41% 0,
+    58% 7px,
+    76% 1px,
+    91% 8px,
+    100% 3px,
+    100% 100%,
+    0 100%
+  );
+}
+.yz-take__in {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.yz-take__h {
+  font-size: clamp(40px, 6vw, 60px);
+}
+.yz-take__what {
+  margin: 0 0 6px;
+}
+.yz-take__go {
+  justify-items: center;
+  text-align: center;
+}

@@ -344,3 +344,36 @@ export function OMouth({ c, x, y, w, h }: { c: Ctx; x: number; y: number; w: num
     </g>
   );
 }
+
+/**
+ * Round, bright eyes with soft brows arched up and away, for a trace whose own eyes slant in
+ * (which reads cross). The caller leaves the traced eyes out and draws these instead.
+ */
+export function HappyEyes({
+  c,
+  eyes,
+  r,
+}: {
+  c: Ctx;
+  eyes: readonly [number, number][];
+  r: number;
+}) {
+  const mid = (eyes[0]![0] + eyes[1]![0]) / 2;
+  return (
+    <g>
+      {eyes.map(([x, y]) => {
+        const out = x < mid ? -1 : 1;
+        return (
+          <g key={x}>
+            <circle cx={x} cy={y} r={r * 1.15} fill={c.k.line} />
+            <path
+              d={`M${x - out * r * 0.9} ${y - r * 2.1} Q${x + out * r * 0.25} ${y - r * 3} ${x + out * r * 1.35} ${y - r * 1.85}`}
+              fill="none"
+              {...ln(c, 0.8)}
+            />
+          </g>
+        );
+      })}
+    </g>
+  );
+}

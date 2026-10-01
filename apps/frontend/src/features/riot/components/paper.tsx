@@ -22,6 +22,7 @@ export function Scrap({
   as: Tag = "div",
   className,
   style,
+  ...aria
 }: {
   children: ReactNode;
   seed: string;
@@ -33,15 +34,19 @@ export function Scrap({
   tape?: TapeAt | readonly TapeAt[];
   /** Degrees. Reserve for one or two hero pieces per screen. */
   tilt?: number;
-  as?: "div" | "p" | "figure" | "aside" | "li";
+  as?: "div" | "p" | "figure" | "aside" | "li" | "section" | "article";
   className?: string;
   style?: CSSProperties;
+  id?: string;
+  "aria-labelledby"?: string;
+  "aria-label"?: string;
 }) {
   const tapes = tape ? (Array.isArray(tape) ? tape : [tape]) : [];
   return (
     <Tag
       className={`rt-scrap rt-on--${ground} ${className ?? ""}`}
       style={{ rotate: tilt ? `${tilt}deg` : undefined, ...style }}
+      {...aria}
     >
       <span
         className={`rt-scrap__sheet rt-g--${ground}`}

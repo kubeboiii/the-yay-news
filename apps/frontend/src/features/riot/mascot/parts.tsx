@@ -82,16 +82,34 @@ export const ln = (c: Ctx, f = 1) => ({
 });
 
 /** A traced drawing: its fills in the mascot's inks, then its black line work. */
-export function ArtLayers({ art, c, style }: { art: Art; c: Ctx; style?: CSSProperties }) {
+export function ArtLayers({
+  art,
+  c,
+  style,
+  omitLines,
+}: {
+  art: Art;
+  c: Ctx;
+  style?: CSSProperties;
+  /** Line paths (by index) to leave out, where an overlay redraws them. */
+  omitLines?: readonly number[];
+}) {
   const ink = (i: ArtInk) => c.k[i];
   return (
     <g style={style}>
       {art.fills.map(([i, d, x, y, s], n) => (
         <path key={n} d={d} fill={ink(i)} transform={`translate(${x} ${y}) scale(${s})`} />
       ))}
-      {art.lines.map(([d, x, y, s], n) => (
-        <path key={`l${n}`} d={d} fill={c.k.line} transform={`translate(${x} ${y}) scale(${s})`} />
-      ))}
+      {art.lines.map(([d, x, y, s], n) =>
+        omitLines?.includes(n) ? null : (
+          <path
+            key={`l${n}`}
+            d={d}
+            fill={c.k.line}
+            transform={`translate(${x} ${y}) scale(${s})`}
+          />
+        ),
+      )}
     </g>
   );
 }

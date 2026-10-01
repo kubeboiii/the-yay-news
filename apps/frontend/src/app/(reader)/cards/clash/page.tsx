@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Clash } from "@/features/cards/clash";
-import { habitFonts } from "@/features/habits/fonts";
-import { SoundToggle } from "@/features/sound/sound-toggle";
-import "@/features/habits/saved.css";
+import { CardsDesk, CLASH_CUTS, GameHead } from "@/features/cards/desk";
 
 export const metadata: Metadata = {
   title: "Card Clash · Yay Attax · The Yay News",
@@ -15,18 +12,11 @@ export const metadata: Metadata = {
 /** Card Clash: Top Trumps against the computer, one league at a time. */
 export default function ClashPage() {
   return (
-    <main className={`hb-desk ${habitFonts}`}>
-      <header className="hb-desk__head">
-        <p className="hb-desk__kicker">Yay Attax</p>
-        <h1 className="hb-desk__title">Card Clash</h1>
-        <p className="hb-desk__note">
-          Best of five against the computer. <Link href="/cards">Back to your album</Link>
-        </p>
-      </header>
+    <CardsDesk>
+      <GameHead text="CARD CLASH" cuts={CLASH_CUTS}>
+        Best of five against the computer. Pick a stat; the higher number takes the round.
+      </GameHead>
       <Clash />
-      <p className="hb-desk__corner">
-        <SoundToggle />
-      </p>
-    </main>
+    </CardsDesk>
   );
 }

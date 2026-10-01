@@ -460,6 +460,15 @@
   text-decoration: underline 3px;
   text-underline-offset: 4px;
 }
+.rt-go:disabled {
+  border-style: dashed;
+  background: transparent;
+  color: #4a4843;
+  cursor: not-allowed;
+}
+.rt-go:disabled .rt-go__label {
+  text-decoration: none;
+}
 .rt-go--a {
   background: var(--rt-a);
   color: var(--rt-a-on);

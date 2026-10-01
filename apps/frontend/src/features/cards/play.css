@@ -1,19 +1,6 @@
-/* Yay Attax games: Card Clash (clash.tsx) and Deck Battle (battle-view.tsx). */
-
-.yp-note,
-.yp-line {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.45;
-  text-align: center;
-}
-
-.yp-note {
-  max-width: 620px;
-  margin: 0 auto;
-  font-family: var(--hb-hand), cursive;
-  font-size: 21px;
-}
+/* Yay Attax games in the riot kit: Card Clash (clash.tsx) and Deck Battle (battle-view.tsx).
+ * The table is one flat band of plate A carrying the cards in sleeves; everything else sits
+ * straight on the paper. desk.css has the shared parts. */
 
 .yp-intro,
 .yp-builder,
@@ -22,175 +9,209 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  max-width: 1000px;
-  margin: 0 auto;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  gap: 20px;
+}
+.yp-intro,
+.yp-builder {
+  align-items: stretch;
 }
 
-.yp-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 8px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: #1d1a17;
-  color: #fff;
-  font:
-    700 15px/1.1 "Helvetica Neue",
-    Arial,
-    sans-serif;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.yp-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.yp-btn--big {
-  min-height: 52px;
-  padding: 10px 24px;
+.yp-note,
+.yp-line {
+  margin: 0;
   font-size: 17px;
+  line-height: 1.45;
 }
-
-.yp-btn--quiet {
-  background: transparent;
-  color: #1d1a17;
-  box-shadow: inset 0 0 0 2px #1d1a17;
-}
-
-.yp-btn--special {
-  background: #c8102e;
-}
-
-.yp-btn:focus-visible,
-.yp-league:focus-visible,
-.yp-pick__card:focus-visible {
-  outline: 3px solid #1a73e8;
-  outline-offset: 3px;
-}
-
-.yp-link {
-  color: inherit;
+.yp-note {
+  max-width: 60ch;
   font-weight: 700;
 }
+.yp-line {
+  text-align: center;
+}
+.yp-h2 {
+  margin-bottom: 8px;
+  font-size: 46px;
+}
 
-.yp-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px 16px;
+.yp-empty {
+  max-width: 560px;
+}
+.yp-empty .rt-scrap__body {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  padding: 22px;
+  outline: 2px solid var(--rt-k);
+  outline-offset: -2px;
+  font-weight: 700;
+}
+.yp-empty p {
   margin: 0;
 }
+
+/* ——— Picking a league ——— */
 
 .yp-leagues {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
-  width: 100%;
+  margin-top: 18px;
 }
-
 .yp-league {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-height: 64px;
-  padding: 10px 12px;
-  border: 0;
-  border-radius: 12px;
-  background: #1d1a17;
-  color: #fff;
-  font:
-    700 16px/1.1 "Helvetica Neue",
-    Arial,
-    sans-serif;
+  --c: var(--rt-k);
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  min-height: 72px;
+  padding: 8px 14px;
+  border: 2px solid var(--rt-k);
+  border-left: 8px solid var(--c);
+  border-radius: 0;
+  background: var(--rt-white);
+  color: var(--rt-k);
   text-align: left;
   cursor: pointer;
 }
-
-.yp-league small {
-  font-weight: 400;
-  opacity: 0.8;
-}
-
-.yp-league:disabled {
-  background: rgb(29 26 23 / 0.15);
-  color: rgb(29 26 23 / 0.7);
-  cursor: not-allowed;
-}
-
-.yp-league-name {
-  margin: 0;
-  font-family: var(--hb-gothic), Impact, sans-serif;
+.yp-league__name {
+  font-family: var(--rt-ff-head);
   font-size: 30px;
+  line-height: 0.95;
   text-transform: uppercase;
 }
+.yp-league:hover:not(:disabled) .yp-league__name {
+  text-decoration: underline 2px;
+  text-underline-offset: 3px;
+}
+.yp-league:disabled {
+  border-style: dashed;
+  border-left-style: solid;
+  background: transparent;
+  color: #4a4843;
+  cursor: not-allowed;
+}
+.yp-league[data-league="pokemon"] {
+  --c: #d4a700;
+}
+.yp-league[data-league="wwe"] {
+  --c: #6b6b6b;
+}
+.yp-league[data-league="football"] {
+  --c: #1f2d8a;
+}
+.yp-league[data-league="ipl"] {
+  --c: #d35400;
+}
+.yp-league[data-league="ufc"] {
+  --c: #b00808;
+}
+.yp-league[data-league="nba"] {
+  --c: #b4501f;
+}
+.yp-league[data-league="marvel"] {
+  --c: #c62828;
+}
+.yp-league[data-league="dc"] {
+  --c: #0b4fa8;
+}
+.yp-league[data-league="ben10"] {
+  --c: #2e7d1a;
+}
+.yp-league[data-league="anime"] {
+  --c: #b0287a;
+}
+.yp-league[data-league="f1"] {
+  --c: #b30500;
+}
+.yp-league[data-league="tv"] {
+  --c: #8a5a00;
+}
 
+/* ——— Card Clash ——— */
+
+.yp-score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 24px;
+  width: 100%;
+}
+.yp-league-name {
+  font-size: 46px;
+}
 .yp-pips {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-
 .yp-pip {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #1d1a17;
-  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  min-width: 46px;
+  height: 32px;
+  padding: 0 4px;
+  border: 2px solid var(--rt-k);
+  background: var(--rt-white);
+  font-family: var(--rt-ff-meta);
+  font-weight: 700;
+  font-size: 12px;
 }
-
 .yp-pip[data-winner="you"] {
-  background: #2e9e44;
+  background: var(--rt-k);
+  color: var(--rt-paper);
 }
-
 .yp-pip[data-winner="cpu"] {
-  background: #c8102e;
+  background: var(--rt-a);
+  color: var(--rt-a-on);
 }
-
 .yp-pip[data-winner="draw"] {
-  background: #aaa;
+  background: repeating-linear-gradient(-45deg, transparent 0 4px, rgb(0 0 0 / 0.16) 4px 6px)
+    var(--rt-white);
 }
-
 .yp-tally {
   margin: 0;
+  font-weight: 800;
   font-size: 18px;
+}
+.yp-tally b {
+  font-family: var(--rt-ff-head);
+  font-weight: 400;
+  font-size: 40px;
+  vertical-align: -4px;
 }
 
 .yp-table {
   display: grid;
   grid-template-columns: minmax(0, 260px) auto minmax(0, 260px);
   align-items: center;
-  gap: 16px;
-  width: 100%;
   justify-content: center;
+  gap: 24px;
+  width: 100%;
 }
-
 .yp-side {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
-
 .yp-who {
   margin: 0;
-  font-family: var(--hb-hand), cursive;
-  font-size: 19px;
+  font-family: var(--rt-ff-head);
+  font-size: 26px;
+  line-height: 1;
+  text-transform: uppercase;
   text-align: center;
 }
-
-.yp-vs {
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 40px;
-  text-transform: uppercase;
+.yp-tape {
+  z-index: 13;
 }
-
+.yp-vs {
+  font-family: var(--rt-ff-wood);
+  font-size: 76px;
+  line-height: 1;
+}
 .yp-call {
   display: flex;
   flex-direction: column;
@@ -198,110 +219,154 @@
   gap: 10px;
 }
 
-.yp-end {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.yp-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
+  width: min(100%, 640px);
+}
+.yp-stat {
+  display: grid;
+  justify-items: start;
+  min-height: 64px;
+  padding: 6px 12px;
+  border: 3px solid var(--rt-k);
+  border-radius: 0;
+  background: var(--rt-k);
+  color: var(--rt-paper);
+  text-align: left;
+  cursor: pointer;
+}
+.yp-stat__name {
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.15;
+}
+.yp-stat__n {
+  font-family: var(--rt-ff-head);
+  font-size: 34px;
+  line-height: 0.95;
+}
+.yp-stat:hover .yp-stat__n {
+  text-decoration: underline 3px;
+  text-underline-offset: 3px;
 }
 
+.yp-end {
+  width: min(100%, 620px);
+}
+.yp-end .rt-scrap__body {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 26px 22px 22px;
+  outline: 2px solid var(--rt-k);
+  outline-offset: -2px;
+}
 .yp-big {
-  margin: 0;
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 44px;
-  text-transform: uppercase;
+  font-size: 60px;
+  text-align: center;
 }
-
-/* ——— Deck Battle ——— */
-
-.yp-deckbar {
-  position: sticky;
-  top: 8px;
-  z-index: 5;
+.yp-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px 14px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.85);
-  box-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.3);
+  gap: 12px 26px;
+  margin-top: 6px;
 }
 
+/* ——— Deck Battle: building the deck ——— */
+
+.yp-deckbar {
+  position: sticky;
+  top: 8px;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  padding: 10px 14px;
+  background-color: var(--rt-k);
+  background-image: var(--rt-toner);
+  color: var(--rt-paper);
+}
 .yp-deckbar__count {
-  margin: 0;
-  font-size: 17px;
+  margin: 0 auto 0 0;
+  font-family: var(--rt-ff-head);
+  font-size: 34px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.yp-deckbar__count b {
+  font-weight: 400;
+  font-size: 46px;
+}
+.yp-deckbar .rt-go {
+  border-color: var(--rt-paper);
+}
+.yp-deckbar .rt-go:disabled {
+  color: #c9c5bb;
 }
 
 .yp-rules {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 4px;
+  width: 100%;
   margin: 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.55);
-  font-size: 14px;
+  padding: 12px 16px;
+  border: 2px solid var(--rt-k);
+  background: var(--rt-white);
+  font-size: 15px;
   line-height: 1.4;
   list-style: none;
 }
-
-.yp-rules--small {
-  font-size: 13px;
-}
-
 .yp-wet {
-  font-weight: 700;
-  color: #0b4fa8;
+  font-weight: 800;
 }
 
 .yp-pick {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 14px;
-  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 22px 14px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-
 .yp-pick__card {
   position: relative;
-  display: block;
+  display: grid;
+  gap: 6px;
   width: 100%;
   padding: 0;
   border: 0;
-  border-radius: 14px;
   background: none;
+  color: var(--rt-k);
   cursor: pointer;
-  transition: transform 0.15s ease;
 }
-
-.yp-pick__card.is-on {
-  transform: translateY(-6px);
-  outline: 4px solid #2e9e44;
-  outline-offset: 3px;
+.yp-pick__sleeve {
+  display: block;
 }
-
+.yp-pick__card.is-on .yp-pick__sleeve {
+  background: var(--rt-a);
+  outline: 4px solid var(--rt-k);
+  outline-offset: 0;
+}
 .yp-pick__hp {
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  z-index: 9;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: #1d1a17;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  transform: translateX(-50%);
+  justify-self: center;
+  white-space: nowrap;
 }
+.yp-pick__card.is-on .yp-pick__hp {
+  padding: 1px 8px;
+  background: var(--rt-k);
+  color: var(--rt-paper);
+}
+
+/* ——— Deck Battle: the fight ——— */
 
 .yp-battle {
-  gap: 12px;
+  gap: 14px;
 }
-
 .yp-bench {
   display: flex;
   flex-wrap: wrap;
@@ -311,33 +376,31 @@
   padding: 0;
   list-style: none;
 }
-
 .yp-bench__slot {
   position: relative;
   min-width: 96px;
-  max-width: 150px;
-  padding: 4px 10px 8px;
-  border-radius: 8px;
-  background: #1d1a17;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
+  max-width: 160px;
+  padding: 5px 10px 9px;
+  border: 2px solid var(--rt-k);
+  background: var(--rt-white);
+  font-weight: 800;
+  font-size: 13px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
 .yp-bench__slot[data-out="true"] {
-  opacity: 0.35;
-  text-decoration: line-through;
+  border-style: dashed;
+  background: transparent;
+  color: #4a4843;
+  text-decoration: line-through 2px;
 }
-
 .yp-bench__hp {
   position: absolute;
   left: 0;
   bottom: 0;
   height: 4px;
-  background: #2e9e44;
+  background: var(--rt-k);
   transition: width 0.4s ease;
 }
 
@@ -345,42 +408,38 @@
   display: grid;
   grid-template-columns: minmax(0, 240px) minmax(0, 1fr) minmax(0, 240px);
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   width: 100%;
 }
-
 .yp-arena__mid {
-  min-height: 90px;
   display: grid;
   place-items: center;
+  min-height: 90px;
 }
-
 .yp-log {
+  max-width: 34ch;
   margin: 0;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: #fff;
+  padding: 12px 16px;
+  border: 2px solid var(--rt-k);
+  background: var(--rt-white);
+  color: var(--rt-k);
   font-size: 16px;
   line-height: 1.4;
   text-align: center;
-  box-shadow: 0 6px 18px -10px rgb(0 0 0 / 0.4);
-  animation: yp-in 0.3s ease;
+  animation: yp-in 0.2s steps(2);
 }
-
 .yp-log__notes {
-  color: #0b4fa8;
-  font-weight: 700;
-}
-
-.yp-log__ko {
-  color: #c8102e;
   font-weight: 800;
 }
-
+.yp-log__ko {
+  font-family: var(--rt-ff-head);
+  font-size: 24px;
+  text-transform: uppercase;
+}
 @keyframes yp-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    clip-path: inset(0 100% 0 0);
   }
 }
 
@@ -389,109 +448,94 @@
   flex-direction: column;
   gap: 8px;
 }
-
-.yp-fighter[data-side="cpu"] {
-  order: 0;
-}
-
 .yp-fighter__card {
   position: relative;
 }
-
+.yp-fighter__card > .yk-sleeve {
+  display: block;
+}
 .yp-fighter[data-side="you"] .yp-fighter__card.is-lunging {
-  animation: yp-lunge-r 0.45s ease;
+  animation: yp-lunge-r 0.4s ease;
 }
-
 .yp-fighter[data-side="cpu"] .yp-fighter__card.is-lunging {
-  animation: yp-lunge-l 0.45s ease;
+  animation: yp-lunge-l 0.4s ease;
 }
-
 .yp-fighter__card.is-struck {
-  animation: yp-struck 0.45s ease 0.15s;
+  animation: yp-struck 0.4s steps(4) 0.15s;
 }
-
 @keyframes yp-lunge-r {
   40% {
-    transform: translateX(-40px) rotate(-4deg);
+    translate: -36px 0;
   }
 }
-
 @keyframes yp-lunge-l {
   40% {
-    transform: translateX(40px) rotate(4deg);
+    translate: 36px 0;
   }
 }
-
 @keyframes yp-struck {
-  20%,
-  60% {
-    transform: translateX(-8px);
-    filter: brightness(1.6) saturate(0.5);
+  25%,
+  75% {
+    translate: -7px 0;
   }
-  40%,
-  80% {
-    transform: translateX(8px);
+  50% {
+    translate: 7px 0;
   }
 }
-
 .yp-dmg {
   position: absolute;
   top: 30%;
   left: 50%;
-  z-index: 10;
-  color: #fff;
-  font-family: var(--hb-gothic), Impact, sans-serif;
-  font-size: 54px;
-  -webkit-text-stroke: 2px #c8102e;
-  text-shadow: 0 4px 0 #c8102e;
-  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--rt-ff-wood);
+  font-size: 64px;
+  line-height: 1;
+  translate: -50% 0;
   animation: yp-float 1s ease forwards;
   pointer-events: none;
 }
-
+.yp-dmg .rt-misprint {
+  padding: 0 8px;
+  background: var(--rt-paper);
+}
 @keyframes yp-float {
   from {
     opacity: 0;
-    transform: translate(-50%, 20px) scale(0.6);
+    translate: -50% 16px;
   }
   25% {
     opacity: 1;
-    transform: translate(-50%, 0) scale(1.1);
+    translate: -50% 0;
   }
   to {
     opacity: 0;
-    transform: translate(-50%, -50px);
+    translate: -50% -40px;
   }
 }
 
 .yp-hp {
-  position: relative;
-  height: 22px;
-  border-radius: 999px;
-  background: rgb(29 26 23 / 0.2);
-  overflow: hidden;
+  display: grid;
+  gap: 4px;
 }
-
+.yp-hp__track {
+  position: relative;
+  height: 16px;
+  border: 2px solid var(--rt-k);
+  background: var(--rt-white);
+}
 .yp-hp__bar {
   position: absolute;
   inset: 0 auto 0 0;
-  background: #2e9e44;
+  background: var(--rt-k);
   transition: width 0.5s ease;
 }
-
 .yp-hp__bar[data-low="true"] {
-  background: #c8102e;
+  background: repeating-linear-gradient(-45deg, var(--rt-k) 0 4px, var(--rt-b) 4px 8px);
 }
-
 .yp-hp__text {
-  position: relative;
-  display: block;
-  padding: 0 10px;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 22px;
-  color: #fff;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+  font-family: var(--rt-ff-meta);
+  font-weight: 700;
+  font-size: 13px;
 }
 
 .yp-moves {
@@ -499,14 +543,22 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px 14px;
+  gap: 12px 16px;
 }
-
 .yp-auto {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 15px;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 6px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+.yp-auto input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--rt-k);
 }
 
 @media (max-width: 640px) {
@@ -514,24 +566,39 @@
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     gap: 8px;
   }
-
   .yp-vs {
-    font-size: 26px;
+    font-size: 36px;
   }
-
+  .yp-who {
+    font-size: 20px;
+  }
+  .yp-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .yp-league-name,
+  .yp-h2 {
+    font-size: 38px;
+  }
+  .yp-big {
+    font-size: 44px;
+  }
   .yp-arena {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 10px;
   }
-
   .yp-arena__mid {
     grid-column: 1 / -1;
     grid-row: 2;
     min-height: 70px;
   }
-
   .yp-pick {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .yp-deckbar__count {
+    font-size: 26px;
+  }
+  .yp-deckbar__count b {
+    font-size: 34px;
   }
 }
 

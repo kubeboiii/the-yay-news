@@ -1,8 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { earnSticker, record, recordOnce, useHabitsReady } from "@/features/habits/api";
+import {
+  type Cut,
+  GAP,
+  GoButton,
+  Heading,
+  Misprint,
+  Poster,
+  RansomHeading,
+  RubberStamp,
+  Scrap,
+  Sticker,
+} from "@/features/riot";
 import { play } from "@/features/sound";
 import { CardOutline, YayCard } from "./card-view";
 import { GameCard as ClassicCard } from "./classic/game-card";
@@ -15,6 +26,7 @@ import { SEASONS, seasonOn } from "./seasons";
 import { completeSets, setsOf } from "./sets";
 import { ERAS, type Era, LEAGUE_IDS, type LeagueId, RARITIES, type Rarity } from "./types";
 import { useCardsToday, useCollection } from "./use-collection";
+import "./desk.css";
 import "./album.css";
 
 // The Yay Attax album: a tab per league, its season's sets with the cards you have in their places
@@ -100,54 +112,91 @@ export function Album() {
     return true;
   };
 
+  const waiting = ready ? col.pending.length : 0;
   return (
     <div className="ya-album">
       <RewardHost />
-      <section className="ya-ledger" aria-label="Your collection">
-        <p className="ya-ledger__item">
-          <b>{ready ? have : "–"}</b> of {total} cards
+      <Poster
+        seed="attax-album"
+        className="ya-hero"
+        aria-label="Yay Attax, your card album"
+        screen={{ fade: "corner", density: 0.5, area: "0 0 46% 58%", w: 460, h: 380 }}
+      >
+        <p className="ya-hero__kicker rt-meta">The Yay News presents</p>
+        <RansomHeading as="h1" text="YAY ATTAX" seed="attax" cuts={TITLE} className="ya-hero__h" />
+        <p className="ya-hero__line">
+          Twelve leagues of cards, earned only by reading. Finish a paper for a scratch card and a
+          blind box.
         </p>
-        <p className="ya-ledger__item">
-          <b>{ready ? col.coins : "–"}</b> Yay Coin{col.coins === 1 ? "" : "s"}
-        </p>
-        <p className="ya-ledger__item">
-          <b>{ready ? col.sets.size : "–"}</b> set{col.sets.size === 1 ? "" : "s"} complete
-        </p>
-        <Link href="/cards/clash" className="ya-ledger__play">
-          Card Clash
-        </Link>
-        <Link href="/cards/battle" className="ya-ledger__play ya-ledger__play--battle">
-          Deck Battle
-        </Link>
-      </section>
+        <dl className="ya-ledger" aria-label="Your collection">
+          <div className="ya-ledger__item">
+            <dt>cards this season</dt>
+            <dd>
+              <Misprint className="ya-ledger__n">{ready ? have : "–"}</Misprint>
+              <span className="ya-ledger__of"> of {total}</span>
+            </dd>
+          </div>
+          <div className="ya-ledger__item">
+            <dt>Yay Coin{col.coins === 1 ? "" : "s"}</dt>
+            <dd className="ya-ledger__n">{ready ? col.coins : "–"}</dd>
+          </div>
+          <div className="ya-ledger__item">
+            <dt>set{col.sets.size === 1 ? "" : "s"} complete</dt>
+            <dd className="ya-ledger__n">{ready ? col.sets.size : "–"}</dd>
+          </div>
+        </dl>
+        <div className="ya-hero__cta">
+          {waiting ? (
+            <div className="ya-hero__offer">
+              <p className="ya-hero__waiting">
+                {waiting} reward{waiting === 1 ? "" : "s"} waiting to be opened:
+              </p>
+              <RewardOffer />
+            </div>
+          ) : (
+            <GoButton href="/" sub="a scratch card and a blind box for finishing it">
+              Read today&rsquo;s paper
+            </GoButton>
+          )}
+          <nav className="ya-hero__games" aria-label="Games">
+            <GoButton tone="quiet" href="/cards/clash">
+              Card Clash
+            </GoButton>
+            <GoButton tone="quiet" href="/cards/battle">
+              Deck Battle
+            </GoButton>
+          </nav>
+        </div>
+        {drop ? (
+          <Sticker seed="drop" ground="b" tilt={4} pinned className="ya-hero__drop">
+            <span className="ya-drop__when">New cards {shortDay(drop.date)}</span>
+            <span className="ya-drop__what">
+              {drop.name}, {drop.count} card{drop.count === 1 ? "" : "s"}
+            </span>
+          </Sticker>
+        ) : null}
+      </Poster>
 
-      {drop ? (
-        <p className="ya-teaser">
-          New cards drop on <b>{dayName(drop.date)}</b>: {drop.name}, {drop.count} card
-          {drop.count === 1 ? "" : "s"}.
+      {toast ? (
+        <p className="ya-toast" role="status">
+          {toast}{" "}
+          <button type="button" className="yk-btn yk-btn--a" onClick={() => setToast(null)}>
+            OK
+          </button>
         </p>
-      ) : null}
-
-      {ready && col.pending.length ? (
-        <section className="ya-panel" aria-labelledby="ya-rewards-h">
-          <h2 id="ya-rewards-h" className="ya-h2">
-            Waiting to be opened
-          </h2>
-          <RewardOffer />
-        </section>
       ) : null}
 
       {ready && evolve.length ? (
-        <section className="ya-panel ya-panel--evolve" aria-labelledby="ya-evolve-h">
-          <h2 id="ya-evolve-h" className="ya-h2">
+        <Scrap seed="evolve" ground="white" as="aside" className="ya-panel">
+          <Heading as="h2" id="ya-evolve-h" className="ya-h2">
             Ready to evolve
-          </h2>
-          <ul className="ya-evolve">
+          </Heading>
+          <ul className="ya-evolve" aria-labelledby="ya-evolve-h">
             {evolve.map(({ from, to }) => (
               <li key={from.id}>
                 <button
                   type="button"
-                  className="ya-btn"
+                  className="yk-btn"
                   onClick={() => doEvolve(from.id, to.id, to.name)}
                 >
                   Evolve 3 × {from.name} into {to.name}
@@ -155,162 +204,121 @@ export function Album() {
               </li>
             ))}
           </ul>
-        </section>
+        </Scrap>
       ) : null}
 
-      <section className="ya-panel" aria-labelledby="ya-shop-h">
-        <h2 id="ya-shop-h" className="ya-h2">
-          Spend your coins
-        </h2>
-        <p className="ya-shop__text">
-          Duplicates turn into Yay Coins, and so do Card Clash and Deck Battle wins. {BOX_PRICE}{" "}
-          coins buys a blind box of three from the league you choose. Coins can&rsquo;t be bought:
-          only read, collected and won.
-        </p>
-        <div className="ya-shop__row">
-          <label className="ya-shop__label">
-            League
-            <select
-              className="ya-shop__select"
-              value={buyLeague}
-              onChange={(e) => setBuyLeague(e.target.value as LeagueId)}
+      <div className="ya-browse">
+        <nav className="ya-seasons" aria-label="Season">
+          {SEASONS.map((s) => (
+            <button
+              key={s.n}
+              type="button"
+              className="yk-toggle"
+              aria-pressed={season === s.n}
+              onClick={() => setSeason(s.n)}
             >
-              {buyable.map((l) => (
-                <option key={l} value={l}>
-                  {LEAGUES[l].name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="button"
-            className="ya-btn"
-            disabled={!ready || col.coins < BOX_PRICE || !buyable.includes(buyLeague)}
-            onClick={() => openReward({ kind: "bought", key: null, league: buyLeague })}
-          >
-            Buy a blind box · {BOX_PRICE} coins
-          </button>
-          {ready && col.coins < BOX_PRICE ? (
-            <span className="ya-shop__short">{BOX_PRICE - col.coins} more to go</span>
-          ) : null}
+              {s.name}
+            </button>
+          ))}
+        </nav>
+
+        <div className="ya-tabs" role="tablist" aria-label="Leagues">
+          {tabs.map((t) => {
+            const count =
+              t === "classic"
+                ? col.classic.size
+                : inSeason.filter((c) => c.league === t && col.owned.has(c.id)).length;
+            const of = t === "classic" ? null : inSeason.filter((c) => c.league === t).length;
+            return (
+              <button
+                key={t}
+                type="button"
+                role="tab"
+                className="ya-tab"
+                data-league={t}
+                aria-selected={tab === t}
+                onClick={() => setTab(t)}
+              >
+                <span className="ya-tab__name">
+                  {t === "classic" ? "Classic (news)" : LEAGUES[t].short}
+                </span>
+                <small className="rt-meta">
+                  {ready ? (of === null ? count : `${count}/${of}`) : ""}
+                </small>
+              </button>
+            );
+          })}
         </div>
-      </section>
 
-      {toast ? (
-        <p className="ya-toast" role="status">
-          {toast}{" "}
-          <button type="button" className="ya-toast__x" onClick={() => setToast(null)}>
-            OK
-          </button>
-        </p>
-      ) : null}
-
-      <nav className="ya-seasons" aria-label="Season">
-        {SEASONS.map((s) => (
-          <button
-            key={s.n}
-            type="button"
-            className="ya-season"
-            aria-pressed={season === s.n}
-            onClick={() => setSeason(s.n)}
-          >
-            {s.name}
-          </button>
-        ))}
-      </nav>
-
-      <div className="ya-tabs" role="tablist" aria-label="Leagues">
-        {tabs.map((t) => {
-          const count =
-            t === "classic"
-              ? col.classic.size
-              : inSeason.filter((c) => c.league === t && col.owned.has(c.id)).length;
-          const of = t === "classic" ? null : inSeason.filter((c) => c.league === t).length;
-          return (
-            <button
-              key={t}
-              type="button"
-              role="tab"
-              className="ya-tab"
-              data-league={t}
-              aria-selected={tab === t}
-              onClick={() => setTab(t)}
-            >
-              {t === "classic" ? "Classic (news)" : LEAGUES[t].short}
-              <small>{ready ? (of === null ? count : `${count}/${of}`) : ""}</small>
-            </button>
-          );
-        })}
+        {tab !== "classic" ? (
+          <section className="ya-filters" aria-label="Filter the album">
+            <Chips label="Show">
+              {(["all", "owned", "missing"] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className="yk-toggle"
+                  aria-pressed={show === s}
+                  onClick={() => setShow(s)}
+                >
+                  {s === "all" ? "Every card" : s === "owned" ? "Collected" : "Missing"}
+                </button>
+              ))}
+            </Chips>
+            <Chips label="Rarity">
+              <button
+                type="button"
+                className="yk-toggle"
+                aria-pressed={rarity === "all"}
+                onClick={() => setRarity("all")}
+              >
+                Any
+              </button>
+              {RARITIES.map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  className="yk-toggle"
+                  data-rarity={r}
+                  aria-pressed={rarity === r}
+                  onClick={() => setRarity(r)}
+                >
+                  {RARITY_NAME[r]}
+                </button>
+              ))}
+            </Chips>
+            <Chips label="Era">
+              <button
+                type="button"
+                className="yk-toggle"
+                aria-pressed={era === "all"}
+                onClick={() => setEra("all")}
+              >
+                Any
+              </button>
+              {ERAS.map((e) => (
+                <button
+                  key={e}
+                  type="button"
+                  className="yk-toggle"
+                  data-era={e}
+                  aria-pressed={era === e}
+                  onClick={() => setEra(e)}
+                >
+                  {ERA_NAME[e]}
+                </button>
+              ))}
+            </Chips>
+          </section>
+        ) : null}
       </div>
-
-      {tab !== "classic" ? (
-        <section className="ya-filters" aria-label="Filter the album">
-          <div className="ya-chips" role="group" aria-label="Show">
-            {(["all", "owned", "missing"] as const).map((s) => (
-              <button
-                key={s}
-                type="button"
-                className="ya-chip"
-                aria-pressed={show === s}
-                onClick={() => setShow(s)}
-              >
-                {s === "all" ? "Every card" : s === "owned" ? "Collected" : "Missing"}
-              </button>
-            ))}
-          </div>
-          <div className="ya-chips" role="group" aria-label="Rarity">
-            <button
-              type="button"
-              className="ya-chip"
-              aria-pressed={rarity === "all"}
-              onClick={() => setRarity("all")}
-            >
-              Any rarity
-            </button>
-            {RARITIES.map((r) => (
-              <button
-                key={r}
-                type="button"
-                className="ya-chip"
-                data-rarity={r}
-                aria-pressed={rarity === r}
-                onClick={() => setRarity(r)}
-              >
-                {RARITY_NAME[r]}
-              </button>
-            ))}
-          </div>
-          <div className="ya-chips" role="group" aria-label="Era">
-            <button
-              type="button"
-              className="ya-chip"
-              aria-pressed={era === "all"}
-              onClick={() => setEra("all")}
-            >
-              Any era
-            </button>
-            {ERAS.map((e) => (
-              <button
-                key={e}
-                type="button"
-                className="ya-chip"
-                data-era={e}
-                aria-pressed={era === e}
-                onClick={() => setEra(e)}
-              >
-                {ERA_NAME[e]}
-              </button>
-            ))}
-          </div>
-        </section>
-      ) : null}
 
       {tab === "classic" ? (
         <section className="ya-set" aria-labelledby="set-classic">
           <header className="ya-set__head">
-            <h2 id="set-classic" className="ya-set__name">
+            <Heading as="h2" id="set-classic" className="ya-set__name">
               Classic (news) cards
-            </h2>
+            </Heading>
             <p className="ya-set__sub">
               The first Yay Attax cards, made from the paper&rsquo;s stories. No new ones are
               printed; these are yours to keep.
@@ -318,7 +326,7 @@ export function Album() {
           </header>
           <ul className="ya-grid">
             {[...col.classic.values()].map((c) => (
-              <li key={c.id}>
+              <li key={c.id} className="yk-sleeve">
                 <ClassicCard card={c} />
               </li>
             ))}
@@ -342,14 +350,19 @@ export function Album() {
           return (
             <section key={s.id} className="ya-set" aria-labelledby={`set-${s.id}`}>
               <header className="ya-set__head">
-                <h2 id={`set-${s.id}`} className="ya-set__name">
+                <Heading as="h2" id={`set-${s.id}`} className="ya-set__name">
                   {s.name}
-                </h2>
+                </Heading>
                 <p className="ya-set__sub">{s.sub}</p>
-                <p className="ya-set__count">
-                  {got} of {s.members.length}
-                  {complete ? <span className="ya-set__done"> · Full set!</span> : null}
+                <p className="ya-set__count rt-meta">
+                  {got} of {s.members.length} collected
+                  {complete ? " · full set!" : ""}
                 </p>
+                {complete ? (
+                  <RubberStamp seed={`full-${s.id}`} ink="a" tilt={-8} className="ya-set__stamp">
+                    Full set
+                  </RubberStamp>
+                ) : null}
               </header>
               {ids.length ? (
                 <ul className="ya-grid">
@@ -357,7 +370,7 @@ export function Album() {
                     const o = col.owned.get(id);
                     const c = byId.get(id)!;
                     return (
-                      <li key={id}>
+                      <li key={id} className={o ? "yk-sleeve" : "ya-grid__empty"}>
                         {o ? <YayCard card={c} copies={o.copies} /> : <CardOutline card={c} />}
                       </li>
                     );
@@ -370,6 +383,81 @@ export function Album() {
           );
         })
       )}
+
+      <Scrap
+        seed="shop"
+        ground="white"
+        edge="zigzag"
+        sides={["bottom"]}
+        as="aside"
+        className="ya-shop"
+      >
+        <Heading as="h2" id="ya-shop-h" className="ya-h2">
+          Spend your coins
+        </Heading>
+        <p className="ya-shop__text">
+          Duplicates turn into Yay Coins, and so do Card Clash and Deck Battle wins. {BOX_PRICE}{" "}
+          coins buys a blind box of three from the league you choose. Coins can&rsquo;t be bought:
+          only read, collected and won.
+        </p>
+        <div className="ya-shop__row">
+          <label className="ya-shop__label">
+            <span className="rt-meta">League</span>
+            <select
+              className="ya-shop__select"
+              value={buyLeague}
+              onChange={(e) => setBuyLeague(e.target.value as LeagueId)}
+            >
+              {buyable.map((l) => (
+                <option key={l} value={l}>
+                  {LEAGUES[l].name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <GoButton
+            tone="ink"
+            disabled={!ready || col.coins < BOX_PRICE || !buyable.includes(buyLeague)}
+            onClick={() => openReward({ kind: "bought", key: null, league: buyLeague })}
+            sub={
+              ready && col.coins < BOX_PRICE
+                ? `${BOX_PRICE - col.coins} more coin${BOX_PRICE - col.coins === 1 ? "" : "s"} to go`
+                : `three ${LEAGUES[buyLeague].short} cards`
+            }
+          >
+            Buy a blind box · {BOX_PRICE} coins
+          </GoButton>
+        </div>
+      </Scrap>
+    </div>
+  );
+}
+
+const TITLE: readonly (Cut | typeof GAP)[] = [
+  { ch: "YA", from: "gothic", size: 1.14 },
+  { ch: "Y", from: "didone", size: 0.96, lift: 0.07, tuck: 0.03, turn: -4 },
+  GAP,
+  { ch: "AT", from: "slab", size: 1, turn: 1.5 },
+  { ch: "T", from: "roman", size: 1.04, tuck: 0.03, lift: -0.03 },
+  { ch: "A", from: "gothic", size: 1.12, tuck: 0.02, ground: "ink" },
+  { ch: "X", from: "slab", size: 0.94, tuck: 0.03, lift: 0.05, turn: 3 },
+];
+
+const SHORT_DAY = new Intl.DateTimeFormat("en-GB", {
+  weekday: "short",
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+});
+const shortDay = (date: string) => SHORT_DAY.format(new Date(`${date}T00:00:00Z`));
+
+function Chips({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="ya-chips" role="group" aria-label={label}>
+      <span className="ya-chips__label rt-meta" aria-hidden>
+        {label}
+      </span>
+      {children}
     </div>
   );
 }

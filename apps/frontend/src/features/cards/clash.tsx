@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { exportLog, record, useHabitsReady } from "@/features/habits/api";
+import { GoButton, Heading, Misprint, Scrap, Tape } from "@/features/riot";
 import { play } from "@/features/sound";
 import { CardFaceDown, YayCard } from "./card-view";
 import { CLASH_PAYOUTS, paidWinsOn } from "./collection";
@@ -12,6 +12,7 @@ import { LEAGUES } from "./leagues/meta";
 import type { Card, LeagueId } from "./types";
 import { LEAGUE_IDS } from "./types";
 import { nonce, useCardsToday, useCollection } from "./use-collection";
+import "./desk.css";
 import "./play.css";
 
 // Card Clash: Top Trumps against the computer, one league at a time. Best of five rounds: your
@@ -85,39 +86,49 @@ export function Clash() {
   if (!game) {
     return (
       <div className="yp-intro">
-        <p className="yp-note">
-          Pick a league. Five rounds against the computer&rsquo;s cards from the same league: pick a
-          stat, higher number wins the round. First to three wins.
-        </p>
         {playable.length ? (
-          <div className="yp-leagues" role="group" aria-label="Leagues you can play">
-            {LEAGUE_IDS.map((l) => {
-              const n = mineBy.get(l)?.length ?? 0;
-              return (
-                <button
-                  key={l}
-                  type="button"
-                  className="yp-league"
-                  data-league={l}
-                  disabled={n < CLASH_MIN}
-                  aria-pressed={league === l}
-                  onClick={() => start(l)}
-                >
-                  {LEAGUES[l].name}
-                  <small>
-                    {n < CLASH_MIN
-                      ? `${CLASH_MIN - n} more card${CLASH_MIN - n === 1 ? "" : "s"} to play`
-                      : `${n} cards`}
-                  </small>
-                </button>
-              );
-            })}
-          </div>
+          <section className="yp-pickleague" aria-labelledby="yp-pick-h">
+            <Heading as="h2" id="yp-pick-h" className="yp-h2">
+              Pick a league
+            </Heading>
+            <p className="yp-note">
+              Five rounds against the computer&rsquo;s cards from the same league. First to three
+              wins; a win pays a Yay Coin.
+            </p>
+            <div className="yp-leagues" role="group" aria-labelledby="yp-pick-h">
+              {LEAGUE_IDS.map((l) => {
+                const n = mineBy.get(l)?.length ?? 0;
+                return (
+                  <button
+                    key={l}
+                    type="button"
+                    className="yp-league"
+                    data-league={l}
+                    disabled={n < CLASH_MIN}
+                    aria-pressed={league === l}
+                    onClick={() => start(l)}
+                  >
+                    <span className="yp-league__name">{LEAGUES[l].name}</span>
+                    <small className="rt-meta">
+                      {n < CLASH_MIN
+                        ? `${CLASH_MIN - n} more card${CLASH_MIN - n === 1 ? "" : "s"} to play`
+                        : `${n} cards`}
+                    </small>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
         ) : (
-          <p className="yp-note">
-            You need {CLASH_MIN} cards from one league to play. Finish a paper for a scratch card
-            and a blind box. <Link href="/">Read today&rsquo;s paper</Link>
-          </p>
+          <Scrap seed="clash-empty" ground="white" className="yp-empty">
+            <p>
+              You need {CLASH_MIN} cards from one league to play. Finish a paper for a scratch card
+              and a blind box.
+            </p>
+            <GoButton href="/" sub="a scratch card and a blind box for finishing it">
+              Read today&rsquo;s paper
+            </GoButton>
+          </Scrap>
         )}
       </div>
     );
@@ -162,44 +173,50 @@ export function Clash() {
 
   return (
     <div className="yp-clash">
-      <p className="yp-league-name">{L.name}</p>
-      <ol className="yp-pips" aria-label="Rounds">
-        {Array.from({ length: ROUNDS }, (_, i) => {
-          const r = rounds[i];
-          return (
-            <li key={i} className="yp-pip" data-winner={r?.winner ?? "none"}>
-              <span className="sr-only">
-                Round {i + 1}:{" "}
-                {r
-                  ? r.winner === "draw"
-                    ? "a draw"
-                    : `${r.winner === "you" ? "you" : "the computer"} won`
-                  : "to play"}
-              </span>
-            </li>
-          );
-        })}
-      </ol>
-      <p className="yp-tally" aria-live="polite">
-        You <b>{score.you}</b> · <b>{score.cpu}</b> Computer
-      </p>
-      <div className="yp-table">
+      <header className="yp-score">
+        <Heading as="h2" className="yp-league-name">
+          {L.name}
+        </Heading>
+        <ol className="yp-pips" aria-label="Rounds">
+          {Array.from({ length: ROUNDS }, (_, i) => {
+            const r = rounds[i];
+            return (
+              <li key={i} className="yp-pip" data-winner={r?.winner ?? "none"}>
+                <span aria-hidden>
+                  {r ? (r.winner === "you" ? "You" : r.winner === "cpu" ? "CPU" : "Draw") : i + 1}
+                </span>
+                <span className="rt-sr">
+                  Round {i + 1}:{" "}
+                  {r
+                    ? r.winner === "draw"
+                      ? "a draw"
+                      : `${r.winner === "you" ? "you" : "the computer"} won`
+                    : "to play"}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+        <p className="yp-tally" aria-live="polite">
+          You <b>{score.you}</b> · <b>{score.cpu}</b> Computer
+        </p>
+      </header>
+      <div className="yp-table yk-band">
         <div className="yp-side">
           <p className="yp-who">Your card</p>
-          <YayCard
-            card={yours}
-            highlight={showing?.stat ?? null}
-            onPickStat={
-              !showing && !over && picker === "you" ? (k) => playStat(k, "you") : undefined
-            }
-          />
+          <div className="yk-sleeve">
+            <Tape at="top" seed="clash-yours" className="yp-tape" />
+            <YayCard card={yours} highlight={showing?.stat ?? null} still />
+          </div>
         </div>
-        <div className="yp-vs" aria-hidden>
-          vs
-        </div>
+        <span className="yp-vs" aria-hidden>
+          <Misprint>VS</Misprint>
+        </span>
         <div className="yp-side">
           <p className="yp-who">The computer&rsquo;s</p>
-          {showing ? <YayCard card={theirs} highlight={showing.stat} still /> : <CardFaceDown />}
+          <div className="yk-sleeve">
+            {showing ? <YayCard card={theirs} highlight={showing.stat} still /> : <CardFaceDown />}
+          </div>
         </div>
       </div>
       <div className="yp-call" role="status" aria-live="polite">
@@ -214,56 +231,64 @@ export function Clash() {
                 : "A draw."}
           </p>
         ) : picker === "you" ? (
-          <p className="yp-line">Your pick: tap a stat on your card.</p>
+          <p className="yp-line">Your pick: which of your card&rsquo;s stats will win it?</p>
         ) : (
-          <p className="yp-line">
-            The computer won that one, so it picks.{" "}
-            <button type="button" className="yp-btn" onClick={() => playStat(best(theirs), "cpu")}>
-              See what it picks
-            </button>
-          </p>
+          <p className="yp-line">The computer won that one, so it picks.</p>
         )}
-        {over && showing ? (
-          <div className="yp-end">
-            <p className="yp-big">
-              {result === "won" ? "You win!" : result === "lost" ? "The computer wins." : "A draw!"}
-            </p>
-            <p className="yp-line">
-              {result === "won"
-                ? paid
-                  ? "+1 Yay Coin for your album."
-                  : `A win, though today's ${CLASH_PAYOUTS} coins are already paid out.`
-                : "Deal again for a rematch."}
-            </p>
-            <p className="yp-actions">
-              <button
-                type="button"
-                className="yp-btn yp-btn--big"
-                onClick={() => start(game.league)}
-              >
-                Play again
-              </button>
-              <button type="button" className="yp-btn yp-btn--quiet" onClick={() => setGame(null)}>
-                Another league
-              </button>
-              <Link href="/cards" className="yp-link">
-                Back to the album
-              </Link>
-            </p>
-          </div>
-        ) : showing ? (
-          <button
-            type="button"
-            className="yp-btn yp-btn--big"
-            onClick={() => {
-              setRevealed(false);
-              play("fold");
-            }}
-          >
-            Next round
-          </button>
-        ) : null}
       </div>
+      {!showing && !over ? (
+        picker === "you" ? (
+          <div className="yp-stats" role="group" aria-label="Play a stat">
+            {L.stats.map((name, k) => (
+              <button
+                key={name}
+                type="button"
+                className="yp-stat"
+                onClick={() => playStat(k, "you")}
+              >
+                <span className="yp-stat__name">{name}</span>
+                <span className="yp-stat__n">{yours.stats[k]}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <GoButton onClick={() => playStat(best(theirs), "cpu")} sub="it plays its best stat">
+            See what it picks
+          </GoButton>
+        )
+      ) : null}
+      {over && showing ? (
+        <Scrap seed="clash-end" ground="white" tape="top" className="yp-end">
+          <Heading as="p" className="yp-big">
+            {result === "won" ? "You win!" : result === "lost" ? "The computer wins." : "A draw!"}
+          </Heading>
+          <p className="yp-line">
+            {result === "won"
+              ? paid
+                ? "+1 Yay Coin for your album."
+                : `A win, though today's ${CLASH_PAYOUTS} coins are already paid out.`
+              : "Deal again for a rematch."}
+          </p>
+          <div className="yp-actions">
+            <GoButton onClick={() => start(game.league)} sub={`five new ${L.short} cards`}>
+              Play again
+            </GoButton>
+            <GoButton tone="quiet" onClick={() => setGame(null)}>
+              Another league
+            </GoButton>
+          </div>
+        </Scrap>
+      ) : showing ? (
+        <GoButton
+          onClick={() => {
+            setRevealed(false);
+            play("fold");
+          }}
+          sub={`round ${n + 1} of ${ROUNDS}`}
+        >
+          Next round
+        </GoButton>
+      ) : null}
     </div>
   );
 }
