@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useStamps } from "@/features/habits/api";
-import { Scrap } from "@/features/riot";
-import { GoAction } from "./go-action";
+import { GoButton, Scrap } from "@/features/riot";
 import { takeInstallPrompt } from "./offline";
 
 // The one ask on the closed shutter, once a reader has finished three papers: put the paper on
@@ -64,10 +63,10 @@ export function InstallAsk() {
         </p>
       ) : null}
       <p className="ys-install__row">
-        <GoAction onClick={install}>Add to home screen</GoAction>
-        <GoAction tone="quiet" onClick={done}>
+        <GoButton onClick={install}>Add to home screen</GoButton>
+        <GoButton tone="quiet" onClick={done}>
           No thanks
-        </GoAction>
+        </GoButton>
       </p>
     </Scrap>
   );

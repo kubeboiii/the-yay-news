@@ -2,8 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useEditionToday, useHabitLog } from "@/features/habits/api";
-import { Heading } from "@/features/riot";
-import { GoAction } from "@/features/site/go-action";
+import { GoButton, Heading } from "@/features/riot";
 import { type DumpFonts, drawDump } from "./dump-canvas";
 import { monthRecap, type Recap, weekRecap } from "./recap";
 
@@ -76,16 +75,16 @@ function Maker({ recap, title, file }: { recap: Recap; title: string; file: stri
             className="ys-maker__img"
           />
           <p className="ys-maker__row">
-            <GoAction onClick={share}>Share it</GoAction>
+            <GoButton onClick={share}>Share it</GoButton>
             <a href={img.url} download={file} className="rt-go rt-go--quiet">
               <span className="rt-go__label">Save the picture</span>
             </a>
           </p>
         </>
       ) : (
-        <GoAction tone="paper" onClick={make} sub="a picture to post, made on this phone">
+        <GoButton tone="paper" onClick={make} sub="a picture to post, made on this phone">
           Post the dump
-        </GoAction>
+        </GoButton>
       )}
       {msg ? (
         <p className="ys-note rt-meta" role="status">

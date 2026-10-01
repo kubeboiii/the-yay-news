@@ -96,81 +96,99 @@ export default function AboutPage() {
         <Mascot pose="standing" label={`${MASCOT_NAME}, the paper's husky`} className="ab-odin" />
       </header>
 
-      <section aria-labelledby="ab-rules" className="ab-sheet">
-        <Scrap seed="rules" ground="white" tape="top-left">
-          <Heading as="h2" id="ab-rules" className="sb-h">
-            The rules we print by
-          </Heading>
-          <ol className="ab-rules">
-            {RULES.map((r) => (
-              <li key={r.head}>
-                <b>{r.head}</b> {r.body}
-              </li>
-            ))}
-          </ol>
-        </Scrap>
-      </section>
+      <Scrap
+        seed="rules"
+        ground="white"
+        as="section"
+        aria-labelledby="ab-rules"
+        className="ab-sheet"
+        tape="top-left"
+      >
+        <Heading as="h2" id="ab-rules" className="sb-h">
+          The rules we print by
+        </Heading>
+        <ol className="ab-rules">
+          {RULES.map((r) => (
+            <li key={r.head}>
+              <b>{r.head}</b> {r.body}
+            </li>
+          ))}
+        </ol>
+      </Scrap>
 
-      <section aria-labelledby="ab-newsroom" className="ab-sheet">
-        <Scrap seed="newsroom" ground="white">
-          <Heading as="h2" id="ab-newsroom" className="sb-h">
-            The robot newsroom
-          </Heading>
-          <p className="ab-lede">
-            Nobody sits up at night writing this paper. An automated newsroom builds each edition a
-            day or two ahead, and every decision it makes is written down, so a bad call can always
-            be traced. It works like this:
-          </p>
-          <ol className="ab-steps">
-            {STEPS.map(([head, body], i) => (
-              <li key={head}>
-                <span className="ab-steps__n" aria-hidden>
-                  {i + 1}
-                </span>
-                <span>
-                  <b>{head}.</b> {body}
-                </span>
-              </li>
-            ))}
-          </ol>
-          <p className="ab-note">
-            The writing and the checking are done by AI models from Anthropic (Claude), with
-            Google&rsquo;s Gemini standing by if Claude is unavailable. If a day can&rsquo;t fill a
-            paper, you get a <b>Slow News Day</b> edition from our own bank of evergreen pieces,
-            never a blank front page.
-          </p>
-        </Scrap>
-      </section>
+      <Scrap
+        seed="newsroom"
+        ground="white"
+        as="section"
+        aria-labelledby="ab-newsroom"
+        className="ab-sheet"
+      >
+        <Heading as="h2" id="ab-newsroom" className="sb-h">
+          The robot newsroom
+        </Heading>
+        <p className="ab-lede">
+          Nobody sits up at night writing this paper. An automated newsroom builds each edition a
+          day or two ahead, and every decision it makes is written down, so a bad call can always be
+          traced. It works like this:
+        </p>
+        <ol className="ab-steps">
+          {STEPS.map(([head, body], i) => (
+            <li key={head}>
+              <span className="ab-steps__n" aria-hidden>
+                {i + 1}
+              </span>
+              <span>
+                <b>{head}.</b> {body}
+              </span>
+            </li>
+          ))}
+        </ol>
+        <p className="ab-note">
+          The writing and the checking are done by AI models from Anthropic (Claude), with
+          Google&rsquo;s Gemini standing by if Claude is unavailable. If a day can&rsquo;t fill a
+          paper, you get a <b>Slow News Day</b> edition from our own bank of evergreen pieces, never
+          a blank front page.
+        </p>
+      </Scrap>
 
-      <section aria-labelledby="ab-receipts" className="ab-sheet">
-        <Scrap seed="receipts" ground="white">
-          <Heading as="h2" id="ab-receipts" className="sb-h">
-            Receipts and corrections
-          </Heading>
-          <p>
-            Every story ends with its <b>receipts</b>: the name of the outlet it came from and a
-            link to the original. Read the real thing whenever you like; they did the reporting.
-          </p>
-          <p>
-            If something slips through, it can be pulled from the paper and replaced with a spare,
-            and the next day&rsquo;s Corrections column says what changed.
-          </p>
-        </Scrap>
-      </section>
+      <Scrap
+        seed="receipts"
+        ground="white"
+        as="section"
+        aria-labelledby="ab-receipts"
+        className="ab-sheet"
+      >
+        <Heading as="h2" id="ab-receipts" className="sb-h">
+          Receipts and corrections
+        </Heading>
+        <p>
+          Every story ends with its <b>receipts</b>: the name of the outlet it came from and a link
+          to the original. Read the real thing whenever you like; they did the reporting.
+        </p>
+        <p>
+          If something slips through, it can be pulled from the paper and replaced with a spare, and
+          the next day&rsquo;s Corrections column says what changed.
+        </p>
+      </Scrap>
 
-      <section aria-labelledby="ab-you" className="ab-sheet">
-        <Scrap seed="you" ground="white" tape="top-right">
-          <Heading as="h2" id="ab-you" className="sb-h">
-            You, and what we keep
-          </Heading>
-          <p>
-            There are no accounts and no ads. Your stamps, clippings, cards and stickers are kept on
-            your device, not on our servers, and you can move them to a new phone from{" "}
-            <Link href="/wall">Your Wall</Link>.
-          </p>
-          <p>Your timezone is kept in a cookie, only so your paper lands at 7:00 where you are.</p>
-        </Scrap>
-      </section>
+      <Scrap
+        seed="you"
+        ground="white"
+        as="section"
+        aria-labelledby="ab-you"
+        className="ab-sheet"
+        tape="top-right"
+      >
+        <Heading as="h2" id="ab-you" className="sb-h">
+          You, and what we keep
+        </Heading>
+        <p>
+          There are no accounts and no ads. Your stamps, clippings, cards and stickers are kept on
+          your device, not on our servers, and you can move them to a new phone from{" "}
+          <Link href="/wall">Your Wall</Link>.
+        </p>
+        <p>Your timezone is kept in a cookie, only so your paper lands at 7:00 where you are.</p>
+      </Scrap>
 
       <p className="ab-links">
         <GoButton href="/" sub="the one that's out now">

@@ -1,136 +1,117 @@
-/* "Cut it out": a pair of scissors in the margin, and the clipping it makes. */
+/* Cut it out, in the riot kit: a dashed cut line with scissors, opening a sheet of white paper. */
 
 .cut {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  color: inherit;
+  font-family: var(--rt-ff-read, system-ui, sans-serif);
+  color: var(--rt-k, #161412);
 }
-
 .cut__open {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 12px 4px 6px;
-  border: 0;
-  border-bottom: 2px dashed currentColor;
-  background: none;
+  gap: 10px;
+  min-height: 48px;
+  padding: 4px 6px 6px;
+  border: none;
+  border-bottom: 3px dashed currentColor;
+  background: transparent;
   color: inherit;
-  font: inherit;
-  font-size: 19px;
-  line-height: 1;
+  font-family: var(--rt-ff-head, sans-serif);
+  font-size: 26px;
+  text-transform: uppercase;
   cursor: pointer;
 }
-
 .cut__open:focus-visible,
-.cut__go:focus-visible {
-  outline: 2px dashed currentColor;
+.cut__format input:focus-visible + span {
+  outline: 3px solid var(--rt-b, #6a2cf0);
   outline-offset: 3px;
 }
-
 .cut__scissors {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 2.2;
   stroke-linecap: round;
-  rotate: -90deg;
-  transition: rotate 0.2s;
 }
-
 .cut__open[aria-expanded="true"] .cut__scissors {
-  rotate: -70deg;
+  rotate: -20deg;
 }
-
 .cut__panel {
+  width: min(100%, 380px);
+}
+.cut__panel .rt-scrap__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 18px 16px;
+}
+.cut__formats {
+  display: flex;
+  gap: 8px;
+}
+.cut__format {
+  flex: 1;
+}
+.cut__format input {
+  position: absolute;
+  opacity: 0;
+}
+.cut__format span {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: #fbf6ea;
-  box-shadow:
-    0 1px 1px rgb(0 0 0 / 0.1),
-    0 10px 22px -12px rgb(40 30 20 / 0.5);
-  rotate: -0.5deg;
-}
-
-.cut__formats {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px 18px;
-  font-size: 18px;
-}
-
-.cut__format {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  min-height: 56px;
+  padding: 4px 8px;
+  border: 3px solid var(--rt-k, #161412);
+  background: var(--rt-paper, #efe8d8);
+  font-family: var(--rt-ff-head, sans-serif);
+  font-size: 22px;
+  text-transform: uppercase;
+  line-height: 1;
   cursor: pointer;
 }
-
-.cut__format input {
-  width: 18px;
-  height: 18px;
-  accent-color: #1d1a17;
-}
-
 .cut__format small {
-  font-size: 16px;
-  opacity: 0.7;
+  margin-top: 4px;
+  font-size: 11px;
+  text-transform: none;
 }
-
+.cut__format input:checked + span {
+  background: var(--rt-a, #e9ff1f);
+  color: var(--rt-a-on, #161412);
+}
 .cut__preview {
   display: block;
-  width: auto;
+  margin: 0 auto;
   max-width: 100%;
-  background: #d8d1c4;
+  border: 3px solid var(--rt-k, #161412);
+  background: var(--rt-paper, #efe8d8);
 }
-
 .cut__preview--story {
-  height: min(420px, 60vh);
-  aspect-ratio: 9 / 16;
+  height: 300px;
+  aspect-ratio: 1080 / 1920;
+  object-fit: contain;
 }
-
 .cut__preview--square {
-  height: min(300px, 70vw);
+  width: 240px;
   aspect-ratio: 1;
+  object-fit: contain;
 }
-
 .cut__actions {
-  margin: 0;
+  display: flex;
+  justify-content: center;
 }
-
-.cut__go {
-  padding: 8px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: #1d1a17;
-  color: #fbf6ea;
-  font: inherit;
-  font-size: 19px;
-  cursor: pointer;
-}
-
-.cut__go:disabled {
-  opacity: 0.6;
-  cursor: progress;
-}
-
 .cut__status {
+  min-height: 1em;
   margin: 0;
-  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
 }
-
-.cut__status:empty {
-  display: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .cut__scissors {
-    transition: none;
+  .cut__open[aria-expanded="true"] .cut__scissors {
+    rotate: none;
   }
 }
