@@ -1,0 +1,124 @@
+/* Pip's idle life. Every loop is slow and small, and none of it runs for reduced motion. */
+
+.pip {
+  display: block;
+  overflow: visible;
+}
+
+.pip .pip-head,
+.pip .pip-eye,
+.pip .pip-squash,
+.pip .pip-swing,
+.pip .pip-spin,
+.pip .pip-z,
+.pip .pip-glow {
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pip:not(.pip--still) .pip-eye {
+    transform-origin: 50% 50%;
+    animation: pip-blink 4.6s infinite;
+  }
+  .pip:not(.pip--still) .pip-head {
+    transform-origin: 30% 100%;
+    animation: pip-bob 2.8s ease-in-out infinite;
+  }
+  /* The head-bob composes with any pose transform on the same group via the translate property. */
+  .pip:not(.pip--still) .pip-squash {
+    transform-origin: 50% 100%;
+    animation: pip-squash 1.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+  .pip:not(.pip--still) .pip-swing {
+    transform-origin: 62% 0%;
+    animation: pip-swing 3.4s ease-in-out infinite;
+  }
+  .pip:not(.pip--still) .pip-spin {
+    transform-origin: 50% 50%;
+    animation: pip-spin 1.4s linear infinite;
+  }
+  .pip:not(.pip--still) .pip-z {
+    animation: pip-z 2.8s ease-in-out infinite;
+  }
+  .pip:not(.pip--still) .pip-glow {
+    animation: pip-glow 2.4s ease-in-out infinite;
+  }
+  .pip--sleep:not(.pip--still) .pip-head {
+    animation-duration: 4.2s;
+  }
+}
+
+@keyframes pip-blink {
+  0%,
+  92%,
+  100% {
+    scale: 1 1;
+  }
+  95% {
+    scale: 1 0.12;
+  }
+}
+
+@keyframes pip-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 2.2px 0.6px;
+  }
+  55% {
+    translate: -0.6px 0;
+  }
+}
+
+@keyframes pip-squash {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+  45% {
+    scale: 1.045 0.955;
+  }
+  70% {
+    scale: 0.985 1.02;
+  }
+}
+
+@keyframes pip-swing {
+  0%,
+  100% {
+    rotate: -5deg;
+  }
+  50% {
+    rotate: 5deg;
+  }
+}
+
+@keyframes pip-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes pip-z {
+  0%,
+  100% {
+    translate: 0 0;
+    opacity: 0.4;
+  }
+  50% {
+    translate: 3px -5px;
+    opacity: 1;
+  }
+}
+
+@keyframes pip-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
