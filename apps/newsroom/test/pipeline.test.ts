@@ -5,6 +5,7 @@ import { BrokenModel, FakeModel, FallbackModel } from "../src/model/index.ts";
 import { designFor, guestSectionsFor } from "../src/plan.ts";
 import { runEdition } from "../src/pipeline.ts";
 import type { Presser } from "../src/stages/illustrate.ts";
+import { GENERATED_GUESTS } from "../src/stages/select.ts";
 import { BEATS_STAGE, MemoryStore } from "../src/store.ts";
 import { CORE_SECTIONS, WEEKEND_SECTIONS, type SectionSlug } from "../src/types.ts";
 import {
@@ -72,10 +73,22 @@ describe("the pipeline, end to end with the fake model", () => {
     const inside = d.pages.filter((p) => p.layout === "section").map((p) => p.section);
     expect(inside).toEqual(CORE_SECTIONS);
     const { guests, fallbacks } = guestSectionsFor("2026-10-05");
-    const fed = new Set<SectionSlug>(ALL_SECTIONS);
+    // Letters & Classifieds needs no sources: it is made up from the day's own stories.
+    const fed = new Set<SectionSlug>([...ALL_SECTIONS, ...GENERATED_GUESTS]);
     const guestPages = d.pages.filter((p) => p.layout === "guest").map((p) => p.section);
     expect(guestPages).toEqual([...guests, ...fallbacks].filter((g) => fed.has(g)).slice(0, 2));
     expect(d.guestSections).toEqual(guestPages);
+    const letters = d.pages.find((p) => p.section === "letters-and-classifieds");
+    expect(letters?.stories.map((s) => s.kicker)).toEqual([
+      "Letters",
+      "Letters",
+      expect.stringMatching(/^(WANTED|FOR SALE|FREE|LOST|FOUND|SEEKING)$/),
+      expect.stringMatching(/^(WANTED|FOR SALE|FREE|LOST|FOUND|SEEKING)$/),
+    ]);
+    for (const s of letters?.stories ?? []) {
+      expect(s.body.at(-1)).toMatch(/^\(An imaginary (letter|small ad), inspired by today's story/);
+      expect(s.sourceUrl).toMatch(/\/issue\/46\/story\//);
+    }
     for (const p of d.pages.slice(1, -1))
       expect(p.stories.filter((s) => !s.isReserve).length, p.section ?? "").toBeGreaterThanOrEqual(
         3,

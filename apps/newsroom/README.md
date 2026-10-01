@@ -88,7 +88,34 @@ interactively), and `pnpm` and `python3` must be on the login shell's `PATH` (th
 
 ## Sources
 
-The allowlist is `src/sources.ts`: about 40 feeds and APIs, each tagged with the sections it can
-feed. It is synced into the `Source` table at the start of every run; set `enabled = false` on a
-row to switch a source off (the sync never turns it back on). Reddit's JSON endpoints refuse
-unauthenticated requests from many networks (HTTP 403); they fail quietly and the run carries on.
+The allowlist is `src/sources.ts`: about 165 feeds, APIs and scraped listing pages, each tagged
+with the sections it can feed (the first is its home section; the rest are sections it can be pulled
+into when a page runs short). It is synced into the `Source` table at the start of every run; set
+`enabled = false` on a row to switch a source off (the sync never turns it back on). Every source
+was fetched and checked against its robots.txt when it was added; the ones that could not be
+fetched, or whose terms rule out our use, are listed at the top of the file with why.
+
+- **Money** draws on business and markets desks that are mostly not upbeat (CNBC, Bloomberg,
+  Fortune, Business Insider, Kiplinger, Axios, Mint, Hindustan Times, NDTV Profit, The Economic
+  Times' Panache) plus the curious ones (The Hustle, CNBC Make It, Visual Capitalist, NPR's Planet
+  Money and The Indicator, Freakonomics). Volume is the point: the blocklist and the delight check
+  keep only records, launches, quirky businesses and personal-finance wins, across the beats
+  `markets`, `economy`, `business-oddities`, `personal-finance-fun` and `india-money`.
+- **Guests** print once a fortnight, so their feeds may reach back 7 to 14 days (`maxAgeHours`);
+  dedup keeps repeats out. Your Small Wins (Good Good Good, Upworthy, Good News Network, The Better
+  India, Runner's World), Kids & Schools (BBC Newsround, TIME for Kids, Science News Explores, News
+  for Kids, The Indian Express), Weird Laws & Local (UPI Odd News, Oddity Central, the New York
+  Post's Weird But True, Metro, HuffPost, Atlas Obscura) and Weird Jobs (CNBC Make It, The Hustle,
+  Business Insider, Fortune, Oddity Central, Atlas Obscura) each have several.
+- **Letters & Classifieds** has no sources: the writer makes it from the day's own stories
+  (`src/stages/letters.ts`), as imaginary letters and small ads from obviously imaginary
+  correspondents, each labelled as made up and linked to the story it riffs on. Template stand-ins
+  fill it if the model cannot.
+- `test/guest-fill.test.ts` runs a fake-model dry plan over 28 days (two guest cycles) on the real
+  allowlist, with one usable item per source, and reports each guest's fill rate.
+
+robots.txt is honoured for article pages with the RFC 9309 rules (wildcards, `$`, Allow lines and
+per-agent groups); a page it disallows is written from the feed summary, or skipped. Reddit's JSON
+and RSS endpoints refuse or rate-limit unauthenticated requests from many networks (HTTP 403 or
+429), and its robots.txt disallows article fetches; those sources fail quietly and the run carries
+on.

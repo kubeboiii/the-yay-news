@@ -72,6 +72,10 @@ describe("pictures in feeds and articles", () => {
     );
     // CDNs that name the picture in the query string are different pictures.
     expect(imageKey("https://cdn.ex/i?img=a.jpg")).not.toBe(imageKey("https://cdn.ex/i?img=b.jpg"));
+    // A feed thumbnail and its full-size copy are one picture (both press to the full size).
+    expect(imageKey("https://scx1.b-cdn.net/csz/news/tmb/2026/moon.jpg")).toBe(
+      imageKey("https://scx1.b-cdn.net/csz/news/800a/2026/moon.jpg"),
+    );
   });
 
   it("asks for the full-size copy of a feed thumbnail", () => {

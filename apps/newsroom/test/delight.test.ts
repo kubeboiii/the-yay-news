@@ -48,7 +48,7 @@ describe("the delight check", () => {
   it("lets the classifier reject what the blocklist cannot see", async () => {
     const gloomy = candidate("tech", 3, {
       title: "A bleak week for gadget fans",
-      summary: "Sadly, nothing launched.",
+      summary: "Gloomily, nothing launched.",
     });
     const out = await delightCheck(new FakeModel(), [gloomy]);
     expect(out.allowed).toEqual([]);
@@ -102,15 +102,19 @@ describe("the delight check", () => {
 
   it("rejects only a batch the classifier cannot answer, and keeps the rest", async () => {
     const model = new FakeModel();
-    let n = 0;
     const real = model.complete.bind(model);
-    // The first batch fails both attempts; the second succeeds.
-    model.complete = ((...args: Parameters<typeof real>) =>
-      n++ < 2 ? Promise.reject(new Error("timed out")) : real(...args)) as typeof real;
-    const flaky = model;
     const items = Array.from({ length: 40 }, (_, i) => candidate("play", i));
+    // The first batch fails both attempts; the second succeeds (batches run concurrently, so the
+    // failing one is picked by its contents, not by call order).
+    let failures = 0;
+    model.complete = ((...args: Parameters<typeof real>) =>
+      args[0].includes(`"${items[0]!.id}"`)
+        ? (failures++, Promise.reject(new Error("timed out")))
+        : real(...args)) as typeof real;
+    const flaky = model;
     const out = await delightCheck(flaky, items);
     expect(out.rejected.filter((r) => r.reason.includes("unavailable"))).toHaveLength(30);
     expect(out.allowed.length + out.rejected.length).toBe(40);
+    expect(failures).toBe(2);
   });
 });

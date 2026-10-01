@@ -5,6 +5,8 @@ import {
   extractArticle,
   gather,
   parseFeed,
+  parseRobots,
+  robotsAllow,
 } from "../src/stages/gather.ts";
 
 const RSS = `<?xml version="1.0"?><rss><channel>
@@ -51,6 +53,28 @@ describe("gather", () => {
     });
     expect(await allowedByRobots("https://robots.example/private/page", get)).toBe(false);
     expect(await allowedByRobots("https://robots.example/public/page", get)).toBe(true);
+  });
+
+  it("reads robots.txt wildcards, anchors, Allow lines and groups properly", () => {
+    // A wildcard rule is not a Disallow: / (the Guardian's and Good News Network's shape).
+    const site = parseRobots(
+      "User-agent: *\nDisallow: /*/print$\nDisallow: /*?*utm_\nDisallow: *.emailjson\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n\nUser-agent: CCBot\nDisallow: /\n",
+    );
+    expect(robotsAllow(site, "/money/2026/sep/30/a-story")).toBe(true);
+    expect(robotsAllow(site, "/money/2026/sep/30/a-story/print")).toBe(false);
+    expect(robotsAllow(site, "/money/story?utm_source=x")).toBe(false);
+    expect(robotsAllow(site, "/x.emailjson")).toBe(false);
+    expect(robotsAllow(site, "/wp-admin/admin-ajax.php")).toBe(true);
+    expect(robotsAllow(site, "/wp-admin/options.php")).toBe(false);
+    // Consecutive User-agent lines share a group; a group naming us beats the * group.
+    const shared = parseRobots("User-agent: Googlebot\nUser-agent: *\nDisallow: /secret/\n");
+    expect(robotsAllow(shared, "/secret/x")).toBe(false);
+    const ours = parseRobots(
+      "User-agent: *\nDisallow: /\n\nUser-agent: TheYayNewsBot\nDisallow: /drafts/\n",
+    );
+    expect(robotsAllow(ours, "/story")).toBe(true);
+    expect(robotsAllow(ours, "/drafts/x")).toBe(false);
+    expect(robotsAllow(parseRobots("User-agent: *\nDisallow:\n"), "/anything")).toBe(true);
   });
 
   it("gathers fresh items from each source and records broken ones", async () => {

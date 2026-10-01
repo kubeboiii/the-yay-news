@@ -40,6 +40,12 @@ export const RULES = {
 
 export class NotEnoughNewsError extends Error {}
 
+/**
+ * Guest pages the writer makes from the day's own stories instead of from sources (letters.ts):
+ * they always run when drawn, and take no candidates.
+ */
+export const GENERATED_GUESTS: readonly SectionSlug[] = ["letters-and-classifieds"];
+
 /** Weekend pages that run one long story (PLAN §6). */
 export const LONG_READS: readonly SectionSlug[] = ["deep-dive", "slow-read"];
 
@@ -258,7 +264,8 @@ export function select(
   const guestsRun: SectionSlug[] = [];
   for (const g of [...guests, ...fallbacks]) {
     if (guestsRun.length >= GUESTS_PER_DAY) break;
-    if (buildPage(g).length >= minFor(g)) guestsRun.push(g);
+    if (GENERATED_GUESTS.includes(g)) guestsRun.push(g);
+    else if (buildPage(g).length >= minFor(g)) guestsRun.push(g);
     else release(g);
   }
   const insideSections = [...lineup, ...guestsRun];
@@ -306,7 +313,8 @@ export function select(
   const pages: Selection["pages"] = ["front"];
   for (const section of insideSections) {
     const onPage = pageStories.get(section) ?? [];
-    if (onPage.length >= minFor(section)) {
+    if (GENERATED_GUESTS.includes(section)) pages.push(section);
+    else if (onPage.length >= minFor(section)) {
       pages.push(section);
       // The best-supported story on the page leads it; a page from the week is all short items.
       onPage.forEach((a, i) => {
@@ -326,7 +334,12 @@ export function select(
   let reserves = assignments.filter((a) => a.reserve).length;
   for (const page of pages.slice(1) as SectionSlug[]) {
     if (reserves >= RULES.maxReserves) break;
-    if (FROM_THE_WEEK.includes(page) || LONG_READS.includes(page)) continue;
+    if (
+      FROM_THE_WEEK.includes(page) ||
+      LONG_READS.includes(page) ||
+      GENERATED_GUESTS.includes(page)
+    )
+      continue;
     const spare = ranked.find(
       (c) => !used.has(c.id) && c.section === page && c.text.length >= RULES.minText.brief,
     );
@@ -338,7 +351,7 @@ export function select(
   // Reserves orphaned by a folded page move to a running page so they can still stand in.
   for (const a of assignments) {
     if (a.reserve && !pages.includes(a.page))
-      a.page = (pages[1] as SectionSlug | undefined) ?? "front";
+      a.page = pages.slice(1).find((p) => !GENERATED_GUESTS.includes(p as SectionSlug)) ?? "front";
   }
 
   const served = assignments.filter((a) => !a.reserve);

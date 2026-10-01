@@ -5,6 +5,12 @@ import type { SectionSlug } from "../types.ts";
 import type { z } from "zod";
 import type { DelightInput, DelightVerdict } from "../stages/delight.ts";
 import type { FeaturesInput, FeaturesReply } from "../stages/features.ts";
+import {
+  CLASSIFIEDS_PER_PAGE,
+  LETTERS_PER_PAGE,
+  type LettersInput,
+  templateLetters,
+} from "../stages/letters.ts";
 import { numbersIn } from "../stages/factcheck.ts";
 import type { WriteInput, Written } from "../stages/write.ts";
 import { hash, sentences } from "../text.ts";
@@ -43,6 +49,20 @@ export class FakeModel implements Model {
       case "features":
         reply = features(readData<FeaturesInput>(prompt));
         break;
+      case "letters": {
+        const { date, stories } = readData<LettersInput>(prompt);
+        reply = {
+          items: [
+            ...templateLetters(date, stories.slice(0, LETTERS_PER_PAGE), "letter"),
+            ...templateLetters(
+              date,
+              stories.slice(LETTERS_PER_PAGE, LETTERS_PER_PAGE + CLASSIFIEDS_PER_PAGE),
+              "classified",
+            ),
+          ],
+        };
+        break;
+      }
       default:
         if (!options.schema) return "ok";
         throw new ModelError(this.name, `no fake answer for task "${options.task}"`);

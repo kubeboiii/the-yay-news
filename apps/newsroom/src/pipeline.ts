@@ -19,7 +19,8 @@ import {
   pressWithPython,
 } from "./stages/illustrate.ts";
 import { layOut } from "./stages/layout.ts";
-import { NotEnoughNewsError, RULES, select } from "./stages/select.ts";
+import { writeLetters } from "./stages/letters.ts";
+import { GENERATED_GUESTS, NotEnoughNewsError, RULES, select } from "./stages/select.ts";
 import { weeklyPicks } from "./stages/weekly.ts";
 import { type SectionInfo, writeStories } from "./stages/write.ts";
 import { BEATS_STAGE, type BeatRecord, SECTIONS, type Store } from "./store.ts";
@@ -287,12 +288,13 @@ export async function runEdition(o: RunOptions): Promise<RunOutcome> {
     );
 
     // 4. Select, spreading each page across its beats and rotating in beats left out lately.
+    const site = o.siteUrl ?? process.env.NEWSROOM_SITE_URL ?? "http://localhost:3108";
     const recentBeats = await o.store.recentBeats(o.date, RULES.beatDays);
     const weekPages = lineup.filter((x) => FROM_THE_WEEK.includes(x));
     const { picks: weekly, awards } = weekPages.length
       ? weeklyPicks(lineup, await o.store.weekStories(o.date, 7), {
           date: o.date,
-          site: o.siteUrl ?? process.env.NEWSROOM_SITE_URL ?? "http://localhost:3108",
+          site,
           now: o.now,
         })
       : { picks: new Map(), awards: new Map<string, string>() };
@@ -346,12 +348,46 @@ export async function runEdition(o: RunOptions): Promise<RunOutcome> {
         storySlug: story.slug,
       });
     }
+    // A generated guest (Letters & Classifieds) is written now, from the stories just laid out.
+    for (const section of selection.pages.filter((p) =>
+      GENERATED_GUESTS.includes(p as SectionSlug),
+    ) as SectionSlug[]) {
+      const printed = laid.pages
+        .flatMap((p) => p.stories)
+        .filter((s) => !s.isReserve && s.candidateId && laid.placed.has(s.candidateId));
+      const letters = await writeLetters(o.model, {
+        date: o.date,
+        issueNumber,
+        site,
+        stories: printed.map((s) => ({
+          slug: s.slug,
+          headline: s.headline,
+          section: s.section,
+          sourceText: laid.placed.get(s.candidateId as string)!.assignment.candidate.text,
+        })),
+        takenSlugs: new Set(laid.pages.flatMap((p) => p.stories.map((s) => s.slug))),
+      });
+      if (letters.problems.length)
+        say("write", `${section}: ${letters.problems.join("; ")}`, "warn");
+      if (!letters.stories.length) continue;
+      // Its page goes where the selection put it: before the next page that made it into print.
+      const after = selection.pages.slice(selection.pages.indexOf(section) + 1);
+      let at = laid.pages.findIndex((p) => p.section !== null && after.includes(p.section));
+      if (at < 0) at = laid.pages.length - 1;
+      laid.pages.splice(at, 0, { order: 0, layout: "guest", section, stories: letters.stories });
+      laid.pages.forEach((p, i) => (p.order = i + 1));
+      say("write", `${section}: ${letters.stories.length} made up from today's stories`);
+    }
     const beats: BeatRecord[] = [];
     for (const { story, assignment } of laid.placed.values()) {
       story.beat = assignment.candidate.beat;
       if (!story.isReserve)
         beats.push({ slug: story.slug, section: story.section, beat: story.beat });
     }
+    for (const p of laid.pages)
+      for (const s of p.stories)
+        if (!s.candidateId && s.beat)
+          beats.push({ slug: s.slug, section: s.section, beat: s.beat });
     say(
       BEATS_STAGE,
       `${beats.length} stories across ${new Set(beats.map((b) => `${b.section}/${b.beat}`)).size} beats`,
@@ -369,8 +405,10 @@ export async function runEdition(o: RunOptions): Promise<RunOutcome> {
     // Retellings of the week's stories keep the pictures they were printed with.
     const preset = (s: (typeof all)[number]) =>
       laid.placed.get(s.candidateId as string)?.assignment.candidate.presetImages;
+    // Stories made up in-house (Letters & Classifieds) have no source picture to press.
+    const sourced = (s: (typeof all)[number]) => !!s.candidateId && laid.placed.has(s.candidateId);
     const order = [...all.filter((s) => !s.isReserve), ...all.filter((s) => s.isReserve)].filter(
-      (s) => !preset(s),
+      (s) => sourced(s) && !preset(s),
     );
     const pictures = await stage("illustrate", () =>
       illustrate(
@@ -405,7 +443,7 @@ export async function runEdition(o: RunOptions): Promise<RunOutcome> {
       generateFeatures(
         o.model,
         o.date,
-        servedStories.map((s) => ({
+        servedStories.filter(sourced).map((s) => ({
           id: s.slug,
           headline: s.headline,
           section: s.section,

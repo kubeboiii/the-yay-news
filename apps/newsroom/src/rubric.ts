@@ -15,7 +15,7 @@ export const SECTION_FOCUS: Partial<Record<string, string>> = {
   music:
     "Albums, singles, tours, festivals and artists: big current and classic names Gen Z knows (Kanye West, Travis Scott, Billie Eilish, Olivia Dean, Drake, Oasis, Coldplay, The Beatles, big Indian artists) and global festivals (Tomorrowland, Coachella, Glastonbury, Lollapalooza India).",
   money:
-    "Finance, the economy, markets and business, only the upbeat or curious kind: records, launches, quirky businesses, famous brands doing fun things, personal-finance wins.",
+    "Finance, the economy, markets and business, only the upbeat or curious kind: markets hitting records and big listings, curious economics (odd indexes, surprising charts), quirky businesses and famous brands doing fun things, personal-finance wins and clever money habits, and India's markets and companies (Sensex, Nifty, Tata, Zerodha). Never price rises, job cuts, lawsuits or losses.",
   sports:
     "Football first (Premier League, La Liga, Champions League, internationals, the big clubs); then MMA, mainly the UFC (ONE or PFL when interesting); boxing; the Olympics when on; cricket now and then; the major tennis events; the best of basketball; F1 races; marathons and ultras; fun oddball sports stories. Only upbeat framing.",
   internet:
@@ -24,6 +24,14 @@ export const SECTION_FOCUS: Partial<Record<string, string>> = {
     "Space, animals, plants, physics, chemistry, biology, the Earth and the oceans, with a wow: famous missions, charismatic animals, new species.",
   "brain-snacks":
     "Fun facts, general knowledge and social-science curiosities: why people do the odd things they do, surprising studies, trivia worth repeating.",
+  "your-small-wins":
+    "Real, reported small triumphs of ordinary people: a first marathon at 70, a grandmother's first degree, a kid's lemonade stand that went big, a neighbour's clever fix. Only people named in the source; never invented readers.",
+  "kids-and-schools":
+    "Kid inventors, school wins, young champions and clever classroom projects, from kids' news desks and good-news outlets.",
+  "weird-local":
+    "Gloriously odd local news: dog mayors, strange by-laws, a town's giant vegetable contest, a council's funny sign. Oddness with no victim.",
+  "weird-jobs":
+    "Unusual careers, brave (happy) career switches and very cool internships: the professional cuddler, the ice-cream taster, the 80-year-old who became a DJ.",
 };
 
 export const DELIGHT_SCORING = `
@@ -47,6 +55,21 @@ ALLOW only when every one of these is true:
    story "ends well". A survivor story is still about the bad thing: reject it.
    That includes hints: an event moved, cancelled or renamed because of unrest, conflict or
    security worries is still about the bad thing.
+   Always reject, however cheerful the headline:
+   - illness, disease or a death anywhere in the story (the charity run "in memory of", the
+     inventor who started "after her diagnosis", the late founder);
+   - layoffs, job cuts, redundancies or restructuring, even at a company that is also launching
+     something fun;
+   - lawsuits, court cases, legal fights, settlements or regulators' fines;
+   - prices rising, bills, inflation or the cost of living, even a "how to save" piece built on it;
+   - war or conflict, including a team, festival or person relocated because of it;
+   - scandal, allegations, misconduct, resignations or sackings;
+   - "sad but…" framing: a happy ending to a sad start (loss, grief, hardship, a bad diagnosis);
+   - animals harmed, injured, abandoned, neglected, stranded, trapped or rescued from danger;
+   - disasters (storms, floods, fires, quakes, crashes), even with a happy ending, unless the
+     happy part is the whole story and the disaster is not mentioned;
+   - politics: governments, ministers, elections, parties, policies, politicians;
+   - crime of any kind: thefts, arrests, charges, prison, even a quirky heist.
 3. It is not about politics, elections, governments arguing, markets falling or anyone losing money.
    Money stories must be unambiguously fun (a quirky record, a charming business, a big launch).
 4. It is not an advert, a deal, a listicle, a rumour, a review of something bad, a controversy,
@@ -92,6 +115,8 @@ VOICE GUIDE.
 - GROUNDING: every fact, number, name, place and quotation must come from the SOURCE TEXT given for
   that story. Do not add facts from memory. Do not invent quotes. Write numbers exactly as the source
   writes them (as digits if the source uses digits). If unsure of a detail, leave it out.
+- Real people only: never invent readers, letter-writers, customers or quotes. A "small win" is a
+  real person's win as the source reports it, named only as the source names them.
 - One source per story: its facts come from that story's source text alone. The exception is a
   weekend long read (Deep Dive, Slow Read), whose source text gathers several named outlets; it may
   use all of them, and credits them all.

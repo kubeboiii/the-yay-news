@@ -85,9 +85,12 @@ function unsized(url: string): URL | null {
   }
 }
 
-/** The same picture at another size or with a resizing query string counts once. */
+/**
+ * The same picture at another size or with a resizing query string counts once, and so does a
+ * feed thumbnail and the full-size copy it stands for (they press to the same picture).
+ */
 export function imageKey(url: string): string {
-  const u = unsized(url);
+  const u = unsized(fullSize(url));
   return u ? normaliseUrl(u.toString()).toLowerCase() : url.toLowerCase();
 }
 
@@ -235,28 +238,72 @@ export function extractArticle(html: string): Article {
   };
 }
 
-const robotsCache = new Map<string, Promise<string[]>>();
+/** One Allow or Disallow line from robots.txt. */
+export type RobotsRule = { allow: boolean; path: string };
 
-/** Disallowed path prefixes for any user agent, from a site's robots.txt. */
-async function disallowed(origin: string, get: Http): Promise<string[]> {
+/**
+ * The rules that apply to us in a robots.txt (RFC 9309): the group naming our bot if there is one,
+ * else the `*` group. Consecutive User-agent lines share one group.
+ */
+export function parseRobots(text: string): RobotsRule[] {
+  const groups: { agents: string[]; rules: RobotsRule[] }[] = [];
+  let current: { agents: string[]; rules: RobotsRule[] } | null = null;
+  let lastWasAgent = false;
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.replace(/#.*/, "").trim();
+    const i = line.indexOf(":");
+    if (i < 0) continue;
+    const key = line.slice(0, i).trim().toLowerCase();
+    const value = line.slice(i + 1).trim();
+    if (key === "user-agent") {
+      if (!current || !lastWasAgent) groups.push((current = { agents: [], rules: [] }));
+      current.agents.push(value.toLowerCase());
+      lastWasAgent = true;
+      continue;
+    }
+    lastWasAgent = false;
+    // An empty Disallow allows everything; an empty Allow says nothing.
+    if (current && (key === "allow" || key === "disallow") && value)
+      current.rules.push({ allow: key === "allow", path: value });
+  }
+  const ours = groups.filter((g) => g.agents.some((a) => a !== "*" && /yaynews/.test(a)));
+  const chosen = ours.length ? ours : groups.filter((g) => g.agents.includes("*"));
+  return chosen.flatMap((g) => g.rules);
+}
+
+const ruleMatcher = (path: string) =>
+  new RegExp(
+    `^${path
+      .split("*")
+      .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, "\\$&"))
+      .join(".*")
+      .replace(/\\\$$/, "$")}`,
+  );
+
+/** Whether a path (with its query) may be fetched: the longest matching rule wins, Allow on ties. */
+export function robotsAllow(rules: RobotsRule[], pathAndQuery: string): boolean {
+  let best: RobotsRule | null = null;
+  for (const r of rules) {
+    if (!ruleMatcher(r.path).test(pathAndQuery)) continue;
+    if (
+      !best ||
+      r.path.length > best.path.length ||
+      (r.path.length === best.path.length && r.allow)
+    )
+      best = r;
+  }
+  return best ? best.allow : true;
+}
+
+const robotsCache = new Map<string, Promise<RobotsRule[]>>();
+
+/** The robots.txt rules that apply to us on a site (none when it has no robots.txt). */
+function robotsFor(origin: string, get: Http): Promise<RobotsRule[]> {
   if (!robotsCache.has(origin)) {
     robotsCache.set(
       origin,
       get(`${origin}/robots.txt`)
-        .then((r) => {
-          if (!r.ok) return [];
-          const rules: string[] = [];
-          let applies = false;
-          for (const raw of r.text.split(/\r?\n/)) {
-            const line = raw.replace(/#.*/, "").trim();
-            const [k, ...v] = line.split(":");
-            const key = k?.trim().toLowerCase();
-            const value = v.join(":").trim();
-            if (key === "user-agent") applies = value === "*" || /yaynews/i.test(value);
-            else if (applies && key === "disallow" && value) rules.push(value);
-          }
-          return rules;
-        })
+        .then((r) => (r.ok ? parseRobots(r.text) : []))
         .catch(() => []),
     );
   }
@@ -266,8 +313,7 @@ async function disallowed(origin: string, get: Http): Promise<string[]> {
 export async function allowedByRobots(url: string, get: Http): Promise<boolean> {
   try {
     const u = new URL(url);
-    const rules = await disallowed(u.origin, get);
-    return !rules.some((r) => r === "/" || u.pathname.startsWith(r.replace(/\*.*$/, "")));
+    return robotsAllow(await robotsFor(u.origin, get), `${u.pathname}${u.search}`);
   } catch {
     return false;
   }
