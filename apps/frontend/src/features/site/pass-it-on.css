@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  font-family: var(--ar-franklin), system-ui, sans-serif;
+  font-family: var(--rt-ff-read), system-ui, sans-serif;
 }
 .ys-pass svg,
 .ys-passed__x svg {
@@ -41,13 +41,13 @@
   width: min(420px, 100%);
   box-sizing: border-box;
   padding: 14px 14px 16px;
-  background: #e9ff1f;
+  background: var(--rt-a);
   box-shadow: 0 8px 16px rgb(0 0 0 / 0.2);
   rotate: -1.5deg;
 }
 .ys-pass__label {
   display: block;
-  font-family: var(--ar-type), monospace;
+  font-family: var(--rt-ff-meta), monospace;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -60,7 +60,7 @@
   padding: 8px 10px;
   border: 2px solid #161412;
   background: #fffbe6;
-  font-family: var(--hb-hand), cursive;
+  font-family: var(--rt-ff-hand), cursive;
   font-size: 26px;
   line-height: 1.05;
   resize: none;
@@ -68,7 +68,7 @@
 .ys-pass__send {
   width: 100%;
   justify-content: center;
-  color: #e9ff1f;
+  color: var(--rt-a);
 }
 .ys-pass__msg {
   margin: 0;
@@ -82,11 +82,11 @@
   box-sizing: border-box;
   margin: 18px auto 0;
   padding: 18px 48px 14px 18px;
-  background: #e9ff1f;
+  background: var(--rt-a);
   color: #161412;
   box-shadow: 0 8px 18px rgb(0 0 0 / 0.2);
   rotate: -2deg;
-  font-family: var(--ar-franklin), system-ui, sans-serif;
+  font-family: var(--rt-ff-read), system-ui, sans-serif;
 }
 .ys-passed__tape {
   position: absolute;
@@ -100,7 +100,7 @@
 }
 .ys-passed__k {
   margin: 0;
-  font-family: var(--ar-type), monospace;
+  font-family: var(--rt-ff-meta), monospace;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -108,7 +108,7 @@
 }
 .ys-passed__note {
   margin: 4px 0 0;
-  font-family: var(--hb-hand), cursive;
+  font-family: var(--rt-ff-hand), cursive;
   font-size: 30px;
   line-height: 1.05;
   overflow-wrap: anywhere;

@@ -7,9 +7,9 @@
   padding: 8px 12px 8px 16px;
   background: #2b2925;
   color: #efe8d8;
-  font-family: var(--ar-franklin), system-ui, sans-serif;
+  font-family: var(--rt-ff-read), system-ui, sans-serif;
   font-size: 13px;
-  border-bottom: 3px solid #e9ff1f;
+  border-bottom: 3px solid var(--rt-a);
 }
 .ys-band__where {
   display: flex;
@@ -18,11 +18,11 @@
   margin: 0;
 }
 .ys-band__k {
-  font-family: var(--ar-type), monospace;
+  font-family: var(--rt-ff-meta), monospace;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #e9ff1f;
+  color: var(--rt-a);
 }
 .ys-band__nav {
   display: flex;
@@ -45,13 +45,13 @@
   border-color: #efe8d8;
 }
 .ys-band__nav a:focus-visible {
-  outline: 3px solid #e9ff1f;
+  outline: 3px solid var(--rt-a);
   outline-offset: 2px;
 }
 .ys-band__nav .ys-band__today {
   padding: 0 12px;
-  background: #e9ff1f;
-  border-color: #e9ff1f;
+  background: var(--rt-a);
+  border-color: var(--rt-a);
   color: #161412;
   font-size: 13px;
 }

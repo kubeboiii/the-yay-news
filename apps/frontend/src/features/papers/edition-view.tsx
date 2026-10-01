@@ -36,7 +36,9 @@ export function EditionPageView({
   const edition = designed(printed, design);
   return (
     <>
-      <PrintedPage edition={edition} page={page} live />
+      <div className="ys-reading">
+        <PrintedPage edition={edition} page={page} live />
+      </div>
       {page.layout === "back" ? (
         <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-[#e4ded3] px-4 pt-6 pb-24 text-center font-serif text-[17px] text-[#1c1a17] print:hidden">
           <span>Take today with you:</span>

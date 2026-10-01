@@ -1,79 +1,88 @@
-/* How it's made: sheets of paper laid on the newsstand's desk. */
+/* How it's made: sheets of white paper on the day's stock, under the kit's type and inks. */
 
-.ab-sheet {
-  width: min(680px, 100%);
-  box-sizing: border-box;
-  margin: 0 auto 32px;
-  padding: 26px clamp(18px, 4vw, 34px) 24px;
-  background: #f4efe3;
-  box-shadow: 0 10px 24px rgb(0 0 0 / 0.12);
-  font-family: var(--ar-caslon), Georgia, serif;
-  font-size: 18px;
-  line-height: 1.6;
-  rotate: -0.4deg;
-}
-.ab-sheet--tilt {
-  rotate: 0.5deg;
-}
-.ab-sheet p {
-  margin: 0 0 12px;
-}
-.ab-sheet a {
-  color: inherit;
-  text-underline-offset: 2px;
-}
-.ab-head {
-  margin: 0 0 14px;
-  font-family: var(--ar-gothic), sans-serif;
-  font-weight: 400;
-  font-size: clamp(34px, 7vw, 46px);
-  line-height: 1;
-  text-transform: uppercase;
-}
-.ab-lede {
-  font-style: italic;
-}
-.ab-rules {
-  margin: 0;
-  padding-left: 1.3em;
-}
-.ab-rules li {
-  margin-bottom: 10px;
-}
-.ab-steps {
-  display: grid;
-  gap: 12px;
-  margin: 8px 0 16px;
-  padding: 0;
-  list-style: none;
-}
-.ab-steps li {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-.ab-steps__n {
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: #e9ff1f;
-  border: 2px solid #1d1a16;
-  font-family: var(--ar-gothic), sans-serif;
-  font-size: 20px;
-  line-height: 1;
-}
-.ab-note {
-  padding: 12px 14px;
-  border: 2px dashed #5f594d;
-  font-size: 16px;
-}
-.ab-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 8px;
+.sb {
+  .ab-head-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .ab-odin {
+    width: 180px;
+    flex: none;
+  }
+  .ab-sheet {
+    max-width: 760px;
+    margin: 0 0 28px;
+  }
+  .ab-sheet .rt-scrap__body {
+    padding: 24px clamp(18px, 4vw, 32px) 22px;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .ab-sheet p {
+    margin: 0 0 12px;
+  }
+  .ab-sheet a {
+    color: inherit;
+    text-underline-offset: 2px;
+  }
+  .ab-lede {
+    font-weight: 700;
+  }
+  .ab-rules {
+    margin: 0;
+    padding-left: 1.3em;
+  }
+  .ab-rules li {
+    margin-bottom: 10px;
+  }
+  .ab-steps {
+    display: grid;
+    gap: 12px;
+    margin: 8px 0 16px;
+    padding: 0;
+    list-style: none;
+  }
+  .ab-steps li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .ab-steps__n {
+    flex: none;
+    display: grid;
+    place-content: center;
+    width: 34px;
+    height: 34px;
+    background: var(--rt-a);
+    color: var(--rt-a-on);
+    border: 3px solid var(--rt-k);
+    font-family: var(--rt-ff-head);
+    font-size: 21px;
+    line-height: 1;
+  }
+  .ab-note {
+    padding: 12px 14px;
+    border: 3px dashed var(--rt-k);
+    font-size: 16px;
+  }
+  .ab-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  @media (max-width: 760px) {
+    .ab-head-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ab-odin {
+      width: 140px;
+      align-self: flex-end;
+    }
+  }
 }

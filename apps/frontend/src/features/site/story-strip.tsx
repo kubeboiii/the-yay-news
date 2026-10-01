@@ -1,7 +1,5 @@
 import type { Edition, Story } from "@repo/shared";
 import Link from "next/link";
-import { rackFonts } from "@/features/archive/fonts";
-import { habitFonts } from "@/features/habits/fonts";
 import { issueHref, pageHref, pageSlug, storyHref } from "@/features/papers/reading";
 import { PassItOn } from "./pass-it-on";
 import "./story-strip.css";
@@ -40,7 +38,7 @@ export function StoryStrip({
   const pageLink = pageHref(issue, pageSlug(data.page));
 
   return (
-    <aside className={`ys-strip ${rackFonts} ${habitFonts}`} aria-label="About this paper">
+    <aside className="ys-strip" aria-label="About this paper">
       <PassItOn path={storyHref(issue, data.story.slug)} headline={data.story.headline} />
       <div className="ys-strip__tear">
         <p className="ys-strip__k">

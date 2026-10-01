@@ -1,7 +1,5 @@
 import { Suspense } from "react";
-import { rackFonts } from "@/features/archive/fonts";
 import { getStory, issueParam } from "@/features/editions/api";
-import { habitFonts } from "@/features/habits/fonts";
 import { StoryView } from "@/features/papers/edition-view";
 import { storyHref } from "@/features/papers/reading";
 import { PassedNote, PassItOn } from "@/features/site/pass-it-on";
@@ -18,13 +16,13 @@ export default async function StorySheetPage({
   const data = await getStory(issueParam(issue), slug, preview);
   return (
     <StorySheet label={data.story.headline}>
-      <div className={`${rackFonts} ${habitFonts}`}>
+      <div>
         <Suspense>
           <PassedNote />
         </Suspense>
       </div>
       <StoryView data={data} design={preview.design} />
-      <div className={`ys-sheet__pass ${rackFonts} ${habitFonts}`}>
+      <div className="ys-sheet__pass">
         <PassItOn
           path={storyHref(data.edition.issueNumber, data.story.slug)}
           headline={data.story.headline}

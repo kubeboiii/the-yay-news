@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { rackFonts } from "@/features/archive/fonts";
-import "@/features/archive/archive.css";
+import { GAP, GoButton, Mascot, MASCOT_NAME, Poster, RansomHeading } from "@/features/riot";
 
 export const metadata: Metadata = { title: "This page blew away · The Yay News" };
 
@@ -11,28 +9,48 @@ export const metadata: Metadata = { title: "This page blew away · The Yay News"
  */
 export default function ReaderNotFound() {
   return (
-    <main className={`ar-desk ${rackFonts}`}>
-      <div className="ar-sign" role="group" aria-labelledby="nf-title">
-        <span className="ar-tape ar-tape--l" aria-hidden />
-        <span className="ar-tape ar-tape--r" aria-hidden />
-        <p className="ar-sign__kicker">The Yay News · stop press</p>
-        <h1 id="nf-title" className="ar-sign__title">
-          This page blew away
-        </h1>
-        <p className="ar-sign__sub">We can&rsquo;t find it anywhere on the stand.</p>
-        <p className="ar-sign__note">
-          Either it never existed, or it&rsquo;s still on the press: each edition lands at 7am where
-          you are. The presses are warm and the ink is mixed.
-        </p>
-        <p className="ar-nf__links">
-          <Link href="/" className="ar-ticket">
-            Read today&rsquo;s paper
-          </Link>
-          <Link href="/pile" className="ar-ticket">
-            Dig through the pile
-          </Link>
-        </p>
+    <div className="ys-page ys-page--hero">
+      <Poster
+        seed="blew-away"
+        paste={false}
+        edge="torn"
+        sides={["bottom", "right"]}
+        screen={{ fade: "corner", density: 0.5, area: "0 0 0 55%", w: 560, h: 520 }}
+        className="sb-shut"
+        aria-labelledby="nf-sub"
+      >
+        <div className="sb-shut__type">
+          <RansomHeading
+            text="BLEW AWAY"
+            seed="blew-away"
+            as="h1"
+            className="sb-shut__h"
+            cuts={[
+              { ch: "BL", from: "slab", size: 1.1 },
+              { ch: "E", from: "didone", size: 0.92, lift: 0.08, turn: -3 },
+              { ch: "W", from: "gothic", size: 1.04, tuck: 0.03, ground: "ink" },
+              GAP,
+              { ch: "AW", from: "roman", size: 1.04, turn: 2 },
+              { ch: "AY", from: "slab", size: 0.94, tuck: 0.04, lift: 0.04 },
+            ]}
+          />
+          <p className="sb-shut__sub" id="nf-sub">
+            This page isn&rsquo;t anywhere on the stand. Either it never existed, or it&rsquo;s
+            still on the press: each paper lands at 7am where you are.
+          </p>
+          <div className="sb-shut__cta">
+            <GoButton href="/" sub="the one that's out now">
+              Today&rsquo;s paper
+            </GoButton>
+            <GoButton tone="quiet" href="/pile">
+              Dig in the pile
+            </GoButton>
+          </div>
+        </div>
+      </Poster>
+      <div className="sb-shut__odin">
+        <Mascot pose="confused" label={`${MASCOT_NAME} the husky, looking for the page`} />
       </div>
-    </main>
+    </div>
   );
 }

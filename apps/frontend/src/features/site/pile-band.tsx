@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { rackFonts } from "@/features/archive/fonts";
 import { issueHref } from "@/features/papers/reading";
 import { SetPlace } from "./place";
 import "./pile-band.css";
@@ -38,7 +37,7 @@ export function PileBand({
   const old = age(date, today.date);
   const newer = issue + 1 >= today.issueNumber ? "/" : issueHref(issue + 1);
   return (
-    <aside className={`ys-band ${rackFonts}`} aria-label="A paper from your pile">
+    <aside className="ys-band" aria-label="A paper from your pile">
       <SetPlace place="pile" />
       <p className="ys-band__where">
         <span className="ys-band__k">From the pile</span>
