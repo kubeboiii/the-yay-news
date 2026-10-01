@@ -7,7 +7,7 @@ import { StickerLayer } from "@/features/habits/stickers";
 import { ShareBar, StoryCut } from "@/features/reader/share-bar";
 import { Pager } from "@/features/site/pager";
 import { pagerPages } from "@/features/site/pager-pages";
-import { Heading, RiotTheme, riotInks } from "@/features/riot";
+import { HOUSE_INKS, Heading, RiotTheme } from "@/features/riot";
 import { ZineLink } from "@/features/zine/zine-link";
 import "./take-zine.css";
 import { Balance } from "./balance";
@@ -44,7 +44,7 @@ export function EditionPageView({
       {page.layout === "back" ? (
         <RiotTheme
           as="section"
-          inks={riotInks({ design: edition.design, colourway: edition.colourway })}
+          inks={HOUSE_INKS}
           surface={false}
           className="yz-take print:hidden"
           aria-labelledby="yz-take-h"
