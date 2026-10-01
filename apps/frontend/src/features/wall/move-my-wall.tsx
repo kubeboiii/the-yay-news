@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { exportLog, importLog } from "@/features/habits/api";
 import { sanitize } from "@/features/habits/core";
-import { Heading, Scrap, Sticker } from "@/features/riot";
-import { GoAction } from "@/features/site/go-action";
+import { GoButton, Heading, Scrap, Sticker } from "@/features/riot";
 
 // Everything on the wall lives on this device until accounts arrive, so a new phone would start
 // from nothing. This packs the reader's whole log into a code to copy across, and merges a pasted
@@ -74,7 +73,7 @@ export function MoveMyWall() {
         phone. No account.
       </p>
       <div className="sb-smuggle__row">
-        <GoAction onClick={copy}>Pack it</GoAction>
+        <GoButton onClick={copy}>Pack it</GoButton>
       </div>
       <label htmlFor="wl-code" className="ys-smuggle__label rt-meta">
         Got a code from your old phone? Paste it here
@@ -89,9 +88,9 @@ export function MoveMyWall() {
         spellCheck={false}
       />
       <div className="sb-smuggle__row">
-        <GoAction tone="quiet" onClick={bring} disabled={!code.trim()}>
+        <GoButton tone="quiet" onClick={bring} disabled={!code.trim()}>
           Unpack it here
-        </GoAction>
+        </GoButton>
       </div>
       {msg ? (
         <p className="ys-note rt-meta" role="status">

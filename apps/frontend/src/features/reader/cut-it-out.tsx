@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
-import { handwriting } from "@/features/habits/fonts";
+import { GoButton, Scrap } from "@/features/riot";
 import { play } from "@/features/sound";
 import "./cut-it-out.css";
 
@@ -127,7 +127,7 @@ export function CutItOut({
   }
 
   return (
-    <div className={`cut ${handwriting.className}`}>
+    <div className="cut">
       <button
         type="button"
         className="cut__open"
@@ -146,40 +146,46 @@ export function CutItOut({
         <span className="cut__label">Cut it out</span>
       </button>
       {open ? (
-        <div id={panel} className="cut__panel" role="group" aria-label="Cut this story out">
-          <div className="cut__formats" role="radiogroup" aria-label="Size">
-            {FORMATS.map((f) => (
-              <label key={f.id} className="cut__format">
-                <input
-                  type="radio"
-                  name={`${panel}-fmt`}
-                  value={f.id}
-                  checked={format === f.id}
-                  onChange={() => setFormat(f.id)}
-                />
-                <span>
-                  {f.label} <small>{f.size}</small>
-                </span>
-              </label>
-            ))}
+        <Scrap seed={`cut-${slug}`} ground="white" edge="cut" tape="top" className="cut__panel">
+          <div id={panel} role="group" aria-label="Cut this story out">
+            <div className="cut__formats" role="radiogroup" aria-label="Size">
+              {FORMATS.map((f) => (
+                <label key={f.id} className="cut__format">
+                  <input
+                    type="radio"
+                    name={`${panel}-fmt`}
+                    value={f.id}
+                    checked={format === f.id}
+                    onChange={() => setFormat(f.id)}
+                  />
+                  <span>
+                    {f.label} <small className="rt-meta">{f.size}</small>
+                  </span>
+                </label>
+              ))}
+            </div>
+            {/* The clipping itself, small: what you'll get. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              key={format}
+              src={src(format)}
+              alt={`The clipping: ${headline}`}
+              className={`cut__preview cut__preview--${format}`}
+            />
+            <div className="cut__actions">
+              <GoButton
+                onClick={cut}
+                disabled={busy}
+                sub={shares ? "opens your share sheet" : "saves a picture"}
+              >
+                {busy ? "Cutting…" : shares ? "Share the clipping" : "Download it"}
+              </GoButton>
+            </div>
+            <p role="status" aria-live="polite" className="cut__status rt-meta">
+              {status}
+            </p>
           </div>
-          {/* The clipping itself, small: what you'll get. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            key={format}
-            src={src(format)}
-            alt={`The clipping: ${headline}`}
-            className={`cut__preview cut__preview--${format}`}
-          />
-          <p className="cut__actions">
-            <button type="button" className="cut__go" onClick={cut} disabled={busy}>
-              {busy ? "Cutting…" : shares ? "Share the clipping" : "Download the clipping"}
-            </button>
-          </p>
-          <p role="status" aria-live="polite" className="cut__status">
-            {status}
-          </p>
-        </div>
+        </Scrap>
       ) : null}
     </div>
   );

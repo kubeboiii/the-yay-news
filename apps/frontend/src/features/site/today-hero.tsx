@@ -18,7 +18,6 @@ import {
   Sticker,
   TearTabs,
 } from "@/features/riot";
-import { GoAction } from "./go-action";
 import { InstallAsk } from "./install-ask";
 
 // What sits above today's front page, depending on the time and on what the reader has done
@@ -305,7 +304,7 @@ function Welcome() {
           Only good news, about fifteen minutes of it. Turn the pages, do the puzzles on the back,
           and then it ends. That&rsquo;s the whole idea.
         </p>
-        <GoAction onClick={close}>Got it, let&rsquo;s read</GoAction>
+        <GoButton onClick={close}>Got it, let&rsquo;s read</GoButton>
       </Scrap>
     </div>
   );
